@@ -1,0 +1,14 @@
+[
+{
+  "directory": "C:/EXTRA/Projects/OpenGL-Container/RhythmGame/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DMikuEngine_EXPORTS -IC:/EXTRA/Projects/OpenGL-Container/RhythmGame/MikuEngine/include -O0 -g -Xclang -gcodeview -std=c++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o MikuEngine\\CMakeFiles\\MikuEngine.dir\\src\\MikuEngine.cpp.obj -c C:\\EXTRA\\Projects\\OpenGL-Container\\RhythmGame\\MikuEngine\\src\\MikuEngine.cpp",
+  "file": "C:\\EXTRA\\Projects\\OpenGL-Container\\RhythmGame\\MikuEngine\\src\\MikuEngine.cpp",
+  "output": "MikuEngine\\CMakeFiles\\MikuEngine.dir\\src\\MikuEngine.cpp.obj"
+},
+{
+  "directory": "C:/EXTRA/Projects/OpenGL-Container/RhythmGame/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -IC:/EXTRA/Projects/OpenGL-Container/RhythmGame/Game/include -O0 -g -Xclang -gcodeview -std=c++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o Game\\CMakeFiles\\Game.dir\\src\\main.cpp.obj -c C:\\EXTRA\\Projects\\OpenGL-Container\\RhythmGame\\Game\\src\\main.cpp",
+  "file": "C:\\EXTRA\\Projects\\OpenGL-Container\\RhythmGame\\Game\\src\\main.cpp",
+  "output": "Game\\CMakeFiles\\Game.dir\\src\\main.cpp.obj"
+}
+]
