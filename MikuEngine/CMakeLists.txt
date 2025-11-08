@@ -8,8 +8,8 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 project("MikuEngine" LANGUAGES CXX)
 
-add_subdirectory(vendor/glfw)
 add_subdirectory(vendor/glad)
+add_subdirectory(vendor/glfw)
 
 file(GLOB_RECURSE ENGINE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
@@ -24,9 +24,9 @@ target_include_directories("MikuEngine" PUBLIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/vendor/glad/include"
 )
 
-target_link_libraries("MikuEngine" PRIVATE 
-	glfw
+target_link_libraries("MikuEngine" PUBLIC 
 	glad
+	glfw
 )
 
 set_target_properties("MikuEngine" PROPERTIES 

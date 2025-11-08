@@ -1,0 +1,15 @@
+#include "Rendering/Renderer.h"
+#include "Rendering/IndexBuffer.h"
+#include "Rendering/VertexBufferLayout.h"
+
+namespace MikuEngine
+{
+	void Renderer::Draw( const VertexArray& va, const IndexBuffer& ib, const Shader& shader )
+	{
+		va.Bind();
+		ib.Bind();
+		shader.Bind();
+
+		glDrawElements( GL_TRIANGLES, ib.Count(), GL_UNSIGNED_INT, nullptr );
+	}
+}
