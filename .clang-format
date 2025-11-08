@@ -1,0 +1,45 @@
+BasedOnStyle: Microsoft
+AlignAfterOpenBracket: DontAlign
+AlignArrayOfStructures: Right
+AlignConsecutiveAssignments:
+  Enabled: false
+AlignConsecutiveMacros:
+  Enabled: true
+AlignOperands: DontAlign
+BraceWrapping:
+  AfterCaseLabel: false
+  AfterClass: true
+  AfterControlStatement: Always
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterObjCDeclaration: true
+  AfterStruct: true
+  AfterUnion: false
+  AfterExternBlock: true
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeLambdaBody: false
+  BeforeWhile: false
+  IndentBraces: false 
+  SplitEmptyFunction: true
+  SplitEmptyRecord: true
+  SplitEmptyNamespace: true
+ColumnLimit: 1000
+PointerAlignment: Left
+SortIncludes: CaseInsensitive
+NamespaceIndentation: All 
+IndentWidth: 8
+TabWidth: 8
+UseTab: Always
+SpacesInParens: Custom
+SpacesInSquareBrackets: true
+SpacesInParensOptions:
+  ExceptDoubleParentheses: true
+  InConditionalStatements: true
+  InCStyleCasts: true
+  InEmptyParentheses: false
+  Other: true
+AllowShortFunctionsOnASingleLine: Inline
+AccessModifierOffset: -8
+FixNamespaceComments: false

@@ -1,0 +1,20 @@
+[
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Application.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Application.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Application.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Application.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/VertexBuffer.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/VertexBuffer.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/VertexBuffer.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/VertexBuffer.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -I/home/dev/EXTRAS/Projects/RhythmGame/Game/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -g -std=c++20 -o Game/CMakeFiles/Game.dir/src/main.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/Game/src/main.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/Game/src/main.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/Game/CMakeFiles/Game.dir/src/main.cpp.o"
+}
+]

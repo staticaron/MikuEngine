@@ -1,9 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/EXTRA/Projects/OpenGL-Container/RhythmGame/build/cmake_install.cmake",
-		"C:/EXTRA/Projects/OpenGL-Container/RhythmGame/build/MikuEngine/cmake_install.cmake",
-		"C:/EXTRA/Projects/OpenGL-Container/RhythmGame/build/Game/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

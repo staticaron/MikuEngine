@@ -1,9 +1,0 @@
-# ninja log v7
-17	50	7841796944323811	MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine.cpp.obj	e3fc58cac76f5cc
-51	148	7841796945484467	bin/MikuEngine.dll	e8ad45ff25b3f4cf
-51	148	7841796945484467	MikuEngine/MikuEngine.lib	e8ad45ff25b3f4cf
-21	373	7841796944364344	Game/CMakeFiles/Game.dir/src/main.cpp.obj	6b1192e78fdff7f1
-375	468	7841796947890302	bin/Game.exe	acffd2f0eeedc991
-26	123	7842513461146813	MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine.cpp.obj	e3fc58cac76f5cc
-124	282	7842513462120856	bin/MikuEngine.dll	e8ad45ff25b3f4cf
-124	282	7842513462120856	MikuEngine/MikuEngine.lib	e8ad45ff25b3f4cf

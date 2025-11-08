@@ -18,6 +18,9 @@ target_include_directories("Game" PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
+target_link_libraries("Game" PRIVATE 
+	MikuEngine
+)
 set_target_properties("Game" PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR}
 )

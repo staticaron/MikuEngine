@@ -1,6 +1,11 @@
-#include <iostream>
+#include "Application.h"
+#include "MikuEngine.h"
 
-int main()
+MikuEngine::Application* MikuEngine::EntryPoint()
 {
-    std::cout << "Hello From Game" << std::endl;
+	Application* app = new Application();
+
+	std::cout << "Welcome to Game" << std::endl;
+
+	return app;
 }
