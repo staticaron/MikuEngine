@@ -14,5 +14,6 @@ namespace MikuEngine
 		void PutData( void* data, unsigned int size );
 
 	private:
+		unsigned int m_RendererID = 0;
 	};
 }

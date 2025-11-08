@@ -8,6 +8,9 @@ namespace MikuEngine
 		Application();
 		~Application();
 
+		void Init();
+		void Destroy();
+
 	private:
 	};
 

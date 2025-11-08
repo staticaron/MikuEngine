@@ -1,19 +1,181 @@
 [
 {
   "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
-  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Application.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Application.cpp",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Application.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Application.cpp",
   "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Application.cpp",
   "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Application.cpp.o"
 },
 {
   "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
-  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/VertexBuffer.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/VertexBuffer.cpp",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/VertexBuffer.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/VertexBuffer.cpp",
   "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/VertexBuffer.cpp",
   "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/VertexBuffer.cpp.o"
 },
 {
   "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
-  "command": "/usr/bin/c++ -I/home/dev/EXTRAS/Projects/RhythmGame/Game/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -g -std=c++20 -o Game/CMakeFiles/Game.dir/src/main.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/Game/src/main.cpp",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/context.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/context.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/context.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/context.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/init.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/init.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/init.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/init.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/input.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/input.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/input.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/input.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/monitor.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/monitor.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/monitor.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/monitor.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/platform.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/platform.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/platform.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/platform.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/vulkan.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/vulkan.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/vulkan.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/vulkan.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/window.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/window.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/window.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/window.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/egl_context.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/egl_context.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/egl_context.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/egl_context.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/osmesa_context.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/osmesa_context.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/osmesa_context.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/osmesa_context.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/null_init.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/null_init.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/null_init.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/null_init.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/null_monitor.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/null_monitor.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/null_monitor.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/null_monitor.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/null_window.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/null_window.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/null_window.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/null_window.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/null_joystick.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/null_joystick.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/null_joystick.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/null_joystick.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/posix_module.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/posix_module.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/posix_module.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/posix_module.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/posix_time.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/posix_time.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/posix_time.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/posix_time.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/posix_thread.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/posix_thread.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/posix_thread.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/posix_thread.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/x11_init.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/x11_init.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/x11_init.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/x11_init.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/x11_monitor.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/x11_monitor.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/x11_monitor.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/x11_monitor.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/x11_window.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/x11_window.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/x11_window.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/x11_window.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/xkb_unicode.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/xkb_unicode.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/xkb_unicode.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/xkb_unicode.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/glx_context.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/glx_context.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/glx_context.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/glx_context.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/wl_init.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/wl_init.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/wl_init.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/wl_init.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/wl_monitor.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/wl_monitor.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/wl_monitor.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/wl_monitor.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/wl_window.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/wl_window.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/wl_window.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/wl_window.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/linux_joystick.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/linux_joystick.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/linux_joystick.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/linux_joystick.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src -I/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src -g -std=c99 -fPIC -Wall -o MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/posix_poll.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/posix_poll.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/src/posix_poll.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glfw/src/CMakeFiles/glfw.dir/posix_poll.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/cc -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -g -fPIC -o MikuEngine/vendor/glad/CMakeFiles/glad.dir/src/glad.c.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/src/glad.c",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/src/glad.c",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glad/CMakeFiles/glad.dir/src/glad.c.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -I/home/dev/EXTRAS/Projects/RhythmGame/Game/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -g -std=c++20 -o Game/CMakeFiles/Game.dir/src/main.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/Game/src/main.cpp",
   "file": "/home/dev/EXTRAS/Projects/RhythmGame/Game/src/main.cpp",
   "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/Game/CMakeFiles/Game.dir/src/main.cpp.o"
 }
