@@ -20,7 +20,7 @@ namespace MikuEngine
 
 		glfwMakeContextCurrent( window );
 
-		if ( !gladLoadGL( glfwGetProcAddress ) )
+		if ( !gladLoadGL() )
 			return;
 
 		while ( !glfwWindowShouldClose( window ) )

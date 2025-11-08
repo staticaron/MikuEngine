@@ -22,7 +22,7 @@ namespace MikuEngine
 
 	void VertexBuffer::UnBind() const
 	{
-		glBindBuffer( GL_ARRAY_BUFFER, 0 );
+		glBindBuffer( GL_ARRAY_BUFFER, m_RendererID );
 	}
 
 	void VertexBuffer::PutData( void* data, unsigned int size ) {}
