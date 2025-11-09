@@ -1,4 +1,10 @@
 #include "Application.h"
+#include "Rendering/IndexBuffer.h"
+#include "Rendering/Renderer.h"
+#include "Rendering/Shader.h"
+#include "Rendering/VertexArray.h"
+#include "Rendering/VertexBuffer.h"
+#include "Rendering/VertexBufferLayout.h"
 
 namespace MikuEngine
 {
@@ -20,19 +26,44 @@ namespace MikuEngine
 		if ( !gladLoadGL() )
 			return;
 
+		float positions[ 6 ] = { 0.5f, 0.5f, -0.5f, 0.5f, 0.0f, -0.5f };
+		unsigned int indices[ 3 ] = { 0, 1, 2 };
+
+		VertexBuffer vb( sizeof( positions ), positions );
+		VertexBufferLayout vbl;
+		IndexBuffer ib( 3, indices );
+		VertexArray va;
+		Shader shader;
+
+		shader.LoadFromFile( RESOURCE_DIR "shaders/base.shader" );
+		Renderer renderer;
+
 		while ( !glfwWindowShouldClose( m_Window ) )
 		{
-			Update( 0.0 );
-			Render();
-			RenderImGui();
+			glClearColor( 0.1f, 0.3f, 0.9f, 1.0f );
+			glClear( GL_COLOR_BUFFER_BIT );
+
+			vb.Bind();
+			vbl.Add<float>( 2 );
+			va.Setup( vb, vbl );
+
+			renderer.Draw( va, ib, shader );
+
+			glfwSwapBuffers( m_Window );
+
+			glfwPollEvents();
 		}
 
 		glfwTerminate();
 	}
 
-	Application::~Application() {}
+	Application::~Application()
+	{
+	}
 
-	void Application::Update( double dt ) {}
+	void Application::Update( double dt )
+	{
+	}
 
 	void Application::Render()
 	{
@@ -44,5 +75,7 @@ namespace MikuEngine
 		glfwPollEvents();
 	}
 
-	void Application::RenderImGui() {}
+	void Application::RenderImGui()
+	{
+	}
 }

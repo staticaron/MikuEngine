@@ -1,10 +1,9 @@
 #include "Rendering/Shader.h"
 
+#include "Rendering/VertexBufferLayout.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
-
-#include "Rendering/VertexBufferLayout.h"
 
 namespace MikuEngine
 {

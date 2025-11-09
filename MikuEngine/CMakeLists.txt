@@ -29,6 +29,10 @@ target_link_libraries("MikuEngine" PUBLIC
 	glfw
 )
 
+target_compile_definitions("MikuEngine" PUBLIC
+	RESOURCE_DIR="{CMAKE_CURRENT_SOURCE_DIR}/assets/"
+)
+
 set_target_properties("MikuEngine" PROPERTIES 
 	LIBRARY_OUTPUT_DIRECTORY "${BIN_DIR}" 
 )

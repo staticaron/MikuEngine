@@ -28,9 +28,6 @@ namespace MikuEngine
 	class VertexBufferLayout
 	{
 	public:
-		VertexBufferLayout();
-		~VertexBufferLayout();
-
 		template <typename T>
 		void Add( unsigned int count )
 		{
