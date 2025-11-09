@@ -9,9 +9,6 @@ namespace MikuEngine
 	class Shader
 	{
 	public:
-		Shader();
-		~Shader();
-
 		void ParseShader( std::string_view filepath, std::string& vs, std::string& gs, std::string& fs );
 
 		unsigned int CompileShader( const std::string& source, unsigned int type );

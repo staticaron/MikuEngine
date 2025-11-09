@@ -29,7 +29,7 @@ namespace MikuEngine
 		float positions[ 6 ] = { 0.5f, 0.5f, -0.5f, 0.5f, 0.0f, -0.5f };
 		unsigned int indices[ 3 ] = { 0, 1, 2 };
 
-		VertexBuffer vb( sizeof( positions ), positions );
+		VertexBuffer vb( sizeof( float ) * 6, positions );
 		VertexBufferLayout vbl;
 		IndexBuffer ib( 3, indices );
 		VertexArray va;
@@ -40,13 +40,10 @@ namespace MikuEngine
 
 		while ( !glfwWindowShouldClose( m_Window ) )
 		{
-			glClearColor( 0.1f, 0.3f, 0.9f, 1.0f );
 			glClear( GL_COLOR_BUFFER_BIT );
 
 			vb.Bind();
 			vbl.Add<float>( 2 );
-			va.Setup( vb, vbl );
-
 			renderer.Draw( va, ib, shader );
 
 			glfwSwapBuffers( m_Window );

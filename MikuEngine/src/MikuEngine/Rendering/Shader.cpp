@@ -1,19 +1,14 @@
 #include "Rendering/Shader.h"
 
-#include "Rendering/VertexBufferLayout.h"
 #include <fstream>
-#include <iostream>
 #include <sstream>
+
+#include "spdlog/spdlog.h"
+
+#include "Rendering/VertexBufferLayout.h"
 
 namespace MikuEngine
 {
-	Shader::Shader()
-	{
-	}
-	Shader::~Shader()
-	{
-	}
-
 	void Shader::ParseShader( std::string_view filepath, std::string& vs, std::string& gs, std::string& fs )
 	{
 		enum class ShaderType
@@ -26,9 +21,11 @@ namespace MikuEngine
 
 		std::ifstream stream( filepath.data() );
 
+		spdlog::info( "Filepath {}", filepath );
+
 		if ( !stream.is_open() )
 		{
-			std::cout << "Error loading the file at " << std::endl;
+			spdlog::error( "Error loading the file at " );
 			return;
 		}
 
@@ -61,6 +58,9 @@ namespace MikuEngine
 
 	unsigned int Shader::CompileShader( const std::string& source, unsigned int type )
 	{
+		if ( source.empty() )
+			return 0;
+
 		unsigned int shaderID = glCreateShader( type );
 		const char* shaderSource = source.c_str();
 
@@ -78,7 +78,7 @@ namespace MikuEngine
 			char* logMessage = ( char* )alloca( lengthOfMessage * sizeof( char ) );
 			glGetShaderInfoLog( shaderID, lengthOfMessage, &lengthOfMessage, logMessage );
 
-			std::cout << "ERROR COMPILING SHADER " << logMessage << std::endl;
+			spdlog::error( "ERROR COMPILING SHADER {}", logMessage );
 		}
 
 		return shaderID;
@@ -88,19 +88,26 @@ namespace MikuEngine
 	{
 		unsigned int program = glCreateProgram();
 
-		auto vsID = CompileShader( vs, GL_VERTEX_SHADER );
-		auto gsID = CompileShader( gs, GL_GEOMETRY_SHADER );
-		auto fsID = CompileShader( fs, GL_FRAGMENT_SHADER );
+		unsigned int vsID = 0;
+		unsigned int gsID = 0;
+		unsigned int fsID = 0;
+
+		vsID = CompileShader( vs, GL_VERTEX_SHADER );
+		if ( !gs.empty() )
+			gsID = CompileShader( gs, GL_GEOMETRY_SHADER );
+		fsID = CompileShader( fs, GL_FRAGMENT_SHADER );
 
 		glAttachShader( program, vsID );
-		glAttachShader( program, gsID );
+		if ( !gs.empty() )
+			glAttachShader( program, gsID );
 		glAttachShader( program, fsID );
 
 		glLinkProgram( program );
 		glValidateProgram( program );
 
 		glDeleteShader( vsID );
-		glDeleteShader( gsID );
+		if ( !gs.empty() )
+			glDeleteShader( gsID );
 		glDeleteShader( fsID );
 
 		return program;

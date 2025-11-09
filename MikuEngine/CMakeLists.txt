@@ -10,6 +10,7 @@ project("MikuEngine" LANGUAGES CXX)
 
 add_subdirectory(vendor/glad)
 add_subdirectory(vendor/glfw)
+add_subdirectory(vendor/spdlog)
 
 file(GLOB_RECURSE ENGINE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
@@ -27,10 +28,11 @@ target_include_directories("MikuEngine" PUBLIC
 target_link_libraries("MikuEngine" PUBLIC 
 	glad
 	glfw
+	spdlog
 )
 
 target_compile_definitions("MikuEngine" PUBLIC
-	RESOURCE_DIR="{CMAKE_CURRENT_SOURCE_DIR}/assets/"
+	RESOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/assets/"
 )
 
 set_target_properties("MikuEngine" PROPERTIES 
