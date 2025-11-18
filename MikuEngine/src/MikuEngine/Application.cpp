@@ -1,19 +1,31 @@
 #include "Application.h"
-#include "Rendering/IndexBuffer.h"
-#include "Rendering/Renderer.h"
-#include "Rendering/Shader.h"
-#include "Rendering/VertexArray.h"
-#include "Rendering/VertexBuffer.h"
-#include "Rendering/VertexBufferLayout.h"
+#include "GLFW/glfw3.h"
+#include "imgui.h"
+#include "LayerStack.h"
+#include <chrono>
 
 namespace MikuEngine
 {
 	Application::Application()
 	{
+	}
+
+	Application::~Application()
+	{
+	}
+
+	void Application::Init()
+	{
+		glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 );
+		glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
+		glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+
+		glfwWindowHint( GLFW_DECORATED, GLFW_TRUE );
+
 		if ( !glfwInit() )
 			return;
 
-		m_Window = glfwCreateWindow( 640, 480, "Hello World", NULL, NULL );
+		m_Window = glfwCreateWindow( 640, 480, "MikuEngine", NULL, NULL );
 
 		if ( !m_Window )
 		{
@@ -26,27 +38,20 @@ namespace MikuEngine
 		if ( !gladLoadGL() )
 			return;
 
-		float positions[ 6 ] = { 0.5f, 0.5f, -0.5f, 0.5f, 0.0f, -0.5f };
-		unsigned int indices[ 3 ] = { 0, 1, 2 };
+		LAST = NOW = std::chrono::high_resolution_clock::now();
 
-		VertexBuffer vb( sizeof( float ) * 6, positions );
-		VertexBufferLayout vbl;
-		IndexBuffer ib( 3, indices );
-		VertexArray va;
-		Shader shader;
+		m_ImGuiManager.Init( m_Window );
+	}
 
-		shader.LoadFromFile( RESOURCE_DIR "shaders/base.shader" );
-		Renderer renderer;
-
+	void Application::Run()
+	{
 		while ( !glfwWindowShouldClose( m_Window ) )
 		{
-			glClear( GL_COLOR_BUFFER_BIT );
+			CalculateDT();
 
-			vb.Bind();
-			vbl.Add<float>( 2 );
-			renderer.Draw( va, ib, shader );
+			Update();
 
-			glfwSwapBuffers( m_Window );
+			Render();
 
 			glfwPollEvents();
 		}
@@ -54,25 +59,48 @@ namespace MikuEngine
 		glfwTerminate();
 	}
 
-	Application::~Application()
+	void Application::CalculateDT()
 	{
+		LAST = NOW;
+		NOW = std::chrono::high_resolution_clock::now();
+		m_DeltaTime = std::chrono::duration<double>( NOW - LAST ).count();
 	}
 
-	void Application::Update( double dt )
+	void Application::Update()
 	{
+		for ( int x = 0; x < m_LayerStack.GetCount(); x++ )
+		{
+			m_LayerStack.GetLayer( x ).Update( m_DeltaTime );
+		}
 	}
 
 	void Application::Render()
 	{
-		glClearColor( 0.1f, 0.3f, 0.9f, 1.0f );
-		glClear( GL_COLOR_BUFFER_BIT );
+		RenderGeometry();
+
+		RenderImGui();
 
 		glfwSwapBuffers( m_Window );
+	}
 
-		glfwPollEvents();
+	void Application::RenderGeometry()
+	{
+		glClear( GL_COLOR_BUFFER_BIT );
+
+		for ( int x = 0; x < m_LayerStack.GetCount(); x++ )
+		{
+			m_LayerStack.GetLayer( x ).Render( m_Renderer );
+		}
 	}
 
 	void Application::RenderImGui()
 	{
+		m_ImGuiManager.PrepareFrame();
+
+		// Render Imgui Here...
+
+		ImGui::ShowDemoWindow();
+
+		m_ImGuiManager.RenderFrame();
 	}
 }

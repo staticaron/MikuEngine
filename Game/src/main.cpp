@@ -1,11 +1,22 @@
 #include "Application.h"
 #include "MikuEngine.h"
+#include "Scenes/MainScene.h"
+#include "spdlog/spdlog.h"
 
-MikuEngine::Application* MikuEngine::EntryPoint()
+namespace MikuEngine
 {
-	Application* app = new Application();
+	Application* EntryPoint()
+	{
+		spdlog::info( "Welcome to RhythmGame" );
 
-	std::cout << "Welcome to Game" << std::endl;
+		Application* app = new Application();
+		app->Init();
 
-	return app;
+		RhythmGame::MainScene mainScene;
+		app->GetLayerStack().Push( mainScene );
+
+		app->Run();
+
+		return app;
+	}
 }
