@@ -12,6 +12,7 @@ add_subdirectory(vendor/glad)
 add_subdirectory(vendor/glfw)
 add_subdirectory(vendor/spdlog)
 add_subdirectory(vendor/imgui)
+add_subdirectory(vendor/glm)
 
 file(GLOB_RECURSE ENGINE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
@@ -31,6 +32,7 @@ target_link_libraries("MikuEngine" PUBLIC
 	glfw
 	spdlog
 	imgui
+	glm
 )
 
 target_compile_definitions("MikuEngine" PUBLIC
