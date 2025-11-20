@@ -16,7 +16,7 @@ namespace MikuEngine
 			return m_Count;
 		}
 
-		void PutData();
+		void PutData( void* data, unsigned int count );
 
 	private:
 		unsigned int m_RendererID = 0;

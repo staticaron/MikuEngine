@@ -1,11 +1,14 @@
 #pragma once
 
 #include <chrono>
+#include <memory>
+#include <type_traits>
+#include <vector>
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-#include "LayerStack.h"
+#include "Layer.h"
 #include "Managers/ImguiManager.h"
 #include "Rendering/Renderer.h"
 
@@ -20,9 +23,16 @@ namespace MikuEngine
 		void Init();
 		void Run();
 
-		LayerStack& GetLayerStack()
+		template <typename TLayer>
+			requires( std::is_base_of_v<Layer, TLayer> )
+		void PushLayer()
 		{
-			return m_LayerStack;
+			m_Layers.push_back( std::make_unique<TLayer>() );
+		}
+
+		std::unique_ptr<Layer>& GetLayer( unsigned int index )
+		{
+			return m_Layers[ index ];
 		}
 
 	private:
@@ -42,7 +52,7 @@ namespace MikuEngine
 
 		Renderer m_Renderer;
 
-		LayerStack m_LayerStack;
+		std::vector<std::unique_ptr<Layer>> m_Layers;
 	};
 
 	Application* EntryPoint();

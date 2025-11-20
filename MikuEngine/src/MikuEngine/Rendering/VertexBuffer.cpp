@@ -27,5 +27,6 @@ namespace MikuEngine
 
 	void VertexBuffer::PutData( void* data, unsigned int size )
 	{
+		glBufferSubData( GL_ARRAY_BUFFER, 0, size, data );
 	}
 }

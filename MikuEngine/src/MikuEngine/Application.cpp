@@ -1,7 +1,6 @@
 #include "Application.h"
 #include "GLFW/glfw3.h"
 #include "imgui.h"
-#include "LayerStack.h"
 #include <chrono>
 
 namespace MikuEngine
@@ -68,9 +67,9 @@ namespace MikuEngine
 
 	void Application::Update()
 	{
-		for ( int x = 0; x < m_LayerStack.GetCount(); x++ )
+		for ( int x = 0; x < m_Layers.size(); x++ )
 		{
-			m_LayerStack.GetLayer( x ).Update( m_DeltaTime );
+			m_Layers[ x ]->Update( m_DeltaTime );
 		}
 	}
 
@@ -87,9 +86,9 @@ namespace MikuEngine
 	{
 		glClear( GL_COLOR_BUFFER_BIT );
 
-		for ( int x = 0; x < m_LayerStack.GetCount(); x++ )
+		for ( int x = 0; x < m_Layers.size(); x++ )
 		{
-			m_LayerStack.GetLayer( x ).Render( m_Renderer );
+			m_Layers[ x ]->Render( m_Renderer );
 		}
 	}
 
@@ -98,6 +97,10 @@ namespace MikuEngine
 		m_ImGuiManager.PrepareFrame();
 
 		// Render Imgui Here...
+		for ( int x = 0; x < m_Layers.size(); x++ )
+		{
+			m_Layers[ x ]->RenderImgui();
+		}
 
 		ImGui::ShowDemoWindow();
 

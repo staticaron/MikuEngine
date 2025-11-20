@@ -1,39 +1,75 @@
 [
 {
   "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
-  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Application.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Application.cpp",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Application.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Application.cpp",
   "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Application.cpp",
   "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Application.cpp.o"
 },
 {
   "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
-  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/IndexBuffer.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/IndexBuffer.cpp",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Components/SpriteRenderer.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Components/SpriteRenderer.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Components/SpriteRenderer.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Components/SpriteRenderer.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/GameObject.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/GameObject.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/GameObject.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/GameObject.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Layer.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Layer.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Layer.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Layer.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Managers/ImguiManager.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Managers/ImguiManager.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Managers/ImguiManager.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Managers/ImguiManager.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/IndexBuffer.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/IndexBuffer.cpp",
   "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/IndexBuffer.cpp",
   "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/IndexBuffer.cpp.o"
 },
 {
   "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
-  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/Renderer.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/Renderer.cpp",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/Quad.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/Quad.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/Quad.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/Quad.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/Renderer.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/Renderer.cpp",
   "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/Renderer.cpp",
   "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/Renderer.cpp.o"
 },
 {
   "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
-  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/Shader.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/Shader.cpp",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/Shader.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/Shader.cpp",
   "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/Shader.cpp",
   "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/Shader.cpp.o"
 },
 {
   "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
-  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/VertexArray.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/VertexArray.cpp",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/VertexArray.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/VertexArray.cpp",
   "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/VertexArray.cpp",
   "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/VertexArray.cpp.o"
 },
 {
   "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
-  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/VertexBuffer.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/VertexBuffer.cpp",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/VertexBuffer.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/VertexBuffer.cpp",
   "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Rendering/VertexBuffer.cpp",
   "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Rendering/VertexBuffer.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -DMikuEngine_EXPORTS -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -fPIC -o MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Scene/Scene.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Scene/Scene.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/src/MikuEngine/Scene/Scene.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/CMakeFiles/MikuEngine.dir/src/MikuEngine/Scene/Scene.cpp.o"
 },
 {
   "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
@@ -241,7 +277,61 @@
 },
 {
   "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
-  "command": "/usr/bin/c++ -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/Game/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -g -std=c++20 -o Game/CMakeFiles/Game.dir/src/main.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/Game/src/main.cpp",
+  "command": "/usr/bin/c++ -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -g -std=c++20 -fPIC -o MikuEngine/vendor/imgui/CMakeFiles/imgui.dir/imgui.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui/imgui.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui/imgui.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/imgui/CMakeFiles/imgui.dir/imgui.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -g -std=c++20 -fPIC -o MikuEngine/vendor/imgui/CMakeFiles/imgui.dir/imgui_demo.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui/imgui_demo.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui/imgui_demo.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/imgui/CMakeFiles/imgui.dir/imgui_demo.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -g -std=c++20 -fPIC -o MikuEngine/vendor/imgui/CMakeFiles/imgui.dir/imgui_draw.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui/imgui_draw.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui/imgui_draw.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/imgui/CMakeFiles/imgui.dir/imgui_draw.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -g -std=c++20 -fPIC -o MikuEngine/vendor/imgui/CMakeFiles/imgui.dir/imgui_tables.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui/imgui_tables.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui/imgui_tables.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/imgui/CMakeFiles/imgui.dir/imgui_tables.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -g -std=c++20 -fPIC -o MikuEngine/vendor/imgui/CMakeFiles/imgui.dir/imgui_widgets.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui/imgui_widgets.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui/imgui_widgets.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/imgui/CMakeFiles/imgui.dir/imgui_widgets.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -g -std=c++20 -fPIC -o MikuEngine/vendor/imgui/CMakeFiles/imgui.dir/backends/imgui_impl_glfw.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui/backends/imgui_impl_glfw.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui/backends/imgui_impl_glfw.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/imgui/CMakeFiles/imgui.dir/backends/imgui_impl_glfw.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -g -std=c++20 -fPIC -o MikuEngine/vendor/imgui/CMakeFiles/imgui.dir/backends/imgui_impl_opengl3.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui/backends/imgui_impl_opengl3.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui/backends/imgui_impl_opengl3.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/imgui/CMakeFiles/imgui.dir/backends/imgui_impl_opengl3.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++17 -fPIC -o MikuEngine/vendor/glm/glm/CMakeFiles/glm.dir/detail/glm.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm/glm/detail/glm.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm/glm/detail/glm.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/MikuEngine/vendor/glm/glm/CMakeFiles/glm.dir/detail/glm.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/Game/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -o Game/CMakeFiles/Game.dir/src/Scenes/MainScene.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/Game/src/Scenes/MainScene.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/Game/src/Scenes/MainScene.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/Game/CMakeFiles/Game.dir/src/Scenes/MainScene.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/Game/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -o Game/CMakeFiles/Game.dir/src/main.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/Game/src/main.cpp",
   "file": "/home/dev/EXTRAS/Projects/RhythmGame/Game/src/main.cpp",
   "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/Game/CMakeFiles/Game.dir/src/main.cpp.o"
 }

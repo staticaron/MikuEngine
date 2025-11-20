@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Layers/MainLayer.h"
 #include "MikuEngine.h"
 #include "Scenes/MainScene.h"
 #include "spdlog/spdlog.h"
@@ -12,8 +13,8 @@ namespace MikuEngine
 		Application* app = new Application();
 		app->Init();
 
-		RhythmGame::MainScene mainScene;
-		app->GetLayerStack().Push( mainScene );
+		app->PushLayer<RhythmGame::MainLayer>();
+		app->GetLayer( 0 )->PushScene<RhythmGame::MainScene>();
 
 		app->Run();
 

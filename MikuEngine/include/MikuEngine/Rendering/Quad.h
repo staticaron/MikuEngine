@@ -1,0 +1,52 @@
+#pragma once
+
+#include "Rendering/IndexBuffer.h"
+#include "Rendering/Shader.h"
+#include "Rendering/Vertex.h"
+#include "Rendering/VertexArray.h"
+#include "Rendering/VertexBuffer.h"
+#include "Rendering/VertexBufferLayout.h"
+#include <array>
+#include <string>
+
+namespace MikuEngine
+{
+	class Quad
+	{
+	public:
+		Quad( const std::string& shaderPath = "" );
+		~Quad() = default;
+
+		std::array<Vertex, 4> GetVerts() const;
+		std::array<unsigned int, 6> GetIndices() const;
+
+		VertexBuffer GetVB() const
+		{
+			return m_VB;
+		}
+
+		VertexArray GetVA() const
+		{
+			return m_VA;
+		}
+
+		IndexBuffer GetIB() const
+		{
+			return m_IB;
+		}
+
+		Shader GetShader() const
+		{
+			return m_Shader;
+		}
+
+	private:
+		VertexBuffer m_VB;
+		IndexBuffer m_IB;
+		VertexBufferLayout m_VBL;
+		VertexArray m_VA;
+
+		std::string m_ShaderPath = RESOURCE_DIR "shaders/base.shader";
+		Shader m_Shader;
+	};
+} // namespace MikuEngine

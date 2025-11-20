@@ -5,8 +5,7 @@ namespace MikuEngine
 {
 	VertexArray::VertexArray()
 	{
-		glCreateBuffers( 1, &m_RendererID );
-		glBindBuffer( GL_VERTEX_ARRAY, m_RendererID );
+		glGenVertexArrays( 1, &m_RendererID );
 	}
 
 	VertexArray::~VertexArray()
@@ -16,12 +15,12 @@ namespace MikuEngine
 
 	void VertexArray::Bind() const
 	{
-		glBindBuffer( GL_VERTEX_ARRAY, m_RendererID );
+		glBindVertexArray( m_RendererID );
 	}
 
 	void VertexArray::UnBind() const
 	{
-		glBindBuffer( GL_VERTEX_ARRAY, 0 );
+		glBindVertexArray( 0 );
 	}
 
 	void VertexArray::Setup( const VertexBuffer& vb, const VertexBufferLayout& vbl )

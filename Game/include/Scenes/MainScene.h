@@ -1,10 +1,10 @@
 #pragma once
 
-#include "MikuEngine/Layer.h"
+#include "Scene/Scene.h"
 
 namespace RhythmGame
 {
-	class MainScene : public MikuEngine::Layer
+	class MainScene : public MikuEngine::Scene
 	{
 		void Render( const MikuEngine::Renderer& renderer ) const override;
 	};
