@@ -1,5 +1,6 @@
 #include "Rendering/VertexArray.h"
 #include "Rendering/VertexBufferLayout.h"
+#include "spdlog/spdlog.h"
 
 namespace MikuEngine
 {
@@ -10,6 +11,7 @@ namespace MikuEngine
 
 	VertexArray::~VertexArray()
 	{
+		spdlog::warn( "Vertex Array deleted! ID : {}", m_RendererID );
 		glDeleteBuffers( 1, &m_RendererID );
 	}
 

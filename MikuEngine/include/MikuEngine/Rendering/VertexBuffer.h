@@ -15,5 +15,6 @@ namespace MikuEngine
 
 	private:
 		unsigned int m_RendererID = 0;
+		unsigned int m_Size = 0;
 	};
 }

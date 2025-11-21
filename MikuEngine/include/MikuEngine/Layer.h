@@ -9,22 +9,20 @@ namespace MikuEngine
 	class Layer
 	{
 	public:
-		Layer() = default;
-		virtual ~Layer() = default;
-
-		virtual void Update( double dt ) {};
-		virtual void Render( const Renderer& renderer ) const {};
-		virtual void RenderImgui() {};
+		virtual ~Layer() {};
+		virtual void Update( double dt ) = 0;
+		virtual void Render( const Renderer& renderer ) const = 0;
+		virtual void RenderImgui() = 0;
 
 		template <typename TScene>
 			requires( std::is_base_of_v<Scene, TScene> )
 		void PushScene()
 		{
-			m_Scene = std::make_unique<TScene>();
+			m_Scenes.push_back( std::make_unique<TScene>() );
 		}
 
 	protected:
 	protected:
-		std::unique_ptr<Scene> m_Scene;
+		std::vector<std::unique_ptr<Scene>> m_Scenes;
 	};
 }

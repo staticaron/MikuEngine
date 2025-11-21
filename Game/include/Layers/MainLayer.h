@@ -7,9 +7,11 @@ namespace RhythmGame
 {
 	class MainLayer : public MikuEngine::Layer
 	{
-		void Render( const MikuEngine::Renderer& renderer ) const override
-		{
-			m_Scene->Render( renderer );
-		}
+	public:
+		void Update( double dt ) override;
+		void Render( const MikuEngine::Renderer& renderer ) const override;
+		void RenderImgui() override;
+
+	private:
 	};
 }

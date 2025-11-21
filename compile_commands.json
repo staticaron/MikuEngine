@@ -325,6 +325,12 @@
 },
 {
   "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
+  "command": "/usr/bin/c++ -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/Game/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -o Game/CMakeFiles/Game.dir/src/Layers/MainLayer.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/Game/src/Layers/MainLayer.cpp",
+  "file": "/home/dev/EXTRAS/Projects/RhythmGame/Game/src/Layers/MainLayer.cpp",
+  "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/Game/CMakeFiles/Game.dir/src/Layers/MainLayer.cpp.o"
+},
+{
+  "directory": "/home/dev/EXTRAS/Projects/RhythmGame/build",
   "command": "/usr/bin/c++ -DRESOURCE_DIR=\\\"/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/assets/\\\" -DSPDLOG_COMPILED_LIB -I/home/dev/EXTRAS/Projects/RhythmGame/Game/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/include/MikuEngine -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glad/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glfw/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/spdlog/include -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/imgui -I/home/dev/EXTRAS/Projects/RhythmGame/MikuEngine/vendor/glm -g -std=c++20 -o Game/CMakeFiles/Game.dir/src/Scenes/MainScene.cpp.o -c /home/dev/EXTRAS/Projects/RhythmGame/Game/src/Scenes/MainScene.cpp",
   "file": "/home/dev/EXTRAS/Projects/RhythmGame/Game/src/Scenes/MainScene.cpp",
   "output": "/home/dev/EXTRAS/Projects/RhythmGame/build/Game/CMakeFiles/Game.dir/src/Scenes/MainScene.cpp.o"

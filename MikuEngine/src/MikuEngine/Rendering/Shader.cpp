@@ -1,5 +1,4 @@
 #include "Rendering/Shader.h"
-
 #include <fstream>
 #include <sstream>
 
@@ -21,7 +20,7 @@ namespace MikuEngine
 
 		std::ifstream stream( filepath.data() );
 
-		spdlog::info( "Filepath {}", filepath );
+		spdlog::info( "Shader Loaded at filepath {}", filepath );
 
 		if ( !stream.is_open() )
 		{

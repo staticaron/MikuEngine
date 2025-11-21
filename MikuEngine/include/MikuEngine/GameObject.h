@@ -1,18 +1,15 @@
 #pragma once
 
-#include "Core.h"
-
 #include "Components/SpriteRenderer.h"
 #include "Rendering/Renderer.h"
 
 namespace MikuEngine
 {
-	class MIKU_API GameObject
+	class GameObject
 	{
 	public:
-		virtual void Update( double dt ) {};
-		virtual void Render( const Renderer& renderer ) const;
-		virtual void RenderImGui() {};
+		void Render( const Renderer& renderer ) const;
+		void RenderImGui() {};
 
 	private:
 	private:

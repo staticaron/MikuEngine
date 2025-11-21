@@ -1,11 +1,23 @@
 #pragma once
 
-#include "Scene/Scene.h"
+#include <vector>
+
+#include "MikuEngine/GameObject.h"
+#include "MikuEngine/Scene/Scene.h"
 
 namespace RhythmGame
 {
 	class MainScene : public MikuEngine::Scene
 	{
+	public:
+		MainScene();
+		~MainScene();
+
+		void Update( double dt ) override;
 		void Render( const MikuEngine::Renderer& renderer ) const override;
+		void RenderImGui() override;
+
+	private:
+		std::vector<MikuEngine::GameObject> m_GOs;
 	};
 }

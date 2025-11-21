@@ -36,6 +36,7 @@ namespace MikuEngine
 		}
 
 	private:
+		void RenderTemp();
 		void CalculateDT();
 		void Update();
 		void Render();

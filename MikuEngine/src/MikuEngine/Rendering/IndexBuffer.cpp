@@ -1,6 +1,8 @@
 #include "Rendering/IndexBuffer.h"
 #include "Application.h"
 
+#include "spdlog/spdlog.h"
+
 namespace MikuEngine
 {
 	IndexBuffer::IndexBuffer( unsigned int count, void* data ) : m_Count( count )
@@ -12,6 +14,7 @@ namespace MikuEngine
 
 	IndexBuffer::~IndexBuffer()
 	{
+		spdlog::warn( "Index Buffer Deleted! ID : {}", m_RendererID );
 		glDeleteBuffers( 1, &m_RendererID );
 	}
 
@@ -27,6 +30,7 @@ namespace MikuEngine
 
 	void IndexBuffer::PutData( void* data, unsigned int count )
 	{
-		glBufferSubData( GL_ELEMENT_ARRAY_BUFFER, 0, count, data );
+		Bind();
+		glBufferSubData( GL_ELEMENT_ARRAY_BUFFER, 0, count * sizeof( unsigned int ), data );
 	}
 }

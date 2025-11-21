@@ -1,33 +1,17 @@
 #pragma once
 
-#include "Core.h"
-#include "GameObject.h"
 #include "Rendering/Renderer.h"
 
 namespace MikuEngine
 {
-	class MIKU_API Scene
+	class Scene
 	{
 	public:
-		virtual void Update( double dt )
-		{
-		}
-
-		virtual void Render( const Renderer& renderer ) const
-		{
-		}
-
-		virtual void RenderImGui()
-		{
-		}
-
-		virtual void AddGameObject( GameObject go )
-		{
-			m_GameObjects.push_back( go );
-		}
+		virtual void Update( double dt ) = 0;
+		virtual void Render( const Renderer& renderer ) const = 0;
+		virtual void RenderImGui() = 0;
 
 	private:
 	private:
-		std::vector<GameObject> m_GameObjects;
 	};
 }

@@ -20,22 +20,22 @@ namespace MikuEngine
 		std::array<Vertex, 4> GetVerts() const;
 		std::array<unsigned int, 6> GetIndices() const;
 
-		VertexBuffer GetVB() const
+		const VertexBuffer& GetVB() const
 		{
 			return m_VB;
 		}
 
-		VertexArray GetVA() const
+		const VertexArray& GetVA() const
 		{
 			return m_VA;
 		}
 
-		IndexBuffer GetIB() const
+		const IndexBuffer& GetIB() const
 		{
 			return m_IB;
 		}
 
-		Shader GetShader() const
+		const Shader& GetShader() const
 		{
 			return m_Shader;
 		}
