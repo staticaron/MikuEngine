@@ -3,6 +3,11 @@
 #include <alloca.h>
 #include <string>
 #include <string_view>
+#include <unordered_map>
+
+#include "glm/glm.hpp"
+
+#include "Rendering/VertexBufferLayout.h"
 
 namespace MikuEngine
 {
@@ -20,7 +25,55 @@ namespace MikuEngine
 		void Bind() const;
 		void UnBind() const;
 
+		unsigned int GetUniformLocation( const std::string& uniformName )
+		{
+			auto existing = m_UniformLocation.find( uniformName );
+			if ( existing != m_UniformLocation.end() )
+			{
+				return existing->second;
+			}
+
+			Bind();
+
+			int uniformLocation = glGetUniformLocation( m_RendererID, uniformName.c_str() );
+			m_UniformLocation[ uniformName ] = uniformLocation;
+
+			return uniformLocation;
+		}
+
+		template <typename T>
+		void SetUniform( const std::string& uniformName, T value )
+		{
+			static_assert( false );
+		}
+
 	private:
 		unsigned int m_RendererID = 0;
+
+		std::unordered_map<std::string, unsigned int> m_UniformLocation = {};
 	};
+
+	template <>
+	inline void Shader::SetUniform<float>( const std::string& uniformName, float value )
+	{
+		Bind();
+		auto uniformLocation = GetUniformLocation( uniformName );
+		glUniform1f( uniformLocation, value );
+	}
+
+	template <>
+	inline void Shader::SetUniform<unsigned int>( const std::string& uniformName, unsigned int value )
+	{
+		Bind();
+		auto uniformLocation = GetUniformLocation( uniformName );
+		glUniform1i( uniformLocation, value );
+	}
+
+	template <>
+	inline void Shader::SetUniform<glm::mat4>( const std::string& uniformName, glm::mat4 value )
+	{
+		Bind();
+		auto uniformLocation = GetUniformLocation( uniformName );
+		glUniformMatrix4fv( uniformLocation, 1, GL_FALSE, &value[ 0 ][ 0 ] );
+	}
 }

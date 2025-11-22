@@ -1,8 +1,12 @@
 #pragma once
 
+#include <string>
+
+#include "GameObjects/Camera.h"
+#include "Managers/TextureManager.h"
 #include "Rendering/Quad.h"
 #include "Rendering/Renderer.h"
-#include <string>
+
 namespace MikuEngine
 {
 	class SpriteRenderer
@@ -11,7 +15,7 @@ namespace MikuEngine
 		SpriteRenderer();
 		SpriteRenderer( const std::string& filePath );
 
-		void Render( const Renderer& renderer ) const;
+		void Render( const Renderer& renderer, const TextureManager& textureManager, const Camera& camera ) const;
 		void Update( double dt );
 
 	private:

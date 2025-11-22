@@ -1,13 +1,14 @@
 #pragma once
 
+#include <array>
+#include <string>
+
 #include "Rendering/IndexBuffer.h"
 #include "Rendering/Shader.h"
 #include "Rendering/Vertex.h"
 #include "Rendering/VertexArray.h"
 #include "Rendering/VertexBuffer.h"
 #include "Rendering/VertexBufferLayout.h"
-#include <array>
-#include <string>
 
 namespace MikuEngine
 {

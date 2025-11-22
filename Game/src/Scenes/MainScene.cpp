@@ -1,5 +1,7 @@
 #include "Scenes/MainScene.h"
 
+#include "Managers/TextureManager.h"
+
 namespace RhythmGame
 {
 	MainScene::MainScene()
@@ -15,12 +17,10 @@ namespace RhythmGame
 	{
 	}
 
-	void MainScene::Render( const MikuEngine::Renderer& renderer ) const
+	void MainScene::Render( const MikuEngine::Renderer& renderer, const MikuEngine::TextureManager& textureManager ) const
 	{
 		for ( int x = 0; x < m_GOs.size(); x++ )
-		{
-			m_GOs[ x ].Render( renderer );
-		}
+			m_GOs[ x ].Render( renderer, textureManager, m_Camera );
 	}
 
 	void MainScene::RenderImGui()

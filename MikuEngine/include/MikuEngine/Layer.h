@@ -1,8 +1,10 @@
 #pragma once
 
+#include <memory>
+
+#include "Managers/TextureManager.h"
 #include "Rendering/Renderer.h"
 #include "Scene/Scene.h"
-#include <memory>
 
 namespace MikuEngine
 {
@@ -11,7 +13,7 @@ namespace MikuEngine
 	public:
 		virtual ~Layer() {};
 		virtual void Update( double dt ) = 0;
-		virtual void Render( const Renderer& renderer ) const = 0;
+		virtual void Render( const Renderer& renderer, const TextureManager& textureManager ) const = 0;
 		virtual void RenderImgui() = 0;
 
 		template <typename TScene>

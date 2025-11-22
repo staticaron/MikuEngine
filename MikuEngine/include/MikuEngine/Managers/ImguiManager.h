@@ -2,6 +2,7 @@
 
 #include "backends/imgui_impl_glfw.h"
 #include "Core.h"
+#include "Rendering/FrameBuffer.h"
 
 namespace MikuEngine
 {
@@ -12,6 +13,8 @@ namespace MikuEngine
 
 		void PrepareFrame();
 		void RenderFrame();
+
+		void RenderFrameBuffer( FrameBuffer& frameBuffer );
 
 	private:
 	};

@@ -5,11 +5,14 @@
 #include <type_traits>
 #include <vector>
 
+#include "DataContainer.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "Rendering/FrameBuffer.h"
 
 #include "Layer.h"
 #include "Managers/ImguiManager.h"
+#include "Managers/TextureManager.h"
 #include "Rendering/Renderer.h"
 
 namespace MikuEngine
@@ -22,6 +25,9 @@ namespace MikuEngine
 
 		void Init();
 		void Run();
+
+		static Application* GetApplication();
+		static DataContainer& GetDataContainer();
 
 		template <typename TLayer>
 			requires( std::is_base_of_v<Layer, TLayer> )
@@ -45,13 +51,18 @@ namespace MikuEngine
 
 	private:
 		GLFWwindow* m_Window = nullptr;
+
 		ImguiManager m_ImGuiManager;
+
+		DataContainer m_DataContainer;
 
 		double m_DeltaTime = 0.0;
 		std::chrono::high_resolution_clock::time_point LAST;
 		std::chrono::high_resolution_clock::time_point NOW;
 
+		TextureManager m_TextureManager;
 		Renderer m_Renderer;
+		FrameBuffer m_FrameBuffer;
 
 		std::vector<std::unique_ptr<Layer>> m_Layers;
 	};

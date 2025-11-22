@@ -14,12 +14,25 @@
 
 namespace MikuEngine
 {
+	Application* s_Application;
+
 	Application::Application()
 	{
+		s_Application = this;
 	}
 
 	Application::~Application()
 	{
+	}
+
+	Application* Application::GetApplication()
+	{
+		return s_Application;
+	}
+
+	DataContainer& Application::GetDataContainer()
+	{
+		return s_Application->m_DataContainer;
 	}
 
 	void Application::RenderTemp()
@@ -100,7 +113,10 @@ namespace MikuEngine
 
 		LAST = NOW = std::chrono::high_resolution_clock::now();
 
+		m_FrameBuffer.Init();
+
 		m_ImGuiManager.Init( m_Window );
+		m_TextureManager.LoadAllTextures();
 	}
 
 	void Application::Run()
@@ -108,9 +124,7 @@ namespace MikuEngine
 		while ( !glfwWindowShouldClose( m_Window ) )
 		{
 			CalculateDT();
-
 			Update();
-
 			Render();
 
 			glfwPollEvents();
@@ -130,15 +144,17 @@ namespace MikuEngine
 	void Application::Update()
 	{
 		for ( int x = 0; x < m_Layers.size(); x++ )
-		{
 			m_Layers[ x ]->Update( m_DeltaTime );
-		}
 	}
 
 	void Application::Render()
 	{
+		// Render Geometry on the new frame buffer
+		m_FrameBuffer.Bind();
 		RenderGeometry();
+		m_FrameBuffer.UnBind();
 
+		// Render IMGUI on default frame buffer
 		RenderImGui();
 
 		glfwSwapBuffers( m_Window );
@@ -149,20 +165,21 @@ namespace MikuEngine
 		glClear( GL_COLOR_BUFFER_BIT );
 
 		for ( int x = 0; x < m_Layers.size(); x++ )
-		{
-			m_Layers[ x ]->Render( m_Renderer );
-		}
+			m_Layers[ x ]->Render( m_Renderer, m_TextureManager );
 	}
 
 	void Application::RenderImGui()
 	{
+		glClear( GL_COLOR_BUFFER_BIT );
+
 		m_ImGuiManager.PrepareFrame();
 
 		// Render Imgui Here...
+
+		m_ImGuiManager.RenderFrameBuffer( m_FrameBuffer );
+
 		for ( int x = 0; x < m_Layers.size(); x++ )
-		{
 			m_Layers[ x ]->RenderImgui();
-		}
 
 		ImGui::ShowDemoWindow();
 

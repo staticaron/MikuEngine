@@ -1,4 +1,6 @@
 #include "Layers/MainLayer.h"
+
+#include "Managers/TextureManager.h"
 #include "Rendering/Renderer.h"
 
 namespace RhythmGame
@@ -7,12 +9,10 @@ namespace RhythmGame
 	{
 	}
 
-	void MainLayer::Render( const MikuEngine::Renderer& renderer ) const
+	void MainLayer::Render( const MikuEngine::Renderer& renderer, const MikuEngine::TextureManager& textureManager ) const
 	{
 		for ( int x = 0; x < m_Scenes.size(); x++ )
-		{
-			m_Scenes[ x ]->Render( renderer );
-		}
+			m_Scenes[ x ]->Render( renderer, textureManager );
 	}
 
 	void MainLayer::RenderImgui()
