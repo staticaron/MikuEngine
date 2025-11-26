@@ -4,7 +4,10 @@
 
 namespace MikuEngine
 {
-	void Renderer::Init() {}
+	void Renderer::Init()
+	{
+		m_Quad.Init();
+	}
 
 	void Renderer::Draw( const VertexArray& va, const IndexBuffer& ib, const Shader& shader ) const
 	{
