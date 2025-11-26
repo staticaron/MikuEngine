@@ -5,13 +5,14 @@
 #include <string_view>
 #include <unordered_map>
 
+#include "Core.h"
 #include "glm/glm.hpp"
 
 #include "Rendering/VertexBufferLayout.h"
 
 namespace MikuEngine
 {
-	class Shader
+	class MIKU_API Shader
 	{
 	public:
 		void ParseShader( std::string_view filepath, std::string& vs, std::string& gs, std::string& fs );

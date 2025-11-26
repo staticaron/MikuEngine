@@ -1,24 +1,26 @@
-#include "Managers/TextureManager.h"
-#include "Rendering/Texture.h"
 #include "Systems/RenderingSystem.h"
 
-#include "Application.h"
+#include "AppLevelStuff.h"
 #include "Components/SpriteRenderer.h"
+#include "Components/Transform.h"
+#include "Managers/TextureManager.h"
+#include "Rendering/Renderer.h"
+#include "Rendering/Texture.h"
 
 namespace MikuEngine
 {
-	void RenderingSystem::RenderSprite( const entt::registry& registry )
+	void RenderingSystem::RenderSprite( const entt::registry& registry, AppLevelStuff& appLevelStuff )
 	{
-		const auto& spriteRenderers = registry.view<SpriteRendererComponent>();
+		const auto& spriteRenderers = registry.view<TransformComponent, SpriteRendererComponent>();
 
-		const auto& renderer = Application::GetApplication()->GetRenderer();
+		const auto& renderer = appLevelStuff.GetRenderer();
 		const auto& quad = renderer.GetQuad();
-		const TextureManager& textureManager = Application::GetApplication()->GetTextureManager();
+		const TextureManager& textureManager = appLevelStuff.GetTextureManager();
 
 		auto shader = quad.GetShader();
 		shader.Bind();
 
-		for ( const auto& spriteRenderer : spriteRenderers )
+		for ( const auto& [ entity, transform, spriteRenderer ] : spriteRenderers.each() )
 		{
 			const Texture& texture = textureManager.GetTexture( "miku" );
 			texture.Bind( 0 );

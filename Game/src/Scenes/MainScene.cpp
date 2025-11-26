@@ -1,8 +1,8 @@
 #include "Scenes/MainScene.h"
 
+#include "AppLevelStuff.h"
 #include "Components/SpriteRenderer.h"
 #include "Components/Transform.h"
-#include "Managers/TextureManager.h"
 #include "Systems/RenderingSystem.h"
 
 namespace RhythmGame
@@ -20,12 +20,12 @@ namespace RhythmGame
 
 	void MainScene::Update( double dt ) {}
 
-	void MainScene::Render( const MikuEngine::Renderer& renderer, const MikuEngine::TextureManager& textureManager ) const
+	void MainScene::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
 	{
 		for ( int x = 0; x < m_GOs.size(); x++ )
-			m_GOs[ x ].Render( renderer, textureManager, m_Camera );
+			m_GOs[ x ].Render( appLevelStuff.GetRenderer(), appLevelStuff.GetTextureManager(), m_Camera );
 
-		MikuEngine::RenderingSystem::RenderSprite( m_Registry );
+		MikuEngine::RenderingSystem::RenderSprite( m_Registry, appLevelStuff );
 	}
 
 	void MainScene::RenderImGui() {}

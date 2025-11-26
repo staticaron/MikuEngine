@@ -2,9 +2,11 @@
 
 #include <string>
 
+#include "Core.h"
+
 namespace MikuEngine
 {
-	class Texture
+	class MIKU_API Texture
 	{
 	public:
 		Texture() = default;

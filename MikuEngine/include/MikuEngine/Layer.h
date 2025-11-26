@@ -2,20 +2,19 @@
 
 #include <memory>
 
+#include "Core.h"
+
 #include "AppLevelStuff.h"
-#include "Managers/TextureManager.h"
-#include "Rendering/Renderer.h"
 #include "Scene/Scene.h"
 
 namespace MikuEngine
 {
-	class Layer
+	class MIKU_API Layer
 	{
 	public:
-		Layer( AppLevelStuff& appLevelStuff ) : m_AppLevelStuff( appLevelStuff ) {}
 		virtual ~Layer() {};
 		virtual void Update( double dt ) = 0;
-		virtual void Render( const Renderer& renderer, const TextureManager& textureManager ) const = 0;
+		virtual void Render( AppLevelStuff& appLevelStuff ) const = 0;
 		virtual void RenderImgui() = 0;
 
 		template <typename TScene>
@@ -28,7 +27,5 @@ namespace MikuEngine
 	protected:
 	protected:
 		std::vector<std::unique_ptr<Scene>> m_Scenes;
-
-		AppLevelStuff& m_AppLevelStuff;
 	};
 }

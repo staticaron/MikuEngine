@@ -3,6 +3,8 @@
 #include <array>
 #include <string>
 
+#include "Core.h"
+
 #include "Rendering/IndexBuffer.h"
 #include "Rendering/Shader.h"
 #include "Rendering/Vertex.h"
@@ -12,11 +14,13 @@
 
 namespace MikuEngine
 {
-	class Quad
+	class MIKU_API Quad
 	{
 	public:
 		Quad( const std::string& shaderPath = "" );
 		~Quad() = default;
+
+		void Init();
 
 		std::array<Vertex, 4> GetVerts() const;
 		std::array<unsigned int, 6> GetIndices() const;

@@ -1,12 +1,16 @@
 #pragma once
 
+#include "Core.h"
+
 namespace MikuEngine
 {
-	class VertexBuffer
+	class MIKU_API VertexBuffer
 	{
 	public:
-		VertexBuffer( unsigned int size, void* data );
+		VertexBuffer();
 		~VertexBuffer();
+
+		void Init( unsigned int size, void* data );
 
 		void Bind() const;
 		void UnBind() const;

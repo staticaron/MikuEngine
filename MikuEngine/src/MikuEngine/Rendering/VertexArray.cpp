@@ -1,18 +1,21 @@
 #include "Rendering/VertexArray.h"
-#include "Rendering/VertexBufferLayout.h"
+
 #include "spdlog/spdlog.h"
 
 namespace MikuEngine
 {
-	VertexArray::VertexArray()
-	{
-		glGenVertexArrays( 1, &m_RendererID );
-	}
+	VertexArray::VertexArray() {}
 
 	VertexArray::~VertexArray()
 	{
-		glDeleteBuffers( 1, &m_RendererID );
 		spdlog::warn( "Vertex Array deleted! ID : {}", m_RendererID );
+		glDeleteBuffers( 1, &m_RendererID );
+	}
+
+	void VertexArray::Init()
+	{
+		glGenVertexArrays( 1, &m_RendererID );
+		spdlog::info( "Vertex Array Created! ID : {}", m_RendererID );
 	}
 
 	void VertexArray::Bind() const

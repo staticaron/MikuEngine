@@ -1,17 +1,18 @@
-#include "glad/glad.h"
-
-#include "spdlog/spdlog.h"
 #include <iostream>
+
+#include "glad/glad.h"
+#include "spdlog/spdlog.h"
+
+#include "Core.h"
 
 namespace MikuEngine
 {
-	class Error
+	class MIKU_API Error
 	{
 	public:
 		static void LogOpenGLError( GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length, const char* message, const void* userParam )
 		{
-			if ( id == 131169 || id == 131185 || id == 131218 || id == 131204 )
-				return;
+			if ( id == 131169 || id == 131185 || id == 131218 || id == 131204 ) return;
 
 			spdlog::error( "---------------" );
 			spdlog::error( "Debug message ({}) : {}", id, message );
@@ -88,9 +89,6 @@ namespace MikuEngine
 			std::cout << std::endl;
 		}
 
-		static void LogGLFWErorr( int code, const char* message )
-		{
-			spdlog::error( "GLFW ERROR, \nCode {} \nMessage {}", code, message );
-		}
+		static void LogGLFWErorr( int code, const char* message ) { spdlog::error( "GLFW ERROR, \nCode {} \nMessage {}", code, message ); }
 	};
 }

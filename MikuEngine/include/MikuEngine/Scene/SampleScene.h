@@ -1,20 +1,20 @@
 #pragma once
 
+#include "AppLevelStuff.h"
 #include "entt/entt.hpp"
 
-#include "Managers/TextureManager.h"
-#include "Rendering/Renderer.h"
+#include "Core.h"
 #include "Scene/Scene.h"
 
 namespace MikuEngine
 {
-	class SampleScene : public Scene
+	class MIKU_API SampleScene : public Scene
 	{
 	public:
 		SampleScene();
 
 		void Update( double dt ) override;
-		void Render( const Renderer& renderer, const TextureManager& textureManager ) const override;
+		void Render( AppLevelStuff& appLevelStuff ) const override;
 		void RenderImGui() override;
 
 	private:

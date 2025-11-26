@@ -4,9 +4,7 @@
 
 namespace MikuEngine
 {
-	void Renderer::Init()
-	{
-	}
+	void Renderer::Init() {}
 
 	void Renderer::Draw( const VertexArray& va, const IndexBuffer& ib, const Shader& shader ) const
 	{

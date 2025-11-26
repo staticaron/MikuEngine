@@ -5,21 +5,18 @@
 #include <type_traits>
 #include <vector>
 
-#include "AppLevelStuff.h"
-#include "DataContainer.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include "Rendering/FrameBuffer.h"
-#include "Scene/SampleScene.h"
 
+#include "AppLevelStuff.h"
+#include "Core.h"
+#include "DataContainer.h"
 #include "Layer.h"
-#include "Managers/ImguiManager.h"
-#include "Managers/TextureManager.h"
-#include "Rendering/Renderer.h"
+#include "Rendering/FrameBuffer.h"
 
 namespace MikuEngine
 {
-	class Application
+	class MIKU_API Application
 	{
 	public:
 		Application();
@@ -35,13 +32,12 @@ namespace MikuEngine
 			requires( std::is_base_of_v<Layer, TLayer> )
 		void PushLayer()
 		{
-			m_Layers.push_back( std::make_unique<TLayer>( m_AppLevelStuff ) );
+			m_Layers.push_back( std::make_unique<TLayer>() );
 		}
 
 		std::unique_ptr<Layer>& GetLayer( unsigned int index ) { return m_Layers[ index ]; }
 
-		const Renderer& GetRenderer() const { return m_Renderer; }
-		const TextureManager& GetTextureManager() const { return m_TextureManager; }
+		AppLevelStuff& GetAppLevelStuff() { return m_AppLevelStuff; }
 
 	private:
 		void RenderTemp();
@@ -59,12 +55,7 @@ namespace MikuEngine
 		DataContainer m_DataContainer;
 
 		// Rendering
-		Renderer m_Renderer;
 		FrameBuffer m_FrameBuffer;
-
-		// Managers
-		TextureManager m_TextureManager;
-		ImguiManager m_ImGuiManager;
 
 		// Delta Time
 		double m_DeltaTime = 0.0;

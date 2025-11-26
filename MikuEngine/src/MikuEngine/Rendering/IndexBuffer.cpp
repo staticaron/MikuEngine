@@ -1,21 +1,27 @@
 #include "Rendering/IndexBuffer.h"
-#include "Application.h"
 
+#include "glad/glad.h"
 #include "spdlog/spdlog.h"
 
 namespace MikuEngine
 {
-	IndexBuffer::IndexBuffer( unsigned int count, void* data ) : m_Count( count )
-	{
-		glCreateBuffers( 1, &m_RendererID );
-		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_RendererID );
-		glBufferData( GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof( unsigned int ), data, GL_DYNAMIC_DRAW );
-	}
+	IndexBuffer::IndexBuffer() {}
 
 	IndexBuffer::~IndexBuffer()
 	{
 		spdlog::warn( "Index Buffer Deleted! ID : {}", m_RendererID );
 		glDeleteBuffers( 1, &m_RendererID );
+	}
+
+	void IndexBuffer::Init( unsigned int count, void* data )
+	{
+		m_Count = count;
+
+		glCreateBuffers( 1, &m_RendererID );
+		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_RendererID );
+		glBufferData( GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof( unsigned int ), data, GL_DYNAMIC_DRAW );
+
+		spdlog::info( "Index Buffer Created! ID : {}", m_RendererID );
 	}
 
 	void IndexBuffer::Bind() const

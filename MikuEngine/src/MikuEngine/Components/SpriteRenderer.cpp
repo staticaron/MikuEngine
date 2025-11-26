@@ -8,11 +8,10 @@ namespace MikuEngine
 {
 	SpriteRenderer::SpriteRenderer() : m_FilePath( RESOURCE_DIR "textures/base.png" )
 	{
+		m_Quad.Init();
 	}
 
-	SpriteRenderer::SpriteRenderer( const std::string& filePath ) : m_FilePath( filePath )
-	{
-	}
+	SpriteRenderer::SpriteRenderer( const std::string& filePath ) : m_FilePath( filePath ) {}
 
 	void SpriteRenderer::Render( const Renderer& renderer, const TextureManager& textureManager, const Camera& camera ) const
 	{

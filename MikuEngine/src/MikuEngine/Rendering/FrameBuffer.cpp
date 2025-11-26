@@ -23,8 +23,9 @@ namespace MikuEngine
 
 		glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_TextureID, 0 );
 
-		if ( glCheckFramebufferStatus( GL_FRAMEBUFFER ) != GL_FRAMEBUFFER_COMPLETE )
-			spdlog::warn( "FrameBuffer is not ready!" );
+		if ( glCheckFramebufferStatus( GL_FRAMEBUFFER ) != GL_FRAMEBUFFER_COMPLETE ) spdlog::warn( "FrameBuffer is not ready!" );
+
+		UnBind();
 	}
 
 	FrameBuffer::~FrameBuffer()

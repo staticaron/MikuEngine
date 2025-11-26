@@ -46,10 +46,16 @@ namespace MikuEngine
 
 		std::array<unsigned int, 6> Indices = { 0, 1, 2, 2, 3, 0 };
 
-		VertexBuffer vb( sizeof( Vertex ) * 4, nullptr );
-		IndexBuffer ib( 6, nullptr );
+		VertexBuffer vb;
+		vb.Init( sizeof( Vertex ) * 4, nullptr );
+
+		IndexBuffer ib;
+		ib.Init( 6, nullptr );
+
 		VertexBufferLayout vbl;
+
 		VertexArray va;
+		va.Init();
 
 		vbl.Add<float>( 3 );
 		vbl.Add<float>( 2 );
@@ -62,12 +68,14 @@ namespace MikuEngine
 		vb.PutData( Verts.data(), Verts.size() * sizeof( Vertex ) );
 		ib.PutData( Indices.data(), Indices.size() );
 
-		while ( true )
+		while ( !glfwWindowShouldClose( m_Window ) )
 		{
+			glClearColor( 0, 1, 1, 1 );
 			glClear( GL_COLOR_BUFFER_BIT );
 
-			m_Renderer.Draw( va, ib, shader );
+			m_AppLevelStuff.GetRenderer().Draw( va, ib, shader );
 
+			glfwPollEvents();
 			glfwSwapBuffers( m_Window );
 		}
 	}
@@ -117,12 +125,9 @@ namespace MikuEngine
 
 		m_FrameBuffer.Init();
 
-		m_ImGuiManager.Init( m_Window );
-		m_TextureManager.LoadAllTextures();
-
-		m_AppLevelStuff.SetTextureManager( &m_TextureManager );
-		m_AppLevelStuff.SetImguiManager( &m_ImGuiManager );
-		m_AppLevelStuff.SetRenderer( &m_Renderer );
+		m_AppLevelStuff.GetRenderer().Init();
+		m_AppLevelStuff.GetTextureManager().LoadAllTextures();
+		m_AppLevelStuff.GetImGuiManager().Init( m_Window );
 	}
 
 	void Application::Run()
@@ -171,24 +176,24 @@ namespace MikuEngine
 		glClear( GL_COLOR_BUFFER_BIT );
 
 		for ( int x = 0; x < m_Layers.size(); x++ )
-			m_Layers[ x ]->Render( m_Renderer, m_TextureManager );
+			m_Layers[ x ]->Render( m_AppLevelStuff );
 	}
 
 	void Application::RenderImGui()
 	{
 		glClear( GL_COLOR_BUFFER_BIT );
 
-		m_ImGuiManager.PrepareFrame();
+		m_AppLevelStuff.GetImGuiManager().PrepareFrame();
 
 		// Render Imgui Here...
 
-		m_ImGuiManager.RenderFrameBuffer( m_FrameBuffer );
+		m_AppLevelStuff.GetImGuiManager().RenderFrameBuffer( m_FrameBuffer );
 
 		for ( int x = 0; x < m_Layers.size(); x++ )
 			m_Layers[ x ]->RenderImgui();
 
 		ImGui::ShowDemoWindow();
 
-		m_ImGuiManager.RenderFrame();
+		m_AppLevelStuff.GetImGuiManager().RenderFrame();
 	}
 }

@@ -3,14 +3,13 @@
 #include <string>
 
 #include "GameObjects/Camera.h"
-#include "glm/glm.hpp"
 #include "Managers/TextureManager.h"
 #include "Rendering/Quad.h"
 #include "Rendering/Renderer.h"
 
 namespace MikuEngine
 {
-	class SpriteRenderer
+	class MIKU_API SpriteRenderer
 	{
 	public:
 		SpriteRenderer();
@@ -23,7 +22,7 @@ namespace MikuEngine
 		Quad m_Quad;
 	};
 
-	struct SpriteRendererComponent
+	struct MIKU_API SpriteRendererComponent
 	{
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent( const SpriteRendererComponent& ) = default;

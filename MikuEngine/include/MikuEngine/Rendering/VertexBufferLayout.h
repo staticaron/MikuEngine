@@ -2,11 +2,12 @@
 
 #include <vector>
 
+#include "Core.h"
 #include "glad/glad.h"
 
 namespace MikuEngine
 {
-	struct VertexBufferElement
+	struct MIKU_API VertexBufferElement
 	{
 		unsigned int type;
 		unsigned int count;
@@ -25,7 +26,7 @@ namespace MikuEngine
 		}
 	};
 
-	class VertexBufferLayout
+	class MIKU_API VertexBufferLayout
 	{
 	public:
 		template <typename T>
@@ -34,15 +35,9 @@ namespace MikuEngine
 			static_assert( false );
 		}
 
-		const std::vector<VertexBufferElement>& GetElements() const
-		{
-			return m_Elements;
-		}
+		const std::vector<VertexBufferElement>& GetElements() const { return m_Elements; }
 
-		unsigned int GetStride() const
-		{
-			return m_Stride;
-		}
+		unsigned int GetStride() const { return m_Stride; }
 
 	private:
 		std::vector<VertexBufferElement> m_Elements;

@@ -1,21 +1,16 @@
 #include "Layers/MainLayer.h"
 
-#include "Managers/TextureManager.h"
-#include "Rendering/Renderer.h"
+#include "AppLevelStuff.h"
 
 namespace RhythmGame
 {
-	void MainLayer::Update( double dt )
-	{
-	}
+	void MainLayer::Update( double dt ) {}
 
-	void MainLayer::Render( const MikuEngine::Renderer& renderer, const MikuEngine::TextureManager& textureManager ) const
+	void MainLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
 	{
 		for ( int x = 0; x < m_Scenes.size(); x++ )
-			m_Scenes[ x ]->Render( renderer, textureManager );
+			m_Scenes[ x ]->Render( appLevelStuff );
 	}
 
-	void MainLayer::RenderImgui()
-	{
-	}
+	void MainLayer::RenderImgui() {}
 }

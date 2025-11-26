@@ -4,11 +4,12 @@
 #include <string_view>
 #include <unordered_map>
 
+#include "Core.h"
 #include "Rendering/Texture.h"
 
 namespace MikuEngine
 {
-	class TextureManager
+	class MIKU_API TextureManager
 	{
 	public:
 		TextureManager();

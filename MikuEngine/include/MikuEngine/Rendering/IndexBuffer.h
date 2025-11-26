@@ -1,20 +1,21 @@
 #pragma once
 
+#include "Core.h"
+
 namespace MikuEngine
 {
-	class IndexBuffer
+	class MIKU_API IndexBuffer
 	{
 	public:
-		IndexBuffer( unsigned int count, void* data );
+		IndexBuffer();
 		~IndexBuffer();
+
+		void Init( unsigned int count, void* data );
 
 		void Bind() const;
 		void UnBind() const;
 
-		unsigned int Count() const
-		{
-			return m_Count;
-		}
+		unsigned int Count() const { return m_Count; }
 
 		void PutData( void* data, unsigned int count );
 

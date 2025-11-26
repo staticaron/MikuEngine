@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Core.h"
+
 #include "Components/SpriteRenderer.h"
 #include "GameObjects/Camera.h"
 #include "Managers/TextureManager.h"
@@ -7,7 +9,7 @@
 
 namespace MikuEngine
 {
-	class GameObject
+	class MIKU_API GameObject
 	{
 	public:
 		void Render( const Renderer& renderer, const TextureManager& textureManager, const Camera& camera ) const;

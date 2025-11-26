@@ -57,8 +57,7 @@ namespace MikuEngine
 
 	unsigned int Shader::CompileShader( const std::string& source, unsigned int type )
 	{
-		if ( source.empty() )
-			return 0;
+		if ( source.empty() ) return 0;
 
 		unsigned int shaderID = glCreateShader( type );
 		const char* shaderSource = source.c_str();
@@ -92,21 +91,18 @@ namespace MikuEngine
 		unsigned int fsID = 0;
 
 		vsID = CompileShader( vs, GL_VERTEX_SHADER );
-		if ( !gs.empty() )
-			gsID = CompileShader( gs, GL_GEOMETRY_SHADER );
+		if ( !gs.empty() ) gsID = CompileShader( gs, GL_GEOMETRY_SHADER );
 		fsID = CompileShader( fs, GL_FRAGMENT_SHADER );
 
 		glAttachShader( program, vsID );
-		if ( !gs.empty() )
-			glAttachShader( program, gsID );
+		if ( !gs.empty() ) glAttachShader( program, gsID );
 		glAttachShader( program, fsID );
 
 		glLinkProgram( program );
 		glValidateProgram( program );
 
 		glDeleteShader( vsID );
-		if ( !gs.empty() )
-			glDeleteShader( gsID );
+		if ( !gs.empty() ) glDeleteShader( gsID );
 		glDeleteShader( fsID );
 
 		return program;

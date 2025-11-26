@@ -1,11 +1,8 @@
 #include "Scene/SampleScene.h"
-#include "Managers/TextureManager.h"
-#include "Rendering/Renderer.h"
+#include "AppLevelStuff.h"
 
 #include "Components/SpriteRenderer.h"
 #include "Components/Transform.h"
-
-#include "Systems/RenderingSystem.h"
 
 namespace MikuEngine
 {
@@ -19,7 +16,7 @@ namespace MikuEngine
 
 	void SampleScene::Update( double dt ) {}
 
-	void SampleScene::Render( const Renderer& renderer, const TextureManager& textureManager ) const
+	void SampleScene::Render( AppLevelStuff& appLevelStuff ) const
 	{
 		// RenderSprite( m_Registry );
 	}
