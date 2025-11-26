@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "AppLevelStuff.h"
 #include "Managers/TextureManager.h"
 #include "Rendering/Renderer.h"
 #include "Scene/Scene.h"
@@ -11,6 +12,7 @@ namespace MikuEngine
 	class Layer
 	{
 	public:
+		Layer( AppLevelStuff& appLevelStuff ) : m_AppLevelStuff( appLevelStuff ) {}
 		virtual ~Layer() {};
 		virtual void Update( double dt ) = 0;
 		virtual void Render( const Renderer& renderer, const TextureManager& textureManager ) const = 0;
@@ -26,5 +28,7 @@ namespace MikuEngine
 	protected:
 	protected:
 		std::vector<std::unique_ptr<Scene>> m_Scenes;
+
+		AppLevelStuff& m_AppLevelStuff;
 	};
 }

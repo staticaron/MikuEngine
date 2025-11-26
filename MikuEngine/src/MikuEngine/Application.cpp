@@ -21,9 +21,7 @@ namespace MikuEngine
 		s_Application = this;
 	}
 
-	Application::~Application()
-	{
-	}
+	Application::~Application() {}
 
 	Application* Application::GetApplication()
 	{
@@ -76,8 +74,8 @@ namespace MikuEngine
 
 	void Application::Init()
 	{
-		if ( !glfwInit() )
-			return;
+		// Load GLFW
+		if ( !glfwInit() ) return;
 
 		glfwSetErrorCallback( Error::LogGLFWErorr );
 		glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 );
@@ -91,6 +89,7 @@ namespace MikuEngine
 		glfwGetVersion( &major, &minor, &rev );
 		spdlog::info( "GLFW Loaded! #{}{}{}", major, minor, rev );
 
+		// Create GLFW Window
 		m_Window = glfwCreateWindow( 640, 480, "MikuEngine", NULL, NULL );
 
 		if ( !m_Window )
@@ -101,22 +100,29 @@ namespace MikuEngine
 
 		glfwMakeContextCurrent( m_Window );
 
+		// Load OpenGL
 		if ( !gladLoadGL() )
 			return;
 		else
 			spdlog::info( "GLAD Loaded!" );
 
+		// Enable Debugging
 		glEnable( GL_DEBUG_OUTPUT );
 		glEnable( GL_DEBUG_OUTPUT_SYNCHRONOUS );
 		glDebugMessageCallback( Error::LogOpenGLError, nullptr );
 		glDebugMessageControl( GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE );
 
+		// Initializing of member vars
 		LAST = NOW = std::chrono::high_resolution_clock::now();
 
 		m_FrameBuffer.Init();
 
 		m_ImGuiManager.Init( m_Window );
 		m_TextureManager.LoadAllTextures();
+
+		m_AppLevelStuff.SetTextureManager( &m_TextureManager );
+		m_AppLevelStuff.SetImguiManager( &m_ImGuiManager );
+		m_AppLevelStuff.SetRenderer( &m_Renderer );
 	}
 
 	void Application::Run()

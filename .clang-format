@@ -40,7 +40,8 @@ SpacesInParensOptions:
   InCStyleCasts: true
   InEmptyParentheses: false
   Other: true
-AllowShortFunctionsOnASingleLine: None 
+AllowShortFunctionsOnASingleLine: Inline 
+AllowShortIfStatementsOnASingleLine: true
 AccessModifierOffset: -8
 FixNamespaceComments: false
 AlwaysBreakTemplateDeclarations: Yes

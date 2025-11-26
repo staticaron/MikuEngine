@@ -12,6 +12,7 @@ namespace MikuEngine
 
 		m_VA.Setup( m_VB, m_VBL );
 
+		// Load Base Shader if not provided in the constructor
 		m_ShaderPath = shaderPath == "" ? m_ShaderPath : shaderPath;
 		m_Shader.LoadFromFile( m_ShaderPath );
 	}

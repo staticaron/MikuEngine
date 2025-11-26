@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include "entt/entt.hpp"
+
 #include "GameObjects/Camera.h"
 #include "Managers/TextureManager.h"
 #include "MikuEngine/GameObject.h"
@@ -21,6 +23,8 @@ namespace RhythmGame
 
 	private:
 		std::vector<MikuEngine::GameObject> m_GOs;
+
+		entt::registry m_Registry;
 
 		MikuEngine::Camera m_Camera;
 	};

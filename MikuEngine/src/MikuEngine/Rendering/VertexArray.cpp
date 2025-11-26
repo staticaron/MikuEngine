@@ -11,8 +11,8 @@ namespace MikuEngine
 
 	VertexArray::~VertexArray()
 	{
-		spdlog::warn( "Vertex Array deleted! ID : {}", m_RendererID );
 		glDeleteBuffers( 1, &m_RendererID );
+		spdlog::warn( "Vertex Array deleted! ID : {}", m_RendererID );
 	}
 
 	void VertexArray::Bind() const

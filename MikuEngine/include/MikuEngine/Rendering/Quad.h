@@ -21,25 +21,13 @@ namespace MikuEngine
 		std::array<Vertex, 4> GetVerts() const;
 		std::array<unsigned int, 6> GetIndices() const;
 
-		const VertexBuffer& GetVB() const
-		{
-			return m_VB;
-		}
+		const VertexBuffer& GetVB() const { return m_VB; }
 
-		const VertexArray& GetVA() const
-		{
-			return m_VA;
-		}
+		const VertexArray& GetVA() const { return m_VA; }
 
-		const IndexBuffer& GetIB() const
-		{
-			return m_IB;
-		}
+		const IndexBuffer& GetIB() const { return m_IB; }
 
-		const Shader& GetShader() const
-		{
-			return m_Shader;
-		}
+		const Shader& GetShader() const { return m_Shader; }
 
 	private:
 		VertexBuffer m_VB;

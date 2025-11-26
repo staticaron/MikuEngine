@@ -10,3 +10,6 @@
 [submodule "MikuEngine/vendor/glm"]
 	path = MikuEngine/vendor/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "MikuEngine/vendor/entt"]
+	path = MikuEngine/vendor/entt
+	url = https://github.com/skypjack/entt.git

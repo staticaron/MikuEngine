@@ -13,8 +13,8 @@ namespace MikuEngine
 		Application* app = new Application();
 		app->Init();
 
-		app->PushLayer<RhythmGame::MainLayer>();
-		app->GetLayer( 0 )->PushScene<RhythmGame::MainScene>();
+		// app->PushLayer<RhythmGame::MainLayer>();
+		// app->GetLayer( 0 )->PushScene<RhythmGame::MainScene>();
 
 		app->Run();
 

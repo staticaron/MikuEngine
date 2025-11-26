@@ -60,7 +60,7 @@ namespace MikuEngine
 
 		if ( windowSize.x != viewPortSize.x || windowSize.y != viewPortSize.y )
 		{
-			frameBuffer.ResizeFrameBufferTexture( { windowSize.x, windowSize.y } );
+			// frameBuffer.ResizeFrameBufferTexture( { windowSize.x, windowSize.y } );
 		}
 
 		ImGui::Image( ( void* )( intptr_t )frameBuffer.GetTextureID(), { 100, 100 }, { 0, 1 }, { 1, 0 } );

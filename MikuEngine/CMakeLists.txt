@@ -14,6 +14,7 @@ add_subdirectory(vendor/spdlog)
 add_subdirectory(vendor/imgui)
 add_subdirectory(vendor/glm)
 add_subdirectory(vendor/stb_image)
+add_subdirectory(vendor/entt)
 
 file(GLOB_RECURSE ENGINE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
@@ -36,6 +37,7 @@ target_link_libraries("MikuEngine" PUBLIC
 	imgui
 	glm
 	stb_image
+	entt
 )
 
 target_link_libraries("MikuEngine" PRIVATE 
