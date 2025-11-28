@@ -14,7 +14,7 @@ namespace MikuEngine
 		glGenTextures( 1, &m_TextureID );
 		glBindTexture( GL_TEXTURE_2D, m_TextureID );
 
-		auto viewPortSize = Application::GetDataContainer().m_ViewportSize;
+		auto viewPortSize = Application::GetDataContainer().GetViewportSize();
 		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, viewPortSize.x, viewPortSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr );
 
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
@@ -36,7 +36,7 @@ namespace MikuEngine
 	void FrameBuffer::Bind() const
 	{
 		glBindFramebuffer( GL_FRAMEBUFFER, m_RendererID );
-		glViewport( 0, 0, Application::GetDataContainer().m_ViewportSize.x, Application::GetDataContainer().m_ViewportSize.y );
+		glViewport( 0, 0, Application::GetDataContainer().GetViewportSize().x, Application::GetDataContainer().GetViewportSize().y );
 	}
 
 	void FrameBuffer::UnBind() const
@@ -52,11 +52,9 @@ namespace MikuEngine
 
 	void FrameBuffer::ResizeFrameBufferTexture( glm::vec2 viewportSize )
 	{
-		spdlog::info( "Changing the Viewport Size from ({}, {}) to ({}, {})", Application::GetDataContainer().m_ViewportSize.x, Application::GetDataContainer().m_ViewportSize.y, viewportSize.x, viewportSize.y );
-		Application::GetDataContainer().m_ViewportSize = viewportSize;
+		Application::GetDataContainer().SetViewportSize( viewportSize );
 
 		Destroy();
 		Init();
 	}
-
 }

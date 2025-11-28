@@ -16,7 +16,7 @@ namespace RhythmGame
 
 		void Update( double dt ) override;
 		void Render( MikuEngine::AppLevelStuff& appLevelStuff ) const override;
-		void RenderImGui() override;
+		void RenderImGui( const MikuEngine::AppLevelStuff& appLevelStuff ) override;
 
 	private:
 		entt::registry m_Registry;

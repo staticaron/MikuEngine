@@ -15,7 +15,7 @@ namespace MikuEngine
 		virtual ~Layer() {};
 		virtual void Update( double dt ) = 0;
 		virtual void Render( AppLevelStuff& appLevelStuff ) const = 0;
-		virtual void RenderImgui() = 0;
+		virtual void RenderImgui( const AppLevelStuff& appLevelStuff ) = 0;
 
 		template <typename TScene>
 			requires( std::is_base_of_v<Scene, TScene> )

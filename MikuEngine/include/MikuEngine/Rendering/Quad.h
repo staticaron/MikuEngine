@@ -22,7 +22,7 @@ namespace MikuEngine
 
 		void Init();
 
-		std::array<Vertex, 4> GetVerts() const;
+		static std::array<Vertex, 4> GetVerts();
 		std::array<unsigned int, 6> GetIndices() const;
 
 		const VertexBuffer& GetVB() const { return m_VB; }

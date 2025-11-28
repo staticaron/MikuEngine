@@ -10,7 +10,7 @@ namespace RhythmGame
 	public:
 		void Update( double dt ) override;
 		void Render( MikuEngine::AppLevelStuff& appLevelStuff ) const override;
-		void RenderImgui() override;
+		void RenderImgui( const MikuEngine::AppLevelStuff& appLevelStuff ) override;
 
 	private:
 	};

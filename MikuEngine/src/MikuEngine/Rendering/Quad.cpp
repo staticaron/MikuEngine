@@ -25,15 +25,15 @@ namespace MikuEngine
 		m_Shader.LoadFromFile( m_ShaderPath );
 	}
 
-	std::array<Vertex, 4> Quad::GetVerts() const
+	std::array<Vertex, 4> Quad::GetVerts()
 	{
 		std::array<Vertex, 4> verts;
 
 		// clang-format off
-		verts[ 0 ] = { { -0.5f, -0.5f, 0.0f }, { 0.0f, 0.0f } };
-		verts[ 1 ] = { {  0.5f, -0.5f, 0.0f }, { 1.0f, 0.0f } };
-		verts[ 2 ] = { {  0.5f,  0.5f, 0.0f }, { 1.0f, 1.0f } };
-		verts[ 3 ] = { { -0.5f,  0.5f, 0.0f }, { 0.0f, 1.0f } };
+		verts[ 0 ] = { { -0.5f, -0.5f, 0.0f }, { 0.0f, 1.0f } };
+		verts[ 1 ] = { {  0.5f, -0.5f, 0.0f }, { 1.0f, 1.0f } };
+		verts[ 2 ] = { {  0.5f,  0.5f, 0.0f }, { 1.0f, 0.0f } };
+		verts[ 3 ] = { { -0.5f,  0.5f, 0.0f }, { 0.0f, 0.0f } };
 		// clang-format on
 
 		return verts;

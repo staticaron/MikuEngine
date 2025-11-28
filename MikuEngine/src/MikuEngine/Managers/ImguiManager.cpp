@@ -10,6 +10,11 @@
 
 #include "Rendering/FrameBuffer.h"
 
+#define DISABLE_IMGUI( x )                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             \
+	ImGui::BeginDisabled();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        \
+	x;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             \
+	ImGui::EndDisabled();
+
 namespace MikuEngine
 {
 	void ImguiManager::Init( GLFWwindow* window )
@@ -56,7 +61,7 @@ namespace MikuEngine
 
 		ImVec2 windowSize = ImGui::GetWindowSize();
 
-		glm::vec2 viewPortSize = Application::GetDataContainer().m_ViewportSize;
+		glm::vec2 viewPortSize = Application::GetDataContainer().GetViewportSize();
 
 		if ( windowSize.x != viewPortSize.x || windowSize.y != viewPortSize.y )
 		{

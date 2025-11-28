@@ -15,7 +15,7 @@ namespace MikuEngine
 
 		void Update( double dt ) override;
 		void Render( AppLevelStuff& appLevelStuff ) const override;
-		void RenderImGui() override;
+		void RenderImGui( const AppLevelStuff& appLevelStuff ) override;
 
 	private:
 	private:

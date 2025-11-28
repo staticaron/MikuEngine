@@ -10,7 +10,7 @@ uniform mat4 u_MVP = mat4(1.0);
 
 void main()
 {
-	gl_Position = position;
+	gl_Position = u_MVP * position;
 	v_UV = uv;
 }
 

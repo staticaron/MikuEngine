@@ -13,7 +13,7 @@ namespace MikuEngine
 
 	glm::mat4 Camera::GetProjViewMatrix() const
 	{
-		glm::mat4 projMatrix = glm::ortho( 0.0f, Application::GetDataContainer().m_ViewportSize.x, Application::GetDataContainer().m_ViewportSize.y, 0.0f, -1000.0f, 1000.0f );
+		glm::mat4 projMatrix = glm::ortho( 0.0f, Application::GetDataContainer().GetViewportSize().x, Application::GetDataContainer().GetViewportSize().y, 0.0f, -1000.0f, 1000.0f );
 		glm::mat4 viewMatrix = GetViewMatrix();
 
 		return projMatrix * viewMatrix;

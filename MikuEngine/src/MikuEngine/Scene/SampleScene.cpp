@@ -21,5 +21,5 @@ namespace MikuEngine
 		// RenderSprite( m_Registry );
 	}
 
-	void SampleScene::RenderImGui() {}
+	void SampleScene::RenderImGui( const AppLevelStuff& appLevelStuff ) {}
 }

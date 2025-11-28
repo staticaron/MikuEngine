@@ -12,5 +12,9 @@ namespace RhythmGame
 			m_Scenes[ x ]->Render( appLevelStuff );
 	}
 
-	void MainLayer::RenderImgui() {}
+	void MainLayer::RenderImgui( const MikuEngine::AppLevelStuff& appLevelStuff )
+	{
+		for ( int x = 0; x < m_Scenes.size(); x++ )
+			m_Scenes[ x ]->RenderImGui( appLevelStuff );
+	}
 }

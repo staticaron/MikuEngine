@@ -19,11 +19,13 @@ namespace MikuEngine
 
 		glm::mat4 GetModelMatrix() const
 		{
-			auto transformMat = glm::translate( glm::mat4( 1.0f ), Position );
-			auto rotationMat = glm::rotate( glm::mat4( 1.0f ), 0.0f, glm::vec3( 1.0f, 0.0f, 0.0f ) );
-			auto scaleMat = glm::scale( glm::mat4( 1.0f ), Scale );
+			glm::mat4 transformMat = glm::translate( glm::mat4( 1.0f ), Position );
+			glm::mat4 rotationMat = glm::rotate( glm::mat4( 1.0f ), 0.0f, glm::vec3( 1.0f ) );
+			glm::mat4 scaleMat = glm::scale( glm::mat4( 1.0f ), Scale );
 
-			return transformMat * rotationMat * scaleMat;
+			glm::mat4 model = transformMat * rotationMat * scaleMat;
+
+			return model;
 		}
 	};
 }
