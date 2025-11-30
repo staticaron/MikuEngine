@@ -2,28 +2,17 @@
 
 #include <string>
 
-#include "GameObjects/Camera.h"
-#include "Managers/TextureManager.h"
-#include "Rendering/Quad.h"
-#include "Rendering/Renderer.h"
+#include "glm/glm.hpp"
+
+#include "Core.h"
+
+#include "Components/BaseComponent.h"
 
 namespace MikuEngine
 {
-	class MIKU_API SpriteRenderer
+	class MIKU_API SpriteRendererComponent : public BaseComponent
 	{
 	public:
-		SpriteRenderer();
-		SpriteRenderer( const std::string& filePath );
-		void Render( const Renderer& renderer, const TextureManager& textureManager, const Camera& camera ) const;
-
-	private:
-		std::string m_FilePath = "";
-
-		Quad m_Quad;
-	};
-
-	struct MIKU_API SpriteRendererComponent
-	{
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent( const SpriteRendererComponent& ) = default;
 

@@ -1,8 +1,10 @@
 #include "Scenes/MainScene.h"
 
 #include "AppLevelStuff.h"
-#include "Components/SpriteRenderer.h"
-#include "Components/Transform.h"
+#include "Components/CameraComponent.h"
+#include "Components/SpriteRendererComponent.h"
+#include "Components/TransformComponent.h"
+#include "Entity.h"
 #include "Systems/RenderImGuiSystem.h"
 #include "Systems/RenderingSystem.h"
 
@@ -10,15 +12,16 @@ namespace RhythmGame
 {
 	MainScene::MainScene()
 	{
-		auto newGO = m_Registry.create();
+		// Create Scene Camera
+		auto cameraEntity = MikuEngine::Entity( m_Registry, "Main Camera" );
+		cameraEntity.AddComponent<MikuEngine::CameraComponent>( m_Registry );
 
-		MikuEngine::TransformComponent transformComponent;
-		transformComponent.Position = glm::vec3( 0.0f, 0.0f, 0.0f );
-		transformComponent.Rotation = glm::vec3( 0.0f, 0.0f, 0.0f );
-		transformComponent.Scale = glm::vec3( 100.0f, 100.0f, 0.0f );
+		// Create Entity
+		auto newGO = MikuEngine::Entity( m_Registry, "MyGO" );
+		newGO.GetComponent<MikuEngine::TransformComponent>( m_Registry ).Scale = glm::vec3( 100.0f );
+		newGO.AddComponent<MikuEngine::SpriteRendererComponent>( m_Registry );
 
-		m_Registry.emplace<MikuEngine::TransformComponent>( newGO, transformComponent );
-		m_Registry.emplace<MikuEngine::SpriteRendererComponent>( newGO );
+		m_SceneSerializer.Serialize();
 	}
 
 	MainScene::~MainScene() {}

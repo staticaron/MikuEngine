@@ -15,6 +15,7 @@ add_subdirectory(vendor/imgui)
 add_subdirectory(vendor/glm)
 add_subdirectory(vendor/stb_image)
 add_subdirectory(vendor/entt)
+add_subdirectory(vendor/yaml-cpp)
 
 file(GLOB_RECURSE ENGINE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
@@ -38,6 +39,7 @@ target_link_libraries("MikuEngine" PUBLIC
 	glm
 	stb_image
 	entt
+	yaml-cpp
 )
 
 target_link_libraries("MikuEngine" PRIVATE 

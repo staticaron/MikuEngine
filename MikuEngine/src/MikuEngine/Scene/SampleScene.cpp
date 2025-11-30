@@ -1,8 +1,8 @@
 #include "Scene/SampleScene.h"
 #include "AppLevelStuff.h"
 
-#include "Components/SpriteRenderer.h"
-#include "Components/Transform.h"
+#include "Components/SpriteRendererComponent.h"
+#include "Components/TransformComponent.h"
 
 namespace MikuEngine
 {

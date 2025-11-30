@@ -5,8 +5,10 @@
 
 #include "AppLevelStuff.h"
 #include "Application.h"
-#include "Components/SpriteRenderer.h"
-#include "Components/Transform.h"
+#include "Components/CameraComponent.h"
+#include "Components/DataComponent.h"
+#include "Components/SpriteRendererComponent.h"
+#include "Components/TransformComponent.h"
 #include "Managers/TextureManager.h"
 #include "Rendering/Renderer.h"
 #include "Rendering/Texture.h"
@@ -15,7 +17,20 @@ namespace MikuEngine
 {
 	void RenderingSystem::RenderSprite( const entt::registry& registry, AppLevelStuff& appLevelStuff )
 	{
-		const auto& entities = registry.view<TransformComponent, SpriteRendererComponent>();
+		// Quads To Render
+		const auto& entities = registry.view<DataComponent, SpriteRendererComponent>();
+
+		// Camera
+		const auto& cameras = registry.view<CameraComponent>();
+
+		entt::entity cameraEntity;
+		CameraComponent camera;
+
+		for ( const auto& [ entity, cam ] : cameras.each() )
+		{
+			cameraEntity = entity;
+			camera = cam;
+		}
 
 		const auto& renderer = appLevelStuff.GetRenderer();
 		const auto& quad = renderer.GetQuad();
@@ -24,8 +39,10 @@ namespace MikuEngine
 		auto shader = quad.GetShader();
 		shader.Bind();
 
-		for ( const auto& [ entity, transform, spriteRenderer ] : entities.each() )
+		for ( const auto& [ entity, data, spriteRenderer ] : entities.each() )
 		{
+			const auto& transform = registry.get<TransformComponent>( entity );
+
 			const Texture& texture = textureManager.GetTexture( spriteRenderer.TextureIdentifier );
 			texture.Bind( 0 );
 			shader.SetUniform<unsigned int>( "u_Tex", 0 );
@@ -33,7 +50,7 @@ namespace MikuEngine
 			auto viewport = Application::GetApplication()->GetDataContainer().GetViewportSize();
 
 			glm::mat4 proj = glm::ortho( 0.0f, viewport.x, viewport.y, 0.0f, -1000.0f, 1000.0f );
-			glm::mat4 view = glm::mat4( 1.0f );
+			glm::mat4 view = camera.GetViewMatrix( registry, cameraEntity );
 			glm::mat4 model = transform.GetModelMatrix();
 
 			glm::mat4 mvp = proj * view * model;

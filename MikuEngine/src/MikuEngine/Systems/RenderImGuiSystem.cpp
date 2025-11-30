@@ -5,20 +5,20 @@
 #include "glm/glm.hpp"
 
 #include "AppLevelStuff.h"
-#include "Components/Transform.h"
-#include "Managers/ImguiManager.h"
+#include "Components/DataComponent.h"
+#include "Components/TransformComponent.h"
 
 namespace MikuEngine
 {
 	void RenderImGuiSystem::RenderImGui( entt::registry& registry, const AppLevelStuff& appLevelStuff )
 	{
-		auto transforms = registry.view<TransformComponent>();
+		auto entities = registry.view<DataComponent, TransformComponent>();
 
-		for ( const auto& entity : transforms )
+		for ( const auto& [ entity, data, transform ] : entities.each() )
 		{
 			auto& transformComponent = registry.get<TransformComponent>( entity );
 
-			std::string windowName = "Transform##" + std::to_string( entt::entt_traits<entt::entity>::to_entity( entity ) );
+			std::string windowName = data.EntityName + " - Transform##" + std::to_string( entt::entt_traits<entt::entity>::to_entity( entity ) );
 
 			ImGui::Begin( windowName.c_str() );
 
@@ -27,12 +27,6 @@ namespace MikuEngine
 			ImGui::DragFloat3( "Scale", &transformComponent.Scale[ 0 ] );
 
 			registry.patch<TransformComponent>( entity );
-
-			auto& transformLookup = registry.get<TransformComponent>( entity );
-
-			DISABLED_IMGUI( ImGui::DragFloat3( "View Position", &transformLookup.Position[ 0 ] ) );
-			DISABLED_IMGUI( ImGui::DragFloat3( "View Rotation", &transformLookup.Rotation[ 0 ] ) );
-			DISABLED_IMGUI( ImGui::DragFloat3( "View Scale", &transformLookup.Scale[ 0 ] ) );
 
 			ImGui::End();
 		}

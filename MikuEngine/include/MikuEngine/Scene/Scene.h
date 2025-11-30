@@ -1,8 +1,11 @@
 #pragma once
 
+#include "entt/entt.hpp"
+
 #include "Core.h"
 
 #include "AppLevelStuff.h"
+#include "Helpers/SceneSerializer.h"
 
 namespace MikuEngine
 {
@@ -17,6 +20,10 @@ namespace MikuEngine
 		virtual void RenderImGui( const AppLevelStuff& appLevelStuff ) = 0;
 
 	private:
-	private:
+	protected:
+		entt::registry m_Registry;
+		SceneSerializer m_SceneSerializer;
+
+		friend class SceneSerializer;
 	};
 }

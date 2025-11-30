@@ -4,7 +4,11 @@
 
 namespace RhythmGame
 {
-	void MainLayer::Update( double dt ) {}
+	void MainLayer::Update( double dt )
+	{
+		for ( int x = 0; x < m_Scenes.size(); x++ )
+			m_Scenes[ x ]->Update( dt );
+	}
 
 	void MainLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
 	{

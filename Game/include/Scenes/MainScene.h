@@ -3,8 +3,7 @@
 #include "AppLevelStuff.h"
 #include "entt/entt.hpp"
 
-#include "GameObjects/Camera.h"
-#include "MikuEngine/Scene/Scene.h"
+#include "Scene/Scene.h"
 
 namespace RhythmGame
 {
@@ -19,8 +18,6 @@ namespace RhythmGame
 		void RenderImGui( const MikuEngine::AppLevelStuff& appLevelStuff ) override;
 
 	private:
-		entt::registry m_Registry;
-
-		MikuEngine::Camera m_Camera;
+		uint16_t counter = 0;
 	};
 }
