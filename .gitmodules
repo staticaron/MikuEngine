@@ -13,3 +13,6 @@
 [submodule "MikuEngine/vendor/entt"]
 	path = MikuEngine/vendor/entt
 	url = https://github.com/skypjack/entt.git
+[submodule "MikuEngine/vendor/yaml-cpp"]
+	path = MikuEngine/vendor/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp.git
