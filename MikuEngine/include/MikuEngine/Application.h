@@ -7,6 +7,7 @@
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "Scene/Scene.h"
 
 #include "AppLevelStuff.h"
 #include "Core.h"
@@ -61,6 +62,8 @@ namespace MikuEngine
 		double m_DeltaTime = 0.0;
 		std::chrono::high_resolution_clock::time_point LAST;
 		std::chrono::high_resolution_clock::time_point NOW;
+
+		Scene m_Scene;
 
 		// Layers
 		std::vector<std::unique_ptr<Layer>> m_Layers;

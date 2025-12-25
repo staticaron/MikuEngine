@@ -1,7 +1,7 @@
 #include "Rendering/VertexBuffer.h"
 
 #include "glad/glad.h"
-#include "spdlog/spdlog.h"
+#include "Logger.h"
 
 namespace MikuEngine
 {
@@ -9,7 +9,7 @@ namespace MikuEngine
 
 	VertexBuffer::~VertexBuffer()
 	{
-		spdlog::warn( "Vertex Buffer deleted! ID : {}", m_RendererID );
+		MIKU_WARN( "Vertex Buffer deleted! ID : {}", m_RendererID );
 		glDeleteBuffers( 1, &m_RendererID );
 	}
 
@@ -21,7 +21,7 @@ namespace MikuEngine
 		glBindBuffer( GL_ARRAY_BUFFER, m_RendererID );
 		glBufferData( GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW );
 
-		spdlog::info( "Vertex Buffer Created! ID : {}", m_RendererID );
+		MIKU_INFO( "Vertex Buffer Created! ID : {}", m_RendererID );
 	}
 
 	void VertexBuffer::Bind() const

@@ -4,18 +4,18 @@
 
 #include "Core.h"
 
-class MIKU_API Scene;
-
 namespace MikuEngine
 {
+	class Scene;
+
 	class MIKU_API SceneSerializer
 	{
 	public:
 		SceneSerializer() = default;
 
-		void Serialize( const Scene& scene );
+		void Serialize( Scene& scene, const std::string& savePath );
 
-		void DeSerialize( const std::string& scenepath );
+		bool DeSerialize( Scene& scene, const std::string& scenepath );
 
 	private:
 	};

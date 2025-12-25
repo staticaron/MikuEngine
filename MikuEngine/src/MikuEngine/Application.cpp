@@ -5,7 +5,7 @@
 #include "GLFW/glfw3.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "imgui.h"
-#include "spdlog/spdlog.h"
+#include "Logger.h"
 
 #include "Error.h"
 #include "Rendering/Shader.h"
@@ -130,7 +130,7 @@ namespace MikuEngine
 
 		int major = 0, minor = 0, rev = 0;
 		glfwGetVersion( &major, &minor, &rev );
-		spdlog::info( "GLFW Loaded! #{}{}{}", major, minor, rev );
+		MIKU_INFO( "GLFW Loaded! #{}{}{}", major, minor, rev );
 
 		// Create GLFW Window
 		m_Window = glfwCreateWindow( 640, 480, "MikuEngine", NULL, NULL );
@@ -147,7 +147,7 @@ namespace MikuEngine
 		if ( !gladLoadGL() )
 			return;
 		else
-			spdlog::info( "GLAD Loaded!" );
+			MIKU_INFO( "GLAD Loaded!" );
 
 		// Enable Debugging
 		glEnable( GL_DEBUG_OUTPUT );
@@ -213,6 +213,8 @@ namespace MikuEngine
 		for ( int x = 0; x < m_Layers.size(); x++ )
 			m_Layers[ x ]->Render( m_AppLevelStuff );
 
+		m_Scene.Render( m_AppLevelStuff );
+
 		m_FrameBuffer.UnBind();
 	}
 
@@ -223,8 +225,11 @@ namespace MikuEngine
 
 		m_AppLevelStuff.GetImGuiManager().PrepareFrame();
 
+		// Render ImGui for each layer
 		for ( int x = 0; x < m_Layers.size(); x++ )
 			m_Layers[ x ]->RenderImgui( m_AppLevelStuff );
+
+		m_Scene.RenderImGui( m_AppLevelStuff );
 
 		m_AppLevelStuff.GetImGuiManager().RenderFrameBuffer( m_FrameBuffer );
 

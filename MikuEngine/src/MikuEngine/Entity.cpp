@@ -1,15 +1,8 @@
 #include "Entity.h"
 
-#include "Components/DataComponent.h"
-#include "Components/TransformComponent.h"
-
 namespace MikuEngine
 {
-	Entity::Entity( entt::registry& registry, const std::string& entitiyName )
-	{
-		m_Entity = registry.create();
+	Entity::Entity( entt::entity entity, Scene* parentScene ) : m_Entity( entity ), m_ParentScene( parentScene ) {}
 
-		registry.emplace<DataComponent>( m_Entity, entitiyName );
-		registry.emplace<TransformComponent>( m_Entity );
-	}
+	Entity::Entity( UUID uuid ) {}
 }

@@ -1,6 +1,6 @@
 #include "Rendering/VertexArray.h"
 
-#include "spdlog/spdlog.h"
+#include "Logger.h"
 
 namespace MikuEngine
 {
@@ -8,14 +8,14 @@ namespace MikuEngine
 
 	VertexArray::~VertexArray()
 	{
-		spdlog::warn( "Vertex Array deleted! ID : {}", m_RendererID );
+		MIKU_WARN( "Vertex Array deleted! ID : {}", m_RendererID );
 		glDeleteBuffers( 1, &m_RendererID );
 	}
 
 	void VertexArray::Init()
 	{
 		glGenVertexArrays( 1, &m_RendererID );
-		spdlog::info( "Vertex Array Created! ID : {}", m_RendererID );
+		MIKU_INFO( "Vertex Array Created! ID : {}", m_RendererID );
 	}
 
 	void VertexArray::Bind() const

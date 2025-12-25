@@ -18,7 +18,7 @@ namespace MikuEngine
 		CameraComponent() = default;
 		CameraComponent( const CameraComponent& ) = default;
 
-		CameraComponent( float zoomLevel ) : m_Zoom( zoomLevel ) {}
+		CameraComponent( float zoomLevel ) : Zoom( zoomLevel ) {}
 
 		glm::mat4 GetMVPFromModelMatrix( const entt::registry& registry, const entt::entity& entity, glm::mat4 modelMatrix ) const { return GetProjViewMatrix( registry, entity ) * modelMatrix; }
 
@@ -46,6 +46,6 @@ namespace MikuEngine
 		}
 
 	public:
-		float m_Zoom = 1.0f;
+		float Zoom = 1.0f;
 	};
 }

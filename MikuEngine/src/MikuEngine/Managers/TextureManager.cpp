@@ -3,14 +3,12 @@
 #include <cassert>
 #include <string_view>
 
+#include "Logger.h"
 #include "Rendering/Texture.h"
-#include "spdlog/spdlog.h"
 
 namespace MikuEngine
 {
-	TextureManager::TextureManager()
-	{
-	}
+	TextureManager::TextureManager() {}
 
 	TextureManager::~TextureManager()
 	{
@@ -26,7 +24,7 @@ namespace MikuEngine
 		{
 			if ( TextureAlreadyPresent( identifier ) )
 			{
-				spdlog::error( "Texture with ID : {} is already loaded!", identifier );
+				MIKU_ERROR( "Texture with ID : {} is already loaded!", identifier );
 				continue;
 			}
 
@@ -34,7 +32,7 @@ namespace MikuEngine
 			newTexture.LoadFromFile( filepath );
 			m_Textures[ identifier ] = newTexture;
 
-			spdlog::info( "Texture with ID : {} loaded!", identifier );
+			MIKU_INFO( "Texture with ID : {} loaded!", identifier );
 		}
 	}
 
@@ -42,7 +40,7 @@ namespace MikuEngine
 	{
 		if ( TextureAlreadyPresent( identifier ) )
 		{
-			spdlog::error( "Texture with ID : {} is already loaded!", identifier );
+			MIKU_ERROR( "Texture with ID : {} is already loaded!", identifier );
 			return;
 		}
 
@@ -50,15 +48,14 @@ namespace MikuEngine
 		newTexture.LoadFromFile( filepath );
 		m_Textures[ identifier ] = newTexture;
 
-		spdlog::info( "Texture with ID : {} loaded!", identifier );
+		MIKU_INFO( "Texture with ID : {} loaded!", identifier );
 	}
 
 	bool TextureManager::TextureAlreadyPresent( std::string_view identifier )
 	{
 		auto existing = m_Textures.find( identifier );
 
-		if ( existing != m_Textures.end() )
-			return true;
+		if ( existing != m_Textures.end() ) return true;
 
 		return false;
 	}

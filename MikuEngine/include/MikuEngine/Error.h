@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "glad/glad.h"
-#include "spdlog/spdlog.h"
+#include "Logger.h"
 
 #include "Core.h"
 
@@ -14,81 +14,81 @@ namespace MikuEngine
 		{
 			if ( id == 131169 || id == 131185 || id == 131218 || id == 131204 ) return;
 
-			spdlog::error( "---------------" );
-			spdlog::error( "Debug message ({}) : {}", id, message );
+			MIKU_ERROR( "---------------" );
+			MIKU_ERROR( "Debug message ({}) : {}", id, message );
 
 			switch ( source )
 			{
 			case GL_DEBUG_SOURCE_API:
-				spdlog::error( "Source: API" );
+				MIKU_ERROR( "Source: API" );
 				break;
 			case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
-				spdlog::error( "Source: Window System" );
+				MIKU_ERROR( "Source: Window System" );
 				break;
 			case GL_DEBUG_SOURCE_SHADER_COMPILER:
-				spdlog::error( "Source: Shader Compiler" );
+				MIKU_ERROR( "Source: Shader Compiler" );
 				break;
 			case GL_DEBUG_SOURCE_THIRD_PARTY:
-				spdlog::error( "Source: Third Party" );
+				MIKU_ERROR( "Source: Third Party" );
 				break;
 			case GL_DEBUG_SOURCE_APPLICATION:
-				spdlog::error( "Source: Application" );
+				MIKU_ERROR( "Source: Application" );
 				break;
 			case GL_DEBUG_SOURCE_OTHER:
-				spdlog::error( "Source: Other" );
+				MIKU_ERROR( "Source: Other" );
 				break;
 			}
 
 			switch ( type )
 			{
 			case GL_DEBUG_TYPE_ERROR:
-				spdlog::error( "Type: Error" );
+				MIKU_ERROR( "Type: Error" );
 				break;
 			case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-				spdlog::error( "Type: Deprecated Behaviour" );
+				MIKU_ERROR( "Type: Deprecated Behaviour" );
 				break;
 			case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-				spdlog::error( "Type: Undefined Behaviour" );
+				MIKU_ERROR( "Type: Undefined Behaviour" );
 				break;
 			case GL_DEBUG_TYPE_PORTABILITY:
-				spdlog::error( "Type: Portability" );
+				MIKU_ERROR( "Type: Portability" );
 				break;
 			case GL_DEBUG_TYPE_PERFORMANCE:
-				spdlog::error( "Type: Performance" );
+				MIKU_ERROR( "Type: Performance" );
 				break;
 			case GL_DEBUG_TYPE_MARKER:
-				spdlog::error( "Type: Marker" );
+				MIKU_ERROR( "Type: Marker" );
 				break;
 			case GL_DEBUG_TYPE_PUSH_GROUP:
-				spdlog::error( "Type: Push Group" );
+				MIKU_ERROR( "Type: Push Group" );
 				break;
 			case GL_DEBUG_TYPE_POP_GROUP:
-				spdlog::error( "Type: Pop Group" );
+				MIKU_ERROR( "Type: Pop Group" );
 				break;
 			case GL_DEBUG_TYPE_OTHER:
-				spdlog::error( "Type: Other" );
+				MIKU_ERROR( "Type: Other" );
 				break;
 			}
 
 			switch ( severity )
 			{
 			case GL_DEBUG_SEVERITY_HIGH:
-				spdlog::error( "Severity: high" );
+				MIKU_ERROR( "Severity: high" );
 				break;
 			case GL_DEBUG_SEVERITY_MEDIUM:
-				spdlog::error( "Severity: medium" );
+				MIKU_ERROR( "Severity: medium" );
 				break;
 			case GL_DEBUG_SEVERITY_LOW:
-				spdlog::error( "Severity: low" );
+				MIKU_ERROR( "Severity: low" );
 				break;
 			case GL_DEBUG_SEVERITY_NOTIFICATION:
-				spdlog::error( "Severity: notification" );
+				MIKU_ERROR( "Severity: notification" );
 				break;
 			}
 
 			std::cout << std::endl;
 		}
 
-		static void LogGLFWErorr( int code, const char* message ) { spdlog::error( "GLFW ERROR, \nCode {} \nMessage {}", code, message ); }
+		static void LogGLFWErorr( int code, const char* message ) { MIKU_ERROR( "GLFW ERROR, \nCode {} \nMessage {}", code, message ); }
 	};
 }

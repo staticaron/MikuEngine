@@ -54,6 +54,11 @@ target_compile_definitions("MikuEngine" PUBLIC
 	RESOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/assets/"
 )
 
+target_compile_definitions("MikuEngine" PUBLIC
+	$<$<CONFIG:Debug>:MIKU_DEBUG>
+	$<$<CONFIG:Release>:MIKU_RELEASE>
+)
+
 set_target_properties("MikuEngine" PROPERTIES 
 	LIBRARY_OUTPUT_DIRECTORY "${BIN_DIR}" 
 )

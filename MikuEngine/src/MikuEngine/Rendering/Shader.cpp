@@ -2,7 +2,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "spdlog/spdlog.h"
+#include "Logger.h"
 
 #include "Rendering/VertexBufferLayout.h"
 
@@ -20,11 +20,11 @@ namespace MikuEngine
 
 		std::ifstream stream( filepath.data() );
 
-		spdlog::info( "Shader Loaded at filepath {}", filepath );
+		MIKU_INFO( "Shader Loaded at filepath {}", filepath );
 
 		if ( !stream.is_open() )
 		{
-			spdlog::error( "Error loading the file at " );
+			MIKU_ERROR( "Error loading the file at " );
 			return;
 		}
 
@@ -76,7 +76,7 @@ namespace MikuEngine
 			char* logMessage = ( char* )alloca( lengthOfMessage * sizeof( char ) );
 			glGetShaderInfoLog( shaderID, lengthOfMessage, &lengthOfMessage, logMessage );
 
-			spdlog::error( "ERROR COMPILING SHADER {}", logMessage );
+			MIKU_ERROR( "ERROR COMPILING SHADER {}", logMessage );
 		}
 
 		return shaderID;

@@ -1,0 +1,25 @@
+scene: Untitled
+entities:
+  - name: Main Camera
+    id: 12751353118179448355
+    components:
+      - type: TransformComponent
+        values:
+          position: [176, 1, 1]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 0]
+      - type: CameraComponent
+        values:
+          zoom: 1
+  - name: Main GameObject
+    id: 12764823001467717413
+    components:
+      - type: TransformComponent
+        values:
+          position: [558, 418, 0]
+          rotation: [0, 0, 12]
+          scale: [200, 200, 0]
+      - type: SpriteRendererComponent
+        values:
+          texture: miku
+          tint: [1, 1, 1, 1]

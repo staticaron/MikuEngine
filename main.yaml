@@ -1,0 +1,20 @@
+Scene: Untitled
+Entities:
+  - Entity: 6092944044487356167
+    Data Component:
+      Name: Main GameObject
+    Transform Component:
+      Position: [100, 100, 0]
+      Rotation: [0, 0, 0]
+      Scale: [100, 100, 0]
+    SpriteRenderer Component:
+      Texture Identifier: miku
+      Tint: [1, 1, 1, 1]
+  - Entity: 7213504735455355963
+    Data Component:
+      Name: Main Camera
+    Transform Component:
+      Position: [1, 1, 1]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+

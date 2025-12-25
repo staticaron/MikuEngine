@@ -1,4 +1,7 @@
+#include "Logger.h"
 #include "Systems/RenderingSystem.h"
+
+#include <optional>
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -23,13 +26,13 @@ namespace MikuEngine
 		// Camera
 		const auto& cameras = registry.view<CameraComponent>();
 
-		entt::entity cameraEntity;
-		CameraComponent camera;
+		std::optional<entt::entity> cameraEntity;
+		std::optional<CameraComponent> cameraComponent;
 
 		for ( const auto& [ entity, cam ] : cameras.each() )
 		{
 			cameraEntity = entity;
-			camera = cam;
+			cameraComponent = cam;
 		}
 
 		const auto& renderer = appLevelStuff.GetRenderer();
@@ -41,6 +44,12 @@ namespace MikuEngine
 
 		for ( const auto& [ entity, data, spriteRenderer ] : entities.each() )
 		{
+			// INFO: No point in doing rendering if there is no camera
+			if ( !cameraEntity.has_value() )
+			{
+				MIKU_WARN( "There is no ACTIVE camera in this scene" );
+				return;
+			}
 			const auto& transform = registry.get<TransformComponent>( entity );
 
 			const Texture& texture = textureManager.GetTexture( spriteRenderer.TextureIdentifier );
@@ -50,7 +59,7 @@ namespace MikuEngine
 			auto viewport = Application::GetApplication()->GetDataContainer().GetViewportSize();
 
 			glm::mat4 proj = glm::ortho( 0.0f, viewport.x, viewport.y, 0.0f, -1000.0f, 1000.0f );
-			glm::mat4 view = camera.GetViewMatrix( registry, cameraEntity );
+			glm::mat4 view = cameraComponent.value().GetViewMatrix( registry, cameraEntity.value() );
 			glm::mat4 model = transform.GetModelMatrix();
 
 			glm::mat4 mvp = proj * view * model;
