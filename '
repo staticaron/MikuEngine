@@ -76,6 +76,7 @@ namespace MikuEngine
 
 	bool ImguiManager::FullWidthButton( const std::string& text )
 	{
-		return ImGui::Button( text.c_str(), ImVec2( -FLT_MIN, 0 ) );
+		ImGui::PushItemWidth( -1 );
+		return ImGui::Button( text.c_str() );
 	}
 }

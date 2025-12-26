@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "backends/imgui_impl_glfw.h"
 #include "Core.h"
 #include "Rendering/FrameBuffer.h"
@@ -20,6 +22,8 @@ namespace MikuEngine
 		void RenderFrame();
 
 		void RenderFrameBuffer( FrameBuffer& frameBuffer );
+
+		static bool FullWidthButton( const std::string& text );
 
 	private:
 	};

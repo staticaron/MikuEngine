@@ -35,10 +35,19 @@ namespace MikuEngine
 
 		template <typename T>
 			requires( std::is_base_of_v<BaseComponent, T> )
-		bool HasComponent()
+		T GetReadOnlyComponent() const
+		{
+			return m_ParentScene->m_Registry.get<T>( m_Entity );
+		}
+
+		template <typename T>
+			requires( std::is_base_of_v<BaseComponent, T> )
+		bool HasComponent() const
 		{
 			return m_ParentScene->m_Registry.any_of<T>( m_Entity );
 		}
+
+		std::string GetNamedIdentifier() const;
 
 	private:
 		Scene* m_ParentScene = nullptr;

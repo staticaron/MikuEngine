@@ -27,28 +27,37 @@ namespace MikuEngine
 	{
 		ImGui::Begin( "Hierarchy" );
 
-		int item_highlighted_idx = -1;
+		float footer_height_to_reserve = ImGui::GetFrameHeightWithSpacing();
 
-		if ( ImGui::BeginListBox( "##Scene Hierarchy", ImVec2( -FLT_MIN, -FLT_MIN ) ) )
+		if ( ImGui::BeginChild( "##Entities", ImVec2( 0, -footer_height_to_reserve ), false ) )
 		{
-			auto entities = scene.GetAllEntities();
-			std::vector<std::string> entitiyNames;
-
-			for ( int x = 0; x < entities.size(); x++ )
+			if ( ImGui::BeginListBox( "##Scene Hierarchy", ImVec2( -FLT_MIN, -FLT_MIN ) ) )
 			{
-				auto dc = entities[ x ].GetComponent<DataComponent>();
-				auto ic = entities[ x ].GetComponent<IDComponent>();
+				int item_highlighted_idx = -1;
 
-				bool is_selected = ( scene.m_SelectedEntityID == ic.ID );
-				ImGuiSelectableFlags flags = ( item_highlighted_idx == x ) ? ImGuiSelectableFlags_Highlight : 0;
+				auto entities = scene.GetAllEntities();
+				std::vector<std::string> entitiyNames;
 
-				if ( ImGui::Selectable( dc.EntityName.c_str(), is_selected, flags ) ) scene.m_SelectedEntityID = ic.ID;
+				for ( int x = 0; x < entities.size(); x++ )
+				{
+					auto dc = entities[ x ].GetComponent<DataComponent>();
+					auto ic = entities[ x ].GetComponent<IDComponent>();
 
-				if ( is_selected ) ImGui::SetItemDefaultFocus();
+					bool is_selected = ( scene.m_SelectedEntityID == ic.ID );
+					ImGuiSelectableFlags flags = ( item_highlighted_idx == x ) ? ImGuiSelectableFlags_Highlight : 0;
+
+					if ( ImGui::Selectable( entities[ x ].GetNamedIdentifier().c_str(), is_selected, flags ) ) scene.m_SelectedEntityID = ic.ID;
+
+					if ( is_selected ) ImGui::SetItemDefaultFocus();
+				}
+
+				ImGui::EndListBox();
 			}
 
-			ImGui::EndListBox();
+			ImGui::EndChild();
 		}
+
+		if ( ImguiManager::FullWidthButton( "ADD" ) ) scene.CreateEntity( "New GameObject", &scene );
 
 		ImGui::End();
 	}
