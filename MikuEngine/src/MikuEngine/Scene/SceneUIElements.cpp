@@ -70,6 +70,23 @@ namespace MikuEngine
 
 		if ( selectedEntity.has_value() )
 		{
+			if ( selectedEntity.value().HasComponent<DataComponent>() )
+			{
+				auto& dataC = selectedEntity.value().GetComponent<DataComponent>();
+
+				ImGui::TextUnformatted( "Entity" );
+				ImGui::SameLine();
+
+				char entityName[ 255 ];
+
+				std::copy( dataC.EntityName.begin(), dataC.EntityName.begin() + dataC.EntityName.length(), entityName );
+				entityName[ dataC.EntityName.length() ] = '\0';
+
+				ImGui::InputText( "##DataComponent", entityName, 255 );
+
+				if ( ImGui::IsItemDeactivatedAfterEdit() ) dataC.EntityName = std::string( entityName );
+			}
+
 			if ( selectedEntity.value().HasComponent<TransformComponent>() )
 			{
 				auto& transformC = selectedEntity.value().GetComponent<TransformComponent>();
@@ -116,6 +133,10 @@ namespace MikuEngine
 			}
 		}
 
+		if ( ImguiManager::FullWidthButton( "Add Component" ) )
+		{
+			scene.GetSelectedEntity()->AddComponent<SpriteRendererComponent>();
+		}
 		ImGui::End();
 	}
 

@@ -21,6 +21,6 @@ namespace MikuEngine
 		SpriteRendererComponent( const glm::vec4& tint, const std::string& textureIdentifier ) : Tint( tint ), TextureIdentifier( textureIdentifier ) {};
 
 		glm::vec4 Tint{ 1.0f };
-		std::string TextureIdentifier = "miku";
+		std::string TextureIdentifier = "";
 	};
 }
