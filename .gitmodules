@@ -16,3 +16,6 @@
 [submodule "MikuEngine/vendor/yaml-cpp"]
 	path = MikuEngine/vendor/yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp.git
+[submodule "MikuEngine/vendor/nativefiledialog"]
+	path = MikuEngine/vendor/nativefiledialog
+	url = https://github.com/mlabbe/nativefiledialog.git

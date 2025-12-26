@@ -30,7 +30,8 @@ namespace MikuEngine
 
 	private:
 		std::unordered_map<std::string_view, std::string> m_TexturesToLoad = {
-		    { "miku", RESOURCE_DIR "textures/base.png" },
+		    {"base", RESOURCE_DIR "textures/base.png"},
+		    {"miku", RESOURCE_DIR "textures/miku.png"},
 		};
 
 		std::unordered_map<std::string_view, Texture> m_Textures;

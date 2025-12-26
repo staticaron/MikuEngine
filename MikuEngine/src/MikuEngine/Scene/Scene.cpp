@@ -1,29 +1,18 @@
 #include "Scene/Scene.h"
 
+#include <optional>
+
 #include "AppLevelStuff.h"
+#include "Logger.h"
+
 #include "Components.h"
 #include "Entity.h"
-#include "Systems/RenderImGuiSystem.h"
+#include "Scene/SceneUIElements.h"
 #include "Systems/RenderingSystem.h"
 
 namespace MikuEngine
 {
-	Scene::Scene()
-	{
-		/*
-		// Create One Camera
-		auto mainCam = CreateEntity( "Main Camera", this );
-		mainCam.AddComponent<CameraComponent>();
-
-		// Create Entity
-		auto entity = CreateEntity( "Main GameObject", this );
-		entity.GetComponent<TransformComponent>().Position = glm::vec3( 100.0f, 100.0f, 0.0f );
-		entity.GetComponent<TransformComponent>().Scale = glm::vec3( 100.0f, 100.0f, 0.0f );
-
-		entity.AddComponent<SpriteRendererComponent>();
-		entity.GetComponent<SpriteRendererComponent>().TextureIdentifier = "miku";
-		*/
-	}
+	Scene::Scene() {}
 
 	void Scene::Update( double dt ) {}
 
@@ -34,22 +23,11 @@ namespace MikuEngine
 
 	void Scene::RenderImGui( const AppLevelStuff& appLevelStuff )
 	{
-		if ( ImGui::BeginMainMenuBar() )
-		{
-			if ( ImGui::BeginMenu( "Scene" ) )
-			{
-				ImGui::Separator();
-				if ( ImGui::MenuItem( "Save", "CTRL+S" ) ) Save( "main.miku" );
-				ImGui::Separator();
-				if ( ImGui::MenuItem( "Open", "CTRL+O" ) ) Load( "main.miku" );
-				ImGui::Separator();
-				if ( ImGui::MenuItem( "Clean", "CTRL+W" ) ) Clean();
-				ImGui::EndMenu();
-			}
-			ImGui::EndMainMenuBar();
-		}
+		ImGui::ShowDemoWindow();
 
-		RenderImGuiSystem::RenderImGui( m_Registry, appLevelStuff );
+		SceneUIElements::RenderMenuBar( *this );
+		SceneUIElements::RenderHierarchy( *this );
+		SceneUIElements::RenderInspector( *this );
 	}
 
 	Entity Scene::CreateEntity( const std::string& name, Scene* parentScene )
@@ -76,6 +54,28 @@ namespace MikuEngine
 		m_Registry.emplace<TransformComponent>( entity );
 
 		return entt;
+	}
+
+	std::optional<Entity> Scene::GetSelectedEntity()
+	{
+		auto entities = m_Registry.view<IDComponent>();
+
+		for ( const auto& [ entity, id ] : entities.each() )
+			if ( id.ID == m_SelectedEntityID ) return Entity( entity, this );
+
+		return {};
+	}
+
+	std::vector<Entity> Scene::GetAllEntities()
+	{
+		std::vector<Entity> entities;
+
+		auto entities_raw = m_Registry.view<entt::entity>();
+
+		for ( auto entitiy_raw : entities_raw )
+			entities.emplace_back( Entity{ entitiy_raw, this } );
+
+		return entities;
 	}
 
 	void Scene::Clean()

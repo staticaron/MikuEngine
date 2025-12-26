@@ -28,12 +28,14 @@ namespace MikuEngine
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+		io.Fonts->AddFontFromFileTTF( RESOURCE_DIR "fonts/jetbrains_mono.ttf" );
 
 		ImGui::StyleColorsDark();
 
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.ScaleAllSizes( main_scale );
 		style.FontScaleDpi = main_scale;
+		style.FontScaleMain = 0.8f;
 
 		ImGui_ImplGlfw_InitForOpenGL( window, true );
 		ImGui_ImplOpenGL3_Init();

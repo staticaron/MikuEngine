@@ -5,8 +5,10 @@
 #include <string_view>
 
 #include "glm/fwd.hpp"
-#include "Logger.h"
+#include "nfd.h"
 #include "yaml-cpp/yaml.h"
+
+#include "Logger.h"
 
 #include "Components.h"
 #include "Entity.h"
@@ -120,13 +122,33 @@ namespace MikuEngine
 
 		emitter << YAML::EndMap;
 
-		std::ofstream fout( savePath );
+		nfdchar_t* newPath = nullptr;
+
+		nfdresult_t result = NFD_SaveDialog( "miku", nullptr, &newPath );
+
+		if ( result != NFD_OKAY )
+		{
+			MIKU_ERROR( "Unable to Save to this Path!" );
+			return;
+		}
+
+		std::ofstream fout( newPath );
 		fout << emitter.c_str();
 	}
 
 	bool SceneSerializer::DeSerialize( Scene& scene, const std::string& loadPath )
 	{
-		YAML::Node node = YAML::LoadFile( loadPath );
+		nfdchar_t* newPath = nullptr;
+
+		nfdresult_t result = NFD_OpenDialog( "miku", nullptr, &newPath );
+
+		if ( result != NFD_OKAY )
+		{
+			MIKU_ERROR( "Unable to load the scene file! File Not Found! " )
+			return false;
+		}
+
+		YAML::Node node = YAML::LoadFile( newPath );
 
 		MIKU_INFO( "Loading Scene : ", node[ "scene" ].as<std::string>() );
 
