@@ -132,8 +132,15 @@ namespace MikuEngine
 		glfwGetVersion( &major, &minor, &rev );
 		MIKU_INFO( "GLFW Loaded! #{}{}{}", major, minor, rev );
 
+		const GLFWvidmode* mode = glfwGetVideoMode( glfwGetPrimaryMonitor() );
+
+		glfwWindowHint( GLFW_RED_BITS, mode->redBits );
+		glfwWindowHint( GLFW_BLUE_BITS, mode->blueBits );
+		glfwWindowHint( GLFW_GREEN_BITS, mode->greenBits );
+		glfwWindowHint( GLFW_REFRESH_RATE, mode->refreshRate );
+
 		// Create GLFW Window
-		m_Window = glfwCreateWindow( 640, 480, "MikuEngine", NULL, NULL );
+		m_Window = glfwCreateWindow( mode->width, mode->height, "Miku Engine", NULL, NULL );
 
 		if ( !m_Window )
 		{
