@@ -63,8 +63,6 @@ namespace MikuEngine
 		std::chrono::high_resolution_clock::time_point LAST;
 		std::chrono::high_resolution_clock::time_point NOW;
 
-		Scene m_Scene;
-
 		// Layers
 		std::vector<std::unique_ptr<Layer>> m_Layers;
 	};

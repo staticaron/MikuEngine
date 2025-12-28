@@ -3,9 +3,9 @@
 #include "AppLevelStuff.h"
 #include "MikuEngine/Layer.h"
 
-namespace RhythmGame
+namespace MikuEditor
 {
-	class MainLayer : public MikuEngine::Layer
+	class EditorLayer : public MikuEngine::Layer
 	{
 	public:
 		void Update( double dt ) override;

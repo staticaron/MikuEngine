@@ -220,8 +220,6 @@ namespace MikuEngine
 		for ( int x = 0; x < m_Layers.size(); x++ )
 			m_Layers[ x ]->Render( m_AppLevelStuff );
 
-		m_Scene.Render( m_AppLevelStuff );
-
 		m_FrameBuffer.UnBind();
 	}
 
@@ -235,8 +233,6 @@ namespace MikuEngine
 		// Render ImGui for each layer
 		for ( int x = 0; x < m_Layers.size(); x++ )
 			m_Layers[ x ]->RenderImgui( m_AppLevelStuff );
-
-		m_Scene.RenderImGui( m_AppLevelStuff );
 
 		m_AppLevelStuff.GetImGuiManager().RenderFrameBuffer( m_FrameBuffer );
 

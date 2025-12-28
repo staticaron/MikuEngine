@@ -1,13 +1,10 @@
 #include "Scene/Scene.h"
 
-#include <optional>
-
 #include "AppLevelStuff.h"
 #include "Logger.h"
 
 #include "Components.h"
 #include "Entity.h"
-#include "Scene/SceneUIElements.h"
 #include "Systems/RenderingSystem.h"
 
 namespace MikuEngine
@@ -21,14 +18,7 @@ namespace MikuEngine
 		RenderingSystem::RenderSprite( m_Registry, appLevelStuff );
 	}
 
-	void Scene::RenderImGui( const AppLevelStuff& appLevelStuff )
-	{
-		ImGui::ShowDemoWindow();
-
-		SceneUIElements::RenderMenuBar( *this );
-		SceneUIElements::RenderHierarchy( *this );
-		SceneUIElements::RenderInspector( *this );
-	}
+	void Scene::RenderImGui( const AppLevelStuff& appLevelStuff ) {}
 
 	Entity Scene::CreateEntity( const std::string& name, Scene* parentScene )
 	{
@@ -66,6 +56,17 @@ namespace MikuEngine
 		return {};
 	}
 
+	void Scene::SetSelectedEntity( UUID uuid )
+	{
+		if ( !GetEntityByID( uuid ).has_value() )
+		{
+			MIKU_ERROR( "This Entity is not present in scene! Can't set as active entity!" );
+			return;
+		}
+
+		m_SelectedEntityID = uuid;
+	}
+
 	std::vector<Entity> Scene::GetAllEntities()
 	{
 		std::vector<Entity> entities;
@@ -76,6 +77,18 @@ namespace MikuEngine
 			entities.emplace_back( Entity{ entitiy_raw, this } );
 
 		return entities;
+	}
+
+	std::optional<Entity> Scene::GetEntityByID( UUID id )
+	{
+		auto idView = m_Registry.view<IDComponent>();
+
+		for ( const auto& [ entity, idC ] : idView.each() )
+		{
+			if ( idC.ID == id ) return Entity{ entity, this };
+		}
+
+		return {};
 	}
 
 	void Scene::Clean()

@@ -11,8 +11,13 @@ namespace MikuEngine
 	{
 	public:
 		Renderer& GetRenderer() { return m_Renderer; }
+		const Renderer& GetRenderer() const { return m_Renderer; }
+
 		TextureManager& GetTextureManager() { return m_TextureManager; }
+		const TextureManager& GetTextureManager() const { return m_TextureManager; }
+
 		ImguiManager& GetImGuiManager() { return m_ImGuiManager; }
+		const ImguiManager& GetImGuiManager() const { return m_ImGuiManager; }
 
 		void SetRenderer( Renderer& renderer ) { m_Renderer = renderer; }
 		void SetTextureManager( TextureManager& textureManager ) { m_TextureManager = textureManager; }

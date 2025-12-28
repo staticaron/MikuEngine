@@ -6,4 +6,4 @@ cmake --build build
 
 cp build/compile_commands.json .
 
-./build/bin/Game
+./scripts/run.sh

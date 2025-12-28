@@ -3,13 +3,14 @@
 #include <string>
 
 #include "Core.h"
+#include "UUID.h"
 
 namespace MikuEngine
 {
 	class MIKU_API Texture
 	{
 	public:
-		Texture() = default;
+		Texture( UUID uuid );
 
 		void LoadFromFile( const std::string& filepath );
 
@@ -18,7 +19,10 @@ namespace MikuEngine
 
 		void Destroy();
 
+		UUID GetUUID() const { return m_UUID; }
+
 	private:
+		UUID m_UUID;
 		unsigned int m_RendererID = 0;
 		int m_Width = -1, m_Height = -1;
 		int m_Channels = -1;

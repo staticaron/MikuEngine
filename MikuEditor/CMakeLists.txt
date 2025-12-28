@@ -5,22 +5,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-project("Game")
+project("MikuEditor")
 
 file(GLOB_RECURSE GAME_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
 
-add_executable("Game" "${GAME_SOURCES}")
+add_executable("MikuEditor" "${GAME_SOURCES}")
 
-target_include_directories("Game" PRIVATE 
+target_include_directories("MikuEditor" PRIVATE 
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
-target_link_libraries("Game" PRIVATE 
+target_link_libraries("MikuEditor" PRIVATE 
 	MikuEngine
 )
-set_target_properties("Game" PROPERTIES
+set_target_properties("MikuEditor" PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR}
 )

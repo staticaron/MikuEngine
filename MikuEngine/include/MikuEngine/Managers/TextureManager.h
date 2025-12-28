@@ -1,39 +1,43 @@
 #pragma once
 
 #include <string>
-#include <string_view>
 #include <unordered_map>
 
 #include "Core.h"
+#include "UUID.h"
+
 #include "Rendering/Texture.h"
 
 namespace MikuEngine
 {
+	struct TextureIndexEntry
+	{
+		UUID uuid;
+		std::string name;
+		std::string path;
+	};
+
 	class MIKU_API TextureManager
 	{
 	public:
 		TextureManager();
 		~TextureManager();
 
-		void LoadTexture( std::string_view identifier, const std::string& filepath );
+		void LoadTexture( const std::string& name, const std::string& filepath );
 		void LoadAllTextures();
 
-		const Texture& GetTexture( std::string_view identifier ) const
-		{
-			auto existing = m_Textures.find( identifier );
+		void PrepareTextureIndex();
+		const std::unordered_map<UUID, TextureIndexEntry>& GetTextureIndex() const;
 
-			return existing->second;
-		}
-
-	private:
-		bool TextureAlreadyPresent( std::string_view identifier );
+		const Texture& GetTexture( UUID textureUUID ) const;
+		const Texture& GetTexture( const std::string& name ) const;
 
 	private:
-		std::unordered_map<std::string_view, std::string> m_TexturesToLoad = {
-		    {"base", RESOURCE_DIR "textures/base.png"},
-		    {"miku", RESOURCE_DIR "textures/miku.png"},
-		};
+		bool TextureAlreadyPresent( UUID textureID ) const;
 
-		std::unordered_map<std::string_view, Texture> m_Textures;
+	private:
+		std::unordered_map<UUID, TextureIndexEntry> m_TextureIndex;
+
+		std::unordered_map<UUID, Texture> m_Textures;
 	};
 }

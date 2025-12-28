@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <vector>
 
 #include "entt/entt.hpp"
@@ -13,7 +14,6 @@
 namespace MikuEngine
 {
 	class Entity;
-	class SceneUIElements;
 
 	class MIKU_API Scene
 	{
@@ -29,8 +29,10 @@ namespace MikuEngine
 		Entity LoadEntity( const std::string& name, UUID uuid, Scene* parentScene );
 
 		std::optional<Entity> GetSelectedEntity();
+		void SetSelectedEntity( UUID uuid );
 
 		std::vector<Entity> GetAllEntities();
+		std::optional<Entity> GetEntityByID( UUID id );
 
 		void Clean();
 		void Save( const std::string& path );
@@ -45,6 +47,5 @@ namespace MikuEngine
 	protected:
 		friend class SceneSerializer;
 		friend class Entity;
-		friend class SceneUIElements;
 	};
 }

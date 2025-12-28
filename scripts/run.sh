@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./build/bin/Game
+./build/bin/MikuEditor
