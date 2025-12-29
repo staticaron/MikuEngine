@@ -5,19 +5,23 @@
 
 #include "yaml-cpp/yaml.h"
 
+#include "Logger.h"
 #include "UUID.h"
 
 namespace MikuEngine
 {
 	void MetaFileManager::RefreshMetaFiles()
 	{
-		// Go through each and every directory
 		for ( auto file : std::filesystem::recursive_directory_iterator( PROJECT_DIR ) )
 		{
-			// For each and every file check if the same directory has filename.ext.meta file
-			bool metaFileExists = std::filesystem::exists( file.path().string() + ".meta" );
+			std::filesystem::file_type type;
+			file.status().type( type );
 
-			// If the file exists, good
+			// Skip meta files
+			if ( file.path().extension() == ".meta" ) continue;
+
+			// If meta file already exists, Skip
+			bool metaFileExists = std::filesystem::exists( file.path().string() + ".meta" );
 			if ( metaFileExists ) continue;
 
 			// If it doesn't, generate the file with the required meta data and random UUID
@@ -39,5 +43,7 @@ namespace MikuEngine
 			std::ofstream metaFileStream( file.path().string() + ".meta" );
 			metaFileStream << metaFileEmitter.c_str();
 		}
+
+		MIKU_INFO( "Meta Files Refreshed!" );
 	}
 }

@@ -50,6 +50,9 @@ namespace MikuEngine
 	{
 		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "textures/" ) )
 		{
+			// skip meta files
+			if ( file.path().extension() == ".meta" ) continue;
+
 			UUID uuid;
 			m_TextureIndex[ uuid ] = { uuid, file.path().stem().string(), file.path().string() };
 		}
