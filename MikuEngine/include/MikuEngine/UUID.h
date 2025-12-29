@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <string>
 
 namespace MikuEngine
 {
@@ -10,6 +11,7 @@ namespace MikuEngine
 	public:
 		UUID();
 		UUID( uint64_t uuid );
+		UUID( const std::string& uuidStr );
 
 		operator uint64_t() const { return m_UUID; }
 
@@ -23,6 +25,6 @@ namespace std
 	template <>
 	struct hash<MikuEngine::UUID>
 	{
-		std::size_t operator()( const MikuEngine::UUID uuid ) const { return hash<uint64_t>()( ( uint64_t )uuid ); }
+		std::size_t operator()( const MikuEngine::UUID& uuid ) const { return std::hash<uint64_t>()( ( uint64_t )uuid ); }
 	};
 }

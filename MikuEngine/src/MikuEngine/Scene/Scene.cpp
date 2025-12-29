@@ -24,9 +24,8 @@ namespace MikuEngine
 	{
 		auto entity = m_Registry.create();
 
-		Entity entt( entity, parentScene );
+		Entity entt( ( UUID() ), entity, parentScene );
 
-		m_Registry.emplace<IDComponent>( entity );
 		m_Registry.emplace<DataComponent>( entity, name );
 		m_Registry.emplace<TransformComponent>( entity );
 
@@ -37,9 +36,8 @@ namespace MikuEngine
 	{
 		auto entity = m_Registry.create();
 
-		Entity entt( entity, parentScene );
+		Entity entt( uuid, entity, parentScene );
 
-		m_Registry.emplace<IDComponent>( entity, uuid );
 		m_Registry.emplace<DataComponent>( entity, name );
 		m_Registry.emplace<TransformComponent>( entity );
 
@@ -50,8 +48,8 @@ namespace MikuEngine
 	{
 		auto entities = m_Registry.view<IDComponent>();
 
-		for ( const auto& [ entity, id ] : entities.each() )
-			if ( id.ID == m_SelectedEntityID ) return Entity( entity, this );
+		for ( const auto& [ entity, idC ] : entities.each() )
+			if ( idC.ID == m_SelectedEntityID ) return Entity( idC.ID, entity, this );
 
 		return {};
 	}
@@ -71,10 +69,10 @@ namespace MikuEngine
 	{
 		std::vector<Entity> entities;
 
-		auto entities_raw = m_Registry.view<entt::entity>();
+		auto entities_raw = m_Registry.view<IDComponent>();
 
-		for ( auto entitiy_raw : entities_raw )
-			entities.emplace_back( Entity{ entitiy_raw, this } );
+		for ( const auto [ entitiy_raw, idC ] : entities_raw.each() )
+			entities.emplace_back( Entity{ idC.ID, entitiy_raw, this } );
 
 		return entities;
 	}
@@ -85,7 +83,7 @@ namespace MikuEngine
 
 		for ( const auto& [ entity, idC ] : idView.each() )
 		{
-			if ( idC.ID == id ) return Entity{ entity, this };
+			if ( idC.ID == id ) return Entity{ idC.ID, entity, this };
 		}
 
 		return {};

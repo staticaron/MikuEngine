@@ -11,4 +11,5 @@ namespace MikuEngine
 	UUID::UUID() : m_UUID( s_UniformDistribution( s_Engine ) ) {}
 
 	UUID::UUID( uint64_t uuid ) : m_UUID( uuid ) {}
+	UUID::UUID( const std::string& uuidStr ) : m_UUID( std::stoull( uuidStr.c_str() ) ) {}
 }

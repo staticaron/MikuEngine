@@ -1,12 +1,14 @@
 #include "Panels/InspectorPanel.h"
 
-#include "Entity.h"
+#include "AppLevelStuff.h"
+#include "MikuEngine/Entity.h"
 
+#include "MikuEngine/Logger.h"
 #include "Panels/Panels.h"
 
 namespace MikuEditor
 {
-	void InspectorPanel::RenderInspectorPanel( EditorLayer& layer, MikuEngine::Scene& scene )
+	void InspectorPanel::RenderInspectorPanel( EditorLayer& editorLayer, const MikuEngine::AppLevelStuff& appLevelStuff, MikuEngine::Scene& scene )
 	{
 		ImGui::Begin( "Inspector" );
 
@@ -51,10 +53,17 @@ namespace MikuEditor
 
 				if ( ImGui::TreeNode( "SpriteRendererComponent" ) )
 				{
-					DISABLED_IMGUI( ImGui::Button( spriteRendererC.TextureIdentifier.c_str() ) );
+					auto textureUUID = spriteRendererC.TextureIdentifier;
+
+					auto texture = appLevelStuff.GetTextureManager().GetTexture( textureUUID.value() );
+					auto textureName = appLevelStuff.GetTextureManager().GetTextureName( textureUUID.value() );
+
+					DISABLED_IMGUI( ImGui::Button( textureName.c_str() ) );
 					ImGui::SameLine();
 					if ( ImGui::Button( "EDIT..." ) )
 					{
+						editorLayer.m_TextureSelectionWindow.emplace_back( selectedEntity.value().GetUUID(), [ spriteRendererC ]( MikuEngine::UUID textureUUID ) mutable { spriteRendererC.TextureIdentifier = textureUUID; } );
+						MIKU_INFO( "Entity for which texture selection window was opened {}", std::to_string( selectedEntity.value().GetUUID() ) );
 					}
 
 					ImGui::DragFloat4( "Tint", &spriteRendererC.Tint.x );
@@ -80,6 +89,15 @@ namespace MikuEditor
 		{
 			scene.GetSelectedEntity()->AddComponent<MikuEngine::SpriteRendererComponent>();
 		}
+
+		if ( selectedEntity.has_value() )
+		{
+			auto& idC = selectedEntity.value().GetComponent<MikuEngine::IDComponent>();
+			std::string id = "ID : " + std::to_string( idC.ID );
+
+			ImGui::TextUnformatted( id.c_str() );
+		}
+
 		ImGui::End();
 	}
 }

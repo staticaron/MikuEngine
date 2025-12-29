@@ -1,6 +1,7 @@
 #include "Panels/MenuBar.h"
 
-#include "Entity.h"
+#include "MikuEngine/Entity.h"
+#include "MikuEngine/Managers/MetaFileManager.h"
 
 namespace MikuEditor
 {
@@ -16,6 +17,12 @@ namespace MikuEditor
 				if ( ImGui::MenuItem( "Open...", "CTRL+O" ) ) scene.Load( "main.miku" );
 				ImGui::Separator();
 				if ( ImGui::MenuItem( "Clean", "CTRL+W" ) ) scene.Clean();
+				ImGui::EndMenu();
+			}
+			if ( ImGui::BeginMenu( "Assets" ) )
+			{
+				ImGui::Separator();
+				if ( ImGui::MenuItem( "Refresh" ) ) MikuEngine::MetaFileManager::RefreshMetaFiles();
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();

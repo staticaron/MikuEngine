@@ -10,14 +10,18 @@
 
 namespace MikuEngine
 {
-
 	class MIKU_API Entity
 	{
 	public:
-		Entity( entt::entity entity, Scene* parentScene );
-		Entity( UUID uuid );
+		Entity( UUID uuid, entt::entity entity, Scene* parentScene );
 
-		UUID GetUUID() const { return m_UUID; }
+		UUID GetUUID() const
+		{
+			auto idC = GetReadOnlyComponent<IDComponent>();
+			return idC.ID;
+		}
+
+		void SetUUID( UUID uuid ) { GetOrAddComponent<IDComponent>().ID = uuid; }
 
 		template <typename T>
 			requires( std::is_base_of_v<BaseComponent, T> )
@@ -42,6 +46,19 @@ namespace MikuEngine
 
 		template <typename T>
 			requires( std::is_base_of_v<BaseComponent, T> )
+		T& GetOrAddComponent()
+		{
+			if ( HasComponent<T>() )
+				return GetComponent<T>();
+			else
+			{
+				AddComponent<T>();
+				return GetComponent<T>();
+			}
+		}
+
+		template <typename T>
+			requires( std::is_base_of_v<BaseComponent, T> )
 		bool HasComponent() const
 		{
 			return m_ParentScene->m_Registry.any_of<T>( m_Entity );
@@ -52,7 +69,5 @@ namespace MikuEngine
 	private:
 		Scene* m_ParentScene = nullptr;
 		entt::entity m_Entity;
-
-		UUID m_UUID;
 	};
 }

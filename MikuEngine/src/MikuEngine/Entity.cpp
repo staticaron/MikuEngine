@@ -1,10 +1,14 @@
 #include "Entity.h"
 
 #include "Components.h"
+#include "Logger.h"
 
 namespace MikuEngine
 {
-	Entity::Entity( entt::entity entity, Scene* parentScene ) : m_Entity( entity ), m_ParentScene( parentScene ) {}
+	Entity::Entity( UUID uuid, entt::entity entity, Scene* parentScene ) : m_Entity( entity ), m_ParentScene( parentScene )
+	{
+		SetUUID( uuid );
+	}
 
 	std::string Entity::GetNamedIdentifier() const
 	{
@@ -13,5 +17,4 @@ namespace MikuEngine
 
 		return dc.EntityName + "##" + std::to_string( ic.ID );
 	}
-	Entity::Entity( UUID uuid ) {}
 }

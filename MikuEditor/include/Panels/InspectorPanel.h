@@ -10,7 +10,7 @@ namespace MikuEditor
 	class MIKU_API InspectorPanel
 	{
 	public:
-		static void RenderInspectorPanel( EditorLayer& editorLayer, MikuEngine::Scene& scene );
+		static void RenderInspectorPanel( EditorLayer& editorLayer, const MikuEngine::AppLevelStuff& appLevelStuff, MikuEngine::Scene& scene );
 
 	private:
 	};

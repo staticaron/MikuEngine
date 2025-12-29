@@ -30,7 +30,7 @@ namespace MikuEngine
 
 			Texture newTexture( identifier );
 			newTexture.LoadFromFile( textureIndexEntry.path );
-			m_Textures[ identifier ] = newTexture;
+			m_Textures.insert( { identifier, newTexture } );
 
 			MIKU_INFO( "Texture with ID : {} loaded!", textureIndexEntry.name );
 		}
@@ -41,17 +41,17 @@ namespace MikuEngine
 		Texture newTexture(( UUID() ));
 		newTexture.LoadFromFile( filepath );
 
-		m_Textures[ newTexture.GetUUID() ] = newTexture;
+		m_Textures.insert( { newTexture.GetUUID(), newTexture } );
 
 		MIKU_INFO( "Texture with ID : {} loaded!", name );
 	}
 
 	void TextureManager::PrepareTextureIndex()
 	{
-		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "textfbes/" ) )
+		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "textures/" ) )
 		{
 			UUID uuid;
-			m_TextureIndex[ uuid ] = { uuid, file.path().filename().string(), file.path().string() };
+			m_TextureIndex[ uuid ] = { uuid, file.path().stem().string(), file.path().string() };
 		}
 	}
 
@@ -70,13 +70,24 @@ namespace MikuEngine
 		return existing->second;
 	}
 
-	const Texture& TextureManager::GetTexture( const std::string& name ) const
+	const Texture& TextureManager::GetTexture( const std::string& filename ) const
 	{
-		UUID id;
-		for ( auto [ uuid, textureIndexEntry ] : m_TextureIndex )
-			if ( textureIndexEntry.name == name ) return m_Textures.find( uuid )->second;
+		for ( const auto& [ uuid, textureIndexEntry ] : m_TextureIndex )
+		{
+			if ( textureIndexEntry.name == filename )
+			{
+				return m_Textures.at( uuid );
+			}
+		}
 
-		return m_Textures.begin()->second;
+		// Make sure texture is loaded first before it is returned
+		MIKU_ASSERT( false, "Requested Texture is not loaded!" );
+	}
+
+	std::string TextureManager::GetTextureName( UUID identifier ) const
+	{
+		auto existing = m_TextureIndex.find( identifier );
+		return existing->second.name;
 	}
 
 	bool TextureManager::TextureAlreadyPresent( UUID identifier ) const

@@ -1,10 +1,11 @@
 #pragma once
 
-#include <string>
+#include <optional>
 
 #include "glm/glm.hpp"
 
 #include "Core.h"
+#include "UUID.h"
 
 #include "Components/BaseComponent.h"
 
@@ -17,10 +18,10 @@ namespace MikuEngine
 		SpriteRendererComponent( const SpriteRendererComponent& ) = default;
 
 		SpriteRendererComponent( const glm::vec4& tint ) : Tint( tint ) {};
-		SpriteRendererComponent( const std::string& textureIdentifier ) : TextureIdentifier( textureIdentifier ) {};
-		SpriteRendererComponent( const glm::vec4& tint, const std::string& textureIdentifier ) : Tint( tint ), TextureIdentifier( textureIdentifier ) {};
+		SpriteRendererComponent( UUID uuid ) : TextureIdentifier( uuid ) {};
+		SpriteRendererComponent( const glm::vec4& tint, const UUID& textureIdentifier ) : Tint( tint ), TextureIdentifier( textureIdentifier ) {};
 
 		glm::vec4 Tint{ 1.0f };
-		std::string TextureIdentifier = "";
+		std::optional<UUID> TextureIdentifier;
 	};
 }

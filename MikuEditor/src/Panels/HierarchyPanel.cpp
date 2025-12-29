@@ -24,7 +24,7 @@ namespace MikuEditor
 					auto dc = entities[ x ].GetComponent<MikuEngine::DataComponent>();
 					auto ic = entities[ x ].GetComponent<MikuEngine::IDComponent>();
 
-					bool is_selected = ( scene.GetSelectedEntity().value().GetUUID() == ic.ID );
+					bool is_selected = ( scene.GetSelectedEntity().has_value() ? scene.GetSelectedEntity().value().GetUUID() == ic.ID : false );
 					ImGuiSelectableFlags flags = ( item_highlighted_idx == x ) ? ImGuiSelectableFlags_Highlight : 0;
 
 					if ( ImGui::Selectable( entities[ x ].GetNamedIdentifier().c_str(), is_selected, flags ) ) scene.SetSelectedEntity( ic.ID );

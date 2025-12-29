@@ -20,7 +20,7 @@ namespace MikuEditor
 	class MIKU_API TextureSelectionWindow
 	{
 	public:
-		TextureSelectionWindow();
+		TextureSelectionWindow( MikuEngine::UUID entityUUID, std::function<void( MikuEngine::UUID )> textureSelectionCallback );
 
 		TextureSelectionWindowResponse RenderTextureSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
 

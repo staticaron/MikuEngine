@@ -52,9 +52,9 @@ namespace MikuEngine
 			}
 			const auto& transform = registry.get<TransformComponent>( entity );
 
-			if ( spriteRenderer.TextureIdentifier == "" ) continue;
+			if ( !spriteRenderer.TextureIdentifier.has_value() ) continue;
 
-			const Texture& texture = textureManager.GetTexture( spriteRenderer.TextureIdentifier );
+			const Texture& texture = textureManager.GetTexture( spriteRenderer.TextureIdentifier.value() );
 			texture.Bind( 0 );
 			shader.SetUniform<unsigned int>( "u_Tex", 0 );
 

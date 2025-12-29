@@ -1,10 +1,14 @@
 #pragma once
 
-#include "AppLevelStuff.h"
+#include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Layer.h"
+
+#include "Windows/TextureSelectionWindow.h"
 
 namespace MikuEditor
 {
+	class InspectorPanel;
+
 	class EditorLayer : public MikuEngine::Layer
 	{
 	public:
@@ -13,5 +17,8 @@ namespace MikuEditor
 		void RenderImgui( const MikuEngine::AppLevelStuff& appLevelStuff ) override;
 
 	private:
+		std::vector<TextureSelectionWindow> m_TextureSelectionWindow;
+
+		friend class InspectorPanel;
 	};
 }

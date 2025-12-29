@@ -57,7 +57,7 @@ namespace MikuEngine
 			emitter << YAML::Key << "type" << YAML::Value << "SpriteRendererComponent";
 
 			emitter << YAML::Key << "values" << YAML::Value << YAML::BeginMap;
-			emitter << YAML::Key << "texture" << YAML::Value << spriteRenderer.TextureIdentifier;
+			emitter << YAML::Key << "texture" << YAML::Value << spriteRenderer.TextureIdentifier.value();
 			emitter << YAML::Key << "tint" << YAML::Value << YAML::Flow << YAML::BeginSeq << spriteRenderer.Tint.x << spriteRenderer.Tint.y << spriteRenderer.Tint.z << spriteRenderer.Tint.w << YAML::EndSeq;
 			emitter << YAML::EndMap;
 
@@ -114,9 +114,9 @@ namespace MikuEngine
 		emitter << YAML::Key << "scene" << YAML::Value << "Untitled";
 		emitter << YAML::Key << "entities" << YAML::Value << YAML::BeginSeq;
 
-		for ( auto entity : scene.m_Registry.view<entt::entity>() )
+		for ( const auto& [ entity, idC ] : scene.m_Registry.view<IDComponent>().each() )
 		{
-			Entity entt( entity, &scene );
+			Entity entt( idC.ID, entity, &scene );
 			SerializeEntity( emitter, entt );
 		}
 
@@ -163,7 +163,7 @@ namespace MikuEngine
 
 			auto entt = scene.LoadEntity( name, uuid, &scene );
 
-			MIKU_INFO( "Created Entity named : {}", name );
+			MIKU_INFO( "Created Entity named : {} with ID : {}", name, std::to_string( uuid ) );
 
 			const YAML::Node& components = entity[ "components" ];
 
@@ -189,13 +189,13 @@ namespace MikuEngine
 
 				if ( type == "SpriteRendererComponent" )
 				{
-					std::string_view texture = values[ "texture" ].as<std::string_view>();
+					std::string texture = values[ "texture" ].as<std::string>();
 
 					glm::vec4 tint;
 					DecodeVec4( values[ "tint" ], tint );
 
 					entt.AddComponent<SpriteRendererComponent>();
-					entt.GetComponent<SpriteRendererComponent>().TextureIdentifier = texture;
+					entt.GetComponent<SpriteRendererComponent>().TextureIdentifier = texture.empty() ? std::optional<UUID>( std::nullopt ) : UUID( texture );
 					entt.GetComponent<SpriteRendererComponent>().Tint = tint;
 				}
 
@@ -206,8 +206,6 @@ namespace MikuEngine
 					entt.AddComponent<CameraComponent>();
 					entt.GetComponent<CameraComponent>().Zoom = zoom;
 				}
-
-				MIKU_INFO( "Created {} for {}", type, name );
 			}
 		}
 
