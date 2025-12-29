@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Application.h"
-#include <iostream>
+#include "Logger.h"
 
 extern MikuEngine::Application* MikuEngine::EntryPoint();
 
 int main()
 {
-	std::cout << "Welcome to MikuEngine!!" << std::endl;
+	MikuEngine::Logger::Init();
+	MIKU_CORE_INFO( "Welcome to MikuEngine!!" );
 
 	MikuEngine::EntryPoint();
 }

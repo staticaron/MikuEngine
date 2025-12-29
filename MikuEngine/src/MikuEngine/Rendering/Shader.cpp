@@ -20,11 +20,11 @@ namespace MikuEngine
 
 		std::ifstream stream( filepath.data() );
 
-		MIKU_INFO( "Shader Loaded at filepath {}", filepath );
+		MIKU_CORE_INFO( "Shader Loaded at filepath {}", filepath );
 
 		if ( !stream.is_open() )
 		{
-			MIKU_ERROR( "Error loading the file at " );
+			MIKU_CORE_ERROR( "Error loading the file at " );
 			return;
 		}
 
@@ -76,7 +76,7 @@ namespace MikuEngine
 			char* logMessage = ( char* )alloca( lengthOfMessage * sizeof( char ) );
 			glGetShaderInfoLog( shaderID, lengthOfMessage, &lengthOfMessage, logMessage );
 
-			MIKU_ERROR( "ERROR COMPILING SHADER {}", logMessage );
+			MIKU_CORE_ERROR( "ERROR COMPILING SHADER {}", logMessage );
 		}
 
 		return shaderID;

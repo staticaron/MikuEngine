@@ -13,6 +13,8 @@ namespace MikuEngine
 		UUID( uint64_t uuid );
 		UUID( const std::string& uuidStr );
 
+		std::string ToString() const { return std::to_string( m_UUID ); }
+
 		operator uint64_t() const { return m_UUID; }
 
 	private:

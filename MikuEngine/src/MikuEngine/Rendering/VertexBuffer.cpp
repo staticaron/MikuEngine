@@ -9,7 +9,7 @@ namespace MikuEngine
 
 	VertexBuffer::~VertexBuffer()
 	{
-		MIKU_WARN( "Vertex Buffer deleted! ID : {}", m_RendererID );
+		MIKU_CORE_WARN( "Vertex Buffer deleted! ID : {}", m_RendererID );
 		glDeleteBuffers( 1, &m_RendererID );
 	}
 
@@ -21,7 +21,7 @@ namespace MikuEngine
 		glBindBuffer( GL_ARRAY_BUFFER, m_RendererID );
 		glBufferData( GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW );
 
-		MIKU_INFO( "Vertex Buffer Created! ID : {}", m_RendererID );
+		MIKU_CORE_INFO( "Vertex Buffer Created! ID : {}", m_RendererID );
 	}
 
 	void VertexBuffer::Bind() const

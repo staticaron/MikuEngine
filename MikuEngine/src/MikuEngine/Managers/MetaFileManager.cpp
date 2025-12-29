@@ -6,7 +6,6 @@
 #include "yaml-cpp/yaml.h"
 
 #include "Logger.h"
-#include "UUID.h"
 
 namespace MikuEngine
 {
@@ -17,33 +16,48 @@ namespace MikuEngine
 			std::filesystem::file_type type;
 			file.status().type( type );
 
-			// Skip meta files
 			if ( file.path().extension() == ".meta" ) continue;
 
-			// If meta file already exists, Skip
-			bool metaFileExists = std::filesystem::exists( file.path().string() + ".meta" );
-			if ( metaFileExists ) continue;
+			if ( MetaFileExists( file.path().string() ) ) continue;
 
-			// If it doesn't, generate the file with the required meta data and random UUID
-			YAML::Emitter metaFileEmitter;
-
-			metaFileEmitter << YAML::BeginMap;
-
-			metaFileEmitter << YAML::Key << "uuid" << YAML::Value << UUID();
-
-			metaFileEmitter << YAML::Key << "properties" << YAML::Value << YAML::BeginMap;
-
-			metaFileEmitter << YAML::Key << "path" << YAML::Value << file.path().string();
-			metaFileEmitter << YAML::Key << "type" << YAML::Value << "image";
-
-			metaFileEmitter << YAML::EndMap;
-
-			metaFileEmitter << YAML::EndMap;
-
-			std::ofstream metaFileStream( file.path().string() + ".meta" );
-			metaFileStream << metaFileEmitter.c_str();
+			GenerateMetaFile( file.path().string() );
 		}
 
-		MIKU_INFO( "Meta Files Refreshed!" );
+		MIKU_CORE_INFO( "Meta Files Refreshed!" );
+	}
+
+	void MetaFileManager::GenerateMetaFile( const std::string& filepath )
+	{
+		YAML::Emitter metaFileEmitter;
+
+		metaFileEmitter << YAML::BeginMap;
+
+		metaFileEmitter << YAML::Key << "uuid" << YAML::Value << UUID();
+
+		metaFileEmitter << YAML::Key << "properties" << YAML::Value << YAML::BeginMap;
+
+		metaFileEmitter << YAML::Key << "path" << YAML::Value << filepath;
+		metaFileEmitter << YAML::Key << "type" << YAML::Value << "image";
+
+		metaFileEmitter << YAML::EndMap;
+
+		metaFileEmitter << YAML::EndMap;
+
+		std::ofstream metaFileStream( filepath + ".meta" );
+		metaFileStream << metaFileEmitter.c_str();
+	}
+
+	bool MetaFileManager::MetaFileExists( const std::string& filepath )
+	{
+		return std::filesystem::exists( filepath + ".meta" );
+	}
+
+	UUID MetaFileManager::GetUUIDFromMetaFile( const std::string& filepath )
+	{
+		auto metapath = filepath + ".meta";
+
+		YAML::Node metaNode = YAML::LoadFile( metapath );
+
+		return UUID( metaNode[ "uuid" ].as<std::string>() );
 	}
 }

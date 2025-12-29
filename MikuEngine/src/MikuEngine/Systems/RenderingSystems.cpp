@@ -47,7 +47,7 @@ namespace MikuEngine
 			// INFO: No point in doing rendering if there is no camera
 			if ( !cameraEntity.has_value() )
 			{
-				MIKU_WARN( "There is no ACTIVE camera in this scene" );
+				MIKU_CORE_WARN( "There is no ACTIVE camera in this scene" );
 				return;
 			}
 			const auto& transform = registry.get<TransformComponent>( entity );

@@ -58,7 +58,7 @@ namespace MikuEngine
 	{
 		if ( !GetEntityByID( uuid ).has_value() )
 		{
-			MIKU_ERROR( "This Entity is not present in scene! Can't set as active entity!" );
+			MIKU_CORE_ERROR( "This Entity is not present in scene! Can't set as active entity!" );
 			return;
 		}
 

@@ -19,7 +19,7 @@ namespace MikuEditor
 
 			if ( !entity.has_value() )
 			{
-				MIKU_ERROR( "Entity for which this texture selection window was opened doesn't exists anymore!" );
+				MIKU_CLIENT_ERROR( "Entity for which this texture selection window was opened doesn't exists anymore!" );
 				response = TextureSelectionWindowResponse::ERROR;
 			}
 			else

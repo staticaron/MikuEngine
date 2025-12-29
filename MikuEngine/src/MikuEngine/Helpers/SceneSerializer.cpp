@@ -128,7 +128,7 @@ namespace MikuEngine
 
 		if ( result != NFD_OKAY )
 		{
-			MIKU_ERROR( "Unable to Save to this Path!" );
+			MIKU_CORE_ERROR( "Unable to Save to this Path!" );
 			return;
 		}
 
@@ -144,17 +144,17 @@ namespace MikuEngine
 
 		if ( result != NFD_OKAY )
 		{
-			MIKU_ERROR( "Unable to load the scene file! File Not Found! " )
+			MIKU_CORE_ERROR( "Unable to load the scene file! File Not Found! " );
 			return false;
 		}
 
 		YAML::Node node = YAML::LoadFile( newPath );
 
-		MIKU_INFO( "Loading Scene : ", node[ "scene" ].as<std::string>() );
+		MIKU_CORE_INFO( "Loading Scene : ", node[ "scene" ].as<std::string>() );
 
 		YAML::Node entities = node[ "entities" ];
 
-		if ( !entities.IsSequence() ) MIKU_ERROR( "Entities in Scene files are not in a sequence" );
+		if ( !entities.IsSequence() ) MIKU_CORE_ERROR( "Entities in Scene files are not in a sequence" );
 
 		for ( const auto& entity : entities )
 		{
@@ -163,7 +163,7 @@ namespace MikuEngine
 
 			auto entt = scene.LoadEntity( name, uuid, &scene );
 
-			MIKU_INFO( "Created Entity named : {} with ID : {}", name, std::to_string( uuid ) );
+			MIKU_CORE_INFO( "Created Entity named : {} with ID : {}", name, std::to_string( uuid ) );
 
 			const YAML::Node& components = entity[ "components" ];
 

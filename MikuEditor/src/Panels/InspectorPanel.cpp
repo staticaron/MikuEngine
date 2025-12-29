@@ -63,7 +63,7 @@ namespace MikuEditor
 					if ( ImGui::Button( "EDIT..." ) )
 					{
 						editorLayer.m_TextureSelectionWindow.emplace_back( selectedEntity.value().GetUUID(), [ spriteRendererC ]( MikuEngine::UUID textureUUID ) mutable { spriteRendererC.TextureIdentifier = textureUUID; } );
-						MIKU_INFO( "Entity for which texture selection window was opened {}", std::to_string( selectedEntity.value().GetUUID() ) );
+						MIKU_CLIENT_INFO( "Entity for which texture selection window was opened {}", std::to_string( selectedEntity.value().GetUUID() ) );
 					}
 
 					ImGui::DragFloat4( "Tint", &spriteRendererC.Tint.x );

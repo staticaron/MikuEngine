@@ -8,14 +8,14 @@ namespace MikuEngine
 
 	VertexArray::~VertexArray()
 	{
-		MIKU_WARN( "Vertex Array deleted! ID : {}", m_RendererID );
+		MIKU_CORE_WARN( "Vertex Array deleted! ID : {}", m_RendererID );
 		glDeleteBuffers( 1, &m_RendererID );
 	}
 
 	void VertexArray::Init()
 	{
 		glGenVertexArrays( 1, &m_RendererID );
-		MIKU_INFO( "Vertex Array Created! ID : {}", m_RendererID );
+		MIKU_CORE_INFO( "Vertex Array Created! ID : {}", m_RendererID );
 	}
 
 	void VertexArray::Bind() const

@@ -7,7 +7,7 @@ namespace MikuEngine
 {
 	Application* EntryPoint()
 	{
-		MIKU_INFO( "Welcome to MikuEditor" );
+		MIKU_CLIENT_INFO( "Welcome to MikuEditor" );
 
 		Application* app = new Application();
 		app->Init();

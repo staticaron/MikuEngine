@@ -130,7 +130,7 @@ namespace MikuEngine
 
 		int major = 0, minor = 0, rev = 0;
 		glfwGetVersion( &major, &minor, &rev );
-		MIKU_INFO( "GLFW Loaded! #{}{}{}", major, minor, rev );
+		MIKU_CORE_INFO( "GLFW Loaded! #{}{}{}", major, minor, rev );
 
 		const GLFWvidmode* mode = glfwGetVideoMode( glfwGetPrimaryMonitor() );
 
@@ -154,7 +154,7 @@ namespace MikuEngine
 		if ( !gladLoadGL() )
 			return;
 		else
-			MIKU_INFO( "GLAD Loaded!" );
+			MIKU_CORE_INFO( "GLAD Loaded!" );
 
 		// Enable Debugging
 		glEnable( GL_DEBUG_OUTPUT );
