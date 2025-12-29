@@ -84,7 +84,7 @@ namespace MikuEngine
 
 			shader.SetUniform<glm::mat4>( "u_MVP", mvp );
 
-			auto texture = m_AppLevelStuff.GetTextureManager().GetTexture( "miku" );
+			auto texture = m_AppLevelStuff.GetTextureManager().GetTextureByName( "miku" );
 			texture.Bind( 0 );
 
 			shader.SetUniform<unsigned int>( "u_Tex", 0 );

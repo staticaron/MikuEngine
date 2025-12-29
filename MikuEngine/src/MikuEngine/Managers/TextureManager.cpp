@@ -76,7 +76,7 @@ namespace MikuEngine
 		return existing->second;
 	}
 
-	const Texture& TextureManager::GetTexture( const std::string& filename ) const
+	const Texture& TextureManager::GetTextureByName( const std::string& filename ) const
 	{
 		for ( const auto& [ uuid, textureIndexEntry ] : m_TextureIndex )
 		{

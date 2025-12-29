@@ -30,7 +30,7 @@ namespace MikuEngine
 		const std::unordered_map<UUID, TextureIndexEntry>& GetTextureIndex() const;
 
 		const Texture& GetTexture( UUID textureUUID ) const;
-		const Texture& GetTexture( const std::string& filename ) const;
+		const Texture& GetTextureByName( const std::string& name ) const;
 
 		std::string GetTextureName( UUID textureUUID ) const;
 

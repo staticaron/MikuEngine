@@ -24,7 +24,7 @@ namespace MikuEditor
 			}
 			else
 			{
-				auto texture = appLevelStuff.GetTextureManager().GetTexture( "miku" );
+				auto texture = appLevelStuff.GetTextureManager().GetTextureByName( "base" );
 				entity.value().GetComponent<MikuEngine::SpriteRendererComponent>().TextureIdentifier = texture.GetUUID();
 				response = TextureSelectionWindowResponse::COMPLETED;
 			}
