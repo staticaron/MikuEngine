@@ -17,6 +17,7 @@ namespace MikuEditor
 		auto canvasSize = ImGui::GetContentRegionAvail();
 		auto columns = static_cast<unsigned int>( canvasSize.x / m_ImageSize );
 
+		// Render each texture as image button in table
 		ImGui::BeginTable( "Texture Button Grid", columns );
 
 		auto allTextures = appLevelStuff.GetTextureManager().GetAllLoadedTextures();
@@ -26,7 +27,7 @@ namespace MikuEditor
 			ImGui::TableNextColumn();
 			ImGui::PushID( texture.GetUUID() );
 
-			if ( ImGui::ImageButton( "##TextureBtn", ( void* )( intptr_t )texture.GetRendererID(), ImVec2( 100, 100 ) ) )
+			if ( ImGui::ImageButton( "##TextureBtn", ( void* )( intptr_t )texture.GetRendererID(), ImVec2( 100, 100 ), ImVec2( 1, 1 ), ImVec2( 0, 0 ) ) )
 			{
 				auto entity = scene.GetEntityByID( m_EntityUUID );
 

@@ -45,5 +45,5 @@ entities:
           scale: [100, 100, 1]
       - type: SpriteRendererComponent
         values:
-          texture: 3280946449159469236
+          texture: 11951034516196472530
           tint: [1, 1, 1, 1]
