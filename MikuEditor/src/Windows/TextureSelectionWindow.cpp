@@ -6,7 +6,7 @@
 
 namespace MikuEditor
 {
-	TextureSelectionWindow::TextureSelectionWindow( MikuEngine::UUID entityUUID, std::function<void( MikuEngine::UUID )> selectionCallback ) : m_EntityUUID( entityUUID ), m_TextureSetCallback( selectionCallback ) {}
+	TextureSelectionWindow::TextureSelectionWindow( MikuEngine::UUID entityUUID ) : m_EntityUUID( entityUUID ) {}
 
 	TextureSelectionWindowResponse TextureSelectionWindow::RenderTextureSelectionWindow( const MikuEngine::AppLevelStuff& appLevelStuff, MikuEngine::Scene& scene )
 	{
