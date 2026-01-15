@@ -1,6 +1,7 @@
 #include "Managers/TextureManager.h"
 
 #include <filesystem>
+#include <unordered_map>
 
 #include "Logger.h"
 #include "Managers/MetaFileManager.h"
@@ -88,6 +89,11 @@ namespace MikuEngine
 
 		// Make sure texture is loaded first before it is returned
 		MIKU_ASSERT( false, "Requested Texture is not loaded!" );
+	}
+
+	const std::unordered_map<UUID, Texture>& TextureManager::GetAllLoadedTextures() const
+	{
+		return m_Textures;
 	}
 
 	std::string TextureManager::GetTextureName( UUID identifier ) const

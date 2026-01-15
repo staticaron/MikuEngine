@@ -32,6 +32,8 @@ namespace MikuEngine
 		const Texture& GetTexture( UUID textureUUID ) const;
 		const Texture& GetTextureByName( const std::string& name ) const;
 
+		const std::unordered_map<UUID, Texture>& GetAllLoadedTextures() const;
+
 		std::string GetTextureName( UUID textureUUID ) const;
 
 	private:

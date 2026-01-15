@@ -20,6 +20,7 @@ namespace MikuEngine
 		void Destroy();
 
 		UUID GetUUID() const { return m_UUID; }
+		unsigned int GetRendererID() const { return m_RendererID; }
 
 	private:
 		UUID m_UUID;

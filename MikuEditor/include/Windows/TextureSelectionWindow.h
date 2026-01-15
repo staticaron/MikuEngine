@@ -29,5 +29,8 @@ namespace MikuEditor
 		std::function<void( MikuEngine::UUID )> m_TextureSetCallback;
 
 		bool m_IsOpen = true;
+
+		static constexpr unsigned int m_ImageButtonSpacing = 4;
+		static constexpr unsigned int m_ImageSize = 100;
 	};
 }
