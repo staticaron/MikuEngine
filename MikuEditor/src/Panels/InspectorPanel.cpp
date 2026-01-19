@@ -85,9 +85,14 @@ namespace MikuEditor
 			}
 		}
 
-		if ( MikuEngine::ImguiManager::FullWidthButton( "Add Component" ) )
+		// Show Add Component Button ( ACTIVE if scene has selected entity otherwise DISABLED)
+		if ( scene.GetSelectedEntity().has_value() )
 		{
-			scene.GetSelectedEntity()->AddComponent<MikuEngine::SpriteRendererComponent>();
+			if ( MikuEngine::ImguiManager::FullWidthButton( "Add Component" ) ) scene.GetSelectedEntity()->AddComponent<MikuEngine::SpriteRendererComponent>();
+		}
+		else
+		{
+			DISABLED_IMGUI( MikuEngine::ImguiManager::FullWidthButton( "Add Component" ) );
 		}
 
 		if ( selectedEntity.has_value() )
