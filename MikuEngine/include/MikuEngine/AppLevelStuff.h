@@ -23,9 +23,15 @@ namespace MikuEngine
 		void SetTextureManager( TextureManager& textureManager ) { m_TextureManager = textureManager; }
 		void SetImguiManager( ImguiManager& imguiManager ) { m_ImGuiManager = imguiManager; }
 
+		unsigned int GetFPS() const { return FPS; }
+
 	private:
 		Renderer m_Renderer;
 		TextureManager m_TextureManager;
 		ImguiManager m_ImGuiManager;
+
+		unsigned int FPS;
+
+		friend class Application;
 	};
 }

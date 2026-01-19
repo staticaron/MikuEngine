@@ -3,6 +3,7 @@
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Layer.h"
 
+#include "EditorLevelStuff.h"
 #include "Windows/TextureSelectionWindow.h"
 
 namespace MikuEditor
@@ -18,6 +19,7 @@ namespace MikuEditor
 
 	private:
 		std::vector<TextureSelectionWindow> m_TextureSelectionWindow;
+		EditorLevelStuff m_EditorLevelStuff;
 
 		friend class InspectorPanel;
 	};
