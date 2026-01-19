@@ -47,5 +47,6 @@ namespace MikuEngine
 
 	public:
 		float Zoom = 1.0f;
+		glm::vec2 m_AspectRatio = { 16, 9 };
 	};
 }
