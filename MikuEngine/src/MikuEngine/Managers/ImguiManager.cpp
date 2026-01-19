@@ -36,6 +36,8 @@ namespace MikuEngine
 		style.ScaleAllSizes( main_scale );
 		style.FontScaleDpi = main_scale;
 		style.FontScaleMain = 0.8f;
+		style.FrameRounding = 4;
+		style.WindowPadding = { 4, 4 };
 
 		ImGui_ImplGlfw_InitForOpenGL( window, true );
 		ImGui_ImplOpenGL3_Init();
@@ -61,7 +63,7 @@ namespace MikuEngine
 	{
 		ImGui::Begin( "Viewport" );
 
-		ImVec2 windowSize = ImGui::GetWindowSize();
+		ImVec2 windowSize = ImGui::GetWindowViewport()->WorkSize;
 
 		glm::vec2 viewPortSize = Application::GetDataContainer().GetViewportSize();
 
@@ -70,7 +72,7 @@ namespace MikuEngine
 			frameBuffer.ResizeFrameBufferTexture( { windowSize.x, windowSize.y } );
 		}
 
-		ImGui::Image( ( void* )( intptr_t )frameBuffer.GetTextureID(), { windowSize.x - 20, windowSize.y - 40 }, { 0, 1 }, { 1, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } );
+		ImGui::Image( ( void* )( intptr_t )frameBuffer.GetTextureID(), { windowSize.x, windowSize.y }, { 0, 1 }, { 1, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } );
 		ImGui::End();
 	}
 
