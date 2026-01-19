@@ -1,14 +1,33 @@
 #include "Panels/MenuBar.h"
 
-#include "MikuEngine/Entity.h"
+#include "Layers/EditorLayer.h"
+#include "MikuEngine/Logger.h"
 #include "MikuEngine/Managers/MetaFileManager.h"
 
 namespace MikuEditor
 {
-	void MenuBar::RenderMenuBar( MikuEngine::Scene& scene )
+	void MenuBar::RenderMenuBar( EditorLayer& editorLayer, const MikuEngine::AppLevelStuff& appLevelStuff, EditorLevelStuff& editorLevelStuff, MikuEngine::Scene& scene )
 	{
 		if ( ImGui::BeginMainMenuBar() )
 		{
+			if ( ImGui::BeginMenu( "File" ) )
+			{
+				ImGui::Separator();
+				if ( ImGui::MenuItem( "Play" ) )
+				{
+					MIKU_CLIENT_INFO( "PLAY" );
+					editorLevelStuff.m_CurrentPlayModeState = PlayModeState::PLAYING;
+				}
+
+				ImGui::Separator();
+				if ( ImGui::MenuItem( "Stop" ) )
+				{
+					MIKU_CLIENT_INFO( "STOP" );
+					editorLevelStuff.m_CurrentPlayModeState = PlayModeState::NOTPLAYING;
+				}
+
+				ImGui::EndMenu();
+			}
 			if ( ImGui::BeginMenu( "Scene" ) )
 			{
 				ImGui::Separator();
