@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Layers/EditorLayer.h"
+#include "Layers/RendererLayer.h"
 #include "Logger.h"
 #include "MikuEngine.h"
 
@@ -12,6 +13,7 @@ namespace MikuEngine
 		Application* app = new Application();
 		app->Init();
 
+		app->PushLayer<MikuEditor::RendererLayer>();
 		app->PushLayer<MikuEditor::EditorLayer>();
 
 		app->Run();

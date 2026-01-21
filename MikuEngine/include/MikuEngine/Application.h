@@ -11,6 +11,7 @@
 #include "Core.h"
 #include "DataContainer.h"
 #include "Rendering/FrameBuffer.h"
+#include "Scene/Scene.h"
 
 namespace MikuEngine
 {
@@ -35,7 +36,7 @@ namespace MikuEngine
 			requires( std::is_base_of_v<Layer, TLayer> )
 		void PushLayer()
 		{
-			m_Layers.push_back( std::make_unique<TLayer>() );
+			m_Layers.push_back( std::make_unique<TLayer>( &m_Scene ) );
 		}
 
 		std::unique_ptr<Layer>& GetLayer( unsigned int index ) { return m_Layers[ index ]; }
@@ -59,6 +60,8 @@ namespace MikuEngine
 
 		// Rendering
 		FrameBuffer m_FrameBuffer;
+
+		Scene m_Scene;
 
 		// Delta Time
 		double m_DeltaTime = 0.0;

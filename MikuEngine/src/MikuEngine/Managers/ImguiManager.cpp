@@ -61,7 +61,7 @@ namespace MikuEngine
 
 	void ImguiManager::RenderFrameBuffer( FrameBuffer& frameBuffer )
 	{
-		ImGui::Begin( "Viewport" );
+		ImGui::Begin( "Game" );
 
 		ImVec2 windowSize = ImGui::GetWindowViewport()->WorkSize;
 

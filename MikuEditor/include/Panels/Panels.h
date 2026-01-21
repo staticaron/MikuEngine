@@ -6,4 +6,5 @@
 #include "HierarchyPanel.h"
 #include "InspectorPanel.h"
 #include "MenuBar.h"
+#include "ViewportPanel.h"
 // IWYU pragma: begin_exports

@@ -1,18 +1,19 @@
 #include "Systems/CameraSystem.h"
 
 #include "Application.h"
+#include "Components/CameraComponent.h"
 #include "Entity.h"
 
 namespace MikuEngine
 {
-	glm::mat4 CameraSystem::GetMVPFromModelMatrix( const Entity& cameraEntity, glm::mat4 modelMatrix )
+	glm::mat4 CameraSystem::GetMVPFromModelMatrix( const Entity& cameraEntity, const CameraComponent& cameraComponent, glm::mat4 modelMatrix )
 	{
-		return GetProjViewMatrix( cameraEntity ) * modelMatrix;
+		return GetProjViewMatrix( cameraEntity, cameraComponent ) * modelMatrix;
 	}
 
-	glm::mat4 CameraSystem::GetProjViewMatrix( const Entity& cameraEntity )
+	glm::mat4 CameraSystem::GetProjViewMatrix( const Entity& cameraEntity, const CameraComponent& cameraComponent )
 	{
-		glm::mat4 projMatrix = glm::ortho( 0.0f, Application::GetDataContainer().GetViewportSize().x, Application::GetDataContainer().GetViewportSize().y, 0.0f, -1000.0f, 1000.0f );
+		glm::mat4 projMatrix = glm::ortho( 0.0f, cameraComponent.m_Resolution.x, cameraComponent.m_Resolution.y, 0.0f, -1000.0f, 1000.0f );
 		glm::mat4 viewMatrix = GetViewMatrix( cameraEntity );
 
 		return projMatrix * viewMatrix;
