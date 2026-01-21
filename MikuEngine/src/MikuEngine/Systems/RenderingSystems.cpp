@@ -18,13 +18,13 @@
 
 namespace MikuEngine
 {
-	void RenderingSystem::RenderSprite( const entt::registry& registry, AppLevelStuff& appLevelStuff )
+	void RenderingSystem::RenderSprite( const Scene& scene, AppLevelStuff& appLevelStuff )
 	{
 		// Quads To Render
-		const auto& entities = registry.view<DataComponent, SpriteRendererComponent>();
+		const auto& entities = scene.GetRegistry().view<DataComponent, SpriteRendererComponent>();
 
 		// Camera
-		const auto& cameras = registry.view<CameraComponent>();
+		const auto& cameras = scene.GetRegistry().view<CameraComponent>();
 
 		std::optional<entt::entity> cameraEntity;
 		std::optional<CameraComponent> cameraComponent;
@@ -50,7 +50,7 @@ namespace MikuEngine
 				MIKU_CORE_WARN( "There is no ACTIVE camera in this scene" );
 				return;
 			}
-			const auto& transform = registry.get<TransformComponent>( entity );
+			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
 
 			if ( !spriteRenderer.TextureIdentifier.has_value() ) continue;
 
@@ -61,7 +61,7 @@ namespace MikuEngine
 			auto viewport = Application::GetApplication()->GetDataContainer().GetViewportSize();
 
 			glm::mat4 proj = glm::ortho( 0.0f, viewport.x, viewport.y, 0.0f, -1000.0f, 1000.0f );
-			glm::mat4 view = cameraComponent.value().GetViewMatrix( registry, cameraEntity.value() );
+			glm::mat4 view = cameraComponent.value().GetViewMatrix( scene.GetRegistry(), cameraEntity.value() );
 			glm::mat4 model = transform.GetModelMatrix();
 
 			glm::mat4 mvp = proj * view * model;

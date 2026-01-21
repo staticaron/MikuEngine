@@ -34,6 +34,8 @@ namespace MikuEngine
 		std::vector<Entity> GetAllEntities();
 		std::optional<Entity> GetEntityByID( UUID id );
 
+		const entt::registry& GetRegistry() const { return m_Registry; }
+
 		void Clean();
 		void Save( const std::string& path );
 		bool Load( const std::string& path );

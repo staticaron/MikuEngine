@@ -8,9 +8,14 @@
 
 namespace MikuEngine
 {
+	class Scene;
+}
+
+namespace MikuEngine
+{
 	class MIKU_API RenderingSystem
 	{
 	public:
-		static void RenderSprite( const entt::registry& registry, AppLevelStuff& appLevelStuff );
+		static void RenderSprite( const Scene& scene, AppLevelStuff& appLevelStuff );
 	};
 }

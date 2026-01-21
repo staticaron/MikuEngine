@@ -15,7 +15,7 @@ namespace MikuEngine
 
 	void Scene::Render( AppLevelStuff& appLevelStuff ) const
 	{
-		RenderingSystem::RenderSprite( m_Registry, appLevelStuff );
+		RenderingSystem::RenderSprite( *this, appLevelStuff );
 	}
 
 	void Scene::RenderImGui( const AppLevelStuff& appLevelStuff ) {}
