@@ -17,6 +17,13 @@ namespace MikuEngine
 	void Scene::Render( AppLevelStuff& appLevelStuff ) const
 	{
 		auto mainCamera = GetMainCamera();
+
+		if ( mainCamera.has_value() == false )
+		{
+			MIKU_CORE_WARN( "There is no active MainCamera." );
+			return;
+		}
+
 		auto mainCameraEntity = mainCamera->first;
 		auto mainCameraComponent = mainCamera->second;
 

@@ -42,6 +42,7 @@ namespace MikuEngine
 		std::unique_ptr<Layer>& GetLayer( unsigned int index ) { return m_Layers[ index ]; }
 
 		AppLevelStuff& GetAppLevelStuff() { return m_AppLevelStuff; }
+		FrameBuffer& GetFrameBuffer() { return m_FrameBuffer; }
 
 	private:
 		void RenderTemp();

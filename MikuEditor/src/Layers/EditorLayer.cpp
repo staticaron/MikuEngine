@@ -13,13 +13,8 @@ namespace MikuEditor
 
 	void EditorLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
 	{
-		if ( m_EditorLevelStuff.m_CurrentPlayModeState == PlayModeState::PLAYING )
-			m_Scene->Render( appLevelStuff );
-		else
-		{
-			MikuEngine::CameraData cameraData = { m_EditorCamera.GetViewMatrix() };
-			m_Scene->RenderInEditor( appLevelStuff, cameraData );
-		}
+		MikuEngine::CameraData cameraData = { m_EditorCamera.GetViewMatrix() };
+		m_Scene->RenderInEditor( appLevelStuff, cameraData );
 	}
 
 	void EditorLayer::RenderImgui( const MikuEngine::AppLevelStuff& appLevelStuff )

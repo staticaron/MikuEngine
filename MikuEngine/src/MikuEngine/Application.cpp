@@ -241,8 +241,6 @@ namespace MikuEngine
 		for ( int x = 0; x < m_Layers.size(); x++ )
 			m_Layers[ x ]->RenderImgui( m_AppLevelStuff );
 
-		m_AppLevelStuff.GetImGuiManager().RenderFrameBuffer( m_FrameBuffer );
-
 		m_AppLevelStuff.GetImGuiManager().RenderFrame();
 	}
 }
