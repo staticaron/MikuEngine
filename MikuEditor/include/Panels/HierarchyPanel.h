@@ -1,7 +1,11 @@
 #pragma once
 
 #include "MikuEngine/Core.h"
-#include "MikuEngine/Scene/Scene.h"
+
+namespace MikuEngine
+{
+	class Scene;
+}
 
 namespace MikuEditor
 {

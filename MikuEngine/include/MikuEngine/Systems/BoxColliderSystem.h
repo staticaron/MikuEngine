@@ -2,7 +2,10 @@
 
 #include "Core.h"
 
-#include "Entity.h"
+namespace MikuEngine
+{
+	class Entity;
+}
 
 namespace MikuEngine
 {

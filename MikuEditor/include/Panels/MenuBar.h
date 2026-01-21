@@ -2,8 +2,16 @@
 
 #include "Core.h"
 
-#include "Layers/EditorLevelStuff.h"
-#include "Scene/Scene.h"
+namespace MikuEngine
+{
+	class AppLevelStuff;
+	class Scene;
+}
+
+namespace MikuEditor
+{
+	class EditorLevelStuff;
+}
 
 namespace MikuEditor
 {

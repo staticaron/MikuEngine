@@ -1,5 +1,10 @@
 #include "Panels/EditorOverlayPanel.h"
 
+#include "MikuEngine/Managers/ImguiManager.h"
+
+#include "Layers/EditorLevelStuff.h"
+#include "MikuEngine/AppLevelStuff.h"
+
 namespace MikuEditor
 {
 	void EditorOverlayPanel::RenderEditorOverlayPanel( EditorLayer& editorLayer, const MikuEngine::AppLevelStuff& appLevelStuff, EditorLevelStuff& editorLevelStuff, MikuEngine::Scene& scene )

@@ -6,6 +6,7 @@
 #include "yaml-cpp/yaml.h"
 
 #include "Logger.h"
+#include "UUID.h"
 
 namespace MikuEngine
 {

@@ -1,5 +1,7 @@
 #include "Panels/MenuBar.h"
 
+#include "MikuEngine/Managers/ImguiManager.h"
+
 #include "Layers/EditorLayer.h"
 #include "MikuEngine/Logger.h"
 #include "MikuEngine/Managers/MetaFileManager.h"

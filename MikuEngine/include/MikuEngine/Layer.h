@@ -2,8 +2,12 @@
 
 #include "Core.h"
 
-#include "AppLevelStuff.h"
 #include "Scene/Scene.h"
+
+namespace MikuEngine
+{
+	class AppLevelStuff;
+}
 
 namespace MikuEngine
 {

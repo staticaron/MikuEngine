@@ -5,7 +5,11 @@
 #include "MikuEngine/Core.h"
 #include "MikuEngine/UUID.h"
 
-#include "MikuEngine/Scene/Scene.h"
+namespace MikuEngine
+{
+	class Scene;
+	class AppLevelStuff;
+}
 
 namespace MikuEditor
 {

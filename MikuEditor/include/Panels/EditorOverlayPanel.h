@@ -1,7 +1,16 @@
 #pragma once
 
-#include "Layers/EditorLayer.h"
-#include "MikuEngine/AppLevelStuff.h"
+namespace MikuEngine
+{
+	class AppLevelStuff;
+	class Scene;
+}
+
+namespace MikuEditor
+{
+	class EditorLayer;
+	class EditorLevelStuff;
+}
 
 namespace MikuEditor
 {

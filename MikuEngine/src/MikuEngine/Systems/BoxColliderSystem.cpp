@@ -1,6 +1,7 @@
 #include "Systems/BoxColliderSystem.h"
 
 #include "Components.h"
+#include "Entity.h"
 
 namespace MikuEngine
 {

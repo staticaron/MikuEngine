@@ -8,6 +8,7 @@
 #include "Logger.h"
 
 #include "Error.h"
+#include "Layer.h"
 #include "Rendering/Shader.h"
 #include "Rendering/Vertex.h"
 #include "Rendering/VertexBuffer.h"

@@ -12,7 +12,10 @@ namespace MikuEngine
 	ImGui::BeginDisabled();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        \
 	x;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             \
 	ImGui::EndDisabled();
+}
 
+namespace MikuEngine
+{
 	class MIKU_API ImguiManager
 	{
 	public:

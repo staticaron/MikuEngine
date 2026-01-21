@@ -1,15 +1,22 @@
 #pragma once
 
-#include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Layer.h"
 
 #include "EditorLevelStuff.h"
+#include "Utility/EditorCamera.h"
 #include "Windows/TextureSelectionWindow.h"
 
+namespace MikuEngine
+{
+	class AppLevelStuff;
+}
 namespace MikuEditor
 {
 	class InspectorPanel;
+}
 
+namespace MikuEditor
+{
 	class EditorLayer : public MikuEngine::Layer
 	{
 	public:
@@ -18,8 +25,10 @@ namespace MikuEditor
 		void RenderImgui( const MikuEngine::AppLevelStuff& appLevelStuff ) override;
 
 	private:
-		std::vector<TextureSelectionWindow> m_TextureSelectionWindow;
 		EditorLevelStuff m_EditorLevelStuff;
+		EditorCamera m_EditorCamera;
+
+		std::vector<TextureSelectionWindow> m_TextureSelectionWindow;
 
 		friend class InspectorPanel;
 	};

@@ -1,5 +1,7 @@
 #include "Panels/HierarchyPanel.h"
 
+#include "MikuEngine/Managers/ImguiManager.h"
+
 #include "Entity.h"
 
 namespace MikuEditor

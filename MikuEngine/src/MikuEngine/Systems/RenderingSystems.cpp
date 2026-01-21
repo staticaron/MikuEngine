@@ -1,4 +1,3 @@
-#include "Logger.h"
 #include "Systems/RenderingSystem.h"
 
 #include <optional>
@@ -8,32 +7,17 @@
 
 #include "AppLevelStuff.h"
 #include "Application.h"
-#include "Components/CameraComponent.h"
-#include "Components/DataComponent.h"
-#include "Components/SpriteRendererComponent.h"
-#include "Components/TransformComponent.h"
+#include "Components.h"
 #include "Managers/TextureManager.h"
 #include "Rendering/Renderer.h"
-#include "Rendering/Texture.h"
+#include "Scene/Scene.h"
 
 namespace MikuEngine
 {
-	void RenderingSystem::RenderSprite( const Scene& scene, AppLevelStuff& appLevelStuff )
+	void RenderingSystem::RenderSprite( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData )
 	{
 		// Quads To Render
 		const auto& entities = scene.GetRegistry().view<DataComponent, SpriteRendererComponent>();
-
-		// Camera
-		const auto& cameras = scene.GetRegistry().view<CameraComponent>();
-
-		std::optional<entt::entity> cameraEntity;
-		std::optional<CameraComponent> cameraComponent;
-
-		for ( const auto& [ entity, cam ] : cameras.each() )
-		{
-			cameraEntity = entity;
-			cameraComponent = cam;
-		}
 
 		const auto& renderer = appLevelStuff.GetRenderer();
 		const auto& quad = renderer.GetQuad();
@@ -44,12 +28,6 @@ namespace MikuEngine
 
 		for ( const auto& [ entity, data, spriteRenderer ] : entities.each() )
 		{
-			// INFO: No point in doing rendering if there is no camera
-			if ( !cameraEntity.has_value() )
-			{
-				MIKU_CORE_WARN( "There is no ACTIVE camera in this scene" );
-				return;
-			}
 			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
 
 			if ( !spriteRenderer.TextureIdentifier.has_value() ) continue;
@@ -61,7 +39,7 @@ namespace MikuEngine
 			auto viewport = Application::GetApplication()->GetDataContainer().GetViewportSize();
 
 			glm::mat4 proj = glm::ortho( 0.0f, viewport.x, viewport.y, 0.0f, -1000.0f, 1000.0f );
-			glm::mat4 view = cameraComponent.value().GetViewMatrix( scene.GetRegistry(), cameraEntity.value() );
+			glm::mat4 view = cameraData.viewMatrix;
 			glm::mat4 model = transform.GetModelMatrix();
 
 			glm::mat4 mvp = proj * view * model;

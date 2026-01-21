@@ -8,13 +8,18 @@
 #include "Core.h"
 #include "UUID.h"
 
-#include "AppLevelStuff.h"
 #include "Helpers/SceneSerializer.h"
 
 namespace MikuEngine
 {
+	class AppLevelStuff;
 	class Entity;
+	class CameraComponent;
+	class CameraData;
+}
 
+namespace MikuEngine
+{
 	class MIKU_API Scene
 	{
 	public:
@@ -23,6 +28,7 @@ namespace MikuEngine
 
 		void Update( double dt );
 		void Render( AppLevelStuff& appLevelStuff ) const;
+		void RenderInEditor( AppLevelStuff& appLevelStuff, const CameraData& cameraData ) const;
 		void RenderImGui( const AppLevelStuff& appLevelStuff );
 
 		Entity CreateEntity( const std::string& name, Scene* parentScene );
@@ -33,6 +39,7 @@ namespace MikuEngine
 
 		std::vector<Entity> GetAllEntities();
 		std::optional<Entity> GetEntityByID( UUID id );
+		std::optional<std::pair<const Entity, const CameraComponent&>> GetMainCamera() const;
 
 		const entt::registry& GetRegistry() const { return m_Registry; }
 

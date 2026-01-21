@@ -3,7 +3,11 @@
 #include <string>
 
 #include "Core.h"
-#include "UUID.h"
+
+namespace MikuEngine
+{
+	class UUID;
+}
 
 namespace MikuEngine
 {

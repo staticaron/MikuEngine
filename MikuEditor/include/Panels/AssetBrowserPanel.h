@@ -2,7 +2,10 @@
 
 #include "MikuEngine/Core.h"
 
-#include "Scene/Scene.h"
+namespace MikuEngine
+{
+	class Scene;
+}
 
 namespace MikuEditor
 {

@@ -5,6 +5,7 @@
 
 #include "Components.h"
 #include "Entity.h"
+#include "Systems/CameraSystem.h"
 #include "Systems/RenderingSystem.h"
 
 namespace MikuEngine
@@ -15,7 +16,16 @@ namespace MikuEngine
 
 	void Scene::Render( AppLevelStuff& appLevelStuff ) const
 	{
-		RenderingSystem::RenderSprite( *this, appLevelStuff );
+		auto mainCamera = GetMainCamera();
+		auto mainCameraEntity = mainCamera->first;
+		auto mainCameraComponent = mainCamera->second;
+
+		RenderingSystem::RenderSprite( *this, appLevelStuff, { CameraSystem::GetViewMatrix( mainCameraEntity ) } );
+	}
+
+	void Scene::RenderInEditor( AppLevelStuff& appLevelStuff, const CameraData& cameraData ) const
+	{
+		RenderingSystem::RenderSprite( *this, appLevelStuff, cameraData );
 	}
 
 	void Scene::RenderImGui( const AppLevelStuff& appLevelStuff ) {}
@@ -84,6 +94,22 @@ namespace MikuEngine
 		for ( const auto& [ entity, idC ] : idView.each() )
 		{
 			if ( idC.ID == id ) return Entity{ idC.ID, entity, this };
+		}
+
+		return {};
+	}
+
+	std::optional<std::pair<const Entity, const CameraComponent&>> Scene::GetMainCamera() const
+	{
+		auto cameraComponentView = m_Registry.view<IDComponent, CameraComponent>();
+
+		for ( auto [ entity, idComponent, cameraComponent ] : cameraComponentView.each() )
+		{
+			if ( cameraComponent.m_IsMainCamera == false ) continue;
+
+			return {
+			    { { idComponent.ID, entity, const_cast<Scene*>( this ) }, cameraComponent }
+			};
 		}
 
 		return {};

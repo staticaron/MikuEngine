@@ -7,7 +7,10 @@
 namespace MikuEngine
 {
 	class Scene;
+}
 
+namespace MikuEngine
+{
 	class MIKU_API SceneSerializer
 	{
 	public:

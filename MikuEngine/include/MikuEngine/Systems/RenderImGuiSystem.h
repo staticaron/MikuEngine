@@ -4,7 +4,10 @@
 
 #include "Core.h"
 
-#include "AppLevelStuff.h"
+namespace MikuEngine
+{
+	class AppLevelStuff;
+}
 
 namespace MikuEngine
 {

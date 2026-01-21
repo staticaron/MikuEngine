@@ -2,18 +2,20 @@
 
 #include <chrono>
 #include <memory>
-#include <type_traits>
 #include <vector>
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include "Scene/Scene.h"
 
 #include "AppLevelStuff.h"
 #include "Core.h"
 #include "DataContainer.h"
-#include "Layer.h"
 #include "Rendering/FrameBuffer.h"
+
+namespace MikuEngine
+{
+	class Layer;
+}
 
 namespace MikuEngine
 {

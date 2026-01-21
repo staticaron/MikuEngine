@@ -1,9 +1,11 @@
 #include "Panels/InspectorPanel.h"
 
-#include "AppLevelStuff.h"
+#include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Entity.h"
-
 #include "MikuEngine/Logger.h"
+#include "MikuEngine/Scene/Scene.h"
+
+#include "Layers/EditorLayer.h"
 #include "Panels/Panels.h"
 
 namespace MikuEditor
