@@ -6,7 +6,6 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "AppLevelStuff.h"
-#include "Application.h"
 #include "Components.h"
 #include "Managers/TextureManager.h"
 #include "Rendering/Renderer.h"
