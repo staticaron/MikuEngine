@@ -1,4 +1,4 @@
-#include "Rendering/FrameBuffer.h"
+#include "Rendering/SceneFBO.h"
 
 #include "Application.h"
 #include "glad/glad.h"
@@ -6,7 +6,7 @@
 
 namespace MikuEngine
 {
-	void FrameBuffer::Init()
+	void SceneFBO::Init()
 	{
 		glGenFramebuffers( 1, &m_RendererID );
 		Bind();
@@ -28,29 +28,29 @@ namespace MikuEngine
 		UnBind();
 	}
 
-	FrameBuffer::~FrameBuffer()
+	SceneFBO::~SceneFBO()
 	{
 		Destroy();
 	}
 
-	void FrameBuffer::Bind() const
+	void SceneFBO::Bind() const
 	{
 		glBindFramebuffer( GL_FRAMEBUFFER, m_RendererID );
 		glViewport( 0, 0, Application::GetDataContainer().GetViewportSize().x, Application::GetDataContainer().GetViewportSize().y );
 	}
 
-	void FrameBuffer::UnBind() const
+	void SceneFBO::UnBind() const
 	{
 		glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 	}
 
-	void FrameBuffer::Destroy()
+	void SceneFBO::Destroy()
 	{
 		glDeleteFramebuffers( 1, &m_RendererID );
 		glDeleteTextures( 1, &m_RendererID );
 	}
 
-	void FrameBuffer::ResizeFrameBufferTexture( glm::vec2 viewportSize )
+	void SceneFBO::ResizeFrameBufferTexture( glm::vec2 viewportSize )
 	{
 		Application::GetDataContainer().SetViewportSize( viewportSize );
 

@@ -8,7 +8,7 @@
 
 #include "Application.h"
 
-#include "Rendering/FrameBuffer.h"
+#include "Rendering/SceneFBO.h"
 
 #define DISABLE_IMGUI( x )                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             \
 	ImGui::BeginDisabled();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        \
@@ -27,6 +27,7 @@ namespace MikuEngine
 		( void )io;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 		io.Fonts->AddFontFromFileTTF( RESOURCE_DIR "fonts/jetbrains_mono.ttf" );
 
@@ -56,14 +57,21 @@ namespace MikuEngine
 	void ImguiManager::RenderFrame()
 	{
 		ImGui::Render();
+
 		ImGui_ImplOpenGL3_RenderDrawData( ImGui::GetDrawData() );
+
+		if ( ImGuiConfigFlags_ViewportsEnable )
+		{
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+		}
 	}
 
-	void ImguiManager::RenderFrameBuffer( FrameBuffer& frameBuffer )
+	void ImguiManager::RenderFrameBuffer( SceneFBO& frameBuffer )
 	{
-		ImGui::Begin( "Game" );
+		ImGui::Begin( "IMPOSTER" );
 
-		ImVec2 windowSize = ImGui::GetWindowViewport()->WorkSize;
+		ImVec2 windowSize = ImGui::GetContentRegionAvail();
 
 		glm::vec2 viewPortSize = Application::GetDataContainer().GetViewportSize();
 

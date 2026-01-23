@@ -36,9 +36,7 @@ namespace MikuEngine
 			texture.Bind( 0 );
 			shader.SetUniform<unsigned int>( "u_Tex", 0 );
 
-			auto viewport = Application::GetApplication()->GetDataContainer().GetViewportSize();
-
-			glm::mat4 proj = glm::ortho( 0.0f, viewport.x, viewport.y, 0.0f, -1000.0f, 1000.0f );
+			glm::mat4 proj = glm::ortho( 0.0f, cameraData.cameraResolution.x, cameraData.cameraResolution.y, 0.0f, -1000.0f, 1000.0f );
 			glm::mat4 view = cameraData.viewMatrix;
 			glm::mat4 model = transform.GetModelMatrix();
 

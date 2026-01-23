@@ -68,7 +68,7 @@ namespace MikuEngine
 
 		while ( !glfwWindowShouldClose( m_Window ) )
 		{
-			m_FrameBuffer.Bind();
+			m_SceneFBO.Bind();
 
 			glClearColor( 0, 1, 1, 1 );
 			glClear( GL_COLOR_BUFFER_BIT );
@@ -92,7 +92,7 @@ namespace MikuEngine
 
 			m_AppLevelStuff.GetRenderer().Draw( va, ib, shader );
 
-			m_FrameBuffer.UnBind();
+			m_SceneFBO.UnBind();
 
 			glClearColor( 0.0f, 0.5f, 0.5f, 1 );
 			glClear( GL_COLOR_BUFFER_BIT );
@@ -107,7 +107,7 @@ namespace MikuEngine
 
 			ImGui::End();
 
-			m_AppLevelStuff.GetImGuiManager().RenderFrameBuffer( m_FrameBuffer );
+			m_AppLevelStuff.GetImGuiManager().RenderFrameBuffer( m_SceneFBO );
 
 			m_AppLevelStuff.GetImGuiManager().RenderFrame();
 
@@ -170,7 +170,8 @@ namespace MikuEngine
 		// Initializing of member vars
 		LAST = NOW = std::chrono::high_resolution_clock::now();
 
-		m_FrameBuffer.Init();
+		m_SceneFBO.Init();
+		m_GameFBO.Init();
 
 		m_AppLevelStuff.GetRenderer().Init();
 		m_AppLevelStuff.GetTextureManager().LoadAllTextures();
@@ -219,15 +220,8 @@ namespace MikuEngine
 
 	void Application::RenderGeometry()
 	{
-		m_FrameBuffer.Bind();
-
-		glClearColor( 0.0f, 0.3f, 0.3f, 1.0f );
-		glClear( GL_COLOR_BUFFER_BIT );
-
 		for ( int x = 0; x < m_Layers.size(); x++ )
 			m_Layers[ x ]->Render( m_AppLevelStuff );
-
-		m_FrameBuffer.UnBind();
 	}
 
 	void Application::RenderImGui()

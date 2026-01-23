@@ -16,6 +16,7 @@ namespace MikuEngine
 	struct CameraData
 	{
 		glm::mat4 viewMatrix;
+		glm::vec2 cameraResolution;
 	};
 
 	class MIKU_API RenderingSystem

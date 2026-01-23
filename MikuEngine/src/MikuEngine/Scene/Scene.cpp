@@ -27,7 +27,7 @@ namespace MikuEngine
 		auto mainCameraEntity = mainCamera->first;
 		auto mainCameraComponent = mainCamera->second;
 
-		RenderingSystem::RenderSprite( *this, appLevelStuff, { CameraSystem::GetViewMatrix( mainCameraEntity ) } );
+		RenderingSystem::RenderSprite( *this, appLevelStuff, { CameraSystem::GetViewMatrix( mainCameraEntity ), mainCameraComponent.m_Resolution } );
 	}
 
 	void Scene::RenderInEditor( AppLevelStuff& appLevelStuff, const CameraData& cameraData ) const

@@ -4,7 +4,7 @@
 
 #include "backends/imgui_impl_glfw.h"
 #include "Core.h"
-#include "Rendering/FrameBuffer.h"
+#include "Rendering/SceneFBO.h"
 
 namespace MikuEngine
 {
@@ -24,7 +24,7 @@ namespace MikuEngine
 		void PrepareFrame();
 		void RenderFrame();
 
-		void RenderFrameBuffer( FrameBuffer& frameBuffer );
+		void RenderFrameBuffer( SceneFBO& frameBuffer );
 
 		static bool FullWidthButton( const std::string& text );
 

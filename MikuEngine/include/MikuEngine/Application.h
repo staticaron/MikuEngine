@@ -10,7 +10,8 @@
 #include "AppLevelStuff.h"
 #include "Core.h"
 #include "DataContainer.h"
-#include "Rendering/FrameBuffer.h"
+#include "Rendering/GameFBO.h"
+#include "Rendering/SceneFBO.h"
 #include "Scene/Scene.h"
 
 namespace MikuEngine
@@ -42,7 +43,9 @@ namespace MikuEngine
 		std::unique_ptr<Layer>& GetLayer( unsigned int index ) { return m_Layers[ index ]; }
 
 		AppLevelStuff& GetAppLevelStuff() { return m_AppLevelStuff; }
-		FrameBuffer& GetFrameBuffer() { return m_FrameBuffer; }
+
+		SceneFBO& GetSceneFBO() { return m_SceneFBO; }
+		GameFBO& GetGameFBO() { return m_GameFBO; }
 
 	private:
 		void RenderTemp();
@@ -55,12 +58,11 @@ namespace MikuEngine
 	private:
 		GLFWwindow* m_Window = nullptr;
 
-		// Containers
 		AppLevelStuff m_AppLevelStuff;
 		DataContainer m_DataContainer;
 
-		// Rendering
-		FrameBuffer m_FrameBuffer;
+		SceneFBO m_SceneFBO;
+		GameFBO m_GameFBO;
 
 		Scene m_Scene;
 
@@ -69,7 +71,6 @@ namespace MikuEngine
 		std::chrono::high_resolution_clock::time_point LAST;
 		std::chrono::high_resolution_clock::time_point NOW;
 
-		// Layers
 		std::vector<std::unique_ptr<Layer>> m_Layers;
 	};
 

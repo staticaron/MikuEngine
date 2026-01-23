@@ -7,7 +7,7 @@
 namespace MikuEngine
 {
 	class AppLevelStuff;
-	class FrameBuffer;
+	class SceneFBO;
 }
 namespace MikuEditor
 {
@@ -25,7 +25,7 @@ namespace MikuEditor
 		void Render( MikuEngine::AppLevelStuff& appLevelStuff ) const override;
 		void RenderImgui( const MikuEngine::AppLevelStuff& appLevelStuff ) override;
 
-		void RenderFrameBuffer( MikuEngine::FrameBuffer& frameBuffer );
+		void RenderFrameBuffer( const MikuEngine::AppLevelStuff& appLevelStuff );
 
 	private:
 	};

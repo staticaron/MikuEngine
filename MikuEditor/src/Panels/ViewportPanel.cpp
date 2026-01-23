@@ -10,11 +10,11 @@ namespace MikuEditor
 	{
 		ImGui::Begin( "Viewport" );
 
-		ImVec2 windowSize = ImGui::GetWindowViewport()->WorkSize;
+		ImVec2 windowSize = ImGui::GetContentRegionAvail();
 
 		glm::vec2 viewPortSize = MikuEngine::Application::GetDataContainer().GetViewportSize();
 
-		auto& frameBuffer = MikuEngine::Application::GetApplication()->GetFrameBuffer();
+		auto& frameBuffer = MikuEngine::Application::GetApplication()->GetSceneFBO();
 
 		if ( windowSize.x != viewPortSize.x || windowSize.y != viewPortSize.y )
 		{

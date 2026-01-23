@@ -1,6 +1,7 @@
 #include "Layers/EditorLayer.h"
 
 #include "AppLevelStuff.h"
+#include "Application.h"
 #include "MikuEngine/Systems/RenderingSystem.h"
 #include "Panels/Panels.h"
 
@@ -13,8 +14,17 @@ namespace MikuEditor
 
 	void EditorLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
 	{
-		MikuEngine::CameraData cameraData = { m_EditorCamera.GetViewMatrix() };
+		auto& sceneFBO = MikuEngine::Application::GetApplication()->GetSceneFBO();
+
+		sceneFBO.Bind();
+
+		glClearColor( 0.0f, 0.3f, 0.3f, 1.0f );
+		glClear( GL_COLOR_BUFFER_BIT );
+
+		MikuEngine::CameraData cameraData = { m_EditorCamera.GetViewMatrix(), MikuEngine::Application::GetDataContainer().GetViewportSize() };
 		m_Scene->RenderInEditor( appLevelStuff, cameraData );
+
+		sceneFBO.UnBind();
 	}
 
 	void EditorLayer::RenderImgui( const MikuEngine::AppLevelStuff& appLevelStuff )

@@ -2,15 +2,13 @@
 
 #include "Core.h"
 
-#include "glm/glm.hpp"
-
 namespace MikuEngine
 {
-	class MIKU_API FrameBuffer
+	class MIKU_API GameFBO
 	{
 	public:
-		FrameBuffer() = default;
-		~FrameBuffer();
+		GameFBO() = default;
+		~GameFBO();
 
 		void Init();
 
@@ -19,12 +17,14 @@ namespace MikuEngine
 
 		void Destroy();
 
-		void ResizeFrameBufferTexture( glm::vec2 viewPortSize );
-
 		unsigned int GetTextureID() const { return m_TextureID; }
+
+		float GetAspectRatio() const { return m_AspectRatio; }
 
 	private:
 		unsigned int m_RendererID = 0;
 		unsigned int m_TextureID = 0;
+
+		float m_AspectRatio = 1.0f;
 	};
 }
