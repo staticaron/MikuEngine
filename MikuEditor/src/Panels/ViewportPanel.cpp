@@ -22,6 +22,7 @@ namespace MikuEditor
 		}
 
 		ImGui::Image( ( void* )( intptr_t )frameBuffer.GetTextureID(), { windowSize.x, windowSize.y }, { 0, 1 }, { 1, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } );
+
 		ImGui::End();
 	}
 }
