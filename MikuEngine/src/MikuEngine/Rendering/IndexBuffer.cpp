@@ -1,7 +1,6 @@
 #include "Rendering/IndexBuffer.h"
 
 #include "glad/glad.h"
-#include "Logger.h"
 
 namespace MikuEngine
 {
@@ -9,7 +8,6 @@ namespace MikuEngine
 
 	IndexBuffer::~IndexBuffer()
 	{
-		MIKU_CORE_WARN( "Index Buffer Deleted! ID : {}", m_RendererID );
 		glDeleteBuffers( 1, &m_RendererID );
 	}
 
@@ -20,8 +18,6 @@ namespace MikuEngine
 		glCreateBuffers( 1, &m_RendererID );
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_RendererID );
 		glBufferData( GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof( unsigned int ), data, GL_DYNAMIC_DRAW );
-
-		MIKU_CORE_INFO( "Index Buffer Created! ID : {}", m_RendererID );
 	}
 
 	void IndexBuffer::Bind() const

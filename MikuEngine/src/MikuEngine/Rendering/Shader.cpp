@@ -20,8 +20,6 @@ namespace MikuEngine
 
 		std::ifstream stream( filepath.data() );
 
-		MIKU_CORE_INFO( "Shader Loaded at filepath {}", filepath );
-
 		if ( !stream.is_open() )
 		{
 			MIKU_CORE_ERROR( "Error loading the file at " );
