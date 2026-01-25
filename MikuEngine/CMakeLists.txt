@@ -17,6 +17,7 @@ add_subdirectory(vendor/stb_image)
 add_subdirectory(vendor/entt)
 add_subdirectory(vendor/yaml-cpp)
 add_subdirectory(vendor/nativefiledialog)
+add_subdirectory(vendor/imguizmo)
 
 file(GLOB_RECURSE ENGINE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
@@ -37,6 +38,7 @@ target_link_libraries("MikuEngine" PUBLIC
 	glfw
 	spdlog
 	imgui
+	imguizmo
 	glm
 	stb_image
 	entt

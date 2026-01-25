@@ -21,3 +21,6 @@
 	path = MikuEngine/vendor/nativefiledialog
 	url = https://github.com/mlabbe/nativefiledialog.git
 	ignore = dirty
+[submodule "MikuEngine/vendor/imguizmo"]
+	path = MikuEngine/vendor/imguizmo
+	url = https://github.com/CedricGuillemet/ImGuizmo.git
