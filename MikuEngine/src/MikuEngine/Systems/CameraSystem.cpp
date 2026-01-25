@@ -2,6 +2,8 @@
 
 #include "Components/CameraComponent.h"
 #include "Entity.h"
+#include "Helpers/SerializationHelper.h"
+#include "Logger.h"
 #include "Managers/ImguiManager.h"
 
 namespace MikuEngine
@@ -38,10 +40,43 @@ namespace MikuEngine
 	{
 		if ( ImGui::TreeNode( "CameraComponent" ) )
 		{
+			ImGui::Checkbox( "Is Main Camera", &cameraComponent.m_IsMainCamera );
 			ImGui::DragFloat( "Zoom", &cameraComponent.Zoom );
 			ImGui::DragFloat2( "Resolution", &cameraComponent.m_Resolution[ 0 ] );
 
 			ImGui::TreePop();
 		}
 	}
+
+	void CameraSystem::SerializeCameraComponent( const Entity& entity, YAML::Emitter& emitter )
+	{
+		emitter << YAML::BeginMap;
+
+		auto cameraComponent = entity.GetReadOnlyComponent<CameraComponent>();
+		emitter << YAML::Key << "type" << YAML::Value << "CameraComponent";
+
+		emitter << YAML::Key << "values" << YAML::Value << YAML::BeginMap;
+		emitter << YAML::Key << "zoom" << YAML::Value << cameraComponent.Zoom;
+		emitter << YAML::Key << "isMainCamera" << YAML::Value << cameraComponent.m_IsMainCamera;
+		emitter << YAML::Key << "resolution" << YAML::Value << YAML::Flow << YAML::BeginSeq << cameraComponent.m_Resolution.x << cameraComponent.m_Resolution.y << YAML::EndSeq;
+		emitter << YAML::EndMap;
+
+		emitter << YAML::EndMap;
+	}
+
+	void CameraSystem::DeSerializeCameraComponent( CameraComponent& cameraComponent, const YAML::Node& node )
+	{
+		float zoom = node[ "zoom" ].as<float>();
+		bool isMainCamera = node[ "isMainCamera" ].as<bool>();
+
+		glm::vec2 resolution;
+		DecodeVec2( node[ "resolution" ], resolution );
+
+		MIKU_CORE_INFO( "Resolution: {} {}", resolution.x, resolution.y );
+
+		cameraComponent.Zoom = zoom;
+		cameraComponent.m_IsMainCamera = isMainCamera;
+		cameraComponent.m_Resolution = resolution;
+	}
+
 }

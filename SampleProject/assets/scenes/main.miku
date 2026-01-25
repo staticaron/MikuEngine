@@ -23,6 +23,8 @@ entities:
       - type: CameraComponent
         values:
           zoom: 26
+		  isMainCamera: True
+		  resolution: [ 1600, 900 ]
   - name: First
     id: 12764823001467717413
     components:

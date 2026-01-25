@@ -12,7 +12,9 @@
 
 #include "Components.h"
 #include "Entity.h"
+#include "Helpers/SerializationHelper.h"
 #include "Scene/Scene.h"
+#include "Systems.h"
 
 namespace MikuEngine
 {
@@ -36,74 +38,22 @@ namespace MikuEngine
 
 		if ( entity.HasComponent<TransformComponent>() )
 		{
-			emitter << YAML::BeginMap;
-			auto transform = entity.GetComponent<TransformComponent>();
-			emitter << YAML::Key << "type" << YAML::Value << "TransformComponent";
-
-			emitter << YAML::Key << "values" << YAML::Value << YAML::BeginMap;
-			emitter << YAML::Key << "position" << YAML::Value << YAML::Flow << YAML::BeginSeq << transform.Position.x << transform.Position.y << transform.Position.z << YAML::EndSeq;
-			emitter << YAML::Key << "rotation" << YAML::Value << YAML::Flow << YAML::BeginSeq << transform.Rotation.x << transform.Rotation.y << transform.Rotation.z << YAML::EndSeq;
-			emitter << YAML::Key << "scale" << YAML::Value << YAML::Flow << YAML::BeginSeq << transform.Scale.x << transform.Scale.y << transform.Scale.z << YAML::EndSeq;
-			emitter << YAML::EndMap;
-
-			emitter << YAML::EndMap;
+			TransformSystem::SerializeTransformComponent( entity, emitter );
 		}
 
 		if ( entity.HasComponent<SpriteRendererComponent>() )
 		{
-			emitter << YAML::BeginMap;
-
-			auto spriteRenderer = entity.GetComponent<SpriteRendererComponent>();
-			emitter << YAML::Key << "type" << YAML::Value << "SpriteRendererComponent";
-
-			emitter << YAML::Key << "values" << YAML::Value << YAML::BeginMap;
-			emitter << YAML::Key << "texture" << YAML::Value << spriteRenderer.TextureIdentifier.value();
-			emitter << YAML::Key << "tint" << YAML::Value << YAML::Flow << YAML::BeginSeq << spriteRenderer.Tint.x << spriteRenderer.Tint.y << spriteRenderer.Tint.z << spriteRenderer.Tint.w << YAML::EndSeq;
-			emitter << YAML::EndMap;
-
-			emitter << YAML::EndMap;
+			RenderingSystem::SerializeSpriteRendererComponent( entity, emitter );
 		}
 
 		if ( entity.HasComponent<CameraComponent>() )
 		{
-			emitter << YAML::BeginMap;
-
-			auto cameraComponent = entity.GetComponent<CameraComponent>();
-			emitter << YAML::Key << "type" << YAML::Value << "CameraComponent";
-
-			emitter << YAML::Key << "values" << YAML::Value << YAML::BeginMap;
-			emitter << YAML::Key << "zoom" << YAML::Value << cameraComponent.Zoom;
-			emitter << YAML::EndMap;
-
-			emitter << YAML::EndMap;
+			CameraSystem::SerializeCameraComponent( entity, emitter );
 		}
 
 		emitter << YAML::EndSeq;
 
 		emitter << YAML::EndMap;
-	}
-
-	static bool DecodeVec3( const YAML::Node& node, glm::vec3& container )
-	{
-		if ( !node.IsSequence() || node.size() != 3 ) return false;
-
-		container.x = node[ 0 ].as<float>();
-		container.y = node[ 1 ].as<float>();
-		container.z = node[ 2 ].as<float>();
-
-		return true;
-	}
-
-	static bool DecodeVec4( const YAML::Node& node, glm::vec4& container )
-	{
-		if ( !node.IsSequence() || node.size() != 4 ) return false;
-
-		container.x = node[ 0 ].as<float>();
-		container.y = node[ 1 ].as<float>();
-		container.z = node[ 2 ].as<float>();
-		container.w = node[ 3 ].as<float>();
-
-		return true;
 	}
 
 	void SceneSerializer::Serialize( Scene& scene, const std::string& savePath )
@@ -174,37 +124,25 @@ namespace MikuEngine
 
 				if ( type == "TransformComponent" )
 				{
-					glm::vec3 position;
-					glm::vec3 rotation;
-					glm::vec3 scale;
+					auto& transformC = entt.GetComponent<TransformComponent>();
 
-					DecodeVec3( values[ "position" ], position );
-					DecodeVec3( values[ "rotation" ], rotation );
-					DecodeVec3( values[ "scale" ], scale );
-
-					entt.GetComponent<TransformComponent>().Position = position;
-					entt.GetComponent<TransformComponent>().Rotation = rotation;
-					entt.GetComponent<TransformComponent>().Scale = scale;
+					TransformSystem::DeSerializeTransformComponent( transformC, values );
 				}
 
 				if ( type == "SpriteRendererComponent" )
 				{
-					std::string texture = values[ "texture" ].as<std::string>();
-
-					glm::vec4 tint;
-					DecodeVec4( values[ "tint" ], tint );
-
 					entt.AddComponent<SpriteRendererComponent>();
-					entt.GetComponent<SpriteRendererComponent>().TextureIdentifier = texture.empty() ? std::optional<UUID>( std::nullopt ) : UUID( texture );
-					entt.GetComponent<SpriteRendererComponent>().Tint = tint;
+					auto& spriteRendererC = entt.GetComponent<SpriteRendererComponent>();
+
+					RenderingSystem::DeSerializeSpriteRendererComponent( spriteRendererC, values );
 				}
 
 				if ( type == "CameraComponent" )
 				{
-					float zoom = values[ "zoom" ].as<float>();
-
 					entt.AddComponent<CameraComponent>();
-					entt.GetComponent<CameraComponent>().Zoom = zoom;
+					auto& cameraC = entt.GetComponent<CameraComponent>();
+
+					CameraSystem::DeSerializeCameraComponent( cameraC, values );
 				}
 			}
 		}

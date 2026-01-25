@@ -7,6 +7,8 @@
 
 #include "AppLevelStuff.h"
 #include "Components.h"
+#include "Entity.h"
+#include "Helpers/SerializationHelper.h"
 #include "Managers/TextureManager.h"
 #include "Rendering/Renderer.h"
 #include "Scene/Scene.h"
@@ -46,4 +48,30 @@ namespace MikuEngine
 			renderer.Draw( quad.GetVA(), quad.GetIB(), quad.GetShader() );
 		}
 	};
+
+	void RenderingSystem::SerializeSpriteRendererComponent( const Entity& entity, YAML::Emitter& emitter )
+	{
+		emitter << YAML::BeginMap;
+
+		auto spriteRenderer = entity.GetReadOnlyComponent<SpriteRendererComponent>();
+		emitter << YAML::Key << "type" << YAML::Value << "SpriteRendererComponent";
+
+		emitter << YAML::Key << "values" << YAML::Value << YAML::BeginMap;
+		emitter << YAML::Key << "texture" << YAML::Value << spriteRenderer.TextureIdentifier.value();
+		emitter << YAML::Key << "tint" << YAML::Value << YAML::Flow << YAML::BeginSeq << spriteRenderer.Tint.x << spriteRenderer.Tint.y << spriteRenderer.Tint.z << spriteRenderer.Tint.w << YAML::EndSeq;
+		emitter << YAML::EndMap;
+
+		emitter << YAML::EndMap;
+	}
+
+	void RenderingSystem::DeSerializeSpriteRendererComponent( SpriteRendererComponent& spriteRendererC, const YAML::Node& node )
+	{
+		std::string texture = node[ "texture" ].as<std::string>();
+
+		glm::vec4 tint;
+		DecodeVec4( node[ "tint" ], tint );
+
+		spriteRendererC.TextureIdentifier = texture.empty() ? std::optional<UUID>( std::nullopt ) : UUID( texture );
+		spriteRendererC.Tint = tint;
+	}
 }

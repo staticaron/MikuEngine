@@ -1,6 +1,7 @@
 #pragma once
 
 #include "glm/glm.hpp"
+#include "yaml-cpp/yaml.h"
 
 #include "Core.h"
 
@@ -20,5 +21,7 @@ namespace MikuEngine
 		static glm::mat4 GetViewMatrix( const Entity& entity );
 
 		static void CameraComponentRenderImGui( CameraComponent& cameraComponent );
+		static void SerializeCameraComponent( const Entity& entity, YAML::Emitter& emitter );
+		static void DeSerializeCameraComponent( CameraComponent& cameraComponent, const YAML::Node& emitter );
 	};
 }

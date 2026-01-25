@@ -1,14 +1,16 @@
 #pragma once
 
-#include "entt/entt.hpp"
 #include "glm/glm.hpp"
+#include "yaml-cpp/yaml.h"
 
 #include "Core.h"
 
 namespace MikuEngine
 {
 	class Scene;
+	class Entity;
 	class AppLevelStuff;
+	class SpriteRendererComponent;
 }
 
 namespace MikuEngine
@@ -23,5 +25,7 @@ namespace MikuEngine
 	{
 	public:
 		static void RenderSprite( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData );
+		static void SerializeSpriteRendererComponent( const Entity& entity, YAML::Emitter& emitter );
+		static void DeSerializeSpriteRendererComponent( SpriteRendererComponent& spriteRendererC, const YAML::Node& node );
 	};
 }
