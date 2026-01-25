@@ -39,7 +39,7 @@ target_link_libraries("MikuEngine" PUBLIC
 	imgui
 	glm
 	stb_image
-	entt
+	EnTT::EnTT
 	yaml-cpp
 	nfd
 )
