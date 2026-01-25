@@ -1,6 +1,5 @@
 #include "Systems/CameraSystem.h"
 
-#include "Application.h"
 #include "Components/CameraComponent.h"
 #include "Entity.h"
 
