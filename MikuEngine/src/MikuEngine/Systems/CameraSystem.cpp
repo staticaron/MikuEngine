@@ -2,6 +2,7 @@
 
 #include "Components/CameraComponent.h"
 #include "Entity.h"
+#include "Managers/ImguiManager.h"
 
 namespace MikuEngine
 {
@@ -31,5 +32,16 @@ namespace MikuEngine
 		auto rotation = rotationX * rotationY * rotationZ;
 
 		return glm::inverse( transform * rotation );
+	}
+
+	void CameraSystem::CameraComponentRenderImGui( CameraComponent& cameraComponent )
+	{
+		if ( ImGui::TreeNode( "CameraComponent" ) )
+		{
+			ImGui::DragFloat( "Zoom", &cameraComponent.Zoom );
+			ImGui::DragFloat2( "Resolution", &cameraComponent.m_Resolution[ 0 ] );
+
+			ImGui::TreePop();
+		}
 	}
 }

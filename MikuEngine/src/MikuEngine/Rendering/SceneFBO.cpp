@@ -50,7 +50,7 @@ namespace MikuEngine
 		glDeleteTextures( 1, &m_RendererID );
 	}
 
-	void SceneFBO::ResizeFrameBufferTexture( glm::vec2 viewportSize )
+	void SceneFBO::ResizeBufferTexture( glm::vec2 viewportSize )
 	{
 		Application::GetDataContainer().SetViewportSize( viewportSize );
 

@@ -42,6 +42,14 @@ namespace MikuEngine
 		glViewport( 0, 0, Application::GetDataContainer().GetGameResolution().x, Application::GetDataContainer().GetGameResolution().y );
 	}
 
+	void GameFBO::ResizeBufferTexture( glm::vec2 gameResolution )
+	{
+		Application::GetDataContainer().SetGameResolutionSize( gameResolution );
+
+		Destroy();
+		Init();
+	}
+
 	void GameFBO::UnBind() const
 	{
 		glBindFramebuffer( GL_FRAMEBUFFER, 0 );

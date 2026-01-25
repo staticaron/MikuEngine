@@ -1,17 +1,28 @@
 scene: Untitled
 entities:
-  - name: Second
-    id: 4132918722711682162
+  - name: Third
+    id: 10225065510863974330
     components:
       - type: TransformComponent
         values:
-          position: [580.52, 702.64, 1]
-          rotation: [0, 0, 36.24]
-          scale: [200, 200, 1]
+          position: [940, 967, 1]
+          rotation: [0, 0, -0.45]
+          scale: [100, 100, 1]
       - type: SpriteRendererComponent
         values:
-          texture: 3280946449159469236
+          texture: 11951034516196472530
           tint: [1, 1, 1, 1]
+  - name: Camera
+    id: 12751353118179448355
+    components:
+      - type: TransformComponent
+        values:
+          position: [229, 186, 1]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 0]
+      - type: CameraComponent
+        values:
+          zoom: 26
   - name: First
     id: 12764823001467717413
     components:
@@ -24,26 +35,15 @@ entities:
         values:
           texture: 3310852900429081261
           tint: [1, 1, 1, 1]
-  - name: Camera
-    id: 12751353118179448355
+  - name: Second
+    id: 4132918722711682162
     components:
       - type: TransformComponent
         values:
-          position: [233, 162, 1]
-          rotation: [0, 0, 0]
-          scale: [1, 1, 0]
-      - type: CameraComponent
-        values:
-          zoom: 26
-  - name: Third
-    id: 10225065510863974330
-    components:
-      - type: TransformComponent
-        values:
-          position: [940, 967, 1]
-          rotation: [0, 0, -0.45]
-          scale: [100, 100, 1]
+          position: [580.52, 702.64, 1]
+          rotation: [0, 0, 36.24]
+          scale: [200, 200, 1]
       - type: SpriteRendererComponent
         values:
-          texture: 11951034516196472530
+          texture: 3280946449159469236
           tint: [1, 1, 1, 1]

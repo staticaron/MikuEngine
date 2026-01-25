@@ -19,7 +19,7 @@ namespace MikuEngine
 
 		void Destroy();
 
-		void ResizeFrameBufferTexture( glm::vec2 viewPortSize );
+		void ResizeBufferTexture( glm::vec2 viewPortSize );
 
 		unsigned int GetTextureID() const { return m_TextureID; }
 

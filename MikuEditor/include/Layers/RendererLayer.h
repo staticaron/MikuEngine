@@ -9,6 +9,7 @@ namespace MikuEngine
 	class AppLevelStuff;
 	class SceneFBO;
 }
+
 namespace MikuEditor
 {
 	class InspectorPanel;

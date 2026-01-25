@@ -1,8 +1,8 @@
 #include "Layers/RendererLayer.h"
 
-#include "imgui.h"
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Application.h"
+#include "MikuEngine/Entity.h"
 
 namespace MikuEditor
 {
@@ -10,6 +10,18 @@ namespace MikuEditor
 	void RendererLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
 	{
 		auto& gameFBO = MikuEngine::Application::GetApplication()->GetGameFBO();
+
+		{ // Resize the game frame buffer according to the resolution set in main camera
+			auto mainCam = m_Scene->GetMainCamera();
+
+			if ( !mainCam.has_value() ) return;
+
+			auto mainCamEntity = mainCam->first;
+			auto mainCamComponent = mainCam->second;
+
+			// Resize the game frame buffer according to the resolution set in main camera
+			if ( MikuEngine::Application::GetDataContainer().GetGameResolution() != mainCamComponent.m_Resolution ) gameFBO.ResizeBufferTexture( { mainCamComponent.m_Resolution } );
+		}
 
 		gameFBO.Bind();
 
@@ -28,13 +40,9 @@ namespace MikuEditor
 
 	void RendererLayer::RenderFrameBuffer( const MikuEngine::AppLevelStuff& appLevelStuff )
 	{
-#define ON 1
-#if ON
 		ImGui::Begin( "Game" );
 
 		ImVec2 windowSize = ImGui::GetContentRegionAvail();
-
-		glm::vec2 viewPortSize = MikuEngine::Application::GetDataContainer().GetGameResolution();
 
 		auto& frameBuffer = MikuEngine::Application::GetApplication()->GetGameFBO();
 
@@ -62,23 +70,5 @@ namespace MikuEditor
 		ImGui::Image( ( void* )( intptr_t )frameBuffer.GetTextureID(), { imageSize.x, imageSize.y }, { 0, 1 }, { 1, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } );
 
 		ImGui::End();
-#else
-		glm::vec2 viewPortSize2 = MikuEngine::Application::GetDataContainer().GetViewportSize();
-
-		ImGui::Begin( "Game" );
-
-		ImVec2 windowSize2 = ImGui::GetContentRegionAvail();
-
-		auto& frameBuffer2 = MikuEngine::Application::GetApplication()->GetFrameBuffer();
-
-		if ( windowSize2.x != viewPortSize2.x || windowSize2.y != viewPortSize2.y )
-		{
-			frameBuffer2.ResizeFrameBufferTexture( { windowSize2.x, windowSize2.y } );
-		}
-
-		ImGui::Image( ( void* )( intptr_t )frameBuffer2.GetTextureID(), { windowSize2.x, windowSize2.y }, { 0, 1 }, { 1, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } );
-
-		ImGui::End();
-#endif
 	}
 }

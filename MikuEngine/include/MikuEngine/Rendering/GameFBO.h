@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core.h"
+#include "glm/glm.hpp"
 
 namespace MikuEngine
 {
@@ -20,6 +21,8 @@ namespace MikuEngine
 		unsigned int GetTextureID() const { return m_TextureID; }
 
 		float GetAspectRatio() const { return m_AspectRatio; }
+
+		void ResizeBufferTexture( glm::vec2 gameResolution );
 
 	private:
 		unsigned int m_RendererID = 0;

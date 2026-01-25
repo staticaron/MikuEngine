@@ -4,6 +4,7 @@
 #include "MikuEngine/Entity.h"
 #include "MikuEngine/Logger.h"
 #include "MikuEngine/Scene/Scene.h"
+#include "MikuEngine/Systems/CameraSystem.h"
 
 #include "Layers/EditorLayer.h"
 #include "Panels/Panels.h"
@@ -77,13 +78,7 @@ namespace MikuEditor
 			if ( selectedEntity.value().HasComponent<MikuEngine::CameraComponent>() )
 			{
 				auto& cameraC = selectedEntity.value().GetComponent<MikuEngine::CameraComponent>();
-
-				if ( ImGui::TreeNode( "CameraComponent" ) )
-				{
-					ImGui::DragFloat( "Zoom", &cameraC.Zoom );
-
-					ImGui::TreePop();
-				}
+				MikuEngine::CameraSystem::CameraComponentRenderImGui( cameraC );
 			}
 		}
 
