@@ -8,6 +8,7 @@
 #include "Logger.h"
 
 #include "Error.h"
+#include "Input/Input.h"
 #include "Layer.h"
 #include "Rendering/Shader.h"
 #include "Rendering/Vertex.h"
@@ -150,6 +151,7 @@ namespace MikuEngine
 		}
 
 		glfwMakeContextCurrent( m_Window );
+		glfwSwapInterval( 0 );
 
 		// Load OpenGL
 		if ( !gladLoadGL() )
