@@ -8,7 +8,6 @@
 #include "Logger.h"
 
 #include "Error.h"
-#include "Input/Input.h"
 #include "Layer.h"
 #include "Rendering/Shader.h"
 #include "Rendering/Vertex.h"
@@ -119,7 +118,6 @@ namespace MikuEngine
 
 	void Application::Init()
 	{
-		// Load GLFW
 		if ( !glfwInit() ) return;
 
 		glfwSetErrorCallback( Error::LogGLFWErorr );
