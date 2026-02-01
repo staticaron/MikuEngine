@@ -2,11 +2,16 @@
 
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Application.h"
+#include "MikuEngine/Components.h"
 #include "MikuEngine/Entity.h"
 
 namespace MikuEditor
 {
-	void RendererLayer::Update( double dt ) {}
+	void RendererLayer::Update( double dt )
+	{
+		m_Scene->Update( dt );
+	}
+
 	void RendererLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
 	{
 		auto& gameFBO = MikuEngine::Application::GetApplication()->GetGameFBO();

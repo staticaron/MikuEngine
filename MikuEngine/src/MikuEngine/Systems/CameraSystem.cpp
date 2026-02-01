@@ -1,10 +1,12 @@
 #include "Systems/CameraSystem.h"
 
-#include "Components/CameraComponent.h"
+#include "glm/gtc/matrix_transform.hpp"
+#include "imgui.h"
+
+#include "Components.h"
 #include "Entity.h"
 #include "Helpers/SerializationHelper.h"
 #include "Logger.h"
-#include "Managers/ImguiManager.h"
 
 namespace MikuEngine
 {

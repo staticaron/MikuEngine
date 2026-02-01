@@ -1,5 +1,6 @@
 #include "Panels/InspectorPanel.h"
 
+#include "Components.h"
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Entity.h"
 #include "MikuEngine/Logger.h"

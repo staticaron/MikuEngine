@@ -1,5 +1,6 @@
 #include "Panels/HierarchyPanel.h"
 
+#include "Components.h"
 #include "MikuEngine/Managers/ImguiManager.h"
 
 #include "Entity.h"

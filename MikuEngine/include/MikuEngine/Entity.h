@@ -4,7 +4,8 @@
 
 #include "Core.h"
 
-#include "Components.h"
+#include "Components/BaseComponent.h"
+#include "Components/IDComponent.h"
 #include "Scene/Scene.h"
 
 namespace MikuEngine

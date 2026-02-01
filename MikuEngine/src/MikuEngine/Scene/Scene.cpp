@@ -5,6 +5,7 @@
 
 #include "Components.h"
 #include "Entity.h"
+#include "NativeScripts/MoveEntityScript.h"
 #include "Systems/CameraSystem.h"
 #include "Systems/RenderingSystem.h"
 
@@ -12,7 +13,22 @@ namespace MikuEngine
 {
 	Scene::Scene() {}
 
-	void Scene::Update( double dt ) {}
+	void Scene::Update( double dt )
+	{
+		auto entities = GetAllEntities();
+
+		for ( auto entity : entities )
+		{
+			auto& nsc = entity.GetComponent<NativeScriptComponent>();
+
+			if ( nsc.Instance == nullptr )
+			{
+				nsc.Instantiate();
+			}
+
+			nsc.OnUpdate();
+		}
+	}
 
 	void Scene::Render( AppLevelStuff& appLevelStuff ) const
 	{
@@ -57,6 +73,11 @@ namespace MikuEngine
 
 		m_Registry.emplace<DataComponent>( entity, name );
 		m_Registry.emplace<TransformComponent>( entity );
+
+		auto& nsc = m_Registry.emplace<NativeScriptComponent>( entity );
+		nsc.Bind<MoveEntityScript>( entt );
+		nsc.Instantiate();
+		nsc.OnCreate();
 
 		return entt;
 	}
@@ -124,6 +145,18 @@ namespace MikuEngine
 
 	void Scene::Clean()
 	{
+		auto entities = GetAllEntities();
+
+		for ( auto entity : entities )
+		{
+			auto& nsc = entity.GetComponent<NativeScriptComponent>();
+
+			if ( nsc.Instance == nullptr ) continue;
+
+			nsc.OnDestroy();
+			nsc.DeInstantiate();
+		}
+
 		m_Registry.clear();
 	}
 

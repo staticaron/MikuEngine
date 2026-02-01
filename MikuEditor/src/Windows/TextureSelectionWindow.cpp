@@ -1,9 +1,7 @@
 #include "Windows/TextureSelectionWindow.h"
 
+#include "Components.h"
 #include "MikuEngine/AppLevelStuff.h"
-#include "MikuEngine/Managers/ImguiManager.h"
-
-#include "MikuEngine/Entity.h"
 
 namespace MikuEditor
 {
