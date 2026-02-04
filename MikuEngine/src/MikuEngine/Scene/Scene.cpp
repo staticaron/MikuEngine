@@ -74,7 +74,10 @@ namespace MikuEngine
 		m_Registry.emplace<DataComponent>( entity, name );
 		m_Registry.emplace<TransformComponent>( entity );
 
+		auto entityName = m_Registry.get<DataComponent>( entity ).EntityName;
+
 		auto& nsc = m_Registry.emplace<NativeScriptComponent>( entity );
+
 		nsc.Bind<MoveEntityScript>( entt );
 		nsc.Instantiate();
 		nsc.OnCreate();
@@ -168,6 +171,7 @@ namespace MikuEngine
 	bool Scene::Load( const std::string& loadPath )
 	{
 		Clean();
+		MIKU_CORE_INFO( "Load" );
 		return m_Serializer.DeSerialize( *this, loadPath );
 	}
 }

@@ -26,10 +26,10 @@ namespace MikuEngine
 			requires( std::is_base_of_v<ScriptableEntity, T> )
 		void Bind( Entity entity )
 		{
-			Instantiate = [ & ]() { Instance = new T( entity ); };
-			DeInstantiate = [ & ]() {
-				delete ( T* )Instance;
-				Instance = nullptr;
+			Instantiate = [ this, entity ]() { this->Instance = new T( entity ); };
+			DeInstantiate = [ this ]() {
+				delete ( T* )this->Instance;
+				this->Instance = nullptr;
 			};
 
 			OnCreate = [ this ]() {

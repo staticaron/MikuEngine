@@ -92,6 +92,8 @@ namespace MikuEngine
 
 		nfdresult_t result = NFD_OpenDialog( "miku", nullptr, &newPath );
 
+		if ( result == NFD_CANCEL ) return false;
+
 		if ( result != NFD_OKAY )
 		{
 			MIKU_CORE_ERROR( "Unable to load the scene file! File Not Found! " );
@@ -100,7 +102,7 @@ namespace MikuEngine
 
 		YAML::Node node = YAML::LoadFile( newPath );
 
-		MIKU_CORE_INFO( "Loading Scene : ", node[ "scene" ].as<std::string>() );
+		MIKU_CORE_INFO( "Loading Scene : {}.miku", node[ "scene" ].as<std::string>() );
 
 		YAML::Node entities = node[ "entities" ];
 
