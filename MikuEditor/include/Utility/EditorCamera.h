@@ -3,6 +3,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "MikuEngine/Application.h"
+#include "MikuEngine/Input/Input.h"
 
 namespace MikuEditor
 {
@@ -32,6 +33,13 @@ namespace MikuEditor
 
 			auto rotation = rotationX * rotationY * rotationZ;
 			return glm::inverse( transform * rotation );
+		}
+
+		// Move the Editor Viewport Camera
+		void Translate()
+		{
+			const auto& [ xAxis, yAxis ] = MikuEngine::Input::GetAxisRaw();
+			Position = { Position.x + xAxis, Position.y + yAxis, Position.z };
 		}
 
 	private:

@@ -10,6 +10,8 @@ namespace MikuEditor
 	void EditorLayer::Update( double dt )
 	{
 		m_Scene->Update( dt );
+
+		if ( m_IsViewportPanelFocused ) m_EditorCamera.Translate();
 	}
 
 	void EditorLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
@@ -41,7 +43,7 @@ namespace MikuEditor
 			MikuEditor::InspectorPanel::RenderInspectorPanel( *this, appLevelStuff, *m_Scene );
 			MikuEditor::AssetBrowserPanel::RenderAssetBrowserPanel( *m_Scene );
 			MikuEditor::EditorOverlayPanel::RenderEditorOverlayPanel( *this, appLevelStuff, m_EditorLevelStuff, *m_Scene );
-			MikuEditor::ViewportPanel::RenderViewportPanel( *m_Scene );
+			m_IsViewportPanelFocused = MikuEditor::ViewportPanel::RenderViewportPanel( *m_Scene );
 
 			std::vector<unsigned int> completedTextureWindows;
 			completedTextureWindows.reserve( m_TextureSelectionWindow.size() );

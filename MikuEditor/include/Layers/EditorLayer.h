@@ -32,6 +32,8 @@ namespace MikuEditor
 
 		std::vector<TextureSelectionWindow> m_TextureSelectionWindow;
 
+		bool m_IsViewportPanelFocused = false;
+
 		friend class InspectorPanel;
 	};
 }

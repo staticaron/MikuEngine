@@ -6,9 +6,13 @@
 
 namespace MikuEditor
 {
-	void ViewportPanel::RenderViewportPanel( MikuEngine::Scene& scene )
+	bool ViewportPanel::RenderViewportPanel( MikuEngine::Scene& scene )
 	{
+		bool isFocused = false;
+
 		ImGui::Begin( "Viewport" );
+
+		if ( ImGui::IsWindowFocused() ) isFocused = true;
 
 		ImVec2 windowSize = ImGui::GetContentRegionAvail();
 
@@ -24,5 +28,7 @@ namespace MikuEditor
 		ImGui::Image( ( void* )( intptr_t )frameBuffer.GetTextureID(), { windowSize.x, windowSize.y }, { 0, 1 }, { 1, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } );
 
 		ImGui::End();
+
+		return isFocused;
 	}
 }

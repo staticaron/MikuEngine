@@ -12,7 +12,7 @@ namespace MikuEditor
 	class MIKU_API ViewportPanel
 	{
 	public:
-		static void RenderViewportPanel( MikuEngine::Scene& scene );
+		static bool RenderViewportPanel( MikuEngine::Scene& scene );
 
 	private:
 	};

@@ -10,6 +10,7 @@ namespace MikuEngine
 	{
 	public:
 		inline static bool IsKeyPressed( int keycode ) { return s_Instance->IsKeyPressedImpl( keycode ); }
+		inline static std::pair<int, int> GetAxisRaw() { return s_Instance->GetAxisRawImpl(); }
 
 		inline static bool IsMouseButtonPressed( int button ) { return s_Instance->IsMouseButtonPressedImpl( button ); }
 		inline static std::pair<float, float> GetMousePosition() { return s_Instance->GetMousePositionImpl(); }
@@ -18,6 +19,8 @@ namespace MikuEngine
 
 	protected:
 		virtual bool IsKeyPressedImpl( int keycode ) = 0;
+
+		virtual std::pair<int, int> GetAxisRawImpl() = 0;
 
 		virtual bool IsMouseButtonPressedImpl( int button ) = 0;
 		virtual std::pair<float, float> GetMousePositionImpl() = 0;

@@ -9,6 +9,7 @@ namespace MikuEngine
 	{
 	public:
 		virtual bool IsKeyPressedImpl( int keycode ) override;
+		virtual std::pair<int, int> GetAxisRawImpl() override;
 
 		virtual bool IsMouseButtonPressedImpl( int keycode ) override;
 		virtual std::pair<float, float> GetMousePositionImpl() override;

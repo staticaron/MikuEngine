@@ -14,6 +14,21 @@ namespace MikuEngine
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
+	std::pair<int, int> WindowsInput::GetAxisRawImpl()
+	{
+		bool rightPressed = Input::IsKeyPressed( 68 );
+		bool leftPressed = Input::IsKeyPressed( 65 );
+		bool upPressed = Input::IsKeyPressed( 87 );
+		bool downPressed = Input::IsKeyPressed( 83 );
+
+		int xAxis = 0, yAxis = 0;
+
+		xAxis = rightPressed - leftPressed;
+		yAxis = downPressed - upPressed;
+
+		return { xAxis, yAxis };
+	}
+
 	bool WindowsInput::IsMouseButtonPressedImpl( int button )
 	{
 		auto window = Application::GetApplication()->GetWindow();
