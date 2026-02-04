@@ -118,7 +118,6 @@ namespace MikuEngine
 
 	void Application::Init()
 	{
-		// Load GLFW
 		if ( !glfwInit() ) return;
 
 		glfwSetErrorCallback( Error::LogGLFWErorr );
@@ -150,6 +149,7 @@ namespace MikuEngine
 		}
 
 		glfwMakeContextCurrent( m_Window );
+		glfwSwapInterval( 0 );
 
 		// Load OpenGL
 		if ( !gladLoadGL() )

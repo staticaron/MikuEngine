@@ -42,6 +42,7 @@ namespace MikuEngine
 
 		std::unique_ptr<Layer>& GetLayer( unsigned int index ) { return m_Layers[ index ]; }
 
+		GLFWwindow* GetWindow() { return m_Window; }
 		AppLevelStuff& GetAppLevelStuff() { return m_AppLevelStuff; }
 
 		SceneFBO& GetSceneFBO() { return m_SceneFBO; }
