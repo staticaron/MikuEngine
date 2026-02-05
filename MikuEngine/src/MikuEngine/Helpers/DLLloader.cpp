@@ -1,6 +1,6 @@
 #include "Helpers/DLLloader.h"
 
-#include "dylib/dylib.hpp"
+#include "dylib.hpp"
 #include "NativeScript.h"
 
 extern "C" MikuEngine::NativeScript* Function();

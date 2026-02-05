@@ -17,6 +17,7 @@ add_subdirectory(vendor/stb_image)
 add_subdirectory(vendor/entt)
 add_subdirectory(vendor/yaml-cpp)
 add_subdirectory(vendor/nativefiledialog)
+add_subdirectory(vendor/dylib)
 
 file(GLOB_RECURSE ENGINE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
@@ -42,6 +43,7 @@ target_link_libraries("MikuEngine" PUBLIC
 	EnTT::EnTT
 	yaml-cpp
 	nfd
+	dylib
 )
 
 target_link_libraries("MikuEngine" PRIVATE 
