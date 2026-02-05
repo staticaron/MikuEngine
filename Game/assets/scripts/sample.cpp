@@ -1,0 +1,19 @@
+#include "sample.h"
+
+#include "MikuEngine.h"
+#include "MikuEngine/Components.h"
+#include "MikuEngine/Input/Input.h"
+
+namespace Game
+{
+	void SampleClass::OnUpdate()
+	{
+		MIKU_CLIENT_INFO( "Sending From Game DLL" );
+
+		auto& transformComponent = m_Entity.GetComponent<MikuEngine::TransformComponent>();
+
+		auto [ x, y ] = MikuEngine::Input::GetAxisRaw();
+		transformComponent.Position.x += x;
+		transformComponent.Position.y += y;
+	}
+}
