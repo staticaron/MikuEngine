@@ -20,8 +20,7 @@ namespace MikuEditor
 
 		sceneFBO.Bind();
 
-		glClearColor( 0.0f, 0.3f, 0.3f, 1.0f );
-		glClear( GL_COLOR_BUFFER_BIT );
+		MikuEngine::RenderingSystem::ClearColor( { 0.0f, 0.3f, 0.3f, 1.0f } );
 
 		MikuEngine::CameraData cameraData = { m_EditorCamera.GetViewMatrix(), MikuEngine::Application::GetDataContainer().GetViewportSize() };
 		m_Scene->RenderInEditor( appLevelStuff, cameraData );

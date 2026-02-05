@@ -25,6 +25,7 @@ namespace MikuEngine
 	{
 	public:
 		static void RenderSprite( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData );
+		static void ClearColor( glm::vec4 color );
 		static void SerializeSpriteRendererComponent( const Entity& entity, YAML::Emitter& emitter );
 		static void DeSerializeSpriteRendererComponent( SpriteRendererComponent& spriteRendererC, const YAML::Node& node );
 	};

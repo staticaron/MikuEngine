@@ -49,6 +49,12 @@ namespace MikuEngine
 		}
 	};
 
+	void RenderingSystem::ClearColor( glm::vec4 color )
+	{
+		glClearColor( color.x, color.y, color.z, color.w );
+		glClear( GL_COLOR_BUFFER_BIT );
+	}
+
 	void RenderingSystem::SerializeSpriteRendererComponent( const Entity& entity, YAML::Emitter& emitter )
 	{
 		emitter << YAML::BeginMap;

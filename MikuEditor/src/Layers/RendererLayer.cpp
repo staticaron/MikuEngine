@@ -4,6 +4,7 @@
 #include "MikuEngine/Application.h"
 #include "MikuEngine/Components.h"
 #include "MikuEngine/Entity.h"
+#include "MikuEngine/Systems.h"
 
 namespace MikuEditor
 {
@@ -30,8 +31,7 @@ namespace MikuEditor
 
 		gameFBO.Bind();
 
-		glClearColor( 0.0f, 0.3f, 0.3f, 1.0f );
-		glClear( GL_COLOR_BUFFER_BIT );
+		MikuEngine::RenderingSystem::ClearColor( { 0.0f, 0.3f, 0.3f, 1.0f } );
 
 		m_Scene->Render( appLevelStuff );
 
