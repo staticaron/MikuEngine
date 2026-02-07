@@ -2,6 +2,8 @@
 
 #include "dylib.hpp"
 
+#include "Logger.h"
+
 extern "C" void RegisterScriptInEngine( std::string className, MikuEngine::ScriptCreatorFn scriptCreatorFn, MikuEngine::ScriptDestroyFn scriptDestroyFn )
 {
 	MikuEngine::ScriptRegistry::LoadedScripts[ className ] = scriptCreatorFn;

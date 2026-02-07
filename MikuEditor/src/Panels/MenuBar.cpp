@@ -3,6 +3,7 @@
 #include "MikuEngine/Managers/ImguiManager.h"
 
 #include "Layers/EditorLayer.h"
+#include "MikuEngine/Helpers/DLLloader.h"
 #include "MikuEngine/Logger.h"
 #include "MikuEngine/Managers/MetaFileManager.h"
 
@@ -43,7 +44,10 @@ namespace MikuEditor
 			if ( ImGui::BeginMenu( "Assets" ) )
 			{
 				ImGui::Separator();
-				if ( ImGui::MenuItem( "Refresh" ) ) MikuEngine::MetaFileManager::RefreshMetaFiles();
+
+				if ( ImGui::MenuItem( "Refresh UUIDs" ) ) MikuEngine::MetaFileManager::RefreshMetaFiles();
+				if ( ImGui::MenuItem( "Refresh Scripts" ) ) MikuEngine::DLLloader::LoadDLL( "./build/bin/libGameLogic.so" );
+
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();

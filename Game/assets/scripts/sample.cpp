@@ -4,16 +4,13 @@
 #include "MikuEngine/Components.h"
 #include "MikuEngine/Input/Input.h"
 
-namespace Game
+void SampleClass::OnUpdate( MikuEngine::Entity entity )
 {
-	void SampleClass::OnUpdate( MikuEngine::Entity entity )
-	{
-		MIKU_CLIENT_INFO( "Sending From Game DLL" );
+	MIKU_CLIENT_INFO( "Sending From Game DLL" );
 
-		auto& transformComponent = entity.GetComponent<MikuEngine::TransformComponent>();
+	auto& transformComponent = entity.GetComponent<MikuEngine::TransformComponent>();
 
-		auto [ x, y ] = MikuEngine::Input::GetAxisRaw();
-		transformComponent.Position.x += x;
-		transformComponent.Position.y += y;
-	}
+	auto [ x, y ] = MikuEngine::Input::GetAxisRaw();
+	transformComponent.Position.x += x;
+	transformComponent.Position.y += y;
 }

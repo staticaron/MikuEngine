@@ -3,15 +3,12 @@
 #include "MikuEngine/Helpers/DLLloader.h"
 #include "MikuEngine/NativeScript.h"
 
-namespace Game
+class SampleClass : public MikuEngine::NativeScript
 {
-	class SampleClass : public MikuEngine::NativeScript
-	{
-	public:
-		void OnUpdate( MikuEngine::Entity entity ) override;
+public:
+	void OnUpdate( MikuEngine::Entity entity ) override;
 
-	private:
-	};
-}
+private:
+};
 
-REGISTER_SCRIPT( Game::SampleClass, "SampleClass" );
+REGISTER_SCRIPT( SampleClass, "SampleClass" );

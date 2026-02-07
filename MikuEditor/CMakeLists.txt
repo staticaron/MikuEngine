@@ -24,3 +24,12 @@ target_link_libraries("MikuEditor" PRIVATE
 set_target_properties("MikuEditor" PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR}
 )
+
+set_target_properties("MikuEditor" PROPERTIES 
+	ENABLE_EXPORTS ON
+)
+
+# 2. Linux specific: force all symbols into the dynamic symbol table
+if(UNIX AND NOT APPLE)
+    target_link_options("MikuEditor" PUBLIC "-rdynamic")
+endif()
