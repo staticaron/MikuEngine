@@ -3,13 +3,13 @@
 #include <functional>
 
 #include "Core.h"
-#include "ScriptableEntity.h"
+#include "NativeScript.h"
 
 namespace MikuEngine
 {
 	struct MIKU_API NativeScriptComponent : public BaseComponent
 	{
-		ScriptableEntity* Instance = nullptr;
+		NativeScript* Instance = nullptr;
 
 		NativeScriptComponent() = default;
 
@@ -17,32 +17,32 @@ namespace MikuEngine
 		std::function<void()> DeInstantiate;
 
 		// Calling these on the native script component, will call the corresponding function on the ScriptableEntity
-		std::function<void()> OnCreate;
-		std::function<void()> OnReady;
-		std::function<void()> OnUpdate;
-		std::function<void()> OnDestroy;
+		std::function<void( Entity entity )> OnCreate;
+		std::function<void( Entity entity )> OnReady;
+		std::function<void( Entity entity )> OnUpdate;
+		std::function<void( Entity entity )> OnDestroy;
 
 		template <typename T>
-			requires( std::is_base_of_v<ScriptableEntity, T> )
-		void Bind( Entity entity )
+			requires( std::is_base_of_v<NativeScript, T> )
+		void Bind()
 		{
-			Instantiate = [ this, entity ]() { this->Instance = new T( entity ); };
-			DeInstantiate = [ this ]() {
-				delete ( T* )this->Instance;
-				this->Instance = nullptr;
+			Instantiate = [ & ]() { Instance = new T(); };
+			DeInstantiate = [ & ]() {
+				delete ( T* )Instance;
+				Instance = nullptr;
 			};
 
-			OnCreate = [ this ]() {
-				if ( this->Instance ) ( ( T* )this->Instance )->OnCreate();
+			OnCreate = [ this ]( Entity entity ) {
+				if ( this->Instance ) ( ( T* )this->Instance )->OnCreate( entity );
 			};
-			OnReady = [ this ]() {
-				if ( this->Instance ) ( ( T* )this->Instance )->OnReady();
+			OnReady = [ this ]( Entity entity ) {
+				if ( this->Instance ) ( ( T* )this->Instance )->OnReady( entity );
 			};
-			OnUpdate = [ this ]() {
-				if ( this->Instance ) ( ( T* )this->Instance )->OnUpdate();
+			OnUpdate = [ this ]( Entity entity ) {
+				if ( this->Instance ) ( ( T* )this->Instance )->OnUpdate( entity );
 			};
-			OnDestroy = [ this ]() {
-				if ( this->Instance ) ( ( T* )this->Instance )->OnDestroy();
+			OnDestroy = [ this ]( Entity entity ) {
+				if ( this->Instance ) ( ( T* )this->Instance )->OnDestroy( entity );
 			};
 		}
 	};

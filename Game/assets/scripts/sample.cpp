@@ -6,11 +6,11 @@
 
 namespace Game
 {
-	void SampleClass::OnUpdate()
+	void SampleClass::OnUpdate( MikuEngine::Entity entity )
 	{
 		MIKU_CLIENT_INFO( "Sending From Game DLL" );
 
-		auto& transformComponent = m_Entity.GetComponent<MikuEngine::TransformComponent>();
+		auto& transformComponent = entity.GetComponent<MikuEngine::TransformComponent>();
 
 		auto [ x, y ] = MikuEngine::Input::GetAxisRaw();
 		transformComponent.Position.x += x;

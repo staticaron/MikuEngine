@@ -1,16 +1,16 @@
 #pragma once
 
-#include "ScriptableEntity.h"
+#include "NativeScript.h"
 
 namespace MikuEngine
 {
-	class MoveEntityScript : public ScriptableEntity
+	class MoveEntityScript : public NativeScript
 	{
 	public:
-		MoveEntityScript( Entity entity ) : ScriptableEntity( entity ) {}
+		MoveEntityScript() {}
 
-		void OnReady() override;
-		void OnUpdate() override;
+		void OnReady( Entity entity ) override;
+		void OnUpdate( Entity entity ) override;
 
 	private:
 	};

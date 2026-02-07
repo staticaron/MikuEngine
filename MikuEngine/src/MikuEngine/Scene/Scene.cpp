@@ -8,6 +8,7 @@
 #include "NativeScripts/MoveEntityScript.h"
 #include "Systems/CameraSystem.h"
 #include "Systems/RenderingSystem.h"
+#include "Systems/ScriptExecutionSystem.h"
 
 namespace MikuEngine
 {
@@ -15,19 +16,7 @@ namespace MikuEngine
 
 	void Scene::Update( double dt )
 	{
-		auto entities = GetAllEntities();
-
-		for ( auto entity : entities )
-		{
-			auto& nsc = entity.GetComponent<NativeScriptComponent>();
-
-			if ( nsc.Instance == nullptr )
-			{
-				nsc.Instantiate();
-			}
-
-			nsc.OnUpdate();
-		}
+		ScriptExecutionSystem::ExecuteScripts( *this );
 	}
 
 	void Scene::Render( AppLevelStuff& appLevelStuff ) const
@@ -71,16 +60,17 @@ namespace MikuEngine
 
 		Entity entt( uuid, entity, parentScene );
 
-		m_Registry.emplace<DataComponent>( entity, name );
-		m_Registry.emplace<TransformComponent>( entity );
+		auto& dataC = m_Registry.emplace<DataComponent>( entity, name );
+		auto& transformC = m_Registry.emplace<TransformComponent>( entity );
 
-		auto entityName = m_Registry.get<DataComponent>( entity ).EntityName;
+		if ( dataC.EntityName == "Second" )
+		{
+			auto& nsc = m_Registry.emplace<NativeScriptComponent>( entity );
 
-		auto& nsc = m_Registry.emplace<NativeScriptComponent>( entity );
-
-		nsc.Bind<MoveEntityScript>( entt );
-		nsc.Instantiate();
-		nsc.OnCreate();
+			nsc.Bind<MoveEntityScript>();
+			nsc.Instantiate();
+			nsc.OnCreate( entt );
+		}
 
 		return entt;
 	}
@@ -130,6 +120,15 @@ namespace MikuEngine
 		return {};
 	}
 
+	std::optional<Entity> Scene::GetEntityFromEntt( entt::entity entity )
+	{
+		auto& idC = m_Registry.get<IDComponent>( entity );
+
+		return {
+		    { idC.ID, entity, this }
+		     };
+	}
+
 	std::optional<std::pair<const Entity, const CameraComponent&>> Scene::GetMainCamera() const
 	{
 		auto cameraComponentView = m_Registry.view<IDComponent, CameraComponent>();
@@ -156,7 +155,7 @@ namespace MikuEngine
 
 			if ( nsc.Instance == nullptr ) continue;
 
-			nsc.OnDestroy();
+			nsc.OnDestroy( entity );
 			nsc.DeInstantiate();
 		}
 
