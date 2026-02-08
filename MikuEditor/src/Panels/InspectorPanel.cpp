@@ -6,6 +6,7 @@
 #include "MikuEngine/Logger.h"
 #include "MikuEngine/Scene/Scene.h"
 #include "MikuEngine/Systems/CameraSystem.h"
+#include "MikuEngine/Systems/ScriptExecutionSystem.h"
 
 #include "Layers/EditorLayer.h"
 #include "Panels/Panels.h"
@@ -81,12 +82,22 @@ namespace MikuEditor
 				auto& cameraC = selectedEntity.value().GetComponent<MikuEngine::CameraComponent>();
 				MikuEngine::CameraSystem::CameraComponentRenderImGui( cameraC );
 			}
+
+			if ( selectedEntity.value().HasComponent<MikuEngine::NativeScriptComponent>() )
+			{
+				auto& nativeScriptC = selectedEntity.value().GetComponent<MikuEngine::NativeScriptComponent>();
+				MikuEngine::ScriptExecutionSystem::NativeScriptComponentRenderImGui( nativeScriptC );
+			}
 		}
 
 		// Show Add Component Button ( ACTIVE if scene has selected entity otherwise DISABLED)
 		if ( scene.GetSelectedEntity().has_value() )
 		{
-			if ( MikuEngine::ImguiManager::FullWidthButton( "Add Component" ) ) scene.GetSelectedEntity()->AddComponent<MikuEngine::SpriteRendererComponent>();
+			if ( MikuEngine::ImguiManager::FullWidthButton( "Add Component" ) )
+			{
+				auto selectedEntity = scene.GetSelectedEntity().value();
+				selectedEntity.AddComponent<MikuEngine::NativeScriptComponent>();
+			}
 		}
 		else
 		{
