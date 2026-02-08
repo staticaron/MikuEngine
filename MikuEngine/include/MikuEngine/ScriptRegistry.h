@@ -21,7 +21,9 @@ namespace MikuEngine
 	class ScriptRegistry
 	{
 	public:
-		static std::unordered_map<std::string, ScriptMetaData> LoadedScripts;
+		// Stores the creation and destruction functions for scripts
+		static std::unordered_map<std::string, ScriptMetaData> RegisteredScripts;
+
 		static void RefreshScripts();
 
 	private:

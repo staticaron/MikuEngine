@@ -6,7 +6,7 @@
 
 extern "C" void RegisterScriptInEngine( std::string className, MikuEngine::ScriptCreatorFn scriptCreatorFn, MikuEngine::ScriptDestroyFn scriptDestroyFn )
 {
-	MikuEngine::ScriptRegistry::LoadedScripts[ className ] = { className, scriptCreatorFn, scriptDestroyFn };
+	MikuEngine::ScriptRegistry::RegisteredScripts[ className ] = { className, scriptCreatorFn, scriptDestroyFn };
 	MIKU_CORE_INFO( "Registered Script with class {}", className );
 }
 

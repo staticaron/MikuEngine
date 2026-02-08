@@ -4,11 +4,12 @@
 
 namespace MikuEngine
 {
-	std::unordered_map<std::string, ScriptMetaData> ScriptRegistry::LoadedScripts;
+	std::unordered_map<std::string, ScriptMetaData> ScriptRegistry::RegisteredScripts;
 
 	void ScriptRegistry::RefreshScripts()
 	{
-		LoadedScripts.clear();
+		RegisteredScripts.clear();
 		DLLloader::LoadGameLogicDLL();
 	}
+
 }

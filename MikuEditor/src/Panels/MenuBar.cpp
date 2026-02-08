@@ -44,7 +44,10 @@ namespace MikuEditor
 				ImGui::Separator();
 
 				if ( ImGui::MenuItem( "Refresh UUIDs" ) ) MikuEngine::MetaFileManager::RefreshMetaFiles();
-				if ( ImGui::MenuItem( "Refresh Scripts" ) ) MikuEngine::ScriptRegistry::RefreshScripts();
+				if ( ImGui::MenuItem( "Refresh Scripts" ) )
+				{
+					MikuEngine::ScriptRegistry::RefreshScripts();
+				}
 
 				ImGui::EndMenu();
 			}

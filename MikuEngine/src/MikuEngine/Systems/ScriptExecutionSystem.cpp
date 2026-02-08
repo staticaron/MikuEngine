@@ -13,7 +13,7 @@ namespace MikuEngine
 
 		for ( auto [ entity, idC, nsC ] : nscEntities.each() )
 		{
-			if ( nsC.Instance == nullptr ) nsC.Instance = ScriptRegistry::LoadedScripts.at( "SampleClass" ).CreatorFn();
+			if ( nsC.Instance == nullptr ) nsC.Instance = ScriptRegistry::RegisteredScripts.at( "SampleClass" ).CreatorFn();
 
 			auto entt = scene.GetEntityByID( idC.ID );
 

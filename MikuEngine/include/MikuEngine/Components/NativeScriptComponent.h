@@ -1,56 +1,33 @@
 #pragma once
 
-#include <functional>
-
 #include "Core.h"
-#include "Logger.h"
 #include "NativeScript.h"
+#include "ScriptRegistry.h"
 
 namespace MikuEngine
 {
 	struct MIKU_API NativeScriptComponent : public BaseComponent
 	{
+		std::string ScriptIdentifier = "SampleClass";
+
 		NativeScript* Instance = nullptr;
 
-		NativeScriptComponent() = default;
-
-		std::function<void()> Instantiate;
-		std::function<void()> DeInstantiate;
-
-		// Calling these on the native script component, will call the corresponding function on the ScriptableEntity
-		std::function<void( Entity entity )> OnCreate;
-		std::function<void( Entity entity )> OnReady;
-		std::function<void( Entity entity )> OnUpdate;
-		std::function<void( Entity entity )> OnDestroy;
+		void Instantiate() { Instance = ScriptRegistry::RegisteredScripts.at( ScriptIdentifier ).CreatorFn(); }
+		void DeAllocate() { ScriptRegistry::RegisteredScripts.at( ScriptIdentifier ).DestroyFn( Instance ); }
 
 		void Update( Entity entity )
 		{
 			if ( Instance ) Instance->OnUpdate( entity );
 		}
 
-		template <typename T>
-			requires( std::is_base_of_v<NativeScript, T> )
-		void Bind()
+		void OnReady( Entity entity )
 		{
-			Instantiate = [ & ]() { Instance = new T(); };
-			DeInstantiate = [ & ]() {
-				delete ( T* )Instance;
-				Instance = nullptr;
-			};
+			if ( Instance ) Instance->OnReady( entity );
+		}
 
-			OnCreate = [ this ]( Entity entity ) {
-				if ( this->Instance ) ( ( T* )this->Instance )->OnCreate( entity );
-				MIKU_CORE_INFO( "Instantiated Script" );
-			};
-			OnReady = [ this ]( Entity entity ) {
-				if ( this->Instance ) ( ( T* )this->Instance )->OnReady( entity );
-			};
-			OnUpdate = [ this ]( Entity entity ) {
-				if ( this->Instance ) ( ( T* )this->Instance )->OnUpdate( entity );
-			};
-			OnDestroy = [ this ]( Entity entity ) {
-				if ( this->Instance ) ( ( T* )this->Instance )->OnDestroy( entity );
-			};
+		void OnDestroy( Entity entity )
+		{
+			if ( Instance ) Instance->OnDestroy( entity );
 		}
 	};
 }
