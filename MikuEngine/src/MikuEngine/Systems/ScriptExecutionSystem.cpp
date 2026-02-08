@@ -14,6 +14,8 @@ namespace MikuEngine
 
 		for ( auto [ entity, idC, nsC ] : nscEntities.each() )
 		{
+			if ( nsC.ScriptIdentifier == "" ) continue;
+
 			if ( nsC.Instance == nullptr ) nsC.Instantiate();
 
 			auto entt = scene.GetEntityByID( idC.ID );
@@ -34,6 +36,8 @@ namespace MikuEngine
 			buff[ nativeScriptComponent.ScriptIdentifier.length() ] = '\0';
 
 			ImGui::InputText( "Script", buff, 128 );
+
+			if ( buff != nativeScriptComponent.ScriptIdentifier.c_str() ) nativeScriptComponent.ScriptIdentifier = buff;
 
 			ImGui::TreePop();
 		}

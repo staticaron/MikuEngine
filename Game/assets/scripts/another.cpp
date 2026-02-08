@@ -6,8 +6,6 @@
 
 void AnotherClass::OnUpdate( MikuEngine::Entity entity )
 {
-	MIKU_CLIENT_INFO( "Sending From Game DLL" );
-
 	auto& transformComponent = entity.GetComponent<MikuEngine::TransformComponent>();
 
 	auto [ x, y ] = MikuEngine::Input::GetAxisRaw();

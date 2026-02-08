@@ -8,7 +8,7 @@ namespace MikuEngine
 {
 	struct MIKU_API NativeScriptComponent : public BaseComponent
 	{
-		std::string ScriptIdentifier = "SampleClass";
+		std::string ScriptIdentifier = "";
 
 		NativeScript* Instance = nullptr;
 

@@ -62,8 +62,6 @@ namespace MikuEngine
 		auto& dataC = m_Registry.emplace<DataComponent>( entity, name );
 		auto& transformC = m_Registry.emplace<TransformComponent>( entity );
 
-		if ( name == "Second" ) entt.AddComponent<NativeScriptComponent>();
-
 		return entt;
 	}
 
