@@ -8,6 +8,6 @@ void SampleClass::OnUpdate( MikuEngine::Entity entity )
 	auto& transformComponent = entity.GetComponent<MikuEngine::TransformComponent>();
 	auto [ x, y ] = MikuEngine::Input::GetAxisRaw();
 
-	transformComponent.Position.x += x;
-	transformComponent.Position.y += y;
+	transformComponent.Position.x += y;
+	transformComponent.Position.y += x;
 }

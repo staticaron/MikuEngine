@@ -9,6 +9,7 @@ namespace MikuEngine
 	void ScriptRegistry::RefreshScripts()
 	{
 		RegisteredScripts.clear();
+		DLLloader::UnLoadGameLogicDLL();
 		DLLloader::LoadGameLogicDLL();
 	}
 

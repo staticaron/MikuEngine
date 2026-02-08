@@ -139,16 +139,6 @@ namespace MikuEngine
 
 	void Scene::Clean()
 	{
-		auto entitiesWithScripts = m_Registry.view<NativeScriptComponent>();
-
-		for ( auto [ entity, nsC ] : entitiesWithScripts.each() )
-		{
-			if ( nsC.Instance == nullptr ) continue;
-			nsC.OnDestroy( GetEntityFromEntt( entity ).value() );
-
-			nsC.DeAllocate();
-		}
-
 		m_Registry.clear();
 	}
 

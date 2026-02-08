@@ -46,9 +46,9 @@ namespace MikuEngine
 		entt::registry& GetRegistry() { return m_Registry; }
 		const entt::registry& GetRegistry() const { return m_Registry; }
 
-		void Clean();
 		void Save( const std::string& path );
 		bool Load( const std::string& path );
+		void Clean();
 
 	private:
 		entt::registry m_Registry;
