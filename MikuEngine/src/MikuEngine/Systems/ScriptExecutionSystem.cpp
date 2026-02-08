@@ -57,7 +57,7 @@ namespace MikuEngine
 		emitter << YAML::EndMap;
 	}
 
-	void DeSerializeNativeScriptComponent( NativeScriptComponent& nativeScriptC, const YAML::Node& node )
+	void ScriptExecutionSystem::DeSerializeNativeScriptComponent( NativeScriptComponent& nativeScriptC, const YAML::Node& node )
 	{
 		std::string scriptName = node[ "scriptName" ].as<std::string>();
 		nativeScriptC.ScriptIdentifier = scriptName;

@@ -12,7 +12,6 @@
 
 #include "Components.h"
 #include "Entity.h"
-#include "Helpers/SerializationHelper.h"
 #include "Scene/Scene.h"
 #include "Systems.h"
 
@@ -49,6 +48,11 @@ namespace MikuEngine
 		if ( entity.HasComponent<CameraComponent>() )
 		{
 			CameraSystem::SerializeCameraComponent( entity, emitter );
+		}
+
+		if ( entity.HasComponent<NativeScriptComponent>() )
+		{
+			ScriptExecutionSystem::SerializeNativeScriptComponent( entity, emitter );
 		}
 
 		emitter << YAML::EndSeq;
@@ -145,6 +149,14 @@ namespace MikuEngine
 					auto& cameraC = entt.GetComponent<CameraComponent>();
 
 					CameraSystem::DeSerializeCameraComponent( cameraC, values );
+				}
+
+				if ( type == "NativeScriptComponent" )
+				{
+					entt.AddComponent<NativeScriptComponent>();
+					auto& nativeScriptC = entt.GetComponent<NativeScriptComponent>();
+
+					ScriptExecutionSystem::DeSerializeNativeScriptComponent( nativeScriptC, values );
 				}
 			}
 		}
