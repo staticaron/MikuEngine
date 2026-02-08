@@ -20,11 +20,14 @@ namespace MikuEditor
 	class EditorLayer : public MikuEngine::Layer
 	{
 	public:
-		EditorLayer( MikuEngine::Scene* scene ) : MikuEngine::Layer( scene ) {};
+		EditorLayer( MikuEngine::Scene* scene );
+
+		static EditorLayer* GetEditorLayer();
 
 		void Update( double dt ) override;
 		void Render( MikuEngine::AppLevelStuff& appLevelStuff ) const override;
 		void RenderImgui( const MikuEngine::AppLevelStuff& appLevelStuff ) override;
+		const EditorLevelStuff& GetEditorLayerInfo() const { return m_EditorLevelStuff; }
 
 	private:
 		EditorLevelStuff m_EditorLevelStuff;

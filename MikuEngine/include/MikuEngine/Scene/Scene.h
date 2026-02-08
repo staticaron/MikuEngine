@@ -3,6 +3,7 @@
 #include <optional>
 #include <vector>
 
+#include "entt/entity/fwd.hpp"
 #include "entt/entt.hpp"
 
 #include "Core.h"
@@ -42,6 +43,7 @@ namespace MikuEngine
 		std::optional<Entity> GetEntityFromEntt( entt::entity entity );
 		std::optional<std::pair<const Entity, const CameraComponent&>> GetMainCamera() const;
 
+		entt::registry& GetRegistry() { return m_Registry; }
 		const entt::registry& GetRegistry() const { return m_Registry; }
 
 		void Clean();

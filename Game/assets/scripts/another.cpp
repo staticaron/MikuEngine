@@ -1,10 +1,10 @@
-#include "sample.h"
+#include "another.h"
 
+#include "MikuEngine.h"
 #include "MikuEngine/Components.h"
 #include "MikuEngine/Input/Input.h"
-#include "MikuEngine/Logger.h"
 
-void SampleClass::OnUpdate( MikuEngine::Entity entity )
+void AnotherClass::OnUpdate( MikuEngine::Entity entity )
 {
 	MIKU_CLIENT_INFO( "Sending From Game DLL" );
 

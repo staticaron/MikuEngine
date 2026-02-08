@@ -13,13 +13,16 @@ namespace MikuEngine
 	struct ScriptMetaData
 	{
 		std::string ClassName;
+
 		ScriptCreatorFn CreatorFn;
+		ScriptDestroyFn DestroyFn;
 	};
 
 	class ScriptRegistry
 	{
 	public:
-		static std::unordered_map<std::string, ScriptCreatorFn> LoadedScripts;
+		static std::unordered_map<std::string, ScriptMetaData> LoadedScripts;
+		static void RefreshScripts();
 
 	private:
 	};

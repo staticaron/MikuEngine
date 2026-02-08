@@ -15,18 +15,16 @@ namespace MikuEditor
 		{
 			if ( ImGui::BeginMenu( "File" ) )
 			{
-				ImGui::Separator();
 				if ( ImGui::MenuItem( "Play" ) )
 				{
 					MIKU_CLIENT_INFO( "PLAY" );
-					editorLevelStuff.m_CurrentPlayModeState = PlayModeState::PLAYING;
+					editorLevelStuff.SetPlayModeState( PlayModeState::PLAYING );
 				}
 
-				ImGui::Separator();
 				if ( ImGui::MenuItem( "Stop" ) )
 				{
 					MIKU_CLIENT_INFO( "STOP" );
-					editorLevelStuff.m_CurrentPlayModeState = PlayModeState::NOTPLAYING;
+					editorLevelStuff.SetPlayModeState( PlayModeState::NOTPLAYING );
 				}
 
 				ImGui::EndMenu();
@@ -46,7 +44,7 @@ namespace MikuEditor
 				ImGui::Separator();
 
 				if ( ImGui::MenuItem( "Refresh UUIDs" ) ) MikuEngine::MetaFileManager::RefreshMetaFiles();
-				if ( ImGui::MenuItem( "Refresh Scripts" ) ) MikuEngine::DLLloader::LoadDLL( "./build/bin/libGameLogic.so" );
+				if ( ImGui::MenuItem( "Refresh Scripts" ) ) MikuEngine::ScriptRegistry::RefreshScripts();
 
 				ImGui::EndMenu();
 			}

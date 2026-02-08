@@ -1,9 +1,9 @@
 #include "Systems/ScriptExecutionSystem.h"
 
-#include "MikuEngine/Components/DataComponent.h"
 #include "MikuEngine/Components/IDComponent.h"
 #include "MikuEngine/Components/NativeScriptComponent.h"
 #include "MikuEngine/Scene/Scene.h"
+#include "MikuEngine/ScriptRegistry.h"
 
 namespace MikuEngine
 {
@@ -13,15 +13,13 @@ namespace MikuEngine
 
 		for ( auto [ entity, idC, nsC ] : nscEntities.each() )
 		{
-			auto name = scene.GetRegistry().get<DataComponent>( entity ).EntityName;
-
-			if ( nsC.Instance == nullptr ) nsC.Instantiate();
+			if ( nsC.Instance == nullptr ) nsC.Instance = ScriptRegistry::LoadedScripts.at( "SampleClass" ).CreatorFn();
 
 			auto entt = scene.GetEntityByID( idC.ID );
 
 			if ( entt.has_value() == false ) continue;
 
-			nsC.OnUpdate( entt.value() );
+			nsC.Update( entt.value() );
 		}
 	}
 }

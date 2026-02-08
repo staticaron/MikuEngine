@@ -1,5 +1,6 @@
 #include "Layers/RendererLayer.h"
 
+#include "Layers/EditorLayer.h"
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Application.h"
 #include "MikuEngine/Components.h"
@@ -10,7 +11,7 @@ namespace MikuEditor
 {
 	void RendererLayer::Update( double dt )
 	{
-		m_Scene->Update( dt );
+		if ( EditorLayer::GetEditorLayer()->GetEditorLayerInfo().GetPlayModeState() == PlayModeState::PLAYING ) m_Scene->Update( dt );
 	}
 
 	void RendererLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const

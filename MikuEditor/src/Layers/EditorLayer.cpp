@@ -7,9 +7,21 @@
 
 namespace MikuEditor
 {
+	static EditorLayer* s_EditorLayer;
+
+	EditorLayer::EditorLayer( MikuEngine::Scene* scene ) : MikuEngine::Layer( scene )
+	{
+		s_EditorLayer = this;
+	}
+
+	EditorLayer* EditorLayer::GetEditorLayer()
+	{
+		return s_EditorLayer;
+	}
+
 	void EditorLayer::Update( double dt )
 	{
-		m_Scene->Update( dt );
+		if ( m_EditorLevelStuff.m_CurrentPlayModeState == PlayModeState::PLAYING ) m_Scene->Update( dt );
 
 		if ( m_IsViewportPanelFocused ) m_EditorCamera.Translate();
 	}

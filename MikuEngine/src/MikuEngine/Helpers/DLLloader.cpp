@@ -6,14 +6,21 @@
 
 extern "C" void RegisterScriptInEngine( std::string className, MikuEngine::ScriptCreatorFn scriptCreatorFn, MikuEngine::ScriptDestroyFn scriptDestroyFn )
 {
-	MikuEngine::ScriptRegistry::LoadedScripts[ className ] = scriptCreatorFn;
+	MikuEngine::ScriptRegistry::LoadedScripts[ className ] = { className, scriptCreatorFn, scriptDestroyFn };
 	MIKU_CORE_INFO( "Registered Script with class {}", className );
 }
 
 namespace MikuEngine
 {
-	void DLLloader::LoadDLL( const std::string& dllLocation )
+	static std::unique_ptr<dylib::library> LOADED_GAME_LOGIC_DLL = nullptr;
+
+	void DLLloader::LoadGameLogicDLL()
 	{
-		auto dll = dylib::library( dllLocation.c_str() );
+		LOADED_GAME_LOGIC_DLL = std::make_unique<dylib::library>( dylib::library( GAME_LOGIC_DLL_PATH ) );
+	}
+
+	void DLLloader::UnLoadGameLogicDLL()
+	{
+		LOADED_GAME_LOGIC_DLL.reset();
 	}
 }

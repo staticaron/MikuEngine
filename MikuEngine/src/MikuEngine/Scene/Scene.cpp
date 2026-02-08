@@ -5,7 +5,6 @@
 
 #include "Components.h"
 #include "Entity.h"
-#include "NativeScripts/MoveEntityScript.h"
 #include "Systems/CameraSystem.h"
 #include "Systems/RenderingSystem.h"
 #include "Systems/ScriptExecutionSystem.h"
@@ -63,14 +62,7 @@ namespace MikuEngine
 		auto& dataC = m_Registry.emplace<DataComponent>( entity, name );
 		auto& transformC = m_Registry.emplace<TransformComponent>( entity );
 
-		if ( dataC.EntityName == "Second" )
-		{
-			auto& nsc = m_Registry.emplace<NativeScriptComponent>( entity );
-
-			nsc.Bind<MoveEntityScript>();
-			nsc.Instantiate();
-			nsc.OnCreate( entt );
-		}
+		if ( name == "Second" ) auto& nsC = m_Registry.emplace<NativeScriptComponent>( entity );
 
 		return entt;
 	}

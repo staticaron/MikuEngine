@@ -3,6 +3,7 @@
 #include <functional>
 
 #include "Core.h"
+#include "Logger.h"
 #include "NativeScript.h"
 
 namespace MikuEngine
@@ -22,6 +23,11 @@ namespace MikuEngine
 		std::function<void( Entity entity )> OnUpdate;
 		std::function<void( Entity entity )> OnDestroy;
 
+		void Update( Entity entity )
+		{
+			if ( Instance ) Instance->OnUpdate( entity );
+		}
+
 		template <typename T>
 			requires( std::is_base_of_v<NativeScript, T> )
 		void Bind()
@@ -34,6 +40,7 @@ namespace MikuEngine
 
 			OnCreate = [ this ]( Entity entity ) {
 				if ( this->Instance ) ( ( T* )this->Instance )->OnCreate( entity );
+				MIKU_CORE_INFO( "Instantiated Script" );
 			};
 			OnReady = [ this ]( Entity entity ) {
 				if ( this->Instance ) ( ( T* )this->Instance )->OnReady( entity );

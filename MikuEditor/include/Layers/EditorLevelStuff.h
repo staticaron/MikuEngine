@@ -15,6 +15,9 @@ namespace MikuEditor
 		PlayModeState GetPlayModeState() const { return m_CurrentPlayModeState; }
 
 	private:
+		void SetPlayModeState( PlayModeState playmodeState ) { m_CurrentPlayModeState = playmodeState; }
+
+	private:
 		PlayModeState m_CurrentPlayModeState = PlayModeState::NOTPLAYING;
 
 		friend class EditorLayer;
