@@ -8,6 +8,6 @@ void PlayerController::OnUpdate( double dt )
 	auto& transformComponent = m_Entity->GetComponent<MikuEngine::TransformComponent>();
 	auto [ x, y ] = MikuEngine::Input::GetAxisRaw();
 
-	transformComponent.Position.x += y;
-	transformComponent.Position.y += x;
+	transformComponent.Position.x += x;
+	transformComponent.Position.y += y;
 }
