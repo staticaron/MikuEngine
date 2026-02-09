@@ -9,6 +9,11 @@
 
 namespace MikuEditor
 {
+	RendererLayer::RendererLayer( MikuEngine::Scene* scene ) : MikuEngine::Layer( scene )
+	{
+		MikuEngine::ScriptRegistry::RefreshScripts();
+	}
+
 	void RendererLayer::Update( double dt )
 	{
 		if ( EditorLayer::GetEditorLayer()->GetEditorLayerInfo().GetPlayModeState() == PlayModeState::PLAYING ) m_Scene->Update( dt );

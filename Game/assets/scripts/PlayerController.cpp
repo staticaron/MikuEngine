@@ -1,11 +1,11 @@
-#include "sample.h"
+#include "PlayerController.h"
 
 #include "MikuEngine/Components.h"
 #include "MikuEngine/Input/Input.h"
 
-void SampleClass::OnUpdate( MikuEngine::Entity entity )
+void PlayerController::OnUpdate( double dt )
 {
-	auto& transformComponent = entity.GetComponent<MikuEngine::TransformComponent>();
+	auto& transformComponent = m_Entity->GetComponent<MikuEngine::TransformComponent>();
 	auto [ x, y ] = MikuEngine::Input::GetAxisRaw();
 
 	transformComponent.Position.x += y;

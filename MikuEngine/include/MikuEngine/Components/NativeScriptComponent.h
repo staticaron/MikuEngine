@@ -12,22 +12,33 @@ namespace MikuEngine
 
 		NativeScript* Instance = nullptr;
 
-		void Instantiate() { Instance = ScriptRegistry::RegisteredScripts.at( ScriptIdentifier ).CreatorFn(); }
+		bool Instantiate( const Entity& entity )
+		{
+			auto scriptMetaData = ScriptRegistry::RegisteredScripts.find( ScriptIdentifier );
+
+			if ( scriptMetaData == ScriptRegistry::RegisteredScripts.end() ) return false;
+
+			Instance = ScriptRegistry::RegisteredScripts.at( ScriptIdentifier ).CreatorFn();
+			Instance->m_Entity = entity;
+
+			return true;
+		}
+
 		void DeAllocate() { ScriptRegistry::RegisteredScripts.at( ScriptIdentifier ).DestroyFn( Instance ); }
 
-		void Update( Entity entity )
+		void Update( double dt )
 		{
-			if ( Instance ) Instance->OnUpdate( entity );
+			if ( Instance ) Instance->OnUpdate( dt );
 		}
 
-		void OnReady( Entity entity )
+		void OnReady()
 		{
-			if ( Instance ) Instance->OnReady( entity );
+			if ( Instance ) Instance->OnReady();
 		}
 
-		void OnDestroy( Entity entity )
+		void OnDestroy()
 		{
-			if ( Instance ) Instance->OnDestroy( entity );
+			if ( Instance ) Instance->OnDestroy();
 		}
 	};
 }

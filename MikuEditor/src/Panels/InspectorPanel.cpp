@@ -6,7 +6,9 @@
 #include "MikuEngine/Logger.h"
 #include "MikuEngine/Scene/Scene.h"
 #include "MikuEngine/Systems/CameraSystem.h"
+#include "MikuEngine/Systems/RenderingSystem.h"
 #include "MikuEngine/Systems/ScriptExecutionSystem.h"
+#include "MikuEngine/Systems/TransformSystems.h"
 
 #include "Layers/EditorLayer.h"
 #include "Panels/Panels.h"
@@ -42,39 +44,18 @@ namespace MikuEditor
 			{
 				auto& transformC = selectedEntity.value().GetComponent<MikuEngine::TransformComponent>();
 
-				if ( ImGui::TreeNode( "TransformComponent" ) )
-				{
-					ImGui::DragFloat3( "Position", &transformC.Position.x );
-					ImGui::DragFloat3( "Rotation", &transformC.Rotation.x );
-					ImGui::DragFloat3( "Scale", &transformC.Scale.x );
-
-					ImGui::TreePop();
-				}
+				MikuEngine::TransformSystem::TransformComponentRenderImGui( transformC );
 			}
 
 			if ( selectedEntity.value().HasComponent<MikuEngine::SpriteRendererComponent>() )
 			{
 				auto& spriteRendererC = selectedEntity.value().GetComponent<MikuEngine::SpriteRendererComponent>();
-
-				if ( ImGui::TreeNode( "SpriteRendererComponent" ) )
-				{
-					auto textureUUID = spriteRendererC.TextureIdentifier;
-
-					auto texture = appLevelStuff.GetTextureManager().GetTexture( textureUUID.value() );
-					auto textureName = appLevelStuff.GetTextureManager().GetTextureName( textureUUID.value() );
-
-					DISABLED_IMGUI( ImGui::Button( textureName.c_str() ) );
-					ImGui::SameLine();
-					if ( ImGui::Button( "EDIT..." ) )
-					{
-						editorLayer.m_TextureSelectionWindow.emplace_back( selectedEntity.value().GetUUID() );
-						MIKU_CLIENT_INFO( "Entity for which texture selection window was opened {}", std::to_string( selectedEntity.value().GetUUID() ) );
-					}
-
-					ImGui::DragFloat4( "Tint", &spriteRendererC.Tint.x );
-
-					ImGui::TreePop();
+				std::function<void()> textureEditBtnCallback = [ &editorLayer, selectedEntity ]() {
+					editorLayer.m_TextureSelectionWindow.emplace_back( selectedEntity.value().GetUUID() );
+					MIKU_CLIENT_INFO( "Entity for which texture selection window was opened {}", std::to_string( selectedEntity.value().GetUUID() ) );
 				};
+
+				MikuEngine::RenderingSystem::SpriteRendererComponentRenderImGui( spriteRendererC, textureEditBtnCallback );
 			}
 
 			if ( selectedEntity.value().HasComponent<MikuEngine::CameraComponent>() )

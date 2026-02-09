@@ -2,6 +2,7 @@
 
 #include "imgui.h"
 
+#include "MikuEngine.h"
 #include "MikuEngine/Components/IDComponent.h"
 #include "MikuEngine/Components/NativeScriptComponent.h"
 #include "MikuEngine/Scene/Scene.h"
@@ -16,13 +17,18 @@ namespace MikuEngine
 		{
 			if ( nsC.ScriptIdentifier == "" ) continue;
 
-			if ( nsC.Instance == nullptr ) nsC.Instantiate();
-
 			auto entt = scene.GetEntityByID( idC.ID );
-
 			if ( entt.has_value() == false ) continue;
 
-			nsC.Update( entt.value() );
+			// Instantiate the Script Object -> If the script object was not instantiated! Do not execute scripts
+			if ( nsC.Instance == nullptr )
+				if ( nsC.Instantiate( entt.value() ) == false )
+				{
+					MIKU_CORE_WARN( "Script Instantiation Failed for Script {}. You have attached a NativeScript which does not exist in the GameLogicDLL", nsC.ScriptIdentifier );
+					continue;
+				}
+
+			nsC.Update( Application::GetAppLevelStuff().GetDeltaTime() );
 		}
 	}
 

@@ -35,6 +35,11 @@ namespace MikuEngine
 		return s_Application->m_DataContainer;
 	}
 
+	AppLevelStuff& Application::GetAppLevelStuff()
+	{
+		return s_Application->m_AppLevelStuff;
+	}
+
 	void Application::RenderTemp()
 	{
 		std::array<Vertex, 4> Verts = Quad::GetVerts();
@@ -201,6 +206,7 @@ namespace MikuEngine
 		m_DeltaTime = std::chrono::duration<double>( NOW - LAST ).count();
 		m_DeltaTime = std::clamp( m_DeltaTime, 0.0, 0.01 );
 
+		m_AppLevelStuff.DeltaTime = static_cast<double>( m_DeltaTime );
 		m_AppLevelStuff.FPS = static_cast<unsigned int>( 1 / m_DeltaTime );
 	}
 

@@ -24,6 +24,7 @@ namespace MikuEngine
 		void SetImguiManager( ImguiManager& imguiManager ) { m_ImGuiManager = imguiManager; }
 
 		unsigned int GetFPS() const { return FPS; }
+		double GetDeltaTime() const { return DeltaTime; }
 
 	private:
 		Renderer m_Renderer;
@@ -31,6 +32,7 @@ namespace MikuEngine
 		ImguiManager m_ImGuiManager;
 
 		unsigned int FPS;
+		double DeltaTime;
 
 		friend class Application;
 	};

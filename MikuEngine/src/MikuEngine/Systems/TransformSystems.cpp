@@ -1,11 +1,25 @@
 #include "Systems/TransformSystems.h"
 
+#include "imgui.h"
+
 #include "Components.h"
 #include "Entity.h"
 #include "Helpers/SerializationHelper.h"
 
 namespace MikuEngine
 {
+	void TransformSystem::TransformComponentRenderImGui( TransformComponent& transformC )
+	{
+		if ( ImGui::TreeNode( "TransformComponent" ) )
+		{
+			ImGui::DragFloat3( "Position", &transformC.Position.x );
+			ImGui::DragFloat3( "Rotation", &transformC.Rotation.x );
+			ImGui::DragFloat3( "Scale", &transformC.Scale.x );
+
+			ImGui::TreePop();
+		}
+	}
+
 	void TransformSystem::SerializeTransformComponent( const Entity& entity, YAML::Emitter& emitter )
 	{
 		emitter << YAML::BeginMap;

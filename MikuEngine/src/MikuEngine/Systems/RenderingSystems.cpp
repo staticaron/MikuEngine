@@ -4,8 +4,10 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "imgui.h"
 
 #include "AppLevelStuff.h"
+#include "Application.h"
 #include "Components.h"
 #include "Entity.h"
 #include "Helpers/SerializationHelper.h"
@@ -53,6 +55,28 @@ namespace MikuEngine
 	{
 		glClearColor( color.x, color.y, color.z, color.w );
 		glClear( GL_COLOR_BUFFER_BIT );
+	}
+
+	void RenderingSystem::SpriteRendererComponentRenderImGui( SpriteRendererComponent& spriteRendererC, std::function<void()> textureEditBtnCallback )
+	{
+		if ( ImGui::TreeNode( "SpriteRendererComponent" ) )
+		{
+			auto textureUUID = spriteRendererC.TextureIdentifier;
+
+			auto texture = Application::GetAppLevelStuff().GetTextureManager().GetTexture( textureUUID.value() );
+			auto textureName = Application::GetAppLevelStuff().GetTextureManager().GetTextureName( textureUUID.value() );
+
+			DISABLED_IMGUI( ImGui::Button( textureName.c_str() ) );
+			ImGui::SameLine();
+			if ( ImGui::Button( "EDIT..." ) )
+			{
+				textureEditBtnCallback();
+			}
+
+			ImGui::DragFloat4( "Tint", &spriteRendererC.Tint.x );
+
+			ImGui::TreePop();
+		};
 	}
 
 	void RenderingSystem::SerializeSpriteRendererComponent( const Entity& entity, YAML::Emitter& emitter )
