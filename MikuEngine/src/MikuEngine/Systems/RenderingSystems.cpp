@@ -63,18 +63,19 @@ namespace MikuEngine
 		{
 			auto textureUUID = spriteRendererC.TextureIdentifier;
 
-			auto texture = Application::GetAppLevelStuff().GetTextureManager().GetTexture( textureUUID.value() );
-			auto textureName = Application::GetAppLevelStuff().GetTextureManager().GetTextureName( textureUUID.value() );
+			std::string textureName = "NONE";
+
+			if ( textureUUID.has_value() )
+			{
+				auto texture = Application::GetAppLevelStuff().GetTextureManager().GetTexture( textureUUID.value() );
+				textureName = Application::GetAppLevelStuff().GetTextureManager().GetTextureName( textureUUID.value() );
+			}
 
 			DISABLED_IMGUI( ImGui::Button( textureName.c_str() ) );
 			ImGui::SameLine();
-			if ( ImGui::Button( "EDIT..." ) )
-			{
-				textureEditBtnCallback();
-			}
+			if ( ImGui::Button( "EDIT..." ) ) textureEditBtnCallback();
 
 			ImGui::DragFloat4( "Tint", &spriteRendererC.Tint.x );
-
 			ImGui::TreePop();
 		};
 	}

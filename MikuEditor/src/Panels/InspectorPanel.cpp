@@ -10,6 +10,7 @@
 #include "MikuEngine/Systems/ScriptExecutionSystem.h"
 #include "MikuEngine/Systems/TransformSystems.h"
 
+#include "imgui.h"
 #include "Layers/EditorLayer.h"
 #include "Panels/Panels.h"
 
@@ -50,9 +51,9 @@ namespace MikuEditor
 			if ( selectedEntity.value().HasComponent<MikuEngine::SpriteRendererComponent>() )
 			{
 				auto& spriteRendererC = selectedEntity.value().GetComponent<MikuEngine::SpriteRendererComponent>();
-				std::function<void()> textureEditBtnCallback = [ &editorLayer, selectedEntity ]() {
-					editorLayer.m_TextureSelectionWindow.emplace_back( selectedEntity.value().GetUUID() );
-					MIKU_CLIENT_INFO( "Entity for which texture selection window was opened {}", std::to_string( selectedEntity.value().GetUUID() ) );
+				std::function<void()> textureEditBtnCallback = [ &editorLayer, &scene ]() {
+					editorLayer.m_TextureSelectionWindow.emplace_back( scene.GetSelectedEntity().value().GetUUID() );
+					MIKU_CLIENT_INFO( "Entity for which texture selection window was opened {}", std::to_string( scene.GetSelectedEntity().value().GetUUID() ) );
 				};
 
 				MikuEngine::RenderingSystem::SpriteRendererComponentRenderImGui( spriteRendererC, textureEditBtnCallback );
@@ -74,10 +75,16 @@ namespace MikuEditor
 		// Show Add Component Button ( ACTIVE if scene has selected entity otherwise DISABLED)
 		if ( scene.GetSelectedEntity().has_value() )
 		{
-			if ( MikuEngine::ImguiManager::FullWidthButton( "Add Component" ) )
+			if ( MikuEngine::ImguiManager::FullWidthButton( "Add Component" ) ) ImGui::OpenPopup( "add-component-popup" );
+
+			if ( ImGui::BeginPopup( "add-component-popup" ) )
 			{
-				auto selectedEntity = scene.GetSelectedEntity().value();
-				selectedEntity.AddComponent<MikuEngine::NativeScriptComponent>();
+
+				if ( ImGui::Selectable( "CameraComponent" ) ) scene.GetSelectedEntity().value().AddComponent<MikuEngine::CameraComponent>();
+				if ( ImGui::Selectable( "SpriteRendererComponent" ) ) scene.GetSelectedEntity().value().AddComponent<MikuEngine::SpriteRendererComponent>();
+				if ( ImGui::Selectable( "NativeScriptComponent" ) ) scene.GetSelectedEntity().value().AddComponent<MikuEngine::NativeScriptComponent>();
+
+				ImGui::EndPopup();
 			}
 		}
 		else
