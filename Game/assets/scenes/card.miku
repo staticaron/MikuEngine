@@ -1,0 +1,27 @@
+scene: Untitled
+entities:
+  - name: Main Camera
+    id: 471711908562867175
+    components:
+      - type: TransformComponent
+        values:
+          position: [1, 1, 1]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+      - type: CameraComponent
+        values:
+          zoom: 1
+          isMainCamera: true
+          resolution: [1600, 900]
+  - name: Card
+    id: 5030660346100341033
+    components:
+      - type: TransformComponent
+        values:
+          position: [386, 375, 1]
+          rotation: [0, 0, 0]
+          scale: [450, 600, 1]
+      - type: SpriteRendererComponent
+        values:
+          texture: 3280946449159469236
+          tint: [0, 0, 0, 0]

@@ -38,16 +38,18 @@ namespace MikuEngine
 		return glm::inverse( transform * rotation );
 	}
 
-	void CameraSystem::CameraComponentRenderImGui( CameraComponent& cameraComponent )
+	void CameraSystem::CameraComponentRenderImGui( Entity entity, CameraComponent& cameraComponent )
 	{
-		if ( ImGui::TreeNode( "CameraComponent" ) )
+		bool keep = true;
+
+		if ( ImGui::CollapsingHeader( "CameraComponent", &keep ) )
 		{
 			ImGui::Checkbox( "Is Main Camera", &cameraComponent.m_IsMainCamera );
 			ImGui::DragFloat( "Zoom", &cameraComponent.Zoom );
 			ImGui::DragFloat2( "Resolution", &cameraComponent.m_Resolution[ 0 ] );
-
-			ImGui::TreePop();
 		}
+
+		if ( !keep ) entity.RemoveComponent<CameraComponent>();
 	}
 
 	void CameraSystem::SerializeCameraComponent( const Entity& entity, YAML::Emitter& emitter )

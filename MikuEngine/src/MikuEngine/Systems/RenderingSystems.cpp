@@ -57,9 +57,11 @@ namespace MikuEngine
 		glClear( GL_COLOR_BUFFER_BIT );
 	}
 
-	void RenderingSystem::SpriteRendererComponentRenderImGui( SpriteRendererComponent& spriteRendererC, std::function<void()> textureEditBtnCallback )
+	void RenderingSystem::SpriteRendererComponentRenderImGui( Entity entity, SpriteRendererComponent& spriteRendererC, std::function<void()> textureEditBtnCallback )
 	{
-		if ( ImGui::TreeNode( "SpriteRendererComponent" ) )
+		bool keep = true;
+
+		if ( ImGui::CollapsingHeader( "SpriteRendererComponent", &keep ) )
 		{
 			auto textureUUID = spriteRendererC.TextureIdentifier;
 
@@ -76,8 +78,9 @@ namespace MikuEngine
 			if ( ImGui::Button( "EDIT..." ) ) textureEditBtnCallback();
 
 			ImGui::DragFloat4( "Tint", &spriteRendererC.Tint.x );
-			ImGui::TreePop();
 		};
+
+		if ( !keep ) entity.RemoveComponent<SpriteRendererComponent>();
 	}
 
 	void RenderingSystem::SerializeSpriteRendererComponent( const Entity& entity, YAML::Emitter& emitter )

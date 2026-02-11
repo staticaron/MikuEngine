@@ -17,7 +17,7 @@ namespace MikuEngine
 	{
 		static void ExecuteScripts( Scene& scene );
 
-		static void NativeScriptComponentRenderImGui( NativeScriptComponent& nativeScriptComponent );
+		static void NativeScriptComponentRenderImGui( Entity entity, NativeScriptComponent& nativeScriptComponent );
 		static void SerializeNativeScriptComponent( const Entity& entity, YAML::Emitter& emitter );
 		static void DeSerializeNativeScriptComponent( NativeScriptComponent& nativeScriptC, const YAML::Node& node );
 	};

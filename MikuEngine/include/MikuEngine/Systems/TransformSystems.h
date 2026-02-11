@@ -15,7 +15,7 @@ namespace MikuEngine
 	class MIKU_API TransformSystem
 	{
 	public:
-		static void TransformComponentRenderImGui( TransformComponent& transformC );
+		static void TransformComponentRenderImGui( Entity entity, TransformComponent& transformC );
 		static void SerializeTransformComponent( const Entity& entity, YAML::Emitter& emitter );
 		static void DeSerializeTransformComponent( TransformComponent& transformComponent, const YAML::Node& node );
 

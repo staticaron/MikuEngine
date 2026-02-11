@@ -45,7 +45,7 @@ namespace MikuEditor
 			{
 				auto& transformC = selectedEntity.value().GetComponent<MikuEngine::TransformComponent>();
 
-				MikuEngine::TransformSystem::TransformComponentRenderImGui( transformC );
+				MikuEngine::TransformSystem::TransformComponentRenderImGui( selectedEntity.value(), transformC );
 			}
 
 			if ( selectedEntity.value().HasComponent<MikuEngine::SpriteRendererComponent>() )
@@ -56,19 +56,19 @@ namespace MikuEditor
 					MIKU_CLIENT_INFO( "Entity for which texture selection window was opened {}", std::to_string( scene.GetSelectedEntity().value().GetUUID() ) );
 				};
 
-				MikuEngine::RenderingSystem::SpriteRendererComponentRenderImGui( spriteRendererC, textureEditBtnCallback );
+				MikuEngine::RenderingSystem::SpriteRendererComponentRenderImGui( selectedEntity.value(), spriteRendererC, textureEditBtnCallback );
 			}
 
 			if ( selectedEntity.value().HasComponent<MikuEngine::CameraComponent>() )
 			{
 				auto& cameraC = selectedEntity.value().GetComponent<MikuEngine::CameraComponent>();
-				MikuEngine::CameraSystem::CameraComponentRenderImGui( cameraC );
+				MikuEngine::CameraSystem::CameraComponentRenderImGui( selectedEntity.value(), cameraC );
 			}
 
 			if ( selectedEntity.value().HasComponent<MikuEngine::NativeScriptComponent>() )
 			{
 				auto& nativeScriptC = selectedEntity.value().GetComponent<MikuEngine::NativeScriptComponent>();
-				MikuEngine::ScriptExecutionSystem::NativeScriptComponentRenderImGui( nativeScriptC );
+				MikuEngine::ScriptExecutionSystem::NativeScriptComponentRenderImGui( selectedEntity.value(), nativeScriptC );
 			}
 		}
 

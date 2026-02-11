@@ -32,9 +32,11 @@ namespace MikuEngine
 		}
 	}
 
-	void ScriptExecutionSystem::NativeScriptComponentRenderImGui( NativeScriptComponent& nativeScriptComponent )
+	void ScriptExecutionSystem::NativeScriptComponentRenderImGui( Entity entity, NativeScriptComponent& nativeScriptComponent )
 	{
-		if ( ImGui::TreeNode( "NativeScriptComponent" ) )
+		bool keep = true;
+
+		if ( ImGui::CollapsingHeader( "NativeScriptComponent", &keep ) )
 		{
 			char buff[ 128 ];
 
@@ -44,9 +46,9 @@ namespace MikuEngine
 			ImGui::InputText( "Script", buff, 128 );
 
 			if ( buff != nativeScriptComponent.ScriptIdentifier.c_str() ) nativeScriptComponent.ScriptIdentifier = buff;
-
-			ImGui::TreePop();
 		}
+
+		if ( !keep ) entity.RemoveComponent<NativeScriptComponent>();
 	}
 
 	void ScriptExecutionSystem::SerializeNativeScriptComponent( const Entity& entity, YAML::Emitter& emitter )

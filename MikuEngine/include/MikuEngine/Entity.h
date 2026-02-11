@@ -32,6 +32,13 @@ namespace MikuEngine
 
 		template <typename T>
 			requires( std::is_base_of_v<BaseComponent, T> )
+		void RemoveComponent()
+		{
+			m_ParentScene->m_Registry.remove<T>( m_Entity );
+		}
+
+		template <typename T>
+			requires( std::is_base_of_v<BaseComponent, T> )
 		T& GetComponent()
 		{
 			return m_ParentScene->m_Registry.get<T>( m_Entity );

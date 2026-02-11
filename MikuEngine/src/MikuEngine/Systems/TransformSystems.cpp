@@ -8,15 +8,13 @@
 
 namespace MikuEngine
 {
-	void TransformSystem::TransformComponentRenderImGui( TransformComponent& transformC )
+	void TransformSystem::TransformComponentRenderImGui( Entity entity, TransformComponent& transformC )
 	{
-		if ( ImGui::TreeNode( "TransformComponent" ) )
+		if ( ImGui::CollapsingHeader( "TransformComponent" ) )
 		{
 			ImGui::DragFloat3( "Position", &transformC.Position.x );
 			ImGui::DragFloat3( "Rotation", &transformC.Rotation.x );
 			ImGui::DragFloat3( "Scale", &transformC.Scale.x );
-
-			ImGui::TreePop();
 		}
 	}
 
