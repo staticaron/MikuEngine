@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "Input/Input.h"
+#include "Logger.h"
 
 namespace MikuEngine
 {
@@ -42,7 +43,8 @@ namespace MikuEngine
 		double xPos, yPos;
 
 		glfwGetCursorPos( window, &xPos, &yPos );
-		return { xPos, yPos };
+
+		return { xPos - 3, yPos - 280 };
 	}
 
 	float WindowsInput::GetMouseXImpl()

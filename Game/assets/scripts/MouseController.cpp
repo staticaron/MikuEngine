@@ -4,10 +4,14 @@
 
 void MouseController::OnUpdate( double dt )
 {
-	auto [ mouseX, mouseY ] = MikuEngine::Input::GetMousePosition();
 	bool isPrimaryPressed = MikuEngine::Input::IsMouseButtonPressed( 0 );
 
-	auto& transformC = m_Entity->GetComponent<MikuEngine::TransformComponent>();
+	if ( isPrimaryPressed )
+	{
+		auto [ mouseX, mouseY ] = MikuEngine::Input::GetMousePosition();
+		auto& transformC = m_Entity->GetComponent<MikuEngine::TransformComponent>();
 
-	if ( isPrimaryPressed ) transformC.Position = { mouseX, mouseY, 0 };
+		transformC.Position = { mouseX, mouseY, 0 };
+		MIKU_CLIENT_INFO( "Entity Position : {}, {}", mouseX, mouseY );
+	}
 }

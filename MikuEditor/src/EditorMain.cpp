@@ -2,7 +2,7 @@
 #include "Layers/EditorLayer.h"
 #include "Layers/RendererLayer.h"
 #include "Logger.h"
-#include "MikuEngine.h"
+#include "MikuEngine/EntryPoint.h"
 
 namespace MikuEngine
 {

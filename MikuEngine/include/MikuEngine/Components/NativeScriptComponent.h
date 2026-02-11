@@ -21,6 +21,8 @@ namespace MikuEngine
 			Instance = ScriptRegistry::RegisteredScripts.at( ScriptIdentifier ).CreatorFn();
 			Instance->m_Entity = entity;
 
+			OnReady();
+
 			return true;
 		}
 

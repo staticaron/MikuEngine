@@ -25,3 +25,6 @@ entities:
         values:
           texture: 3280946449159469236
           tint: [0, 0, 0, 0]
+      - type: NativeScriptComponent
+        values:
+          scriptName: MouseController
