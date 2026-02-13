@@ -6,11 +6,21 @@
 #include "Application.h"
 #include "Components.h"
 #include "Entity.h"
-#include "Helpers/SerializationHelper.h"
-#include "Logger.h"
 
 namespace MikuEngine
 {
+	glm::vec3 CameraSystem::GetWorldPosFromPixelPosition( const Entity& cameraEntity, const CameraComponent& cameraComponent, glm::vec2 pixelPosition )
+	{
+		float ndcX = ( pixelPosition.x / Application::GetDataContainer().GetGameResolution().x ) * 2 - 1;
+		float ndcY = 1 - ( pixelPosition.y / Application::GetDataContainer().GetGameResolution().y ) * 2;
+
+		glm::vec4 clipPos = { ndcX, ndcY, 0, 1 };
+
+		glm::mat4 projViewMtxInv = glm::inverse( GetProjViewMatrix( cameraEntity, cameraComponent ) );
+
+		return projViewMtxInv * clipPos;
+	}
+
 	glm::mat4 CameraSystem::GetMVPFromModelMatrix( const Entity& cameraEntity, const CameraComponent& cameraComponent, glm::mat4 modelMatrix )
 	{
 		return GetProjViewMatrix( cameraEntity, cameraComponent ) * modelMatrix;

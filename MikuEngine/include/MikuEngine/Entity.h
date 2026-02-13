@@ -71,6 +71,8 @@ namespace MikuEngine
 			return m_ParentScene->m_Registry.any_of<T>( m_Entity );
 		}
 
+		Scene& GetScene() { return *m_ParentScene; }
+
 		std::string GetNamedIdentifier() const;
 
 	private:

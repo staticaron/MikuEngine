@@ -21,6 +21,8 @@ namespace MikuEditor
 
 	void RendererLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
 	{
+		if ( m_Scene->GetMainCamera().has_value() == false ) return;
+
 		auto& gameFBO = MikuEngine::Application::GetApplication()->GetGameFBO();
 
 		gameFBO.Bind();
