@@ -44,7 +44,7 @@ namespace MikuEngine
 
 		glfwGetCursorPos( window, &xPos, &yPos );
 
-		return { xPos - 3, yPos - 280 };
+		return { xPos, yPos };
 	}
 
 	float WindowsInput::GetMouseXImpl()
