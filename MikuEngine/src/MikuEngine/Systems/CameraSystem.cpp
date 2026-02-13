@@ -49,7 +49,9 @@ namespace MikuEngine
 
 		auto rotation = rotationX * rotationY * rotationZ;
 
-		return glm::inverse( transform * rotation );
+		glm::mat4 S = glm::scale( glm::mat4( 1.0f ), cameraTransform.Scale );
+
+		return glm::inverse( transform * rotation * S );
 	}
 
 	void CameraSystem::CameraComponentRenderImGui( Entity entity, CameraComponent& cameraComponent )
@@ -92,5 +94,4 @@ namespace MikuEngine
 		cameraComponent.m_IsMainCamera = isMainCamera;
 		cameraComponent.m_CameraWidth = width;
 	}
-
 }

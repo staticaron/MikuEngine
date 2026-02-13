@@ -1,13 +1,57 @@
 #include "CardController.h"
 
 #include "MikuEngine/Input/Input.h"
-
-void CardController::OnReady()
-{
-	MIKU_CLIENT_INFO( "Card Controller Script Ready!" );
-}
+#include "MikuEngine/Systems.h"
 
 void CardController::OnUpdate( double dt )
 {
-	auto [ x, y ] = MikuEngine::Input::GetMousePosition();
+	bool isPrimaryPressed = MikuEngine::Input::IsMouseButtonPressed( 0 );
+
+	auto& transformC = m_Entity->GetComponent<MikuEngine::TransformComponent>();
+
+	if ( isPrimaryPressed )
+	{
+		auto [ mouseX, mouseY ] = MikuEngine::Input::GetMousePosition();
+
+		if ( m_WasPressedInPreviousFrame == false ) m_StartPosition = { mouseX, mouseY };
+
+		auto delta = glm::vec2{ mouseX, mouseY } - m_StartPosition;
+
+		auto mainCam = m_Entity->GetScene().GetMainCamera();
+
+		const auto mainCamEntity = mainCam->first;
+		const auto& mainCamComponent = mainCam->second;
+
+		transformC.Rotation = { transformC.Rotation.x + delta.y * m_RotateSpeed * dt, transformC.Rotation.y - delta.x * m_RotateSpeed * dt, 0.0f };
+
+		transformC.Rotation = { glm::clamp( transformC.Rotation.x, m_MinMaxRotX.x, m_MinMaxRotX.y ), glm::clamp( transformC.Rotation.y, m_MinMaxRotY.x, m_MinMaxRotY.y ), transformC.Rotation.z };
+
+		m_StartPosition = { mouseX, mouseY };
+	}
+	else
+	{
+		if ( glm::abs( transformC.Rotation.x ) > 0.005f || glm::abs( transformC.Rotation.y ) > 0.005f )
+		{
+			transformC.Rotation = { glm::mix( transformC.Rotation.x, 0.0f, m_NormalizingSpeed * dt ), glm::mix( transformC.Rotation.y, 0.0f, m_NormalizingSpeed * dt ), transformC.Rotation.z };
+			MIKU_CLIENT_INFO( "Normalizing Card Rotation" );
+		}
+	}
+
+	m_WasPressedInPreviousFrame = isPrimaryPressed;
+
+	bool isSecondaryPressed = MikuEngine::Input::IsMouseButtonPressed( 1 );
+
+	if ( isSecondaryPressed )
+	{
+		auto [ mouseX, mouseY ] = MikuEngine::Input::GetMousePosition();
+
+		auto mainCam = m_Entity->GetScene().GetMainCamera();
+
+		const auto mainCamEntity = mainCam->first;
+		const auto& mainCamComponent = mainCam->second;
+
+		auto worldPosOfMouseClick = MikuEngine::CameraSystem::GetWorldPosFromPixelPosition( mainCamEntity, mainCamComponent, { mouseX, mouseY } );
+
+		transformC.Position = { worldPosOfMouseClick.x, worldPosOfMouseClick.y, transformC.Position.z };
+	}
 }

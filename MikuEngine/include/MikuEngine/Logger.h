@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <iostream>
 #include <memory>
 
 #include "Core.h"
@@ -36,9 +37,11 @@ namespace MikuEngine
 #define MIKU_CLIENT_WARN( ... )	 MikuEngine::Logger::GetClientLogger()->warn( __VA_ARGS__ )
 #define MIKU_CLIENT_ERROR( ... ) MikuEngine::Logger::GetClientLogger()->error( __VA_ARGS__ )
 
-#define MIKU_CORE_INFO( ... )  MikuEngine::Logger::GetCoreLogger()->info( __VA_ARGS__ )
-#define MIKU_CORE_WARN( ... )  MikuEngine::Logger::GetCoreLogger()->warn( __VA_ARGS__ )
-#define MIKU_CORE_ERROR( ... ) MikuEngine::Logger::GetCoreLogger()->error( __VA_ARGS__ )
+#define MIKU_CORE_INFO( ... ) MikuEngine::Logger::GetCoreLogger()->info( __VA_ARGS__ )
+#define MIKU_CORE_WARN( ... ) MikuEngine::Logger::GetCoreLogger()->warn( __VA_ARGS__ )
+#define MIKU_CORE_ERROR( ... )                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         \
+	MikuEngine::Logger::GetCoreLogger()->error( __VA_ARGS__ );                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     \
+	std::cout << "@ " << __FILE__ << ":" << __LINE__
 
 #else
 

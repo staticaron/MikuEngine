@@ -16,7 +16,7 @@ namespace MikuEngine
 		glBindTexture( GL_TEXTURE_2D, m_TextureID );
 
 		auto viewPortSize = Application::GetDataContainer().GetGameResolution();
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, viewPortSize.x, viewPortSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr );
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, viewPortSize.x, viewPortSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr );
 
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
@@ -32,7 +32,7 @@ namespace MikuEngine
 
 		UnBind();
 
-		m_AspectRatio = viewPortSize.x / viewPortSize.y;
+		m_AspectRatio = static_cast<float>( viewPortSize.x ) / viewPortSize.y;
 	}
 
 	GameFBO::~GameFBO()
@@ -62,6 +62,6 @@ namespace MikuEngine
 	void GameFBO::Destroy()
 	{
 		glDeleteFramebuffers( 1, &m_RendererID );
-		glDeleteTextures( 1, &m_RendererID );
+		glDeleteTextures( 1, &m_TextureID );
 	}
 }
