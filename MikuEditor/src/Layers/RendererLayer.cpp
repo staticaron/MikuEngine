@@ -23,18 +23,6 @@ namespace MikuEditor
 	{
 		auto& gameFBO = MikuEngine::Application::GetApplication()->GetGameFBO();
 
-		{ // Resize the game frame buffer according to the resolution set in main camera
-			auto mainCam = m_Scene->GetMainCamera();
-
-			if ( !mainCam.has_value() ) return;
-
-			auto mainCamEntity = mainCam->first;
-			auto mainCamComponent = mainCam->second;
-
-			// Resize the game frame buffer according to the resolution set in main camera
-			if ( MikuEngine::Application::GetDataContainer().GetGameResolution() != mainCamComponent.m_Resolution ) gameFBO.ResizeBufferTexture( { mainCamComponent.m_Resolution } );
-		}
-
 		gameFBO.Bind();
 
 		MikuEngine::RenderingSystem::ClearColor( { 0.0f, 0.3f, 0.3f, 1.0f } );

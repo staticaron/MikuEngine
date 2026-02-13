@@ -2,6 +2,7 @@
 
 #include "glm/glm.hpp"
 
+#include "Application.h"
 #include "Components/BaseComponent.h"
 #include "Core.h"
 
@@ -15,9 +16,13 @@ namespace MikuEngine
 
 		CameraComponent( float zoomLevel ) : Zoom( zoomLevel ) {}
 
+		bool IsMainCamera() const { return m_IsMainCamera; }
+		float GetZoom() const { return Zoom; }
+		glm::vec2 GetCameraSize() const { return { m_CameraWidth, m_CameraWidth / Application::GetDataContainer().GetGameAspectRatio() }; }
+
 	public:
 		bool m_IsMainCamera = true;
 		float Zoom = 1.0f;
-		glm::vec2 m_Resolution = { 1600, 900 };
+		int m_CameraWidth = 30;
 	};
 }

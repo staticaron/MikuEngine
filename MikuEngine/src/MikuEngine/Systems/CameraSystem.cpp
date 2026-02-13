@@ -3,6 +3,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "imgui.h"
 
+#include "Application.h"
 #include "Components.h"
 #include "Entity.h"
 #include "Helpers/SerializationHelper.h"
@@ -17,7 +18,10 @@ namespace MikuEngine
 
 	glm::mat4 CameraSystem::GetProjViewMatrix( const Entity& cameraEntity, const CameraComponent& cameraComponent )
 	{
-		glm::mat4 projMatrix = glm::ortho( 0.0f, cameraComponent.m_Resolution.x, cameraComponent.m_Resolution.y, 0.0f, -1000.0f, 1000.0f );
+		auto camWidth = cameraComponent.GetCameraSize().x;
+		auto camHeight = cameraComponent.GetCameraSize().y;
+
+		glm::mat4 projMatrix = glm::ortho( -camWidth * 0.5f, camWidth * 0.5f, camHeight * 0.5f, -camHeight * 0.5f, -1000.0f, 1000.0f );
 		glm::mat4 viewMatrix = GetViewMatrix( cameraEntity );
 
 		return projMatrix * viewMatrix;
@@ -46,7 +50,7 @@ namespace MikuEngine
 		{
 			ImGui::Checkbox( "Is Main Camera", &cameraComponent.m_IsMainCamera );
 			ImGui::DragFloat( "Zoom", &cameraComponent.Zoom );
-			ImGui::DragFloat2( "Resolution", &cameraComponent.m_Resolution[ 0 ] );
+			ImGui::DragInt( "Width", &cameraComponent.m_CameraWidth );
 		}
 
 		if ( !keep ) entity.RemoveComponent<CameraComponent>();
@@ -60,9 +64,9 @@ namespace MikuEngine
 		emitter << YAML::Key << "type" << YAML::Value << "CameraComponent";
 
 		emitter << YAML::Key << "values" << YAML::Value << YAML::BeginMap;
-		emitter << YAML::Key << "zoom" << YAML::Value << cameraComponent.Zoom;
-		emitter << YAML::Key << "isMainCamera" << YAML::Value << cameraComponent.m_IsMainCamera;
-		emitter << YAML::Key << "resolution" << YAML::Value << YAML::Flow << YAML::BeginSeq << cameraComponent.m_Resolution.x << cameraComponent.m_Resolution.y << YAML::EndSeq;
+		emitter << YAML::Key << "zoom" << YAML::Value << cameraComponent.GetZoom();
+		emitter << YAML::Key << "isMainCamera" << YAML::Value << cameraComponent.IsMainCamera();
+		emitter << YAML::Key << "width" << YAML::Value << cameraComponent.GetCameraSize().x;
 		emitter << YAML::EndMap;
 
 		emitter << YAML::EndMap;
@@ -72,15 +76,11 @@ namespace MikuEngine
 	{
 		float zoom = node[ "zoom" ].as<float>();
 		bool isMainCamera = node[ "isMainCamera" ].as<bool>();
-
-		glm::vec2 resolution;
-		DecodeVec2( node[ "resolution" ], resolution );
-
-		MIKU_CORE_INFO( "Resolution: {} {}", resolution.x, resolution.y );
+		int width = node[ "width" ].as<int>();
 
 		cameraComponent.Zoom = zoom;
 		cameraComponent.m_IsMainCamera = isMainCamera;
-		cameraComponent.m_Resolution = resolution;
+		cameraComponent.m_CameraWidth = width;
 	}
 
 }

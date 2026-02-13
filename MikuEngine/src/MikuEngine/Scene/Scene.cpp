@@ -31,7 +31,7 @@ namespace MikuEngine
 		auto mainCameraEntity = mainCamera->first;
 		auto mainCameraComponent = mainCamera->second;
 
-		RenderingSystem::RenderSprite( *this, appLevelStuff, { CameraSystem::GetViewMatrix( mainCameraEntity ), mainCameraComponent.m_Resolution } );
+		RenderingSystem::RenderSprite( *this, appLevelStuff, { CameraSystem::GetViewMatrix( mainCameraEntity ), mainCameraComponent.GetCameraSize() } );
 	}
 
 	void Scene::RenderInEditor( AppLevelStuff& appLevelStuff, const CameraData& cameraData ) const
@@ -125,7 +125,7 @@ namespace MikuEngine
 
 		for ( auto [ entity, idComponent, cameraComponent ] : cameraComponentView.each() )
 		{
-			if ( cameraComponent.m_IsMainCamera == false ) continue;
+			if ( cameraComponent.IsMainCamera() == false ) continue;
 
 			return {
 			    { { idComponent.ID, entity, const_cast<Scene*>( this ) }, cameraComponent }
