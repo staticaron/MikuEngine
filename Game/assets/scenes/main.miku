@@ -24,7 +24,7 @@ entities:
         values:
           zoom: 26
           isMainCamera: true
-          resolution: [800, 600]
+          width: 80
   - name: First
     id: 12764823001467717413
     components:

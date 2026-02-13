@@ -42,7 +42,7 @@ entities:
         values:
           zoom: 26
           isMainCamera: true
-          resolution: [1600, 900]
+          width: 800
   - name: Third
     id: 10225065510863974330
     components:
