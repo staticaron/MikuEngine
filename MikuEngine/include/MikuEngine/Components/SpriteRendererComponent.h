@@ -21,7 +21,8 @@ namespace MikuEngine
 		SpriteRendererComponent( UUID uuid ) : TextureIdentifier( uuid ) {};
 		SpriteRendererComponent( const glm::vec4& tint, const UUID& textureIdentifier ) : Tint( tint ), TextureIdentifier( textureIdentifier ) {};
 
-		glm::vec4 Tint{ 1.0f };
 		std::optional<UUID> TextureIdentifier;
+		std::optional<UUID> ShaderUUID;
+		glm::vec4 Tint{ 1.0f };
 	};
 }

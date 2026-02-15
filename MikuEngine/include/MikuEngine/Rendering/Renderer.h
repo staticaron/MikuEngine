@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Rendering/IndexBuffer.h"
-#include "Rendering/Quad.h"
+#include "Rendering/Primitives/Quad.h"
 #include "Rendering/Shader.h"
 #include "Rendering/VertexArray.h"
 

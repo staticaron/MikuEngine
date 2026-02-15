@@ -134,15 +134,15 @@ namespace MikuEngine
 		m_Registry.clear();
 	}
 
-	void Scene::Save( const std::string& savePath )
+	void Scene::Save()
 	{
-		m_Serializer.Serialize( *this, savePath );
+		m_Serializer.Serialize( *this );
 	}
 
-	bool Scene::Load( const std::string& loadPath )
+	bool Scene::Load()
 	{
 		Clean();
 		MIKU_CORE_INFO( "Load" );
-		return m_Serializer.DeSerialize( *this, loadPath );
+		return m_Serializer.DeSerialize( *this );
 	}
 }

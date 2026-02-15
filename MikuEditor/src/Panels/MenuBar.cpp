@@ -1,11 +1,9 @@
 #include "Panels/MenuBar.h"
 
-#include "MikuEngine/Managers/ImguiManager.h"
-
 #include "Layers/EditorLayer.h"
-#include "MikuEngine/Helpers/DLLloader.h"
 #include "MikuEngine/Logger.h"
 #include "MikuEngine/Managers/MetaFileManager.h"
+#include "MikuEngine/ScriptRegistry.h"
 
 namespace MikuEditor
 {
@@ -32,9 +30,9 @@ namespace MikuEditor
 			if ( ImGui::BeginMenu( "Scene" ) )
 			{
 				ImGui::Separator();
-				if ( ImGui::MenuItem( "Save...", "CTRL+S" ) ) scene.Save( "main.miku" );
+				if ( ImGui::MenuItem( "Save...", "CTRL+S" ) ) scene.Save();
 				ImGui::Separator();
-				if ( ImGui::MenuItem( "Open...", "CTRL+O" ) ) scene.Load( "main.miku" );
+				if ( ImGui::MenuItem( "Open...", "CTRL+O" ) ) scene.Load();
 				ImGui::Separator();
 				if ( ImGui::MenuItem( "Clean", "CTRL+W" ) ) scene.Clean();
 				ImGui::EndMenu();

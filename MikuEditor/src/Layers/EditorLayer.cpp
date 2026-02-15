@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "MikuEngine/Systems/RenderingSystem.h"
 #include "Panels/Panels.h"
+#include "Windows/WindowResponse.h"
 
 namespace MikuEditor
 {
@@ -56,24 +57,46 @@ namespace MikuEditor
 			MikuEditor::EditorOverlayPanel::RenderEditorOverlayPanel( *this, appLevelStuff, m_EditorLevelStuff, *m_Scene );
 			m_IsViewportPanelFocused = MikuEditor::ViewportPanel::RenderViewportPanel( *m_Scene );
 
-			std::vector<unsigned int> completedTextureWindows;
-			completedTextureWindows.reserve( m_TextureSelectionWindow.size() );
-
-			for ( size_t x = 0; x < m_TextureSelectionWindow.size(); x++ )
-			{
-				auto response = m_TextureSelectionWindow.at( x ).RenderTextureSelectionWindow( appLevelStuff, *m_Scene );
-
-				if ( response == TextureSelectionWindowResponse::ERROR || response == TextureSelectionWindowResponse::COMPLETED || response == TextureSelectionWindowResponse::CLOSED )
-				{
-					completedTextureWindows.push_back( x );
-				}
-			}
-
-			// Remove the texture selection windows that are completed!
-			for ( size_t x = 0; x < completedTextureWindows.size(); x++ )
-				m_TextureSelectionWindow.erase( m_TextureSelectionWindow.begin() + completedTextureWindows.at( x ) );
+			ManageTextureSelectionWindows( appLevelStuff );
+			ManageShaderSelectionWindows( appLevelStuff );
 
 			m_Scene->RenderImGui( appLevelStuff );
 		}
+	}
+
+	void EditorLayer::ManageTextureSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff )
+	{
+		std::vector<unsigned int> completedTextureWindows;
+		completedTextureWindows.reserve( m_TextureSelectionWindow.size() );
+
+		for ( size_t x = 0; x < m_TextureSelectionWindow.size(); x++ )
+		{
+			auto response = m_TextureSelectionWindow.at( x ).RenderTextureSelectionWindow( appLevelStuff, *m_Scene );
+
+			if ( response == WindowResponse::ERROR || response == WindowResponse::COMPLETED || response == WindowResponse::CLOSED )
+			{
+				completedTextureWindows.push_back( x );
+			}
+		}
+
+		// Remove the texture selection windows that are completed!
+		for ( size_t x = 0; x < completedTextureWindows.size(); x++ )
+			m_TextureSelectionWindow.erase( m_TextureSelectionWindow.begin() + completedTextureWindows.at( x ) );
+	}
+
+	void EditorLayer::ManageShaderSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff )
+	{
+		std::vector<unsigned int> completedShaderWindow;
+		completedShaderWindow.reserve( m_ShaderSelectionWindow.size() );
+
+		for ( size_t x = 0; x < m_ShaderSelectionWindow.size(); x++ )
+		{
+			auto response = m_ShaderSelectionWindow.at( x ).RenderShaderSelectionWindow( appLevelStuff, *m_Scene );
+			if ( response == WindowResponse::ERROR || response == WindowResponse::COMPLETED || response == WindowResponse::CLOSED ) completedShaderWindow.push_back( x );
+		}
+
+		// Remove the texture selection windows that are completed!
+		for ( size_t x = 0; x < completedShaderWindow.size(); x++ )
+			m_ShaderSelectionWindow.erase( m_ShaderSelectionWindow.begin() + completedShaderWindow.at( x ) );
 	}
 }

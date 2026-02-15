@@ -113,7 +113,6 @@ namespace MikuEngine
 			ImGui::End();
 
 			m_AppLevelStuff.GetImGuiManager().RenderFrameBuffer( m_SceneFBO );
-
 			m_AppLevelStuff.GetImGuiManager().RenderFrame();
 
 			glfwPollEvents();
@@ -179,7 +178,10 @@ namespace MikuEngine
 		m_GameFBO.Init();
 
 		m_AppLevelStuff.GetRenderer().Init();
+
 		m_AppLevelStuff.GetTextureManager().LoadAllTextures();
+		m_AppLevelStuff.GetShaderManager().LoadAllShaders();
+
 		m_AppLevelStuff.GetImGuiManager().Init( m_Window );
 
 		// RenderTemp();

@@ -7,9 +7,9 @@ namespace MikuEditor
 {
 	TextureSelectionWindow::TextureSelectionWindow( MikuEngine::UUID entityUUID ) : m_EntityUUID( entityUUID ) {}
 
-	TextureSelectionWindowResponse TextureSelectionWindow::RenderTextureSelectionWindow( const MikuEngine::AppLevelStuff& appLevelStuff, MikuEngine::Scene& scene )
+	WindowResponse TextureSelectionWindow::RenderTextureSelectionWindow( const MikuEngine::AppLevelStuff& appLevelStuff, MikuEngine::Scene& scene )
 	{
-		TextureSelectionWindowResponse response;
+		WindowResponse response;
 
 		ImGui::Begin( "Select Texture", &m_IsOpen );
 
@@ -32,12 +32,12 @@ namespace MikuEditor
 
 				if ( !entity.has_value() )
 				{
-					response = TextureSelectionWindowResponse::ERROR;
+					response = WindowResponse::ERROR;
 				}
 				else
 				{
 					entity.value().GetComponent<MikuEngine::SpriteRendererComponent>().TextureIdentifier = texture.GetUUID();
-					response = TextureSelectionWindowResponse::COMPLETED;
+					response = WindowResponse::COMPLETED;
 				}
 			}
 
@@ -48,7 +48,7 @@ namespace MikuEditor
 
 		ImGui::End();
 
-		if ( m_IsOpen == false ) response = TextureSelectionWindowResponse::CLOSED;
+		if ( m_IsOpen == false ) response = WindowResponse::CLOSED;
 
 		return response;
 	}

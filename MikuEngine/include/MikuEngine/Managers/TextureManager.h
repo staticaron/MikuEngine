@@ -40,7 +40,6 @@ namespace MikuEngine
 
 	private:
 		std::unordered_map<UUID, TextureIndexEntry> m_TextureIndex;
-
 		std::unordered_map<UUID, Texture> m_Textures;
 	};
 }

@@ -1,4 +1,5 @@
 #pragma once
+
 // IWYU pragma: begin_exports
 #include "Components/BaseComponent.h"
 #include "Components/BoxColliderComponent.h"

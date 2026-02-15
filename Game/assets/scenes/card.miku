@@ -34,8 +34,9 @@ entities:
           scale: [1, 1, 0]
       - type: CameraComponent
         values:
+          perspective: false
           zoom: 26
-          isMainCamera: true
+          maincamera: true
           width: 80
   - name: Third
     id: 10225065510863974330

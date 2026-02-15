@@ -15,15 +15,15 @@ void CardController::OnUpdate( double dt )
 
 		if ( m_WasPressedInPreviousFrame == false ) m_StartPosition = { mouseX, mouseY };
 
-		glm::vec2 deltaRaw = glm::vec2{ mouseX, mouseY } - m_StartPosition;
-		glm::vec2 delta = deltaRaw == glm::vec2{ 0.0f, 0.0f } ? glm::vec2{ 0.0f, 0.0f } : glm::normalize( deltaRaw );
+		auto deltaRaw = glm::vec2{ mouseX, mouseY } - m_StartPosition;
+		auto delta = deltaRaw == glm::vec2{ 0.0f, 0.0f } ? glm::vec2{ 0.0f, 0.0f } : glm::normalize( deltaRaw );
 
 		auto mainCam = m_Entity->GetScene().GetMainCamera();
 
 		const auto mainCamEntity = mainCam->first;
 		const auto& mainCamComponent = mainCam->second;
 
-		transformC.Rotation = { transformC.Rotation.x + delta.y * m_RotateSpeed * dt, transformC.Rotation.y + delta.x * m_RotateSpeed * dt, 0.0f };
+		transformC.Rotation = { transformC.Rotation.x + delta.y * m_RotateSpeed * dt, transformC.Rotation.y - delta.x * m_RotateSpeed * dt, 0.0f };
 
 		m_StartPosition = { mouseX, mouseY };
 	}

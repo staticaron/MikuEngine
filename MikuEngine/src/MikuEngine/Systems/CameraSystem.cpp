@@ -31,7 +31,12 @@ namespace MikuEngine
 		auto camWidth = cameraComponent.GetCameraSize().x;
 		auto camHeight = cameraComponent.GetCameraSize().y;
 
-		glm::mat4 projMatrix = glm::ortho( -camWidth * 0.5f, camWidth * 0.5f, camHeight * 0.5f, -camHeight * 0.5f, -1000.0f, 1000.0f );
+		glm::mat4 projMatrix = glm::mat4( 1.0f );
+		if ( cameraComponent.m_IsPerspective )
+			projMatrix = glm::perspective( glm::pi<float>() * 0.5f, 16 / 9.0f, 10.0f, 1000.0f );
+		else
+			projMatrix = glm::ortho( -camWidth * 0.5f, camWidth * 0.5f, camHeight * 0.5f, -camHeight * 0.5f, -1000.0f, 1000.0f );
+
 		glm::mat4 viewMatrix = GetViewMatrix( cameraEntity );
 
 		return projMatrix * viewMatrix;
@@ -60,6 +65,7 @@ namespace MikuEngine
 
 		if ( ImGui::CollapsingHeader( "CameraComponent", &keep ) )
 		{
+			ImGui::Checkbox( "Is Perspective", &cameraComponent.m_IsPerspective );
 			ImGui::Checkbox( "Is Main Camera", &cameraComponent.m_IsMainCamera );
 			ImGui::DragFloat( "Zoom", &cameraComponent.Zoom );
 			ImGui::DragInt( "Width", &cameraComponent.m_CameraWidth );
@@ -76,8 +82,9 @@ namespace MikuEngine
 		emitter << YAML::Key << "type" << YAML::Value << "CameraComponent";
 
 		emitter << YAML::Key << "values" << YAML::Value << YAML::BeginMap;
+		emitter << YAML::Key << "perspective" << YAML::Value << cameraComponent.IsPerspective();
 		emitter << YAML::Key << "zoom" << YAML::Value << cameraComponent.GetZoom();
-		emitter << YAML::Key << "isMainCamera" << YAML::Value << cameraComponent.IsMainCamera();
+		emitter << YAML::Key << "maincamera" << YAML::Value << cameraComponent.IsMainCamera();
 		emitter << YAML::Key << "width" << YAML::Value << cameraComponent.GetCameraSize().x;
 		emitter << YAML::EndMap;
 
@@ -86,10 +93,12 @@ namespace MikuEngine
 
 	void CameraSystem::DeSerializeCameraComponent( CameraComponent& cameraComponent, const YAML::Node& node )
 	{
+		bool perspective = node[ "perspective" ].as<bool>();
 		float zoom = node[ "zoom" ].as<float>();
-		bool isMainCamera = node[ "isMainCamera" ].as<bool>();
+		bool isMainCamera = node[ "maincamera" ].as<bool>();
 		int width = node[ "width" ].as<int>();
 
+		cameraComponent.m_IsPerspective = perspective;
 		cameraComponent.Zoom = zoom;
 		cameraComponent.m_IsMainCamera = isMainCamera;
 		cameraComponent.m_CameraWidth = width;

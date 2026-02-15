@@ -25,6 +25,7 @@ entities:
           scale: [1, 1, 1]
       - type: CameraComponent
         values:
+          perspective: false
           zoom: 1
-          isMainCamera: true
+          maincamera: true
           width: 32

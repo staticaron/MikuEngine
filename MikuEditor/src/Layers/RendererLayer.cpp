@@ -4,7 +4,6 @@
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Application.h"
 #include "MikuEngine/Components.h"
-#include "MikuEngine/Entity.h"
 #include "MikuEngine/Systems.h"
 
 namespace MikuEditor

@@ -19,18 +19,18 @@ namespace MikuEngine
 {
 	void RenderingSystem::RenderSprite( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData )
 	{
-		// Quads To Render
 		const auto& entities = scene.GetRegistry().view<DataComponent, SpriteRendererComponent>();
 
 		const auto& renderer = appLevelStuff.GetRenderer();
 		const auto& quad = renderer.GetQuad();
 		const TextureManager& textureManager = appLevelStuff.GetTextureManager();
-
-		auto shader = quad.GetShader();
-		shader.Bind();
+		const ShaderManager& shaderManager = appLevelStuff.GetShaderManager();
 
 		for ( const auto& [ entity, data, spriteRenderer ] : entities.each() )
 		{
+			auto shader = spriteRenderer.ShaderUUID.has_value() ? shaderManager.GetShader( spriteRenderer.ShaderUUID.value() ) : shaderManager.GetDefaultShader();
+			shader.Bind();
+
 			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
 
 			if ( !spriteRenderer.TextureIdentifier.has_value() ) continue;
@@ -47,7 +47,7 @@ namespace MikuEngine
 
 			shader.SetUniform<glm::mat4>( "u_MVP", mvp );
 
-			renderer.Draw( quad.GetVA(), quad.GetIB(), quad.GetShader() );
+			renderer.Draw( quad.GetVA(), quad.GetIB(), shader );
 		}
 	};
 
@@ -57,7 +57,7 @@ namespace MikuEngine
 		glClear( GL_COLOR_BUFFER_BIT );
 	}
 
-	void RenderingSystem::SpriteRendererComponentRenderImGui( Entity entity, SpriteRendererComponent& spriteRendererC, std::function<void()> textureEditBtnCallback )
+	void RenderingSystem::SpriteRendererComponentRenderImGui( Entity entity, SpriteRendererComponent& spriteRendererC, std::function<void()> textureEditBtnCallback, std::function<void()> shaderEditBtnCallback )
 	{
 		bool keep = true;
 
@@ -75,7 +75,21 @@ namespace MikuEngine
 
 			DISABLED_IMGUI( ImGui::Button( textureName.c_str() ) );
 			ImGui::SameLine();
-			if ( ImGui::Button( "EDIT..." ) ) textureEditBtnCallback();
+			if ( ImGui::Button( "EDIT...##texture" ) ) textureEditBtnCallback();
+
+			auto shaderUUID = spriteRendererC.ShaderUUID;
+
+			std::string shaderName = "DEFAULT";
+
+			if ( shaderUUID.has_value() )
+			{
+				auto shader = Application::GetAppLevelStuff().GetShaderManager().GetShader( shaderUUID.value() );
+				shaderName = Application::GetAppLevelStuff().GetShaderManager().GetShaderName( shaderUUID.value() );
+			}
+
+			DISABLED_IMGUI( ImGui::Button( shaderName.c_str() ) );
+			ImGui::SameLine();
+			if ( ImGui::Button( "EDIT...##shader" ) ) shaderEditBtnCallback();
 
 			ImGui::DragFloat4( "Tint", &spriteRendererC.Tint.x );
 		};

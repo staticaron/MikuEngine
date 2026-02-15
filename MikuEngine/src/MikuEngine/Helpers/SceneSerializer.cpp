@@ -60,7 +60,7 @@ namespace MikuEngine
 		emitter << YAML::EndMap;
 	}
 
-	void SceneSerializer::Serialize( Scene& scene, const std::string& savePath )
+	void SceneSerializer::Serialize( Scene& scene )
 	{
 		YAML::Emitter emitter;
 
@@ -90,11 +90,13 @@ namespace MikuEngine
 		fout << emitter.c_str();
 	}
 
-	bool SceneSerializer::DeSerialize( Scene& scene, const std::string& loadPath )
+	bool SceneSerializer::DeSerialize( Scene& scene )
 	{
-		nfdchar_t* newPath = nullptr;
+		nfdchar_t* loadPath = nullptr;
 
-		nfdresult_t result = NFD_OpenDialog( "miku", nullptr, &newPath );
+		nfdresult_t result = NFD_OpenDialog( "miku", nullptr, &loadPath );
+
+		MIKU_CORE_INFO( "Scene Load Path: {}", loadPath );
 
 		if ( result == NFD_CANCEL ) return false;
 
@@ -104,9 +106,7 @@ namespace MikuEngine
 			return false;
 		}
 
-		YAML::Node node = YAML::LoadFile( newPath );
-
-		MIKU_CORE_INFO( "Loading Scene : {}.miku", node[ "scene" ].as<std::string>() );
+		YAML::Node node = YAML::LoadFile( loadPath );
 
 		YAML::Node entities = node[ "entities" ];
 

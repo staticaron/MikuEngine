@@ -1,9 +1,9 @@
 #pragma once
 
-#include <functional>
-
 #include "MikuEngine/Core.h"
 #include "MikuEngine/UUID.h"
+
+#include "Windows/WindowResponse.h"
 
 namespace MikuEngine
 {
@@ -13,20 +13,12 @@ namespace MikuEngine
 
 namespace MikuEditor
 {
-	enum class TextureSelectionWindowResponse
-	{
-		INPROGRESS = 0,
-		COMPLETED,
-		CLOSED,
-		ERROR
-	};
-
 	class MIKU_API TextureSelectionWindow
 	{
 	public:
 		TextureSelectionWindow( MikuEngine::UUID entityUUID );
 
-		TextureSelectionWindowResponse RenderTextureSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
+		WindowResponse RenderTextureSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
 
 	private:
 		MikuEngine::UUID m_EntityUUID;

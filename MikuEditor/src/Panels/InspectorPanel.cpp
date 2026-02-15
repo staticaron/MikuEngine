@@ -51,12 +51,15 @@ namespace MikuEditor
 			if ( selectedEntity.value().HasComponent<MikuEngine::SpriteRendererComponent>() )
 			{
 				auto& spriteRendererC = selectedEntity.value().GetComponent<MikuEngine::SpriteRendererComponent>();
-				std::function<void()> textureEditBtnCallback = [ &editorLayer, &scene ]() {
-					editorLayer.m_TextureSelectionWindow.emplace_back( scene.GetSelectedEntity().value().GetUUID() );
-					MIKU_CLIENT_INFO( "Entity for which texture selection window was opened {}", std::to_string( scene.GetSelectedEntity().value().GetUUID() ) );
+
+				std::function<void()> textureEditBtnCallback = [ &editorLayer, &scene ]() { editorLayer.m_TextureSelectionWindow.emplace_back( scene.GetSelectedEntity().value().GetUUID() ); };
+
+				std::function<void()> shaderEditBtnCallback = [ &editorLayer, &scene ]() {
+					editorLayer.m_ShaderSelectionWindow.emplace_back( scene.GetSelectedEntity().value().GetUUID() );
+					MIKU_CLIENT_WARN( "Shader Edit Callback Triggered!" );
 				};
 
-				MikuEngine::RenderingSystem::SpriteRendererComponentRenderImGui( selectedEntity.value(), spriteRendererC, textureEditBtnCallback );
+				MikuEngine::RenderingSystem::SpriteRendererComponentRenderImGui( selectedEntity.value(), spriteRendererC, textureEditBtnCallback, shaderEditBtnCallback );
 			}
 
 			if ( selectedEntity.value().HasComponent<MikuEngine::CameraComponent>() )
