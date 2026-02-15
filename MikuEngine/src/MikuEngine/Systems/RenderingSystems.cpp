@@ -28,7 +28,7 @@ namespace MikuEngine
 
 		for ( const auto& [ entity, data, spriteRenderer ] : entities.each() )
 		{
-			auto shader = spriteRenderer.ShaderUUID.has_value() ? shaderManager.GetShader( spriteRenderer.ShaderUUID.value() ) : shaderManager.GetDefaultShader();
+			auto shader = spriteRenderer.ShaderUUID.has_value() ? shaderManager.GetShader( spriteRenderer.ShaderUUID.value() ).shader : shaderManager.GetDefaultShader();
 			shader.Bind();
 
 			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
@@ -79,13 +79,7 @@ namespace MikuEngine
 
 			auto shaderUUID = spriteRendererC.ShaderUUID;
 
-			std::string shaderName = "DEFAULT";
-
-			if ( shaderUUID.has_value() )
-			{
-				auto shader = Application::GetAppLevelStuff().GetShaderManager().GetShader( shaderUUID.value() );
-				shaderName = Application::GetAppLevelStuff().GetShaderManager().GetShaderName( shaderUUID.value() );
-			}
+			std::string shaderName = shaderUUID.has_value() ? Application::GetAppLevelStuff().GetShaderManager().GetShader( shaderUUID.value() ).shaderDetails.name : "DEFAULT";
 
 			DISABLED_IMGUI( ImGui::Button( shaderName.c_str() ) );
 			ImGui::SameLine();

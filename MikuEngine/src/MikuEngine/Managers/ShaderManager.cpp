@@ -4,7 +4,6 @@
 
 #include "Logger.h"
 #include "Managers/MetaFileManager.h"
-#include "Rendering/Shader.h"
 
 namespace MikuEngine
 {
@@ -18,7 +17,12 @@ namespace MikuEngine
 		Shader shaderContainer;
 		shaderContainer.LoadFromFile( filepath );
 
-		m_Shaders[ UUID() ] = shaderContainer;
+		UUID newUUID;
+
+		m_Shaders[ newUUID ] = {
+		    { newUUID, name, filepath },
+			 shaderContainer
+		 };
 	}
 
 	void ShaderManager::LoadDefaultShaders()
@@ -41,7 +45,7 @@ namespace MikuEngine
 			Shader shaderContainer;
 			shaderContainer.LoadFromFile( shaderIndex.path );
 
-			m_Shaders[ uuid ] = shaderContainer;
+			m_Shaders[ uuid ] = { shaderIndex, shaderContainer };
 		}
 	}
 
@@ -64,7 +68,7 @@ namespace MikuEngine
 		return m_ShaderIndex;
 	}
 
-	const Shader& ShaderManager::GetShader( UUID shaderUUID ) const
+	const ShaderContainer& ShaderManager::GetShader( UUID shaderUUID ) const
 	{
 		auto existing = m_Shaders.find( shaderUUID );
 
@@ -73,7 +77,7 @@ namespace MikuEngine
 		return existing->second;
 	}
 
-	const Shader& ShaderManager::GetShaderByName( const std::string& name ) const
+	const ShaderContainer& ShaderManager::GetShaderByName( const std::string& name ) const
 	{
 		for ( const auto& [ uuid, textureIndexEntry ] : m_ShaderIndex )
 		{
@@ -83,7 +87,7 @@ namespace MikuEngine
 		MIKU_ASSERT( false, "Requested Texture is not loaded!" );
 	}
 
-	const std::unordered_map<UUID, Shader>& ShaderManager::GetAllLoadedShaders() const
+	const std::unordered_map<UUID, ShaderContainer>& ShaderManager::GetAllLoadedShaders() const
 	{
 		return m_Shaders;
 	}
@@ -98,5 +102,4 @@ namespace MikuEngine
 	{
 		return m_DefaultShaders.at( "quad" );
 	}
-
 }

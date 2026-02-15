@@ -54,10 +54,7 @@ namespace MikuEditor
 
 				std::function<void()> textureEditBtnCallback = [ &editorLayer, &scene ]() { editorLayer.m_TextureSelectionWindow.emplace_back( scene.GetSelectedEntity().value().GetUUID() ); };
 
-				std::function<void()> shaderEditBtnCallback = [ &editorLayer, &scene ]() {
-					editorLayer.m_ShaderSelectionWindow.emplace_back( scene.GetSelectedEntity().value().GetUUID() );
-					MIKU_CLIENT_WARN( "Shader Edit Callback Triggered!" );
-				};
+				std::function<void()> shaderEditBtnCallback = [ &editorLayer, &scene ]() { editorLayer.m_ShaderSelectionWindow.emplace_back( scene.GetSelectedEntity().value().GetUUID() ); };
 
 				MikuEngine::RenderingSystem::SpriteRendererComponentRenderImGui( selectedEntity.value(), spriteRendererC, textureEditBtnCallback, shaderEditBtnCallback );
 			}

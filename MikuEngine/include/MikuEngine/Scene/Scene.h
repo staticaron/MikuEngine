@@ -3,7 +3,6 @@
 #include <optional>
 #include <vector>
 
-#include "entt/entity/fwd.hpp"
 #include "entt/entt.hpp"
 
 #include "Core.h"
