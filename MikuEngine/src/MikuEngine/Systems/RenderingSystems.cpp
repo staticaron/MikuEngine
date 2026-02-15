@@ -28,7 +28,7 @@ namespace MikuEngine
 
 		for ( const auto& [ entity, data, spriteRenderer ] : entities.each() )
 		{
-			auto shader = spriteRenderer.ShaderUUID.has_value() ? shaderManager.GetShader( spriteRenderer.ShaderUUID.value() ).shader : shaderManager.GetDefaultShader();
+			auto shader = spriteRenderer.ShaderUUID.has_value() ? shaderManager.GetShader( spriteRenderer.ShaderUUID.value() ).shader : shaderManager.GetDefaultShader().shader;
 			shader.Bind();
 
 			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
@@ -69,6 +69,7 @@ namespace MikuEngine
 
 			if ( textureUUID.has_value() )
 			{
+				// TODO: Combine Texture and TextureName Into one TextureContainer
 				auto texture = Application::GetAppLevelStuff().GetTextureManager().GetTexture( textureUUID.value() );
 				textureName = Application::GetAppLevelStuff().GetTextureManager().GetTextureName( textureUUID.value() );
 			}
@@ -79,7 +80,8 @@ namespace MikuEngine
 
 			auto shaderUUID = spriteRendererC.ShaderUUID;
 
-			std::string shaderName = shaderUUID.has_value() ? Application::GetAppLevelStuff().GetShaderManager().GetShader( shaderUUID.value() ).shaderDetails.name : "DEFAULT";
+			auto shader = shaderUUID.has_value() ? Application::GetAppLevelStuff().GetShaderManager().GetShader( shaderUUID.value() ) : Application::GetAppLevelStuff().GetShaderManager().GetDefaultShader();
+			std::string shaderName = shader.shaderDetails.name;
 
 			DISABLED_IMGUI( ImGui::Button( shaderName.c_str() ) );
 			ImGui::SameLine();
@@ -100,7 +102,7 @@ namespace MikuEngine
 
 		emitter << YAML::Key << "values" << YAML::Value << YAML::BeginMap;
 		emitter << YAML::Key << "texture" << YAML::Value << spriteRenderer.TextureIdentifier.value();
-		emitter << YAML::Key << "shader" << YAML::Value << ( spriteRenderer.ShaderUUID.has_value() ? std::to_string( spriteRenderer.ShaderUUID.value() ) : "DEFAULT" );
+		emitter << YAML::Key << "shader" << YAML::Value << ( spriteRenderer.ShaderUUID.has_value() ? spriteRenderer.ShaderUUID.value() : UUID( 0 ) );
 		emitter << YAML::Key << "tint" << YAML::Value << YAML::Flow << YAML::BeginSeq << spriteRenderer.Tint.x << spriteRenderer.Tint.y << spriteRenderer.Tint.z << spriteRenderer.Tint.w << YAML::EndSeq;
 		emitter << YAML::EndMap;
 
