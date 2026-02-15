@@ -100,6 +100,7 @@ namespace MikuEngine
 
 		emitter << YAML::Key << "values" << YAML::Value << YAML::BeginMap;
 		emitter << YAML::Key << "texture" << YAML::Value << spriteRenderer.TextureIdentifier.value();
+		emitter << YAML::Key << "shader" << YAML::Value << ( spriteRenderer.ShaderUUID.has_value() ? std::to_string( spriteRenderer.ShaderUUID.value() ) : "DEFAULT" );
 		emitter << YAML::Key << "tint" << YAML::Value << YAML::Flow << YAML::BeginSeq << spriteRenderer.Tint.x << spriteRenderer.Tint.y << spriteRenderer.Tint.z << spriteRenderer.Tint.w << YAML::EndSeq;
 		emitter << YAML::EndMap;
 
@@ -109,11 +110,13 @@ namespace MikuEngine
 	void RenderingSystem::DeSerializeSpriteRendererComponent( SpriteRendererComponent& spriteRendererC, const YAML::Node& node )
 	{
 		std::string texture = node[ "texture" ].as<std::string>();
+		std::string shader = node[ "shader" ].as<std::string>();
 
 		glm::vec4 tint;
 		DecodeVec4( node[ "tint" ], tint );
 
 		spriteRendererC.TextureIdentifier = texture.empty() ? std::optional<UUID>( std::nullopt ) : UUID( texture );
+		spriteRendererC.ShaderUUID = shader.empty() ? std::optional<UUID>( std::nullopt ) : UUID( shader );
 		spriteRendererC.Tint = tint;
 	}
 }

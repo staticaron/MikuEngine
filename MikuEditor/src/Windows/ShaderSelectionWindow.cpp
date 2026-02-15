@@ -21,7 +21,7 @@ namespace MikuEditor
 
 		for ( const auto& [ uuid, shaderContainer ] : shaders )
 		{
-			if ( ImGui::Selectable( shaderContainer.shaderDetails.name.c_str() ) )
+			if ( ImGui::Selectable( shaderContainer.shaderDetails.path.c_str() ) )
 			{
 				auto entity = scene.GetEntityByID( m_EntityUUID );
 
