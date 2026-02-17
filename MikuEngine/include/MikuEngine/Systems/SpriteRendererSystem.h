@@ -1,7 +1,7 @@
 #pragma once
 
 #include "glm/glm.hpp"
-#include "yaml-cpp/yaml.h"
+#include "yaml-cpp/emitter.h"
 
 #include "Core.h"
 
@@ -11,17 +11,12 @@ namespace MikuEngine
 	class Entity;
 	class AppLevelStuff;
 	class SpriteRendererComponent;
+	class CameraData;
 }
 
 namespace MikuEngine
 {
-	struct CameraData
-	{
-		glm::mat4 viewMatrix;
-		glm::vec2 cameraResolution;
-	};
-
-	class MIKU_API RenderingSystem
+	class MIKU_API SpriteRendererSystem
 	{
 	public:
 		static void RenderSprite( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData );

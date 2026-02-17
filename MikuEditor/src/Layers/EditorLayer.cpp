@@ -2,7 +2,8 @@
 
 #include "AppLevelStuff.h"
 #include "Application.h"
-#include "MikuEngine/Systems/RenderingSystem.h"
+#include "Data/CameraData.h"
+#include "MikuEngine/Systems/SpriteRendererSystem.h"
 #include "Panels/Panels.h"
 #include "Windows/WindowResponse.h"
 
@@ -33,9 +34,9 @@ namespace MikuEditor
 
 		sceneFBO.Bind();
 
-		MikuEngine::RenderingSystem::ClearColor( { 0.0f, 0.3f, 0.3f, 1.0f } );
+		MikuEngine::SpriteRendererSystem::ClearColor( { 0.0f, 0.3f, 0.3f, 1.0f } );
 
-		MikuEngine::CameraData cameraData = { m_EditorCamera.GetViewMatrix(), MikuEngine::Application::GetDataContainer().GetViewportSize() };
+		MikuEngine::CameraData cameraData = { m_EditorCamera.GetViewMatrix(), m_EditorCamera.GetProjMatrix() };
 		m_Scene->RenderInEditor( appLevelStuff, cameraData );
 
 		sceneFBO.UnBind();

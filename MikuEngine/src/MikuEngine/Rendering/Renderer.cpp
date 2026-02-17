@@ -6,7 +6,7 @@ namespace MikuEngine
 {
 	void Renderer::Init()
 	{
-		m_Quad.Init();
+		m_QuadPrimitive.Init();
 	}
 
 	void Renderer::Draw( const VertexArray& va, const IndexBuffer& ib, const Shader& shader ) const

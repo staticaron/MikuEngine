@@ -6,6 +6,7 @@
 #include "Components/CameraComponent.h"
 #include "Components/DataComponent.h"
 #include "Components/IDComponent.h"
+#include "Components/MeshRendererComponent.h"
 #include "Components/NativeScriptComponent.h"
 #include "Components/SpriteRendererComponent.h"
 #include "Components/TransformComponent.h"

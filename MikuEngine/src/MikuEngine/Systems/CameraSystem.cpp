@@ -28,6 +28,15 @@ namespace MikuEngine
 
 	glm::mat4 CameraSystem::GetProjViewMatrix( const Entity& cameraEntity, const CameraComponent& cameraComponent )
 	{
+
+		glm::mat4 projMatrix = GetProjMatrix( cameraComponent );
+		glm::mat4 viewMatrix = GetViewMatrix( cameraEntity );
+
+		return projMatrix * viewMatrix;
+	}
+
+	glm::mat4 CameraSystem::GetProjMatrix( const CameraComponent& cameraComponent )
+	{
 		auto camWidth = cameraComponent.GetCameraSize().x;
 		auto camHeight = cameraComponent.GetCameraSize().y;
 
@@ -37,9 +46,7 @@ namespace MikuEngine
 		else
 			projMatrix = glm::ortho( -camWidth * 0.5f, camWidth * 0.5f, camHeight * 0.5f, -camHeight * 0.5f, -1000.0f, 1000.0f );
 
-		glm::mat4 viewMatrix = GetViewMatrix( cameraEntity );
-
-		return projMatrix * viewMatrix;
+		return projMatrix;
 	}
 
 	glm::mat4 CameraSystem::GetViewMatrix( const Entity& cameraEntity )

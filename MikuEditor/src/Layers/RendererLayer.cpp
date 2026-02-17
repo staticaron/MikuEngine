@@ -3,7 +3,7 @@
 #include "Layers/EditorLayer.h"
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Application.h"
-#include "MikuEngine/Components.h"
+#include "MikuEngine/ScriptRegistry.h"
 #include "MikuEngine/Systems.h"
 
 namespace MikuEditor
@@ -26,7 +26,7 @@ namespace MikuEditor
 
 		gameFBO.Bind();
 
-		MikuEngine::RenderingSystem::ClearColor( { 0.0f, 0.3f, 0.3f, 1.0f } );
+		MikuEngine::SpriteRendererSystem::ClearColor( { 0.0f, 0.3f, 0.3f, 1.0f } );
 
 		m_Scene->Render( appLevelStuff );
 

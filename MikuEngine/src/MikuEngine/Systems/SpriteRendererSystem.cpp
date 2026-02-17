@@ -1,14 +1,13 @@
-#include "Systems/RenderingSystem.h"
+#include "Systems/SpriteRendererSystem.h"
 
 #include <optional>
 
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 #include "imgui.h"
 
 #include "AppLevelStuff.h"
 #include "Application.h"
 #include "Components.h"
+#include "Data/CameraData.h"
 #include "Entity.h"
 #include "Helpers/SerializationHelper.h"
 #include "Managers/TextureManager.h"
@@ -17,7 +16,7 @@
 
 namespace MikuEngine
 {
-	void RenderingSystem::RenderSprite( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData )
+	void SpriteRendererSystem::RenderSprite( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData )
 	{
 		const auto& entities = scene.GetRegistry().view<DataComponent, SpriteRendererComponent>();
 
@@ -39,11 +38,9 @@ namespace MikuEngine
 			texture.Bind( 0 );
 			shader.SetUniform<unsigned int>( "u_Tex", 0 );
 
-			glm::mat4 proj = glm::ortho( 0.0f, cameraData.cameraResolution.x, cameraData.cameraResolution.y, 0.0f, -1000.0f, 1000.0f );
-			glm::mat4 view = cameraData.viewMatrix;
-			glm::mat4 model = transform.GetModelMatrix();
-
-			glm::mat4 mvp = proj * view * model;
+			glm::mat4 projViewMatrix = cameraData.GetProjViewMatrix();
+			glm::mat4 modelMatrix = transform.GetModelMatrix();
+			glm::mat4 mvp = projViewMatrix * modelMatrix;
 
 			shader.SetUniform<glm::mat4>( "u_MVP", mvp );
 
@@ -51,13 +48,13 @@ namespace MikuEngine
 		}
 	};
 
-	void RenderingSystem::ClearColor( glm::vec4 color )
+	void SpriteRendererSystem::ClearColor( glm::vec4 color )
 	{
 		glClearColor( color.x, color.y, color.z, color.w );
 		glClear( GL_COLOR_BUFFER_BIT );
 	}
 
-	void RenderingSystem::SpriteRendererComponentRenderImGui( Entity entity, SpriteRendererComponent& spriteRendererC, std::function<void()> textureEditBtnCallback, std::function<void()> shaderEditBtnCallback )
+	void SpriteRendererSystem::SpriteRendererComponentRenderImGui( Entity entity, SpriteRendererComponent& spriteRendererC, std::function<void()> textureEditBtnCallback, std::function<void()> shaderEditBtnCallback )
 	{
 		bool keep = true;
 
@@ -93,7 +90,7 @@ namespace MikuEngine
 		if ( !keep ) entity.RemoveComponent<SpriteRendererComponent>();
 	}
 
-	void RenderingSystem::SerializeSpriteRendererComponent( const Entity& entity, YAML::Emitter& emitter )
+	void SpriteRendererSystem::SerializeSpriteRendererComponent( const Entity& entity, YAML::Emitter& emitter )
 	{
 		emitter << YAML::BeginMap;
 
@@ -109,7 +106,7 @@ namespace MikuEngine
 		emitter << YAML::EndMap;
 	}
 
-	void RenderingSystem::DeSerializeSpriteRendererComponent( SpriteRendererComponent& spriteRendererC, const YAML::Node& node )
+	void SpriteRendererSystem::DeSerializeSpriteRendererComponent( SpriteRendererComponent& spriteRendererC, const YAML::Node& node )
 	{
 		std::string texture = node[ "texture" ].as<std::string>();
 		std::string shader = node[ "shader" ].as<std::string>();

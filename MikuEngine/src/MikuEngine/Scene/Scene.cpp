@@ -4,10 +4,11 @@
 #include "Logger.h"
 
 #include "Components.h"
+#include "Data/CameraData.h"
 #include "Entity.h"
 #include "Systems/CameraSystem.h"
-#include "Systems/RenderingSystem.h"
 #include "Systems/ScriptExecutionSystem.h"
+#include "Systems/SpriteRendererSystem.h"
 
 namespace MikuEngine
 {
@@ -25,12 +26,12 @@ namespace MikuEngine
 		auto mainCameraEntity = mainCamera->first;
 		auto mainCameraComponent = mainCamera->second;
 
-		RenderingSystem::RenderSprite( *this, appLevelStuff, { CameraSystem::GetViewMatrix( mainCameraEntity ), mainCameraComponent.GetCameraSize() } );
+		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, CameraData{ CameraSystem::GetViewMatrix( mainCameraEntity ), CameraSystem::GetProjMatrix( mainCameraComponent ) } );
 	}
 
 	void Scene::RenderInEditor( AppLevelStuff& appLevelStuff, const CameraData& cameraData ) const
 	{
-		RenderingSystem::RenderSprite( *this, appLevelStuff, cameraData );
+		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, cameraData );
 	}
 
 	void Scene::RenderImGui( const AppLevelStuff& appLevelStuff ) {}

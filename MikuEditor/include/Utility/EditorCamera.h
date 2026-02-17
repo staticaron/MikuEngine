@@ -15,12 +15,14 @@ namespace MikuEditor
 
 		glm::mat4 GetMVPFromModelMatrix( glm::mat4 modelMatrix ) const { return GetProjViewMatrix() * modelMatrix; }
 
-		glm::mat4 GetProjViewMatrix() const
-		{
-			glm::mat4 projMatrix = glm::ortho( 0.0f, MikuEngine::Application::GetDataContainer().GetViewportSize().x, MikuEngine::Application::GetDataContainer().GetViewportSize().y, 0.0f, -1000.0f, 1000.0f );
-			glm::mat4 viewMatrix = GetViewMatrix();
+		glm::mat4 GetProjViewMatrix() const { return GetProjMatrix() * GetViewMatrix(); }
 
-			return projMatrix * viewMatrix;
+		glm::mat4 GetProjMatrix() const
+		{
+			if ( m_IsPerspective == false )
+				return glm::ortho( 0.0f, MikuEngine::Application::GetDataContainer().GetViewportSize().x, MikuEngine::Application::GetDataContainer().GetViewportSize().y, 0.0f, -1000.0f, 1000.0f );
+			else
+				return glm::perspective( glm::pi<float>() * 0.5f, MikuEngine::Application::GetDataContainer().GetViewportAspectRatio(), 0.0f, 1000.0f );
 		}
 
 		glm::mat4 GetViewMatrix() const
@@ -46,6 +48,8 @@ namespace MikuEditor
 		glm::vec3 Position{ 1.0f };
 		glm::vec3 Rotation{ 0.0f };
 		glm::vec3 Scale{ 1.0f };
+
+		bool m_IsPerspective = false;
 
 		float m_Zoom;
 	};

@@ -1,8 +1,7 @@
 #pragma once
 
-#include "yaml-cpp/yaml.h"
-
 #include "Core.h"
+#include "yaml-cpp/emitter.h"
 
 namespace MikuEngine
 {

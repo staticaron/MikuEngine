@@ -3,11 +3,10 @@
 #include "Components.h"
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Entity.h"
-#include "MikuEngine/Logger.h"
 #include "MikuEngine/Scene/Scene.h"
 #include "MikuEngine/Systems/CameraSystem.h"
-#include "MikuEngine/Systems/RenderingSystem.h"
 #include "MikuEngine/Systems/ScriptExecutionSystem.h"
+#include "MikuEngine/Systems/SpriteRendererSystem.h"
 #include "MikuEngine/Systems/TransformSystems.h"
 
 #include "imgui.h"
@@ -56,7 +55,7 @@ namespace MikuEditor
 
 				std::function<void()> shaderEditBtnCallback = [ &editorLayer, &scene ]() { editorLayer.m_ShaderSelectionWindow.emplace_back( scene.GetSelectedEntity().value().GetUUID() ); };
 
-				MikuEngine::RenderingSystem::SpriteRendererComponentRenderImGui( selectedEntity.value(), spriteRendererC, textureEditBtnCallback, shaderEditBtnCallback );
+				MikuEngine::SpriteRendererSystem::SpriteRendererComponentRenderImGui( selectedEntity.value(), spriteRendererC, textureEditBtnCallback, shaderEditBtnCallback );
 			}
 
 			if ( selectedEntity.value().HasComponent<MikuEngine::CameraComponent>() )

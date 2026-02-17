@@ -21,6 +21,7 @@ namespace MikuEngine
 		static glm::mat4 GetMVPFromModelMatrix( const Entity& entity, const CameraComponent& cameraComponent, glm::mat4 modelMatrix );
 		static glm::mat4 GetProjViewMatrix( const Entity& entity, const CameraComponent& cameraComponent );
 		static glm::mat4 GetViewMatrix( const Entity& entity );
+		static glm::mat4 GetProjMatrix( const CameraComponent& cameraC );
 
 		static void CameraComponentRenderImGui( Entity entity, CameraComponent& cameraComponent );
 		static void SerializeCameraComponent( const Entity& entity, YAML::Emitter& emitter );

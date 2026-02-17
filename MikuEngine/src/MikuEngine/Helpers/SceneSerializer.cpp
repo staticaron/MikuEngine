@@ -4,9 +4,8 @@
 #include <fstream>
 #include <string_view>
 
-#include "glm/fwd.hpp"
 #include "nfd.h"
-#include "yaml-cpp/yaml.h"
+#include "yaml-cpp/emitter.h"
 
 #include "Logger.h"
 
@@ -42,7 +41,7 @@ namespace MikuEngine
 
 		if ( entity.HasComponent<SpriteRendererComponent>() )
 		{
-			RenderingSystem::SerializeSpriteRendererComponent( entity, emitter );
+			SpriteRendererSystem::SerializeSpriteRendererComponent( entity, emitter );
 		}
 
 		if ( entity.HasComponent<CameraComponent>() )
@@ -140,7 +139,7 @@ namespace MikuEngine
 					entt.AddComponent<SpriteRendererComponent>();
 					auto& spriteRendererC = entt.GetComponent<SpriteRendererComponent>();
 
-					RenderingSystem::DeSerializeSpriteRendererComponent( spriteRendererC, values );
+					SpriteRendererSystem::DeSerializeSpriteRendererComponent( spriteRendererC, values );
 				}
 
 				if ( type == "CameraComponent" )
