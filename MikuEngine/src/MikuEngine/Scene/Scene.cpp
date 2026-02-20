@@ -12,7 +12,11 @@
 
 namespace MikuEngine
 {
-	Scene::Scene() {}
+	Scene::Scene()
+	{
+		mat.Init( PROJECT_DIR "materials/card.mat" );
+		mat.Serialize( PROJECT_DIR "materials/card2.mat" );
+	}
 
 	void Scene::Update( double dt )
 	{

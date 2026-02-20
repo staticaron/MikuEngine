@@ -6,9 +6,9 @@
 #include "entt/entt.hpp"
 
 #include "Core.h"
-#include "UUID.h"
-
 #include "Helpers/SceneSerializer.h"
+#include "Rendering/Material.h"
+#include "UUID.h"
 
 namespace MikuEngine
 {
@@ -54,6 +54,8 @@ namespace MikuEngine
 		SceneSerializer m_Serializer;
 
 		UUID m_SelectedEntityID;
+
+		Material mat;
 
 	protected:
 		friend class SceneSerializer;
