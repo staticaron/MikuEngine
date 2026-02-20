@@ -49,7 +49,7 @@ namespace MikuEditor
 		glm::vec3 Rotation{ 0.0f };
 		glm::vec3 Scale{ 1.0f };
 
-		bool m_IsPerspective = false;
+		bool m_IsPerspective = true;
 
 		float m_Zoom;
 	};

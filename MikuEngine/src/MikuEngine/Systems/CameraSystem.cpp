@@ -41,8 +41,9 @@ namespace MikuEngine
 		auto camHeight = cameraComponent.GetCameraSize().y;
 
 		glm::mat4 projMatrix = glm::mat4( 1.0f );
+
 		if ( cameraComponent.m_IsPerspective )
-			projMatrix = glm::perspective( glm::pi<float>() * 0.5f, 16 / 9.0f, 10.0f, 1000.0f );
+			projMatrix = glm::perspective( glm::pi<float>() * 0.5f, Application::GetApplication()->GetDataContainer().GetGameAspectRatio(), 10.0f, 1000.0f );
 		else
 			projMatrix = glm::ortho( -camWidth * 0.5f, camWidth * 0.5f, camHeight * 0.5f, -camHeight * 0.5f, -1000.0f, 1000.0f );
 
