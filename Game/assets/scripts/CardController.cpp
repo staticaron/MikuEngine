@@ -23,7 +23,11 @@ void CardController::OnUpdate( double dt )
 		const auto mainCamEntity = mainCam->first;
 		const auto& mainCamComponent = mainCam->second;
 
-		transformC.Rotation = { transformC.Rotation.x + delta.y * m_RotateSpeed * dt, transformC.Rotation.y + delta.x * m_RotateSpeed * dt, 0.0f };
+		float xRot = glm::clamp( static_cast<float>( transformC.Rotation.x + delta.y * m_RotateSpeed * dt ), m_MinMaxRotX.x, m_MinMaxRotX.y );
+		float yRot = glm::clamp( static_cast<float>( transformC.Rotation.y + delta.x * m_RotateSpeed * dt ), m_MinMaxRotY.x, m_MinMaxRotY.y );
+		float zRot = transformC.Rotation.x;
+
+		transformC.Rotation = { transformC.Rotation.x - delta.y * m_RotateSpeed * dt, transformC.Rotation.y + delta.x * m_RotateSpeed * dt, 0.0f };
 
 		m_StartPosition = { mouseX, mouseY };
 	}
