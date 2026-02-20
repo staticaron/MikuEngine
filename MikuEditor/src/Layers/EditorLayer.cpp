@@ -25,7 +25,7 @@ namespace MikuEditor
 	{
 		if ( m_EditorLevelStuff.m_CurrentPlayModeState == PlayModeState::PLAYING ) m_Scene->Update( dt );
 
-		if ( m_IsViewportPanelFocused ) m_EditorCamera.Translate();
+		if ( m_IsViewportPanelFocused ) m_EditorCamera.Translate( dt );
 	}
 
 	void EditorLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
@@ -62,6 +62,8 @@ namespace MikuEditor
 			ManageShaderSelectionWindows( appLevelStuff );
 
 			m_Scene->RenderImGui( appLevelStuff );
+
+			if ( m_EditorLevelStuff.IsEditorCameraEditorWindowOpen ) m_EditorCamera.RenderImGui( m_EditorLevelStuff );
 		}
 	}
 

@@ -1,5 +1,7 @@
 #include "Panels/MenuBar.h"
 
+#include "imgui.h"
+
 #include "Layers/EditorLayer.h"
 #include "MikuEngine/Logger.h"
 #include "MikuEngine/Managers/MetaFileManager.h"
@@ -27,6 +29,7 @@ namespace MikuEditor
 
 				ImGui::EndMenu();
 			}
+
 			if ( ImGui::BeginMenu( "Scene" ) )
 			{
 				ImGui::Separator();
@@ -37,6 +40,7 @@ namespace MikuEditor
 				if ( ImGui::MenuItem( "Clean", "CTRL+W" ) ) scene.Clean();
 				ImGui::EndMenu();
 			}
+
 			if ( ImGui::BeginMenu( "Assets" ) )
 			{
 				ImGui::Separator();
@@ -49,6 +53,14 @@ namespace MikuEditor
 
 				ImGui::EndMenu();
 			}
+
+			if ( ImGui::BeginMenu( "Editor" ) )
+			{
+				if ( ImGui::MenuItem( "Editor Camera Settings" ) ) editorLevelStuff.IsEditorCameraEditorWindowOpen = true;
+
+				ImGui::EndMenu();
+			}
+
 			ImGui::EndMainMenuBar();
 		}
 	}

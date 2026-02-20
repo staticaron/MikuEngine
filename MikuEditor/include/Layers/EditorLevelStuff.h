@@ -20,7 +20,10 @@ namespace MikuEditor
 	private:
 		PlayModeState m_CurrentPlayModeState = PlayModeState::NOTPLAYING;
 
+		bool IsEditorCameraEditorWindowOpen = false;
+
 		friend class EditorLayer;
 		friend class MenuBar;
+		friend class EditorCamera;
 	};
 }

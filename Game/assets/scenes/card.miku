@@ -1,12 +1,39 @@
 scene: Untitled
 entities:
+  - name: Miku
+    id: 4186582529910479368
+    components:
+      - type: TransformComponent
+        values:
+          position: [10, 0, -10]
+          rotation: [0, 0, 0]
+          scale: [5, 5, 1]
+      - type: SpriteRendererComponent
+        values:
+          texture: 11951034516196472530
+          shader: 4729198698840679006
+          tint: [1, 1, 1, 1]
+  - name: Camera
+    id: 471711908562867175
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+      - type: CameraComponent
+        values:
+          perspective: true
+          zoom: 1
+          maincamera: true
+          width: 32
   - name: Card
     id: 5030660346100341033
     components:
       - type: TransformComponent
         values:
-          position: [0, 0, 0]
-          rotation: [0.00018520471, 0.004997677, 0]
+          position: [0, 0, -10]
+          rotation: [0.0049981326, -0.0018585667, 0]
           scale: [11.5, 16, 1]
       - type: SpriteRendererComponent
         values:
@@ -16,30 +43,3 @@ entities:
       - type: NativeScriptComponent
         values:
           scriptName: CardController
-  - name: Camera
-    id: 471711908562867175
-    components:
-      - type: TransformComponent
-        values:
-          position: [0, 0, 15]
-          rotation: [0, 0, 0]
-          scale: [1, 1, 1]
-      - type: CameraComponent
-        values:
-          perspective: true
-          zoom: 1
-          maincamera: true
-          width: 32
-  - name: Miku
-    id: 4186582529910479368
-    components:
-      - type: TransformComponent
-        values:
-          position: [10, 0, 0]
-          rotation: [0, 0, 0]
-          scale: [5, 5, 1]
-      - type: SpriteRendererComponent
-        values:
-          texture: 11951034516196472530
-          shader: 4729198698840679006
-          tint: [1, 1, 1, 1]

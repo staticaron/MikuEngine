@@ -43,7 +43,7 @@ namespace MikuEngine
 		glm::mat4 projMatrix = glm::mat4( 1.0f );
 
 		if ( cameraComponent.m_IsPerspective )
-			projMatrix = glm::perspective( glm::pi<float>() * 0.5f, Application::GetApplication()->GetDataContainer().GetGameAspectRatio(), 10.0f, 1000.0f );
+			projMatrix = glm::perspective( glm::pi<float>() * 0.5f, Application::GetApplication()->GetDataContainer().GetGameAspectRatio(), 0.0f, 1000.0f );
 		else
 			projMatrix = glm::ortho( -camWidth * 0.5f, camWidth * 0.5f, -camHeight * 0.5f, camHeight * 0.5f, -1000.0f, 1000.0f );
 
@@ -62,9 +62,7 @@ namespace MikuEngine
 
 		auto rotation = rotationX * rotationY * rotationZ;
 
-		glm::mat4 S = glm::scale( glm::mat4( 1.0f ), cameraTransform.Scale );
-
-		return glm::inverse( transform * rotation * S );
+		return glm::inverse( transform * rotation );
 	}
 
 	void CameraSystem::CameraComponentRenderImGui( Entity entity, CameraComponent& cameraComponent )
