@@ -10,8 +10,8 @@
 #include "AppLevelStuff.h"
 #include "Core.h"
 #include "DataContainer.h"
-#include "Rendering/GameFBO.h"
-#include "Rendering/SceneFBO.h"
+#include "Rendering/FrameBuffers/GameFBO.h"
+#include "Rendering/FrameBuffers/SceneFBO.h"
 #include "Scene/Scene.h"
 
 namespace MikuEngine

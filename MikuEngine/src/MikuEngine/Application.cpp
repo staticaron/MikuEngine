@@ -9,8 +9,8 @@
 
 #include "Error.h"
 #include "Layer.h"
+#include "Rendering/Primitives/Vertex.h"
 #include "Rendering/Shader.h"
-#include "Rendering/Vertex.h"
 #include "Rendering/VertexBuffer.h"
 #include "Rendering/VertexBufferLayout.h"
 

@@ -1,4 +1,4 @@
-#include "Rendering/GameFBO.h"
+#include "Rendering/FrameBuffers/GameFBO.h"
 
 #include "glad/glad.h"
 

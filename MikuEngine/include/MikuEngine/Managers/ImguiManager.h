@@ -4,7 +4,6 @@
 
 #include "backends/imgui_impl_glfw.h"
 #include "Core.h"
-#include "Rendering/SceneFBO.h"
 
 namespace MikuEngine
 {
@@ -12,6 +11,8 @@ namespace MikuEngine
 	ImGui::BeginDisabled();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        \
 	x;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             \
 	ImGui::EndDisabled();
+
+	class SceneFBO;
 }
 
 namespace MikuEngine

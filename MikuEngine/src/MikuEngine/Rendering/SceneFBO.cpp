@@ -1,4 +1,4 @@
-#include "Rendering/SceneFBO.h"
+#include "Rendering/FrameBuffers/SceneFBO.h"
 
 #include "Application.h"
 #include "glad/glad.h"

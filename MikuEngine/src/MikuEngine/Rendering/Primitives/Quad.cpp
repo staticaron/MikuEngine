@@ -1,6 +1,6 @@
 #include "Rendering/Primitives/Quad.h"
 
-#include "Rendering/Vertex.h"
+#include "Rendering/Primitives/Vertex.h"
 
 namespace MikuEngine
 {
