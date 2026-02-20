@@ -167,6 +167,8 @@ namespace MikuEngine
 		glDebugMessageCallback( Error::LogOpenGLError, nullptr );
 		glDebugMessageControl( GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE );
 
+		glClipControl( GL_UPPER_LEFT, GL_ZERO_TO_ONE );
+
 		// Enable Alpha Blending
 		glEnable( GL_BLEND );
 		glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
