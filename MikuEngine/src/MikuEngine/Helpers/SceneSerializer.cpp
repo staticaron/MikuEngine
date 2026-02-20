@@ -89,20 +89,23 @@ namespace MikuEngine
 		fout << emitter.c_str();
 	}
 
-	bool SceneSerializer::DeSerialize( Scene& scene )
+	bool SceneSerializer::DeSerialize( Scene& scene, const char* sceneFilePath )
 	{
-		nfdchar_t* loadPath = nullptr;
+		nfdchar_t* loadPath = ( nfdchar_t* )sceneFilePath;
 
-		nfdresult_t result = NFD_OpenDialog( "miku", nullptr, &loadPath );
-
-		MIKU_CORE_INFO( "Scene Load Path: {}", loadPath );
-
-		if ( result == NFD_CANCEL ) return false;
-
-		if ( result != NFD_OKAY )
+		if ( sceneFilePath == nullptr )
 		{
-			MIKU_CORE_ERROR( "Unable to load the scene file! File Not Found! " );
-			return false;
+			nfdresult_t result = NFD_OpenDialog( "miku", nullptr, &loadPath );
+
+			MIKU_CORE_INFO( "Scene Load Path: {}", loadPath );
+
+			if ( result == NFD_CANCEL ) return false;
+
+			if ( result != NFD_OKAY )
+			{
+				MIKU_CORE_ERROR( "Unable to load the scene file! File Not Found! " );
+				return false;
+			}
 		}
 
 		YAML::Node node = YAML::LoadFile( loadPath );

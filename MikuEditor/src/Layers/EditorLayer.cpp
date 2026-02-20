@@ -14,6 +14,8 @@ namespace MikuEditor
 	EditorLayer::EditorLayer( MikuEngine::Scene* scene ) : MikuEngine::Layer( scene )
 	{
 		s_EditorLayer = this;
+
+		scene->Load( PROJECT_DIR "scenes/card.miku" );
 	}
 
 	EditorLayer* EditorLayer::GetEditorLayer()

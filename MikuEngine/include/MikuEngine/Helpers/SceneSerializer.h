@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "Core.h"
 
 namespace MikuEngine
@@ -15,7 +17,7 @@ namespace MikuEngine
 		SceneSerializer() = default;
 
 		void Serialize( Scene& scene );
-		bool DeSerialize( Scene& scene );
+		bool DeSerialize( Scene& scene, const char* sceneFilePath = nullptr );
 
 	private:
 	};

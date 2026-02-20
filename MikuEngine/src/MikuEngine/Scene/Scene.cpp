@@ -140,10 +140,10 @@ namespace MikuEngine
 		m_Serializer.Serialize( *this );
 	}
 
-	bool Scene::Load()
+	bool Scene::Load( const char* sceneFilePath )
 	{
 		Clean();
 		MIKU_CORE_INFO( "Load" );
-		return m_Serializer.DeSerialize( *this );
+		return m_Serializer.DeSerialize( *this, sceneFilePath );
 	}
 }

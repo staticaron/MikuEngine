@@ -46,7 +46,7 @@ namespace MikuEngine
 		const entt::registry& GetRegistry() const { return m_Registry; }
 
 		void Save();
-		bool Load();
+		bool Load( const char* sceneFilePath = nullptr );
 		void Clean();
 
 	private:
