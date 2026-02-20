@@ -7,10 +7,25 @@
 
 namespace MikuEngine
 {
+	struct MIKU_API MaterialIndex
+	{
+		UUID uuid;
+		std::string name;
+		std::string path;
+	};
+
 	class MIKU_API MaterialManager
 	{
 	public:
+		void LoadAllMaterials();
+		void LoadMaterial( Material mat );
+
+		void PrepareMaterialIndex();
+
+		const Material& GetMaterial() const;
+
 	private:
+		std::unordered_map<UUID, MaterialIndex> m_MaterialIndex;
 		std::unordered_map<UUID, Material> m_Materials;
 	};
 }

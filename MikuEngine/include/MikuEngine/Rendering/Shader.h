@@ -12,6 +12,13 @@
 
 namespace MikuEngine
 {
+	struct MIKU_API ShaderUniform
+	{
+		std::string Name;
+		unsigned int Index;
+		unsigned int Type;
+	};
+
 	class MIKU_API Shader
 	{
 	public:
@@ -22,24 +29,22 @@ namespace MikuEngine
 
 		void LoadFromFile( std::string_view filepath );
 
+		void PrepareUniforms();
+
 		void Bind() const;
 		void UnBind() const;
 
 		unsigned int GetUniformLocation( const std::string& uniformName )
 		{
-			auto existing = m_UniformLocation.find( uniformName );
-			if ( existing != m_UniformLocation.end() )
-			{
-				return existing->second;
-			}
+			auto existing = m_Uniforms.find( uniformName );
+			if ( existing != m_Uniforms.end() ) return existing->second.Index;
 
 			Bind();
-
 			int uniformLocation = glGetUniformLocation( m_RendererID, uniformName.c_str() );
-			m_UniformLocation[ uniformName ] = uniformLocation;
-
 			return uniformLocation;
 		}
+
+		const std::unordered_map<std::string, ShaderUniform>& GetUniforms() const { return m_Uniforms; }
 
 		template <typename T>
 		void SetUniform( const std::string& uniformName, T value )
@@ -49,8 +54,7 @@ namespace MikuEngine
 
 	private:
 		unsigned int m_RendererID = 0;
-
-		std::unordered_map<std::string, unsigned int> m_UniformLocation = {};
+		std::unordered_map<std::string, ShaderUniform> m_Uniforms = {};
 	};
 
 	template <>

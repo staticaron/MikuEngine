@@ -14,8 +14,8 @@ namespace MikuEngine
 {
 	Scene::Scene()
 	{
-		mat.Init( PROJECT_DIR "materials/card.mat" );
-		mat.Serialize( PROJECT_DIR "materials/card2.mat" );
+		mat.LoadFromFile( PROJECT_DIR "materials/card.mat" );
+		mat.SaveToFile( PROJECT_DIR "materials/card2.mat" );
 	}
 
 	void Scene::Update( double dt )

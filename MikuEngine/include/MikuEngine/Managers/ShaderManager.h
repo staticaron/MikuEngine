@@ -33,12 +33,12 @@ namespace MikuEngine
 		void PrepareShaderIndex();
 		const std::unordered_map<UUID, ShaderIndexEntry>& GetShaderIndex() const;
 
-		const ShaderContainer& GetShader( UUID textureUUID ) const;
+		const ShaderContainer& GetShader( UUID shaderUUID ) const;
 		const ShaderContainer& GetShaderByName( const std::string& name ) const;
 
 		const std::unordered_map<UUID, ShaderContainer>& GetAllLoadedShaders() const;
 
-		std::string GetShaderName( UUID textureUUID ) const;
+		std::string GetShaderName( UUID shaderUUID ) const;
 		const ShaderContainer& GetDefaultShader() const;
 
 	private:

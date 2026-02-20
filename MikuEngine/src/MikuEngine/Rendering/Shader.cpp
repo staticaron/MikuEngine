@@ -111,6 +111,33 @@ namespace MikuEngine
 		std::string vs, gs, fs;
 		ParseShader( filepath, vs, gs, fs );
 		m_RendererID = CreateShader( vs, gs, fs );
+
+		PrepareUniforms();
+	}
+
+	void Shader::PrepareUniforms()
+	{
+		int uniformCount;
+		glGetProgramiv( m_RendererID, GL_ACTIVE_UNIFORMS, &uniformCount );
+
+		Bind();
+
+		for ( int x = 0; x < uniformCount; x++ )
+		{
+			const int bufferSize = 256;
+			int length;
+			char name[ bufferSize ];
+			int size;
+			unsigned int type;
+
+			glGetActiveUniform( m_RendererID, x, 256, &length, &size, &type, name );
+
+			unsigned int index = GetUniformLocation( name );
+
+			m_Uniforms[ name ] = { name, index, type };
+		}
+
+		UnBind();
 	}
 
 	void Shader::Bind() const
