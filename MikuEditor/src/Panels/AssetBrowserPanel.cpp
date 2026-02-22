@@ -26,8 +26,7 @@ namespace MikuEditor
 			else
 			{
 				if ( item.path().extension() == ".meta" ) continue;
-
-				ImGui::Text( "%s", path.c_str() );
+				ImGui::Button( path.filename().c_str() );
 			}
 		}
 
