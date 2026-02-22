@@ -12,11 +12,7 @@
 
 namespace MikuEngine
 {
-	Scene::Scene()
-	{
-		mat.LoadFromFile( PROJECT_DIR "materials/card.mat" );
-		mat.SaveToFile( PROJECT_DIR "materials/card2.mat" );
-	}
+	Scene::Scene() {}
 
 	void Scene::Update( double dt )
 	{

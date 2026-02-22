@@ -183,6 +183,7 @@ namespace MikuEngine
 
 		m_AppLevelStuff.GetTextureManager().LoadAllTextures();
 		m_AppLevelStuff.GetShaderManager().LoadAllShaders();
+		m_AppLevelStuff.GetMaterialManager().LoadAllMaterials();
 
 		m_AppLevelStuff.GetImGuiManager().Init( m_Window );
 

@@ -50,6 +50,8 @@ namespace MikuEngine
 
 			m_Shaders[ uuid ] = { shaderIndex, shaderContainer };
 		}
+
+		MIKU_CORE_INFO( "All {} Shaders Loaded!", m_Shaders.size() );
 	}
 
 	void ShaderManager::PrepareShaderIndex()
@@ -57,13 +59,14 @@ namespace MikuEngine
 		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "shaders/" ) )
 		{
 			if ( file.path().extension() == ".meta" ) continue;
+
 			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
 
 			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
 			m_ShaderIndex[ uuid ] = { file.path().stem().string(), file.path().string() };
 		}
 
-		MIKU_CORE_INFO( "Shader Indexing Complete!" );
+		MIKU_CORE_INFO( "Shader Indexing Complete!", m_ShaderIndex.size() );
 	}
 
 	const std::unordered_map<UUID, ShaderIndexEntry>& ShaderManager::GetShaderIndex() const
@@ -75,6 +78,7 @@ namespace MikuEngine
 	{
 		if ( shaderUUID == UUID( 0 ) ) return GetDefaultShader();
 
+		auto count = m_Shaders.size();
 		auto existing = m_Shaders.find( shaderUUID );
 
 		MIKU_ASSERT( existing != m_Shaders.end(), "Shader not loaded!" );
