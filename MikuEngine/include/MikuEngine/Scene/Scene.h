@@ -6,6 +6,7 @@
 #include "entt/entt.hpp"
 
 #include "Core.h"
+#include "Data/SelectableItem.h"
 #include "Helpers/SceneSerializer.h"
 #include "Rendering/Material.h"
 #include "UUID.h"
@@ -34,8 +35,8 @@ namespace MikuEngine
 		Entity CreateEntity( const std::string& name, Scene* parentScene );
 		Entity LoadEntity( const std::string& name, UUID uuid, Scene* parentScene );
 
-		std::optional<Entity> GetSelectedEntity();
-		void SetSelectedEntity( UUID uuid );
+		std::optional<SelectableItem> GetSelectedItem();
+		void SetSelectedItem( UUID uuid, SelectableType type );
 
 		std::vector<Entity> GetAllEntities();
 		std::optional<Entity> GetEntityByID( UUID id );
@@ -53,7 +54,7 @@ namespace MikuEngine
 		entt::registry m_Registry;
 		SceneSerializer m_Serializer;
 
-		UUID m_SelectedEntityID;
+		std::optional<SelectableItem> m_SelectedItem;
 
 		Material mat;
 

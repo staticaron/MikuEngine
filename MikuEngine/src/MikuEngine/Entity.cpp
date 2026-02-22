@@ -1,7 +1,6 @@
 #include "Entity.h"
 
 #include "Components.h"
-#include "Logger.h"
 
 namespace MikuEngine
 {

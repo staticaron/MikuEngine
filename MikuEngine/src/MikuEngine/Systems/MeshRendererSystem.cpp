@@ -21,7 +21,7 @@ namespace MikuEngine
 
 			auto mvp = transformC.GetModelMatrix();
 
-			const auto& shader = appLevelStuff.GetShaderManager().GetDefaultShader().shader;
+			const auto& shader = appLevelStuff.GetAssetPoolManager().GetShaderManager().GetDefaultShader().shader;
 
 			renderer.Draw( cube.GetVA(), cube.GetIB(), shader );
 		}

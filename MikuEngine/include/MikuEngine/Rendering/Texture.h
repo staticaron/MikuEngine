@@ -2,12 +2,13 @@
 
 #include <string>
 
+#include "Asset.h"
 #include "Core.h"
 #include "UUID.h"
 
 namespace MikuEngine
 {
-	class MIKU_API Texture
+	class MIKU_API Texture : Asset
 	{
 	public:
 		Texture( UUID uuid );
@@ -21,6 +22,8 @@ namespace MikuEngine
 
 		UUID GetUUID() const { return m_UUID; }
 		unsigned int GetRendererID() const { return m_RendererID; }
+
+		void RenderInspectorImGui() override {}
 
 	private:
 		UUID m_UUID;

@@ -6,6 +6,7 @@ namespace MikuEngine
 {
 	class Scene;
 	class AppLevelStuff;
+	class SelectableItem;
 }
 
 namespace MikuEditor
@@ -21,5 +22,7 @@ namespace MikuEditor
 		static void RenderInspectorPanel( EditorLayer& editorLayer, const MikuEngine::AppLevelStuff& appLevelStuff, MikuEngine::Scene& scene );
 
 	private:
+		static void RenderEntityInInspector( const MikuEngine::SelectableItem& item, EditorLayer& editorLayer, MikuEngine::Scene& scene );
+		static void RenderAssetInInspector( const MikuEngine::SelectableItem& item, EditorLayer& editorLayer, MikuEngine::Scene& scene );
 	};
 }

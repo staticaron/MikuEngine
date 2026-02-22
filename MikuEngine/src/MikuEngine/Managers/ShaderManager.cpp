@@ -96,6 +96,12 @@ namespace MikuEngine
 		MIKU_ASSERT( false, "Requested Texture is not loaded!" );
 	}
 
+	bool ShaderManager::ShaderExists( const UUID& uuid ) const
+	{
+		auto exists = m_Shaders.find( uuid );
+		return exists != m_Shaders.end();
+	}
+
 	const std::unordered_map<UUID, ShaderContainer>& ShaderManager::GetAllLoadedShaders() const
 	{
 		return m_Shaders;

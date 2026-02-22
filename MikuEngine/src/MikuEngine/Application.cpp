@@ -90,7 +90,7 @@ namespace MikuEngine
 
 			shader.SetUniform<glm::mat4>( "u_MVP", mvp );
 
-			auto texture = m_AppLevelStuff.GetTextureManager().GetTextureByName( "miku" );
+			auto texture = m_AppLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByName( "miku" );
 			texture.Bind( 0 );
 
 			shader.SetUniform<unsigned int>( "u_Tex", 0 );
@@ -180,11 +180,7 @@ namespace MikuEngine
 		m_GameFBO.Init();
 
 		m_AppLevelStuff.GetRenderer().Init();
-
-		m_AppLevelStuff.GetTextureManager().LoadAllTextures();
-		m_AppLevelStuff.GetShaderManager().LoadAllShaders();
-		m_AppLevelStuff.GetMaterialManager().LoadAllMaterials();
-
+		m_AppLevelStuff.GetAssetPoolManager().Init();
 		m_AppLevelStuff.GetImGuiManager().Init( m_Window );
 
 		// RenderTemp();

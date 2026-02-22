@@ -2,6 +2,7 @@
 
 #include "Components.h"
 #include "MikuEngine/AppLevelStuff.h"
+#include "MikuEngine/Data/SelectableItem.h"
 #include "MikuEngine/Entity.h"
 #include "MikuEngine/Scene/Scene.h"
 #include "MikuEngine/Systems/CameraSystem.h"
@@ -19,7 +20,31 @@ namespace MikuEditor
 	{
 		ImGui::Begin( "Inspector" );
 
-		auto selectedEntity = scene.GetSelectedEntity();
+		auto selectedItem = scene.GetSelectedItem();
+
+		if ( selectedItem.has_value() == false )
+		{
+			ImGui::End();
+			return;
+		}
+
+		switch ( selectedItem.value().type )
+		{
+		case MikuEngine::SelectableType::ENTITY:
+			InspectorPanel::RenderEntityInInspector( selectedItem.value(), editorLayer, scene );
+			break;
+		case MikuEngine::SelectableType::ASSET:
+			InspectorPanel::RenderAssetInInspector( selectedItem.value(), editorLayer, scene );
+			break;
+		}
+
+		ImGui::End();
+	}
+
+	void InspectorPanel::RenderEntityInInspector( const MikuEngine::SelectableItem& item, EditorLayer& editorLayer, MikuEngine::Scene& scene )
+	{
+		auto selectedEntityUUID = item.uuid;
+		auto selectedEntity = scene.GetEntityByID( selectedEntityUUID );
 
 		if ( selectedEntity.has_value() )
 		{
@@ -51,9 +76,8 @@ namespace MikuEditor
 			{
 				auto& spriteRendererC = selectedEntity.value().GetComponent<MikuEngine::SpriteRendererComponent>();
 
-				std::function<void()> textureEditBtnCallback = [ &editorLayer, &scene ]() { editorLayer.m_TextureSelectionWindow.emplace_back( scene.GetSelectedEntity().value().GetUUID() ); };
-
-				std::function<void()> shaderEditBtnCallback = [ &editorLayer, &scene ]() { editorLayer.m_ShaderSelectionWindow.emplace_back( scene.GetSelectedEntity().value().GetUUID() ); };
+				std::function<void()> textureEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID ]() { editorLayer.m_TextureSelectionWindow.emplace_back( selectedEntityUUID ); };
+				std::function<void()> shaderEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID ]() { editorLayer.m_ShaderSelectionWindow.emplace_back( selectedEntityUUID ); };
 
 				MikuEngine::SpriteRendererSystem::SpriteRendererComponentRenderImGui( selectedEntity.value(), spriteRendererC, textureEditBtnCallback, shaderEditBtnCallback );
 			}
@@ -71,17 +95,15 @@ namespace MikuEditor
 			}
 		}
 
-		// Show Add Component Button ( ACTIVE if scene has selected entity otherwise DISABLED)
-		if ( scene.GetSelectedEntity().has_value() )
+		if ( scene.GetSelectedItem().has_value() )
 		{
 			if ( MikuEngine::ImguiManager::FullWidthButton( "Add Component" ) ) ImGui::OpenPopup( "add-component-popup" );
 
 			if ( ImGui::BeginPopup( "add-component-popup" ) )
 			{
-
-				if ( ImGui::Selectable( "CameraComponent" ) ) scene.GetSelectedEntity().value().AddComponent<MikuEngine::CameraComponent>();
-				if ( ImGui::Selectable( "SpriteRendererComponent" ) ) scene.GetSelectedEntity().value().AddComponent<MikuEngine::SpriteRendererComponent>();
-				if ( ImGui::Selectable( "NativeScriptComponent" ) ) scene.GetSelectedEntity().value().AddComponent<MikuEngine::NativeScriptComponent>();
+				if ( ImGui::Selectable( "CameraComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::CameraComponent>();
+				if ( ImGui::Selectable( "SpriteRendererComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::SpriteRendererComponent>();
+				if ( ImGui::Selectable( "NativeScriptComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::NativeScriptComponent>();
 
 				ImGui::EndPopup();
 			}
@@ -98,7 +120,32 @@ namespace MikuEditor
 
 			ImGui::TextUnformatted( id.c_str() );
 		}
+	}
 
-		ImGui::End();
+	void InspectorPanel::RenderAssetInInspector( const MikuEngine::SelectableItem& item, EditorLayer& editorLayer, MikuEngine::Scene& scene )
+	{
+		auto assetPoolManager = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager();
+		auto selectedAssetID = item.uuid;
+		auto selectedAssetType = assetPoolManager.GetAssetTypeFromPool( selectedAssetID );
+
+		switch ( selectedAssetType )
+		{
+		case MikuEngine::AssetType::NONE:
+			break;
+		case MikuEngine::AssetType::MATERIAL: {
+			auto material = assetPoolManager.GetMaterialManager().GetMaterial( selectedAssetID );
+			if ( material.has_value() == false ) return;
+			material.value().RenderInspectorImGui();
+			break;
+		}
+		case MikuEngine::AssetType::SHADER:
+			break;
+		case MikuEngine::AssetType::TEXTURE:
+			break;
+		case MikuEngine::AssetType::SCENE:
+			break;
+		case MikuEngine::AssetType::MODEL:
+			break;
+		}
 	}
 }

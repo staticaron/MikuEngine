@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "Core.h"
 
 #include "Rendering/Material.h"
@@ -22,7 +24,8 @@ namespace MikuEngine
 
 		void PrepareMaterialIndex();
 
-		const Material& GetMaterial() const;
+		std::optional<Material> GetMaterial( UUID uuid ) const;
+		bool MaterialExists( const UUID& uuid ) const;
 
 	private:
 		std::unordered_map<UUID, MaterialIndex> m_MaterialIndex;

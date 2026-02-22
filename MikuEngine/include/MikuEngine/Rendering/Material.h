@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 #include "Core.h"
 #include "Shader.h"
@@ -10,9 +10,16 @@
 
 namespace MikuEngine
 {
-	class MIKU_API Material
+	class Asset;
+}
+
+namespace MikuEngine
+{
+	class MIKU_API Material : Asset
 	{
 	public:
+		Material() : Asset( AssetType::MATERIAL ) {}
+
 		void CreateFromShader( const Shader& shader );
 
 		void LoadFromFile( const std::string& materialPath );
@@ -21,9 +28,13 @@ namespace MikuEngine
 		void Bind();
 		void UnBind();
 
+		void RenderInspectorImGui() override;
+
 	private:
 		Shader m_Shader;
 		UUID m_ShaderID;
+
+		std::unordered_map<std::string, ShaderUniform> m_Uniforms;
 
 		std::unordered_map<std::string, UUID> m_Textures;
 		std::unordered_map<std::string, float> m_Floats;

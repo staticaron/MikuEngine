@@ -17,7 +17,7 @@ namespace MikuEditor
 
 		ImGui::Begin( "Select Shader", &m_IsOpen );
 
-		auto shaders = appLevelstuff.GetShaderManager().GetAllLoadedShaders();
+		auto shaders = appLevelstuff.GetAssetPoolManager().GetShaderManager().GetAllLoadedShaders();
 
 		for ( const auto& [ uuid, shaderContainer ] : shaders )
 		{

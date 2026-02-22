@@ -22,8 +22,8 @@ namespace MikuEngine
 
 		const auto& renderer = appLevelStuff.GetRenderer();
 		const auto& quad = renderer.GetQuad();
-		const TextureManager& textureManager = appLevelStuff.GetTextureManager();
-		const ShaderManager& shaderManager = appLevelStuff.GetShaderManager();
+		const TextureManager& textureManager = appLevelStuff.GetAssetPoolManager().GetTextureManager();
+		const ShaderManager& shaderManager = appLevelStuff.GetAssetPoolManager().GetShaderManager();
 
 		for ( const auto& [ entity, data, spriteRenderer ] : entities.each() )
 		{
@@ -56,6 +56,9 @@ namespace MikuEngine
 
 	void SpriteRendererSystem::SpriteRendererComponentRenderImGui( Entity entity, SpriteRendererComponent& spriteRendererC, std::function<void()> textureEditBtnCallback, std::function<void()> shaderEditBtnCallback )
 	{
+		const auto& textureManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager();
+		const auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
+
 		bool keep = true;
 
 		if ( ImGui::CollapsingHeader( "SpriteRendererComponent", &keep ) )
@@ -67,8 +70,8 @@ namespace MikuEngine
 			if ( textureUUID.has_value() )
 			{
 				// TODO: Combine Texture and TextureName Into one TextureContainer
-				auto texture = Application::GetAppLevelStuff().GetTextureManager().GetTexture( textureUUID.value() );
-				textureName = Application::GetAppLevelStuff().GetTextureManager().GetTextureName( textureUUID.value() );
+				auto texture = textureManager.GetTexture( textureUUID.value() );
+				textureName = textureManager.GetTextureName( textureUUID.value() );
 			}
 
 			DISABLED_IMGUI( ImGui::Button( textureName.c_str() ) );
@@ -77,7 +80,7 @@ namespace MikuEngine
 
 			auto shaderUUID = spriteRendererC.ShaderUUID;
 
-			auto shader = shaderUUID.has_value() ? Application::GetAppLevelStuff().GetShaderManager().GetShader( shaderUUID.value() ) : Application::GetAppLevelStuff().GetShaderManager().GetDefaultShader();
+			auto shader = shaderUUID.has_value() ? shaderManager.GetShader( shaderUUID.value() ) : shaderManager.GetDefaultShader();
 			std::string shaderName = shader.shaderDetails.name;
 
 			DISABLED_IMGUI( ImGui::Button( shaderName.c_str() ) );

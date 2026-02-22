@@ -27,10 +27,10 @@ namespace MikuEditor
 					auto dc = entities[ x ].GetComponent<MikuEngine::DataComponent>();
 					auto ic = entities[ x ].GetComponent<MikuEngine::IDComponent>();
 
-					bool is_selected = ( scene.GetSelectedEntity().has_value() ? scene.GetSelectedEntity().value().GetUUID() == ic.ID : false );
+					bool is_selected = ( scene.GetSelectedItem().has_value() ? scene.GetSelectedItem().value().uuid == ic.ID : false );
 					ImGuiSelectableFlags flags = ( item_highlighted_idx == x ) ? ImGuiSelectableFlags_Highlight : 0;
 
-					if ( ImGui::Selectable( entities[ x ].GetNamedIdentifier().c_str(), is_selected, flags ) ) scene.SetSelectedEntity( ic.ID );
+					if ( ImGui::Selectable( entities[ x ].GetNamedIdentifier().c_str(), is_selected, flags ) ) scene.SetSelectedItem( ic.ID, MikuEngine::SelectableType::ENTITY );
 
 					if ( is_selected ) ImGui::SetItemDefaultFocus();
 				}

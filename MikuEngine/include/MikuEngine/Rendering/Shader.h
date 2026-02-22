@@ -5,6 +5,7 @@
 #include <string_view>
 #include <unordered_map>
 
+#include "Asset.h"
 #include "Core.h"
 #include "glm/glm.hpp"
 
@@ -19,9 +20,11 @@ namespace MikuEngine
 		unsigned int Type;
 	};
 
-	class MIKU_API Shader
+	class MIKU_API Shader : Asset
 	{
 	public:
+		Shader() : Asset( AssetType::SHADER ) {}
+
 		void ParseShader( std::string_view filepath, std::string& vs, std::string& gs, std::string& fs );
 
 		unsigned int CompileShader( const std::string& source, unsigned int type );
@@ -33,6 +36,8 @@ namespace MikuEngine
 
 		void Bind() const;
 		void UnBind() const;
+
+		void RenderInspectorImGui() override {};
 
 		unsigned int GetUniformLocation( const std::string& uniformName )
 		{

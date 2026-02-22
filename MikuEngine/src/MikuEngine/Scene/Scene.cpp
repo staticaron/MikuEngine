@@ -60,17 +60,12 @@ namespace MikuEngine
 		return entt;
 	}
 
-	std::optional<Entity> Scene::GetSelectedEntity()
+	std::optional<SelectableItem> Scene::GetSelectedItem()
 	{
-		auto entities = m_Registry.view<IDComponent>();
-
-		for ( const auto& [ entity, idC ] : entities.each() )
-			if ( idC.ID == m_SelectedEntityID ) return Entity( idC.ID, entity, this );
-
-		return {};
+		return m_SelectedItem;
 	}
 
-	void Scene::SetSelectedEntity( UUID uuid )
+	void Scene::SetSelectedItem( UUID uuid, SelectableType type )
 	{
 		if ( !GetEntityByID( uuid ).has_value() )
 		{
@@ -78,7 +73,7 @@ namespace MikuEngine
 			return;
 		}
 
-		m_SelectedEntityID = uuid;
+		m_SelectedItem = { uuid, SelectableType::ENTITY };
 	}
 
 	std::vector<Entity> Scene::GetAllEntities()

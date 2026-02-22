@@ -19,7 +19,7 @@ namespace MikuEditor
 		// Render each texture as image button in table
 		ImGui::BeginTable( "Texture Button Grid", columns );
 
-		auto allTextures = appLevelStuff.GetTextureManager().GetAllLoadedTextures();
+		auto allTextures = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetAllLoadedTextures();
 
 		for ( auto [ uuid, texture ] : allTextures )
 		{

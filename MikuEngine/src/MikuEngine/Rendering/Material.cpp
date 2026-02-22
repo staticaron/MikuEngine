@@ -12,14 +12,14 @@ namespace MikuEngine
 {
 	void Material::CreateFromShader( const Shader& shader )
 	{
-		auto uniforms = shader.GetUniforms();
+		m_Uniforms = shader.GetUniforms();
 
-		for ( auto [ name, uniform ] : uniforms )
+		for ( auto [ name, uniform ] : m_Uniforms )
 		{
 			if ( uniform.Type == GL_FLOAT )
 				m_Floats[ name ] = 0.0f;
 			else if ( uniform.Type == GL_SAMPLER_2D )
-				m_Floats[ name ] = 0.0f;
+				m_Textures[ name ] = 0;
 		}
 	}
 
@@ -29,7 +29,7 @@ namespace MikuEngine
 
 		YAML::Node rootNode = YAML::LoadFile( materialPath );
 
-		const ShaderManager& shaderManager = Application::GetAppLevelStuff().GetShaderManager();
+		const ShaderManager& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
 		m_ShaderID = UUID( rootNode[ "shader" ].as<std::string>() );
 		auto m_Shader = shaderManager.GetShader( m_ShaderID ).shader;
@@ -83,7 +83,7 @@ namespace MikuEngine
 
 	void Material::Bind()
 	{
-		const auto& textureManager = Application::GetAppLevelStuff().GetTextureManager();
+		const auto& textureManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager();
 		m_Shader.Bind();
 
 		// Handle Floats
@@ -104,5 +104,25 @@ namespace MikuEngine
 	void Material::UnBind()
 	{
 		m_Shader.UnBind();
+	}
+
+	void Material::RenderInspectorImGui()
+	{
+		for ( const auto& [ uniformName, uniform ] : m_Uniforms )
+		{
+			switch ( uniform.Type )
+			{
+			case GL_FLOAT: {
+				auto floatValue = m_Floats[ uniformName ];
+				if ( ImGui::DragFloat( uniformName.c_str(), &floatValue ) )
+				{
+					m_Floats[ uniformName ] = floatValue;
+				}
+				break;
+			}
+			case GL_UNSIGNED_INT:
+				break;
+			}
+		}
 	}
 }

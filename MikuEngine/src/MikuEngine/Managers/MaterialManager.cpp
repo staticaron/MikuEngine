@@ -29,4 +29,18 @@ namespace MikuEngine
 			m_MaterialIndex[ uuid ] = { uuid, file.path().stem().string(), file.path().string() };
 		}
 	}
+
+	std::optional<Material> MaterialManager::GetMaterial( UUID uuid ) const
+	{
+		auto exists = m_Materials.find( uuid );
+		if ( exists == m_Materials.end() ) return {};
+
+		return exists->second;
+	}
+
+	bool MaterialManager::MaterialExists( const UUID& uuid ) const
+	{
+		auto exists = m_Materials.find( uuid );
+		return exists != m_Materials.end();
+	}
 }
