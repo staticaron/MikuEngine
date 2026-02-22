@@ -12,8 +12,24 @@ namespace MikuEditor
 
 		ImGui::Begin( "Content Browser" );
 
-		for ( auto item : std::filesystem::recursive_directory_iterator( PROJECT_DIR ) )
-			ImGui::Text( "%s", item.path().c_str() );
+		if ( AssetBrowserPanel::m_ContentBrowserLocation.string() != PROJECT_DIR )
+			if ( ImGui::Button( "../" ) ) AssetBrowserPanel::m_ContentBrowserLocation = AssetBrowserPanel::m_ContentBrowserLocation.parent_path();
+
+		for ( auto item : std::filesystem::directory_iterator( AssetBrowserPanel::m_ContentBrowserLocation ) )
+		{
+			auto path = std::filesystem::relative( item.path(), AssetBrowserPanel::m_ContentBrowserLocation );
+
+			if ( item.is_directory() )
+			{
+				if ( ImGui::Button( path.c_str() ) ) AssetBrowserPanel::m_ContentBrowserLocation = item.path();
+			}
+			else
+			{
+				if ( item.path().extension() == ".meta" ) continue;
+
+				ImGui::Text( "%s", path.c_str() );
+			}
+		}
 
 		ImGui::End();
 	}

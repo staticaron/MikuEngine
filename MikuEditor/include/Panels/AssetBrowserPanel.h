@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "MikuEngine/Core.h"
 
 namespace MikuEngine
@@ -15,5 +17,7 @@ namespace MikuEditor
 		static void RenderAssetBrowserPanel( MikuEngine::Scene& scene );
 
 	private:
+		inline static std::filesystem::path m_ContentBrowserLocation = PROJECT_DIR;
+		inline static std::filesystem::path m_RootAssetLocation = PROJECT_DIR;
 	};
 }

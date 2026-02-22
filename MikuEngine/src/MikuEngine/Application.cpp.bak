@@ -10,8 +10,7 @@ namespace MikuEngine
 {
 	Application::Application()
 	{
-		if ( !glfwInit() )
-			return;
+		if ( !glfwInit() ) return;
 
 		m_Window = glfwCreateWindow( 640, 480, "Hello World", NULL, NULL );
 
@@ -23,8 +22,7 @@ namespace MikuEngine
 
 		glfwMakeContextCurrent( m_Window );
 
-		if ( !gladLoadGL() )
-			return;
+		if ( !gladLoadGL() ) return;
 
 		float positions[ 6 ] = { 0.5f, 0.5f, -0.5f, 0.5f, 0.0f, -0.5f };
 		unsigned int indices[ 3 ] = { 0, 1, 2 };
@@ -35,7 +33,7 @@ namespace MikuEngine
 		VertexArray va;
 		Shader shader;
 
-		shader.LoadFromFile( RESOURCE_DIR "shaders/base.shader" );
+		shader.LoadFromFile( RESOURCE_DIR "/shaders/base.shader" );
 		Renderer renderer;
 
 		vb.Bind();
@@ -56,13 +54,9 @@ namespace MikuEngine
 		glfwTerminate();
 	}
 
-	Application::~Application()
-	{
-	}
+	Application::~Application() {}
 
-	void Application::Update( double dt )
-	{
-	}
+	void Application::Update( double dt ) {}
 
 	void Application::Render()
 	{
@@ -73,7 +67,5 @@ namespace MikuEngine
 		glfwPollEvents();
 	}
 
-	void Application::RenderImGui()
-	{
-	}
+	void Application::RenderImGui() {}
 }

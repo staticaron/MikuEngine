@@ -28,7 +28,7 @@ namespace MikuEngine
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-		io.Fonts->AddFontFromFileTTF( RESOURCE_DIR "fonts/jetbrains_mono.ttf" );
+		io.Fonts->AddFontFromFileTTF( RESOURCE_DIR "/fonts/jetbrains_mono.ttf" );
 
 		ImGui::StyleColorsDark();
 

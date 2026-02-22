@@ -27,7 +27,7 @@ namespace MikuEngine
 
 	void ShaderManager::LoadDefaultShaders()
 	{
-		for ( auto& file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "shaders/" ) )
+		for ( auto& file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/shaders/" ) )
 		{
 			Shader defaultShader;
 			defaultShader.LoadFromFile( file.path().string() );
@@ -56,7 +56,7 @@ namespace MikuEngine
 
 	void ShaderManager::PrepareShaderIndex()
 	{
-		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "shaders/" ) )
+		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/shaders/" ) )
 		{
 			if ( file.path().extension() == ".meta" ) continue;
 

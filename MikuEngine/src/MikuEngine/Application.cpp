@@ -62,7 +62,7 @@ namespace MikuEngine
 		va.Setup( vb, vbl );
 
 		Shader shader;
-		shader.LoadFromFile( RESOURCE_DIR "shaders/base.shader" );
+		shader.LoadFromFile( RESOURCE_DIR "/shaders/base.shader" );
 
 		vb.PutData( Verts.data(), Verts.size() * sizeof( Vertex ) );
 		ib.PutData( Indices.data(), Indices.size() );
