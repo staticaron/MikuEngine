@@ -3,6 +3,7 @@
 #include "MikuEngine/Layer.h"
 
 #include "EditorLevelStuff.h"
+#include "Panels/AssetBrowserPanel.h"
 #include "Utility/EditorCamera.h"
 #include "Windows/ShaderSelectionWindow.h"
 #include "Windows/TextureSelectionWindow.h"
@@ -41,6 +42,9 @@ namespace MikuEditor
 		std::vector<ShaderSelectionWindow> m_ShaderSelectionWindow;
 
 		bool m_IsViewportPanelFocused = false;
+
+		// Panels
+		AssetBrowserPanel m_AssetBrowserPanel;
 
 		friend class InspectorPanel;
 	};

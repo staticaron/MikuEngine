@@ -15,6 +15,8 @@ namespace MikuEditor
 	{
 		s_EditorLayer = this;
 
+		m_AssetBrowserPanel.Init();
+
 		scene->Load( PROJECT_DIR "/scenes/card.miku" );
 	}
 
@@ -56,7 +58,7 @@ namespace MikuEditor
 			MikuEditor::MenuBar::RenderMenuBar( *this, appLevelStuff, m_EditorLevelStuff, *m_Scene );
 			MikuEditor::HierarchyPanel::RenderHierarchy( *m_Scene );
 			MikuEditor::InspectorPanel::RenderInspectorPanel( *this, appLevelStuff, *m_Scene );
-			MikuEditor::AssetBrowserPanel::RenderAssetBrowserPanel( *m_Scene );
+			m_AssetBrowserPanel.RenderAssetBrowserPanel( *m_Scene );
 			MikuEditor::EditorOverlayPanel::RenderEditorOverlayPanel( *this, appLevelStuff, m_EditorLevelStuff, *m_Scene );
 			m_IsViewportPanelFocused = MikuEditor::ViewportPanel::RenderViewportPanel( *m_Scene );
 

@@ -11,6 +11,7 @@ namespace MikuEngine
 	class MIKU_API Texture : Asset
 	{
 	public:
+		Texture() : Asset( AssetType::TEXTURE ) {};
 		Texture( UUID uuid );
 
 		void LoadFromFile( const std::string& filepath );
