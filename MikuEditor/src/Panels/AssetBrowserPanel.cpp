@@ -4,69 +4,96 @@
 
 #include "imgui.h"
 
+#include "Application.h"
 #include "Logger.h"
+#include "Scene/Scene.h"
 
 namespace MikuEditor
 {
 	void AssetBrowserPanel::Init()
 	{
 		MikuEngine::Texture texture;
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_folder.png" );
 
+		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_folder.png" );
 		m_IconTextures[ MikuEngine::AssetType::NONE ] = texture;
+		MIKU_CLIENT_INFO( "Folder Texture Loaded Into : {}", texture.GetRendererID() );
 
 		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_file.png" );
 		m_IconTextures[ MikuEngine::AssetType::TEXTURE ] = texture;
+		MIKU_CLIENT_INFO( "File Texture Loaded Into : {}", texture.GetRendererID() );
 	}
 
 	void AssetBrowserPanel::RenderAssetBrowserPanel( MikuEngine::Scene& scene )
 	{
+		const auto& appLevelStuff = MikuEngine::Application::GetAppLevelStuff();
+
 		ImGui::ShowDemoWindow();
 
 		ImGui::Begin( "Content Browser" );
 
 		auto canvasSize = ImGui::GetContentRegionAvail();
-		auto columns = static_cast<unsigned int>( canvasSize.x / AssetBrowserPanel::m_IconSize.x );
+		auto columns = static_cast<unsigned int>( canvasSize.x / m_IconSize );
 
-		if ( AssetBrowserPanel::m_ContentBrowserLocation.string() != PROJECT_DIR )
-			if ( ImGui::Button( "../" ) ) AssetBrowserPanel::m_ContentBrowserLocation = AssetBrowserPanel::m_ContentBrowserLocation.parent_path();
-
-		auto directories = std::filesystem::directory_iterator( AssetBrowserPanel::m_ContentBrowserLocation );
-
-		// ImGui::PushStyleVar( ImGuiStyleVar_CellPadding, ImVec2( 10.0f, 10.0f ) );
-
-		ImGui::BeginTable( "Texture Button Grid", columns, ImGuiTableFlags_Borders | ImGuiTableFlags_SizingFixedFit );
-
-		for ( int x = 0; x < columns; x++ )
+		if ( m_ContentBrowserLocation.string() != PROJECT_DIR )
 		{
-			auto item = std::next( directories, x );
+			if ( ImGui::Button( "../" ) ) m_ContentBrowserLocation = m_ContentBrowserLocation.parent_path();
+			ImGui::SameLine();
+		}
 
-			auto path = std::filesystem::relative( item->path(), AssetBrowserPanel::m_ContentBrowserLocation );
+		ImGui::SliderInt( "Icon Size", &m_IconSize, 16, 200 );
 
-			if ( item->is_directory() )
+		ImGui::BeginTable( "Asset", columns, ImGuiTableFlags_Borders );
+
+		ImGui::PushStyleColor( ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f } );
+		ImGui::PushStyleColor( ImGuiCol_ButtonActive, { 0.f, 0.f, 0.f, 0.f } );
+		ImGui::PushStyleColor( ImGuiCol_ButtonHovered, { 0.5f, 0.5f, 0.5f, 0.25f } );
+
+		for ( auto item : std::filesystem::directory_iterator( m_ContentBrowserLocation ) )
+		{
+			auto path = std::filesystem::relative( item.path(), m_RootAssetLocation );
+
+			if ( item.is_directory() )
 			{
-				if ( ImGui::Button( item.path().string().c_str() ) ) AssetBrowserPanel::m_ContentBrowserLocation = item.path();
+				if ( ImGui::ImageButton( item.path().c_str(), m_IconTextures.at( MikuEngine::AssetType::NONE ).GetRendererID(), { static_cast<float>( m_IconSize ), static_cast<float>( m_IconSize ) }, { 0, 1 }, { 1, 0 } ) ) m_ContentBrowserLocation = item.path();
+				ImGui::Text( "%s", path.c_str() );
+				ImGui::TableNextColumn();
 			}
 			else
 			{
-				if ( item.path().extension() == ".meta" ) continue;
-				ImGui::Button( path.filename().c_str() );
+				if ( path.extension() == ".meta" ) continue;
 
-				if ( ImGui::BeginDragDropSource( ImGuiDragDropFlags_None ) )
+				if ( ImGui::ImageButton( item.path().c_str(), m_IconTextures.at( MikuEngine::AssetType::TEXTURE ).GetRendererID(), { static_cast<float>( m_IconSize ), static_cast<float>( m_IconSize ) }, { 0, 1 }, { 1, 0 } ) )
 				{
-					ImGui::SetDragDropPayload( "FILE_DRAG_DROP_PAYLOAD", path.c_str(), strlen( path.c_str() ) );
-					ImGui::Text( "Moving File: %s", path.filename().c_str() );
+					auto assetType = appLevelStuff.GetAssetPoolManager().GetAssetTypeFromFileExtension( path.extension() );
 
+					auto assetUUID = 0;
+
+					switch ( assetType )
+					{
+					case MikuEngine::AssetType::TEXTURE:
+						assetUUID = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( item.path().string() ).value().GetUUID();
+					default:
+						assetUUID = 0;
+					}
+
+					scene.SetSelectedItem( assetUUID, MikuEngine::SelectableType::ASSET );
+				}
+
+				if ( ImGui::BeginDragDropSource() )
+				{
+					ImGui::SetDragDropPayload( "FILE_DRAG_DROP_PAYLOAD", item.path().string().c_str(), strlen( item.path().string().c_str() ) );
 					ImGui::EndDragDropSource();
 				}
+
+				ImGui::Text( "%s", path.filename().c_str() );
+				ImGui::TableNextColumn();
 			}
 		}
 
-		ImGui::EndTable();
+		ImGui::PopStyleColor( 3 );
 
-		// ImGui::PopStyleVar();
+		ImGui::EndTable();
 
 		ImGui::End();
 	}
 }
-

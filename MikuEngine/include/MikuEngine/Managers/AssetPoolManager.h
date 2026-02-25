@@ -23,6 +23,8 @@ namespace MikuEngine
 		MaterialManager& GetMaterialManager() { return m_MaterialManager; }
 		const MaterialManager& GetMaterialManager() const { return m_MaterialManager; }
 
+		AssetType GetAssetTypeFromFileExtension( const std::string& extension ) const;
+
 	private:
 		TextureManager m_TextureManager;
 		ShaderManager m_ShaderManager;

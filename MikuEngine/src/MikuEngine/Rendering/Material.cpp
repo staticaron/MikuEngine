@@ -6,7 +6,6 @@
 #include "yaml-cpp/yaml.h"
 
 #include "Application.h"
-#include "ImguiManager.h"
 #include "Logger.h"
 #include "UUID.h"
 

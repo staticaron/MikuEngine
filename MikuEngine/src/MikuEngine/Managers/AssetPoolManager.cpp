@@ -17,4 +17,20 @@ namespace MikuEngine
 
 		return AssetType::NONE;
 	}
+
+	AssetType AssetPoolManager::GetAssetTypeFromFileExtension( const std::string& extension ) const
+	{
+		if ( extension == ".png" || extension == ".jpg" )
+			return AssetType::TEXTURE;
+		else if ( extension == ".scene" || extension == ".miku" )
+			return AssetType::SCENE;
+		else if ( extension == ".mat" )
+			return AssetType::MATERIAL;
+		else if ( extension == ".obj" )
+			return AssetType::MODEL;
+		else if ( extension == ".shader" )
+			return AssetType::SHADER;
+
+		return AssetType::NONE;
+	}
 }

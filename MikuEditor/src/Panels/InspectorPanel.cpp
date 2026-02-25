@@ -36,6 +36,8 @@ namespace MikuEditor
 		case MikuEngine::SelectableType::ASSET:
 			InspectorPanel::RenderAssetInInspector( selectedItem.value(), editorLayer, scene );
 			break;
+		default:
+			break;
 		}
 
 		ImGui::End();

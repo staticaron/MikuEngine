@@ -26,6 +26,6 @@ namespace MikuEditor
 
 		std::unordered_map<MikuEngine::AssetType, MikuEngine::Texture> m_IconTextures;
 
-		glm::vec2 m_IconSize = { 100, 100 };
+		int m_IconSize = 100;
 	};
 }

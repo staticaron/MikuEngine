@@ -91,6 +91,14 @@ namespace MikuEngine
 		MIKU_ASSERT( false, "Requested Texture is not loaded!" );
 	}
 
+	std::optional<Texture> TextureManager::GetTextureByFilePath( const std::string& path ) const
+	{
+		for ( const auto [ uuid, textureIndex ] : m_TextureIndex )
+			if ( textureIndex.path == path ) return { GetTexture( uuid ) };
+
+		return {};
+	}
+
 	bool TextureManager::TextureExists( const UUID& uuid ) const
 	{
 		auto exists = m_Textures.find( uuid );

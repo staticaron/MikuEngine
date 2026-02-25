@@ -67,13 +67,13 @@ namespace MikuEngine
 
 	void Scene::SetSelectedItem( UUID uuid, SelectableType type )
 	{
-		if ( !GetEntityByID( uuid ).has_value() )
+		if ( type == SelectableType::ENTITY && !GetEntityByID( uuid ).has_value() )
 		{
 			MIKU_CORE_ERROR( "This Entity is not present in scene! Can't set as active entity!" );
 			return;
 		}
 
-		m_SelectedItem = { uuid, SelectableType::ENTITY };
+		m_SelectedItem = { uuid, type };
 	}
 
 	std::vector<Entity> Scene::GetAllEntities()

@@ -7,7 +7,8 @@ namespace MikuEngine
 {
 	enum class SelectableType
 	{
-		ENTITY = 0,
+		NONE = 0,
+		ENTITY,
 		ASSET
 	};
 
