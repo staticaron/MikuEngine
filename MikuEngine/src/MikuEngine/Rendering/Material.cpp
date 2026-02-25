@@ -1,5 +1,6 @@
 #include "Rendering/Material.h"
 
+#include <filesystem>
 #include <fstream>
 
 #include "yaml-cpp/yaml.h"
@@ -135,6 +136,10 @@ namespace MikuEngine
 					if ( payload == nullptr ) return;
 
 					std::string filePath = static_cast<const char*>( payload->Data );
+
+					std::filesystem::path materialPath = filePath;
+
+					if ( materialPath.extension() != ".mat" ) return;
 
 					MIKU_CORE_INFO( "Received Material : {}", filePath );
 
