@@ -6,7 +6,6 @@
 namespace MikuEditor
 {
 	TextureSelectionWindow::TextureSelectionWindow( MikuEngine::UUID entityUUID ) : m_EntityUUID( entityUUID ) {}
-
 	WindowResponse TextureSelectionWindow::RenderTextureSelectionWindow( const MikuEngine::AppLevelStuff& appLevelStuff, MikuEngine::Scene& scene )
 	{
 		WindowResponse response;

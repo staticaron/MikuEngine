@@ -21,12 +21,20 @@ namespace MikuEditor
 
 			if ( item.is_directory() )
 			{
-				if ( ImGui::Button( path.c_str() ) ) AssetBrowserPanel::m_ContentBrowserLocation = item.path();
+				if ( ImGui::Button( item.path().string().c_str() ) ) AssetBrowserPanel::m_ContentBrowserLocation = item.path();
 			}
 			else
 			{
 				if ( item.path().extension() == ".meta" ) continue;
 				ImGui::Button( path.filename().c_str() );
+
+				if ( ImGui::BeginDragDropSource( ImGuiDragDropFlags_None ) )
+				{
+					ImGui::SetDragDropPayload( "FILE_DRAG_DROP_PAYLOAD", path.c_str(), strlen( path.c_str() ) );
+					ImGui::Text( "Moving File: %s", path.filename().c_str() );
+
+					ImGui::EndDragDropSource();
+				}
 			}
 		}
 

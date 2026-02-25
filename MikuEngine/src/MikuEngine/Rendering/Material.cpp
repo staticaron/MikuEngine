@@ -5,6 +5,7 @@
 #include "yaml-cpp/yaml.h"
 
 #include "Application.h"
+#include "ImguiManager.h"
 #include "Logger.h"
 #include "UUID.h"
 
@@ -114,13 +115,32 @@ namespace MikuEngine
 			{
 			case GL_FLOAT: {
 				auto floatValue = m_Floats[ uniformName ];
-				if ( ImGui::DragFloat( uniformName.c_str(), &floatValue ) )
-				{
-					m_Floats[ uniformName ] = floatValue;
-				}
+				if ( ImGui::DragFloat( uniformName.c_str(), &floatValue ) ) m_Floats[ uniformName ] = floatValue;
 				break;
 			}
-			case GL_UNSIGNED_INT:
+			case GL_SAMPLER_2D:
+				const auto& textureUUID = m_Textures[ uniformName ];
+				auto texture = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTextureName( textureUUID );
+
+				char buff[ 256 ] = "";
+				std::copy( texture.begin(), texture.end(), buff );
+				buff[ texture.length() ] = '\0';
+
+				ImGui::InputText( uniformName.c_str(), buff, 256, ImGuiInputTextFlags_ReadOnly );
+
+				if ( ImGui::BeginDragDropTarget() )
+				{
+					const ImGuiPayload* payload = ImGui::AcceptDragDropPayload( "FILE_DRAG_DROP_PAYLOAD" );
+
+					if ( payload == nullptr ) return;
+
+					std::string filePath = static_cast<const char*>( payload->Data );
+
+					MIKU_CORE_INFO( "Received Material : {}", filePath );
+
+					ImGui::EndDragDropTarget();
+				}
+
 				break;
 			}
 		}
