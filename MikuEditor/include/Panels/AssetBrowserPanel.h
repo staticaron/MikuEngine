@@ -5,11 +5,13 @@
 #include "glm/glm.hpp"
 
 #include "MikuEngine/Core.h"
+#include "MikuEngine/Data/SelectableItem.h"
 #include "MikuEngine/Rendering/Texture.h"
 
 namespace MikuEngine
 {
 	class Scene;
+	enum class AssetType;
 }
 
 namespace MikuEditor
@@ -19,6 +21,9 @@ namespace MikuEditor
 	public:
 		void Init();
 		void RenderAssetBrowserPanel( MikuEngine::Scene& scene );
+
+		void RenderFolderIcon( const std::filesystem::path& folderPath );
+		void RenderFileIcon( const std::filesystem::path& folderPath, std::function<void( MikuEngine::UUID, MikuEngine::AssetType )> onClickFunc );
 
 	private:
 		std::filesystem::path m_ContentBrowserLocation = PROJECT_DIR;

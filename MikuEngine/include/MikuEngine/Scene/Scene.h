@@ -36,7 +36,7 @@ namespace MikuEngine
 		Entity LoadEntity( const std::string& name, UUID uuid, Scene* parentScene );
 
 		std::optional<SelectableItem> GetSelectedItem();
-		void SetSelectedItem( UUID uuid, SelectableType type );
+		void SetSelectedItem( UUID uuid, SelectableType type, AssetType assetType = AssetType::NONE );
 
 		std::vector<Entity> GetAllEntities();
 		std::optional<Entity> GetEntityByID( UUID id );

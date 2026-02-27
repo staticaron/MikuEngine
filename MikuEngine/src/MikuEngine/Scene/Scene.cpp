@@ -65,7 +65,7 @@ namespace MikuEngine
 		return m_SelectedItem;
 	}
 
-	void Scene::SetSelectedItem( UUID uuid, SelectableType type )
+	void Scene::SetSelectedItem( UUID uuid, SelectableType type, AssetType assetType )
 	{
 		if ( type == SelectableType::ENTITY && !GetEntityByID( uuid ).has_value() )
 		{

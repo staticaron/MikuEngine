@@ -7,8 +7,6 @@
 
 namespace MikuEngine
 {
-	Texture::Texture( UUID uuid ) : m_UUID( uuid ), Asset( AssetType::TEXTURE ) {}
-
 	void Texture::LoadFromFile( const std::string& filepath )
 	{
 		stbi_set_flip_vertically_on_load( true );

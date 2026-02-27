@@ -12,7 +12,7 @@ namespace MikuEngine
 	{
 	public:
 		Texture() : Asset( AssetType::TEXTURE ) {};
-		Texture( UUID uuid );
+		Texture( UUID uuid ) : m_UUID( uuid ), Asset( AssetType::TEXTURE ) {}
 
 		void LoadFromFile( const std::string& filepath );
 

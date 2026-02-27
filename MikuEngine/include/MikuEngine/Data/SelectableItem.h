@@ -1,6 +1,9 @@
 #pragma once
 
+#include <optional>
+
 #include "Core.h"
+#include "Data/AssetType.h"
 #include "UUID.h"
 
 namespace MikuEngine
@@ -16,5 +19,6 @@ namespace MikuEngine
 	{
 		UUID uuid;
 		SelectableType type;
+		std::optional<AssetType> assetType;
 	};
 }

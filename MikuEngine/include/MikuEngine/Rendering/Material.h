@@ -19,11 +19,14 @@ namespace MikuEngine
 	{
 	public:
 		Material() : Asset( AssetType::MATERIAL ) {}
+		Material( UUID uuid ) : Asset( AssetType::MATERIAL ), m_UUID( uuid ) {}
 
 		void CreateFromShader( const Shader& shader );
 
 		void LoadFromFile( const std::string& materialPath );
 		void SaveToFile( const char* filePath ) const;
+
+		const UUID& GetUUID() { return m_UUID; }
 
 		void Bind();
 		void UnBind();
@@ -31,6 +34,8 @@ namespace MikuEngine
 		void RenderInspectorImGui() override;
 
 	private:
+		UUID m_UUID;
+
 		Shader m_Shader;
 		UUID m_ShaderID;
 

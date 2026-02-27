@@ -8,6 +8,8 @@ namespace MikuEngine
 {
 	void MaterialManager::LoadAllMaterials()
 	{
+		PrepareMaterialIndex();
+
 		for ( const auto& [ uuid, index ] : m_MaterialIndex )
 		{
 			Material material;
@@ -22,7 +24,7 @@ namespace MikuEngine
 
 		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/materials/" ) )
 		{
-			if ( file.path().extension() != ".meta" ) continue;
+			if ( file.path().extension() == ".meta" ) continue;
 			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
 
 			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
@@ -36,6 +38,16 @@ namespace MikuEngine
 		if ( exists == m_Materials.end() ) return {};
 
 		return exists->second;
+	}
+
+	std::optional<Material> MaterialManager::GetMaterialByFilePath( const std::string& filepath ) const
+	{
+		for ( auto [ uuid, materialIndex ] : m_MaterialIndex )
+		{
+			if ( materialIndex.path == filepath ) return GetMaterial( uuid );
+		}
+
+		return {};
 	}
 
 	bool MaterialManager::MaterialExists( const UUID& uuid ) const
