@@ -11,19 +11,21 @@
 
 namespace MikuEngine
 {
+	Material::Material( UUID uuid, const std::filesystem::path& materialPath ) : Asset( AssetType::MATERIAL ), m_UUID( uuid ), m_MaterialPath( materialPath )
+	{
+		LoadFromFile( materialPath );
+	}
+
 	void Material::CreateFromShader( const Shader& shader ) {}
 
 	void Material::LoadFromFile( const std::filesystem::path& materialPath )
 	{
-		m_MaterialName = materialPath.stem();
-		m_FilePath = materialPath;
-
 		YAML::Node rootNode = YAML::LoadFile( materialPath );
 
 		const ShaderManager& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
 		m_ShaderID = UUID( rootNode[ "shader" ].as<std::string>() );
-		auto m_Shader = shaderManager.GetShader( m_ShaderID ).shader;
+		m_Shader = shaderManager.GetShader( m_ShaderID ).shader;
 
 		YAML::Node paramterNodes = rootNode[ "properties" ];
 
@@ -71,7 +73,7 @@ namespace MikuEngine
 		emitter << YAML::EndMap;
 
 		std::filesystem::path pathToSave = filepath;
-		pathToSave = pathToSave.remove_filename().string() + m_MaterialName + ".mat";
+		pathToSave = pathToSave.remove_filename().string() + GetName() + ".mat";
 
 		std::ofstream fout( pathToSave );
 		fout << emitter.c_str();
@@ -104,14 +106,39 @@ namespace MikuEngine
 
 	void Material::RenderInspectorImGui()
 	{
-		// Render Material Details
-		char nameBuff[ 256 ];
-		std::copy( m_MaterialName.begin(), m_MaterialName.begin() + m_MaterialName.size(), nameBuff );
-		nameBuff[ m_MaterialName.size() ] = '\0';
+		const auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
-		DISABLED_IMGUI( ImGui::InputText( "##MaterialName", nameBuff, 256 ) );
+		// Render Material Details
+		auto materialName = GetName();
+		char materialNameBuff[ 256 ];
+		std::copy( materialName.begin(), materialName.begin() + materialName.size(), materialNameBuff );
+		materialNameBuff[ materialName.size() ] = '\0';
+
+		DISABLED_IMGUI( ImGui::InputText( "##MaterialName", materialNameBuff, 256 ) );
 		ImGui::Separator();
 		ImGui::Separator();
+
+		// Render Shader Details
+		auto shaderName = m_Shader.GetName();
+		char shaderNameBuff[ 256 ];
+		std::copy( shaderName.begin(), shaderName.begin() + shaderName.size(), shaderNameBuff );
+		shaderNameBuff[ shaderName.size() ] = '\0';
+
+		ImGui::InputText( "Shader", shaderNameBuff, 256, ImGuiInputTextFlags_ReadOnly );
+
+		if ( ImGui::BeginDragDropTarget() )
+		{
+			auto payload = ImGui::AcceptDragDropPayload( "SHADER_DRAG_DROP_PAYLOAD" );
+
+			if ( payload != nullptr )
+			{
+				std::string shaderFilePath = static_cast<const char*>( payload->Data );
+				m_Shader = shaderManager.GetShaderByFilePath( shaderFilePath ).shader;
+				CreateFromShader( m_Shader );
+			}
+
+			ImGui::EndDragDropTarget();
+		}
 
 		// Render Textures
 		for ( auto& [ uniformName, uuid ] : m_Textures )
@@ -152,7 +179,7 @@ namespace MikuEngine
 		ImGui::Separator();
 		if ( ImguiManager::FullWidthButton( "SAVE" ) )
 		{
-			SaveToFile( m_FilePath.c_str() );
+			SaveToFile( GetPath() );
 		}
 	}
 

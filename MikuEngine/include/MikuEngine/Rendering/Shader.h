@@ -1,6 +1,7 @@
 #pragma once
 
 #include <alloca.h>
+#include <filesystem>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -30,12 +31,15 @@ namespace MikuEngine
 		unsigned int CompileShader( const std::string& source, unsigned int type );
 		unsigned int CreateShader( const std::string& vs, const std::string& gs, const std::string& fs );
 
-		void LoadFromFile( std::string_view filepath );
+		void LoadFromFile( const std::filesystem::path& filepath );
 
 		void PrepareUniforms();
 
 		void Bind() const;
 		void UnBind() const;
+
+		const std::filesystem::path& GetPath() const { return m_ShaderPath; }
+		std::string GetName() const { return m_ShaderPath.stem().string(); }
 
 		void RenderInspectorImGui() override {};
 
@@ -59,6 +63,8 @@ namespace MikuEngine
 
 	private:
 		unsigned int m_RendererID = 0;
+		std::filesystem::path m_ShaderPath = "";
+
 		std::unordered_map<std::string, ShaderUniform> m_Uniforms = {};
 	};
 

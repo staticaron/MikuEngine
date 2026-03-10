@@ -64,8 +64,8 @@ namespace MikuEditor
 				std::function<void( MikuEngine::UUID assetUUID, MikuEngine::AssetType )> onClickFunc = [ &scene, &item, &appLevelStuff ]( MikuEngine::UUID assetUUID, MikuEngine::AssetType assetType ) {
 					// comment
 					scene.SetSelectedItem( assetUUID, MikuEngine::SelectableType::ASSET, assetType );
-					MIKU_CORE_DEBUG( "Item Clicked with Type {}", static_cast<int>( assetType ) );
 				};
+
 				RenderFileIcon( item.path(), onClickFunc );
 			}
 

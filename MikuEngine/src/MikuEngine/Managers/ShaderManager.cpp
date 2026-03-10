@@ -93,7 +93,17 @@ namespace MikuEngine
 			if ( textureIndexEntry.name == name ) return m_Shaders.at( uuid );
 		}
 
-		MIKU_ASSERT( false, "Requested Texture is not loaded!" );
+		MIKU_ASSERT( false, "Requested Shader is not loaded!" );
+	}
+
+	const ShaderContainer& ShaderManager::GetShaderByFilePath( const std::filesystem::path& path ) const
+	{
+		for ( const auto& [ uuid, textureIndexEntry ] : m_ShaderIndex )
+		{
+			if ( textureIndexEntry.path == path ) return m_Shaders.at( uuid );
+		}
+
+		MIKU_ASSERT( false, "Requested Shader is not loaded!" );
 	}
 
 	bool ShaderManager::ShaderExists( const UUID& uuid ) const

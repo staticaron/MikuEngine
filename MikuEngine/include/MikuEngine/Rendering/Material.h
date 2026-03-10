@@ -6,7 +6,6 @@
 #include <glm/glm.hpp>
 
 #include "Core.h"
-#include "Logger.h"
 #include "Shader.h"
 #include "UUID.h"
 
@@ -21,7 +20,7 @@ namespace MikuEngine
 	{
 	public:
 		Material() : Asset( AssetType::MATERIAL ) {}
-		Material( UUID uuid ) : Asset( AssetType::MATERIAL ), m_UUID( uuid ) {}
+		Material( UUID uuid, const std::filesystem::path& materialPath );
 
 		void CreateFromShader( const Shader& shader );
 
@@ -32,6 +31,9 @@ namespace MikuEngine
 
 		void Bind();
 		void UnBind();
+
+		const std::filesystem::path& GetPath() const { return m_MaterialPath; }
+		std::string GetName() const { return m_MaterialPath.stem().string(); }
 
 		void RenderInspectorImGui() override;
 
@@ -44,8 +46,7 @@ namespace MikuEngine
 		Shader m_Shader;
 		UUID m_ShaderID;
 
-		std::string m_MaterialName;
-		std::string m_FilePath;
+		std::filesystem::path m_MaterialPath;
 
 		std::vector<std::string> m_UniformOrder;
 

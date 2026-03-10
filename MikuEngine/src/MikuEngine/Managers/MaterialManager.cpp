@@ -3,7 +3,6 @@
 #include <filesystem>
 
 #include "Error.h"
-#include "Logger.h"
 #include "Managers/MetaFileManager.h"
 
 namespace MikuEngine
@@ -14,11 +13,8 @@ namespace MikuEngine
 
 		for ( const auto& [ uuid, index ] : m_MaterialIndex )
 		{
-			Material material( uuid );
-			material.LoadFromFile( index.path );
+			Material material( uuid, index.path );
 			m_Materials[ uuid ] = material;
-
-			MIKU_CORE_DEBUG( "Material Loaded into memory : {}", m_Materials.at( uuid ).GetUUID().ToString() );
 		}
 	}
 

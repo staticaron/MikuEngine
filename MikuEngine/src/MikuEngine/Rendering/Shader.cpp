@@ -106,10 +106,13 @@ namespace MikuEngine
 		return program;
 	}
 
-	void Shader::LoadFromFile( std::string_view filepath )
+	void Shader::LoadFromFile( const std::filesystem::path& filepath )
 	{
+		m_ShaderPath = filepath;
+
 		std::string vs, gs, fs;
-		ParseShader( filepath, vs, gs, fs );
+		ParseShader( filepath.string(), vs, gs, fs );
+
 		m_RendererID = CreateShader( vs, gs, fs );
 
 		PrepareUniforms();

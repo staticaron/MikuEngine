@@ -35,6 +35,7 @@ namespace MikuEngine
 
 		const ShaderContainer& GetShader( UUID shaderUUID ) const;
 		const ShaderContainer& GetShaderByName( const std::string& name ) const;
+		const ShaderContainer& GetShaderByFilePath( const std::filesystem::path& path ) const;
 		bool ShaderExists( const UUID& uuid ) const;
 
 		const std::unordered_map<UUID, ShaderContainer>& GetAllLoadedShaders() const;
