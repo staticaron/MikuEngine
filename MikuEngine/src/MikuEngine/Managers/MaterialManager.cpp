@@ -40,6 +40,14 @@ namespace MikuEngine
 		return &exists->second;
 	}
 
+	std::optional<const Material*> MaterialManager::GetMaterial( UUID uuid ) const
+	{
+		auto exists = m_Materials.find( uuid );
+		if ( exists == m_Materials.end() ) return {};
+
+		return &exists->second;
+	}
+
 	std::optional<Material*> MaterialManager::GetMaterialByFilePath( const std::string& filepath )
 	{
 		for ( auto [ uuid, materialIndex ] : m_MaterialIndex )

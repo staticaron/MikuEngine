@@ -30,6 +30,7 @@ namespace MikuEngine
 		void PrepareMaterialIndex();
 
 		std::optional<Material*> GetMaterial( UUID uuid );
+		std::optional<const Material*> GetMaterial( UUID uuid ) const;
 		bool MaterialExists( const UUID& uuid ) const;
 
 		std::optional<Material*> GetMaterialByFilePath( const std::string& filepath );
