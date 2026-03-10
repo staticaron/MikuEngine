@@ -123,6 +123,9 @@ namespace MikuEngine
 
 		for ( const auto& [ name, uuid ] : m_Textures )
 		{
+			// Ignore the textures uniforms with no Bound Values
+			if ( uuid == 0 ) continue;
+
 			auto texture = textureManager.GetTexture( uuid );
 			texture.Bind( textureID++ );
 			m_Shader->SetUniform<unsigned int>( name, textureID );
@@ -179,11 +182,13 @@ namespace MikuEngine
 		for ( auto& [ uniformName, uuid ] : m_Textures )
 		{
 			const auto& textureUUID = m_Textures[ uniformName ];
-			auto texture = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTextureName( textureUUID );
+			std::string textureName = "<none>";
+
+			if ( textureUUID != 0 ) textureName = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTextureName( textureUUID );
 
 			char buff[ 256 ] = "";
-			std::copy( texture.begin(), texture.end(), buff );
-			buff[ texture.length() ] = '\0';
+			std::copy( textureName.begin(), textureName.end(), buff );
+			buff[ textureName.length() ] = '\0';
 
 			ImGui::InputText( uniformName.c_str(), buff, 256, ImGuiInputTextFlags_ReadOnly );
 

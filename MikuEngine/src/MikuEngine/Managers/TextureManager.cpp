@@ -112,6 +112,8 @@ namespace MikuEngine
 	std::string TextureManager::GetTextureName( UUID identifier ) const
 	{
 		auto existing = m_TextureIndex.find( identifier );
+		MIKU_ASSERT( existing != m_TextureIndex.end(), "Texture is not loaded!" );
+
 		return existing->second.name;
 	}
 

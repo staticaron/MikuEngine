@@ -30,6 +30,8 @@ namespace MikuEngine
 			return AssetType::MODEL;
 		else if ( extension == ".shader" )
 			return AssetType::SHADER;
+		else if ( extension == ".h" || extension == ".cpp" )
+			return AssetType::SCRIPT;
 
 		return AssetType::NONE;
 	}
