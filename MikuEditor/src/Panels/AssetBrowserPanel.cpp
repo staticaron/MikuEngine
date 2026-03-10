@@ -20,7 +20,15 @@ namespace MikuEditor
 		m_IconTextures[ MikuEngine::AssetType::NONE ] = texture;
 
 		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_file.png" );
+		m_IconTextures[ MikuEngine::AssetType::FILE ] = texture;
 		m_IconTextures[ MikuEngine::AssetType::TEXTURE ] = texture;
+		m_IconTextures[ MikuEngine::AssetType::SHADER ] = texture;
+		m_IconTextures[ MikuEngine::AssetType::SCENE ] = texture;
+		m_IconTextures[ MikuEngine::AssetType::MODEL ] = texture;
+		m_IconTextures[ MikuEngine::AssetType::SCRIPT ] = texture;
+
+		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_material.png" );
+		m_IconTextures[ MikuEngine::AssetType::MATERIAL ] = texture;
 	}
 
 	void AssetBrowserPanel::RenderAssetBrowserPanel( MikuEngine::Scene& scene )
@@ -93,7 +101,9 @@ namespace MikuEditor
 		auto relativePath = std::filesystem::relative( filePath, m_RootAssetLocation );
 		auto assetType = appLevelStuff.GetAssetPoolManager().GetAssetTypeFromFileExtension( relativePath.extension() );
 
-		if ( ImGui::ImageButton( filePath.c_str(), m_IconTextures.at( MikuEngine::AssetType::TEXTURE ).GetRendererID(), { static_cast<float>( m_IconSize ), static_cast<float>( m_IconSize ) }, { 0, 1 }, { 1, 0 } ) )
+		auto iconTexture = m_IconTextures.at( assetType );
+
+		if ( ImGui::ImageButton( filePath.c_str(), iconTexture.GetRendererID(), { static_cast<float>( m_IconSize ), static_cast<float>( m_IconSize ) }, { 0, 1 }, { 1, 0 } ) )
 		{
 			switch ( assetType )
 			{
