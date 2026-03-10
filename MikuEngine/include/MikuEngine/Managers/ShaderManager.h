@@ -45,7 +45,9 @@ namespace MikuEngine
 
 	private:
 		std::unordered_map<UUID, ShaderIndexEntry> m_ShaderIndex;
+		std::unordered_map<UUID, ShaderIndexEntry> m_DefaultShaderIndex;
+
 		std::unordered_map<UUID, ShaderContainer> m_Shaders;
-		std::unordered_map<std::string, ShaderContainer> m_DefaultShaders;
+		std::unordered_map<UUID, ShaderContainer> m_DefaultShaders;
 	};
 }

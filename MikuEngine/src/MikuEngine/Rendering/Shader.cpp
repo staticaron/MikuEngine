@@ -8,6 +8,11 @@
 
 namespace MikuEngine
 {
+	Shader::Shader( UUID uuid, const std::filesystem::path& path ) : Asset( AssetType::SHADER ), m_ShaderPath( path ), m_ShaderUUID( uuid )
+	{
+		LoadFromFile( path );
+	}
+
 	void Shader::ParseShader( std::string_view filepath, std::string& vs, std::string& gs, std::string& fs )
 	{
 		enum class ShaderType

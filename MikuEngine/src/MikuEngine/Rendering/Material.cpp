@@ -7,7 +7,6 @@
 #include "Application.h"
 #include "Logger.h"
 #include "Managers/ImguiManager.h"
-#include "UUID.h"
 
 namespace MikuEngine
 {
@@ -16,7 +15,38 @@ namespace MikuEngine
 		LoadFromFile( materialPath );
 	}
 
-	void Material::CreateFromShader( const Shader& shader ) {}
+	void Material::CreateFromShader( const Shader& shader )
+	{
+		m_Textures.clear();
+		m_Floats.clear();
+		m_Vec4s.clear();
+		m_Mat4s.clear();
+
+		for ( const auto& [ x, y ] : shader.GetUniforms() )
+		{
+			switch ( y.Type )
+			{
+			case GL_SAMPLER_2D: {
+				m_Textures[ y.Name ] = 0;
+				break;
+			}
+			case GL_FLOAT: {
+				m_Floats[ y.Name ] = 0.0f;
+				break;
+			}
+			case GL_FLOAT_VEC4: {
+				m_Vec4s[ y.Name ] = glm::vec4{};
+				break;
+			}
+			case GL_FLOAT_MAT4: {
+				m_Mat4s[ y.Name ] = glm::mat4{ 1.0f };
+				break;
+			}
+			default:
+				break;
+			}
+		}
+	}
 
 	void Material::LoadFromFile( const std::filesystem::path& materialPath )
 	{
@@ -24,8 +54,8 @@ namespace MikuEngine
 
 		const ShaderManager& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
-		m_ShaderID = UUID( rootNode[ "shader" ].as<std::string>() );
-		m_Shader = shaderManager.GetShader( m_ShaderID ).shader;
+		auto shaderUUID = UUID( rootNode[ "shader" ].as<std::string>() );
+		m_Shader = shaderManager.GetShader( shaderUUID ).shader;
 
 		YAML::Node paramterNodes = rootNode[ "properties" ];
 
@@ -60,7 +90,7 @@ namespace MikuEngine
 		YAML::Emitter emitter;
 
 		emitter << YAML::BeginMap;
-		emitter << YAML::Key << "shader" << YAML::Value << m_ShaderID.ToString();
+		emitter << YAML::Key << "shader" << YAML::Value << m_Shader.value().GetUUID().ToString();
 		emitter << YAML::Key << "properties" << YAML::Value << YAML::BeginMap;
 
 		for ( const auto& [ name, value ] : m_Textures )
@@ -82,11 +112,11 @@ namespace MikuEngine
 	void Material::Bind()
 	{
 		const auto& textureManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager();
-		m_Shader.Bind();
+		m_Shader->Bind();
 
 		// Handle Floats
 		for ( const auto& [ name, value ] : m_Floats )
-			m_Shader.SetUniform<float>( name, value );
+			m_Shader->SetUniform<float>( name, value );
 
 		// Handle Textures
 		unsigned int textureID = 0;
@@ -95,13 +125,13 @@ namespace MikuEngine
 		{
 			auto texture = textureManager.GetTexture( uuid );
 			texture.Bind( textureID++ );
-			m_Shader.SetUniform<unsigned int>( name, textureID );
+			m_Shader->SetUniform<unsigned int>( name, textureID );
 		}
 	}
 
 	void Material::UnBind()
 	{
-		m_Shader.UnBind();
+		m_Shader->UnBind();
 	}
 
 	void Material::RenderInspectorImGui()
@@ -118,8 +148,10 @@ namespace MikuEngine
 		ImGui::Separator();
 		ImGui::Separator();
 
+		if ( m_Shader.has_value() == false ) return;
+
 		// Render Shader Details
-		auto shaderName = m_Shader.GetName();
+		auto shaderName = m_Shader->GetName();
 		char shaderNameBuff[ 256 ];
 		std::copy( shaderName.begin(), shaderName.begin() + shaderName.size(), shaderNameBuff );
 		shaderNameBuff[ shaderName.size() ] = '\0';
@@ -134,7 +166,10 @@ namespace MikuEngine
 			{
 				std::string shaderFilePath = static_cast<const char*>( payload->Data );
 				m_Shader = shaderManager.GetShaderByFilePath( shaderFilePath ).shader;
-				CreateFromShader( m_Shader );
+
+				MIKU_CORE_INFO( "Shader Dropped! : {}", m_Shader->GetName() );
+
+				CreateFromShader( m_Shader.value() );
 			}
 
 			ImGui::EndDragDropTarget();

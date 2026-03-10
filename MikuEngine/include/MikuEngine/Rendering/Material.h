@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <optional>
 #include <string>
 
 #include <glm/glm.hpp>
@@ -43,8 +44,7 @@ namespace MikuEngine
 	private:
 		UUID m_UUID;
 
-		Shader m_Shader;
-		UUID m_ShaderID;
+		std::optional<Shader> m_Shader;
 
 		std::filesystem::path m_MaterialPath;
 
@@ -52,7 +52,7 @@ namespace MikuEngine
 
 		std::unordered_map<std::string, UUID> m_Textures;
 		std::unordered_map<std::string, float> m_Floats;
-		std::unordered_map<std::string, std::string> m_Strings;
 		std::unordered_map<std::string, glm::vec4> m_Vec4s;
+		std::unordered_map<std::string, glm::mat4> m_Mat4s;
 	};
 }

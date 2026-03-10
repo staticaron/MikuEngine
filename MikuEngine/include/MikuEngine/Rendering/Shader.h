@@ -6,14 +6,18 @@
 #include <string_view>
 #include <unordered_map>
 
+#include "glm/glm.hpp"
+
 #include "Asset.h"
 #include "Core.h"
-#include "glm/glm.hpp"
+#include "UUID.h"
 
 #include "Rendering/VertexBufferLayout.h"
 
 namespace MikuEngine
 {
+	constexpr std::string_view DEFAULT_SHADER_LOCATION = RESOURCE_DIR "/shaders/quad.shader";
+
 	struct MIKU_API ShaderUniform
 	{
 		std::string Name;
@@ -21,10 +25,11 @@ namespace MikuEngine
 		unsigned int Type;
 	};
 
-	class MIKU_API Shader : Asset
+	class MIKU_API Shader : public Asset
 	{
 	public:
-		Shader() : Asset( AssetType::SHADER ) {}
+		Shader() : Asset( AssetType::SHADER ) {};
+		Shader( UUID uuid, const std::filesystem::path& path = DEFAULT_SHADER_LOCATION );
 
 		void ParseShader( std::string_view filepath, std::string& vs, std::string& gs, std::string& fs );
 
@@ -32,7 +37,6 @@ namespace MikuEngine
 		unsigned int CreateShader( const std::string& vs, const std::string& gs, const std::string& fs );
 
 		void LoadFromFile( const std::filesystem::path& filepath );
-
 		void PrepareUniforms();
 
 		void Bind() const;
@@ -40,6 +44,7 @@ namespace MikuEngine
 
 		const std::filesystem::path& GetPath() const { return m_ShaderPath; }
 		std::string GetName() const { return m_ShaderPath.stem().string(); }
+		const UUID& GetUUID() const { return m_ShaderUUID; }
 
 		void RenderInspectorImGui() override {};
 
@@ -58,12 +63,13 @@ namespace MikuEngine
 		template <typename T>
 		void SetUniform( const std::string& uniformName, T value )
 		{
-			static_assert( false );
+			static_assert( sizeof( T ) == 0, "No specialization of this type!" );
 		}
 
 	private:
 		unsigned int m_RendererID = 0;
 		std::filesystem::path m_ShaderPath = "";
+		UUID m_ShaderUUID;
 
 		std::unordered_map<std::string, ShaderUniform> m_Uniforms = {};
 	};

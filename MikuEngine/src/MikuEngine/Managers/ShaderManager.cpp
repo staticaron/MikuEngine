@@ -14,28 +14,22 @@ namespace MikuEngine
 
 	void ShaderManager::LoadShader( const std::string& name, const std::string& filepath )
 	{
-		Shader shaderContainer;
-		shaderContainer.LoadFromFile( filepath );
+		Shader shader( filepath );
 
 		UUID newUUID;
 
 		m_Shaders[ newUUID ] = {
 		    { name, filepath },
-			shaderContainer
-		};
+			shader
+		       };
 	}
 
 	void ShaderManager::LoadDefaultShaders()
 	{
-		for ( auto& file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/shaders/" ) )
+		for ( auto [ uuid, shaderIndex ] : m_DefaultShaderIndex )
 		{
-			Shader defaultShader;
-			defaultShader.LoadFromFile( file.path().string() );
-
-			m_DefaultShaders[ file.path().stem().string() ] = {
-			    { file.path().stem().string(), file.path().string() },
-				   defaultShader
-			 };
+			Shader shader( uuid, shaderIndex.path );
+			m_DefaultShaders[ uuid ] = { shaderIndex, shader };
 		}
 	}
 
@@ -45,10 +39,8 @@ namespace MikuEngine
 
 		for ( auto [ uuid, shaderIndex ] : m_ShaderIndex )
 		{
-			Shader shaderContainer;
-			shaderContainer.LoadFromFile( shaderIndex.path );
-
-			m_Shaders[ uuid ] = { shaderIndex, shaderContainer };
+			Shader shader( uuid, shaderIndex.path );
+			m_Shaders[ uuid ] = { shaderIndex, shader };
 		}
 
 		MIKU_CORE_INFO( "All {} Shaders Loaded!", m_Shaders.size() );
@@ -56,6 +48,16 @@ namespace MikuEngine
 
 	void ShaderManager::PrepareShaderIndex()
 	{
+		for ( auto& file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/shaders/" ) )
+		{
+			if ( file.path().extension() == ".meta" ) continue;
+
+			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
+
+			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
+			m_DefaultShaderIndex[ uuid ] = { file.path().stem().string(), file.path().string() };
+		}
+
 		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/shaders/" ) )
 		{
 			if ( file.path().extension() == ".meta" ) continue;
@@ -125,6 +127,6 @@ namespace MikuEngine
 
 	const ShaderContainer& ShaderManager::GetDefaultShader() const
 	{
-		return m_DefaultShaders.at( "quad" );
+		return m_DefaultShaders.begin()->second;
 	}
 }
