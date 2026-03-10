@@ -33,10 +33,12 @@ namespace MikuEngine
 		assert( false );                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       \
 	}
 
+#define MIKU_CLIENT_DEBUG( ... ) MikuEngine::Logger::GetClientLogger()->debug( __VA_ARGS__ )
 #define MIKU_CLIENT_INFO( ... )	 MikuEngine::Logger::GetClientLogger()->info( __VA_ARGS__ )
 #define MIKU_CLIENT_WARN( ... )	 MikuEngine::Logger::GetClientLogger()->warn( __VA_ARGS__ )
 #define MIKU_CLIENT_ERROR( ... ) MikuEngine::Logger::GetClientLogger()->error( __VA_ARGS__ )
 
+#define MIKU_CORE_DEBUG( ... ) MikuEngine::Logger::GetCoreLogger()->debug( __VA_ARGS__ )
 #define MIKU_CORE_INFO( ... )  MikuEngine::Logger::GetCoreLogger()->info( __VA_ARGS__ )
 #define MIKU_CORE_WARN( ... )  MikuEngine::Logger::GetCoreLogger()->warn( __VA_ARGS__ )
 #define MIKU_CORE_ERROR( ... ) MikuEngine::Logger::GetCoreLogger()->error( __VA_ARGS__ );

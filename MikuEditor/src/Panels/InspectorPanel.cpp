@@ -1,6 +1,9 @@
 #include "Panels/InspectorPanel.h"
 
+#include "imgui.h"
+
 #include "Components.h"
+#include "Logger.h"
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Data/SelectableItem.h"
 #include "MikuEngine/Entity.h"
@@ -10,7 +13,6 @@
 #include "MikuEngine/Systems/SpriteRendererSystem.h"
 #include "MikuEngine/Systems/TransformSystems.h"
 
-#include "imgui.h"
 #include "Layers/EditorLayer.h"
 #include "Panels/Panels.h"
 
@@ -126,18 +128,22 @@ namespace MikuEditor
 
 	void InspectorPanel::RenderAssetInInspector( const MikuEngine::SelectableItem& item, EditorLayer& editorLayer, MikuEngine::Scene& scene )
 	{
-		auto assetPoolManager = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager();
-		auto selectedAssetID = item.uuid;
-		auto selectedAssetType = assetPoolManager.GetAssetTypeFromPool( selectedAssetID );
+		auto selectedItem = scene.GetSelectedItem();
 
-		switch ( selectedAssetType )
+		if ( selectedItem.has_value() == false ) return;
+
+		if ( selectedItem.value().type != MikuEngine::SelectableType::ASSET ) return;
+
+		auto& assetPoolManager = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager();
+
+		switch ( item.assetType )
 		{
 		case MikuEngine::AssetType::NONE:
 			break;
 		case MikuEngine::AssetType::MATERIAL: {
-			auto material = assetPoolManager.GetMaterialManager().GetMaterial( selectedAssetID );
-			if ( material.has_value() == false ) return;
-			material.value().RenderInspectorImGui();
+			const auto& material = assetPoolManager.GetMaterialManager().GetMaterial( item.uuid );
+			if ( material.has_value() == false ) break;
+			material.value()->RenderInspectorImGui();
 			break;
 		}
 		case MikuEngine::AssetType::SHADER:

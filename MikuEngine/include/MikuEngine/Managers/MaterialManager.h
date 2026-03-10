@@ -29,10 +29,10 @@ namespace MikuEngine
 
 		void PrepareMaterialIndex();
 
-		std::optional<Material> GetMaterial( UUID uuid ) const;
+		std::optional<Material*> GetMaterial( UUID uuid );
 		bool MaterialExists( const UUID& uuid ) const;
 
-		std::optional<Material> GetMaterialByFilePath( const std::string& filepath ) const;
+		std::optional<Material*> GetMaterialByFilePath( const std::string& filepath );
 
 	private:
 		std::unordered_map<UUID, MaterialIndex> m_MaterialIndex;

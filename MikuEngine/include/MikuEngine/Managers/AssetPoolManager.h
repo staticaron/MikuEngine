@@ -12,7 +12,7 @@ namespace MikuEngine
 	public:
 		void Init();
 
-		AssetType GetAssetTypeFromPool( const UUID& uuid );
+		AssetType GetAssetTypeFromPool( const UUID& uuid ) const;
 
 		TextureManager& GetTextureManager() { return m_TextureManager; }
 		const TextureManager& GetTextureManager() const { return m_TextureManager; }

@@ -9,7 +9,7 @@ namespace MikuEngine
 		m_MaterialManager.LoadAllMaterials();
 	}
 
-	AssetType AssetPoolManager::GetAssetTypeFromPool( const UUID& uuid )
+	AssetType AssetPoolManager::GetAssetTypeFromPool( const UUID& uuid ) const
 	{
 		if ( m_TextureManager.TextureExists( uuid ) ) return AssetType::TEXTURE;
 		if ( m_ShaderManager.ShaderExists( uuid ) ) return AssetType::SHADER;

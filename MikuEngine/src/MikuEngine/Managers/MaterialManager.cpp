@@ -2,6 +2,8 @@
 
 #include <filesystem>
 
+#include "Error.h"
+#include "Logger.h"
 #include "Managers/MetaFileManager.h"
 
 namespace MikuEngine
@@ -12,9 +14,11 @@ namespace MikuEngine
 
 		for ( const auto& [ uuid, index ] : m_MaterialIndex )
 		{
-			Material material;
+			Material material( uuid );
 			material.LoadFromFile( index.path );
 			m_Materials[ uuid ] = material;
+
+			MIKU_CORE_DEBUG( "Material Loaded into memory : {}", m_Materials.at( uuid ).GetUUID().ToString() );
 		}
 	}
 
@@ -32,20 +36,18 @@ namespace MikuEngine
 		}
 	}
 
-	std::optional<Material> MaterialManager::GetMaterial( UUID uuid ) const
+	std::optional<Material*> MaterialManager::GetMaterial( UUID uuid )
 	{
 		auto exists = m_Materials.find( uuid );
 		if ( exists == m_Materials.end() ) return {};
 
-		return exists->second;
+		return &exists->second;
 	}
 
-	std::optional<Material> MaterialManager::GetMaterialByFilePath( const std::string& filepath ) const
+	std::optional<Material*> MaterialManager::GetMaterialByFilePath( const std::string& filepath )
 	{
 		for ( auto [ uuid, materialIndex ] : m_MaterialIndex )
-		{
-			if ( materialIndex.path == filepath ) return GetMaterial( uuid );
-		}
+			if ( materialIndex.path == filepath ) return { GetMaterial( uuid ) };
 
 		return {};
 	}

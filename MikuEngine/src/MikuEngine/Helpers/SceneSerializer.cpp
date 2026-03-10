@@ -121,7 +121,7 @@ namespace MikuEngine
 
 			auto entt = scene.LoadEntity( name, uuid, &scene );
 
-			MIKU_CORE_INFO( "Created Entity named : {} with ID : {}", name, std::to_string( uuid ) );
+			MIKU_CORE_DEBUG( "Created Entity named : {} with ID : {}", name, std::to_string( uuid ) );
 
 			const YAML::Node& components = entity[ "components" ];
 

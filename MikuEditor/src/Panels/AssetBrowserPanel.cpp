@@ -18,11 +18,9 @@ namespace MikuEditor
 
 		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_folder.png" );
 		m_IconTextures[ MikuEngine::AssetType::NONE ] = texture;
-		MIKU_CLIENT_INFO( "Folder Texture Loaded Into : {}", texture.GetRendererID() );
 
 		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_file.png" );
 		m_IconTextures[ MikuEngine::AssetType::TEXTURE ] = texture;
-		MIKU_CLIENT_INFO( "File Texture Loaded Into : {}", texture.GetRendererID() );
 	}
 
 	void AssetBrowserPanel::RenderAssetBrowserPanel( MikuEngine::Scene& scene )
@@ -63,7 +61,11 @@ namespace MikuEditor
 			{
 				if ( relativePath.extension() == ".meta" ) continue;
 
-				std::function<void( MikuEngine::UUID assetUUID, MikuEngine::AssetType )> onClickFunc = [ &scene, &item, &appLevelStuff ]( MikuEngine::UUID assetUUID, MikuEngine::AssetType assetType ) { scene.SetSelectedItem( assetUUID, MikuEngine::SelectableType::ASSET, assetType ); };
+				std::function<void( MikuEngine::UUID assetUUID, MikuEngine::AssetType )> onClickFunc = [ &scene, &item, &appLevelStuff ]( MikuEngine::UUID assetUUID, MikuEngine::AssetType assetType ) {
+					// comment
+					scene.SetSelectedItem( assetUUID, MikuEngine::SelectableType::ASSET, assetType );
+					MIKU_CORE_DEBUG( "Item Clicked with Type {}", static_cast<int>( assetType ) );
+				};
 				RenderFileIcon( item.path(), onClickFunc );
 			}
 
@@ -87,13 +89,12 @@ namespace MikuEditor
 
 	void AssetBrowserPanel::RenderFileIcon( const std::filesystem::path& filePath, std::function<void( MikuEngine::UUID, MikuEngine::AssetType )> onClickFunc )
 	{
-		const auto& appLevelStuff = MikuEngine::Application::GetAppLevelStuff();
+		auto& appLevelStuff = MikuEngine::Application::GetAppLevelStuff();
 		auto relativePath = std::filesystem::relative( filePath, m_RootAssetLocation );
+		auto assetType = appLevelStuff.GetAssetPoolManager().GetAssetTypeFromFileExtension( relativePath.extension() );
 
 		if ( ImGui::ImageButton( filePath.c_str(), m_IconTextures.at( MikuEngine::AssetType::TEXTURE ).GetRendererID(), { static_cast<float>( m_IconSize ), static_cast<float>( m_IconSize ) }, { 0, 1 }, { 1, 0 } ) )
 		{
-			auto assetType = appLevelStuff.GetAssetPoolManager().GetAssetTypeFromFileExtension( relativePath.extension() );
-
 			switch ( assetType )
 			{
 			case MikuEngine::AssetType::TEXTURE: {
@@ -102,7 +103,7 @@ namespace MikuEditor
 				break;
 			}
 			case MikuEngine::AssetType::MATERIAL: {
-				auto assetUUID = appLevelStuff.GetAssetPoolManager().GetMaterialManager().GetMaterialByFilePath( filePath.string() ).value().GetUUID();
+				auto assetUUID = appLevelStuff.GetAssetPoolManager().GetMaterialManager().GetMaterialByFilePath( filePath.string() ).value()->GetUUID();
 				onClickFunc( assetUUID, MikuEngine::AssetType::MATERIAL );
 				break;
 			}
@@ -117,7 +118,22 @@ namespace MikuEditor
 
 		if ( ImGui::BeginDragDropSource() )
 		{
-			ImGui::SetDragDropPayload( "FILE_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) );
+			switch ( assetType )
+			{
+			case MikuEngine::AssetType::TEXTURE: {
+				ImGui::SetDragDropPayload( "TEXTURE_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) );
+				break;
+			}
+			case MikuEngine::AssetType::MATERIAL: {
+				ImGui::SetDragDropPayload( "MATERIAL_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) );
+				break;
+			}
+			default: {
+				ImGui::SetDragDropPayload( "FILE_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) );
+				break;
+			}
+			}
+
 			ImGui::EndDragDropSource();
 		}
 

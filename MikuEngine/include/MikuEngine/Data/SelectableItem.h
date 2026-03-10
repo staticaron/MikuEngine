@@ -18,7 +18,7 @@ namespace MikuEngine
 	struct MIKU_API SelectableItem
 	{
 		UUID uuid;
-		SelectableType type;
-		std::optional<AssetType> assetType;
+		SelectableType type = SelectableType::NONE;
+		AssetType assetType = AssetType::NONE;
 	};
 }

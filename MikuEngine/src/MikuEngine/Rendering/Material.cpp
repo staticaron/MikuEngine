@@ -1,32 +1,22 @@
 #include "Rendering/Material.h"
 
-#include <filesystem>
 #include <fstream>
 
 #include "yaml-cpp/yaml.h"
 
 #include "Application.h"
 #include "Logger.h"
+#include "Managers/ImguiManager.h"
 #include "UUID.h"
 
 namespace MikuEngine
 {
-	void Material::CreateFromShader( const Shader& shader )
-	{
-		m_Uniforms = shader.GetUniforms();
+	void Material::CreateFromShader( const Shader& shader ) {}
 
-		for ( auto [ name, uniform ] : m_Uniforms )
-		{
-			if ( uniform.Type == GL_FLOAT )
-				m_Floats[ name ] = 0.0f;
-			else if ( uniform.Type == GL_SAMPLER_2D )
-				m_Textures[ name ] = 0;
-		}
-	}
-
-	void Material::LoadFromFile( const std::string& materialPath )
+	void Material::LoadFromFile( const std::filesystem::path& materialPath )
 	{
-		MIKU_CLIENT_INFO( "Material Location : {}", materialPath );
+		m_MaterialName = materialPath.stem();
+		m_FilePath = materialPath;
 
 		YAML::Node rootNode = YAML::LoadFile( materialPath );
 
@@ -58,10 +48,12 @@ namespace MikuEngine
 				float value = it->second.as<float>();
 				m_Floats[ name ] = value;
 			}
+
+			m_UniformOrder.push_back( name );
 		}
 	}
 
-	void Material::SaveToFile( const char* filepath ) const
+	void Material::SaveToFile( const std::filesystem::path& filepath ) const
 	{
 		YAML::Emitter emitter;
 
@@ -78,7 +70,10 @@ namespace MikuEngine
 		emitter << YAML::EndMap;
 		emitter << YAML::EndMap;
 
-		std::ofstream fout( filepath );
+		std::filesystem::path pathToSave = filepath;
+		pathToSave = pathToSave.remove_filename().string() + m_MaterialName + ".mat";
+
+		std::ofstream fout( pathToSave );
 		fout << emitter.c_str();
 	}
 
@@ -109,44 +104,60 @@ namespace MikuEngine
 
 	void Material::RenderInspectorImGui()
 	{
-		for ( const auto& [ uniformName, uniform ] : m_Uniforms )
+		// Render Material Details
+		char nameBuff[ 256 ];
+		std::copy( m_MaterialName.begin(), m_MaterialName.begin() + m_MaterialName.size(), nameBuff );
+		nameBuff[ m_MaterialName.size() ] = '\0';
+
+		DISABLED_IMGUI( ImGui::InputText( "##MaterialName", nameBuff, 256 ) );
+		ImGui::Separator();
+		ImGui::Separator();
+
+		// Render Textures
+		for ( auto& [ uniformName, uuid ] : m_Textures )
 		{
-			switch ( uniform.Type )
+			const auto& textureUUID = m_Textures[ uniformName ];
+			auto texture = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTextureName( textureUUID );
+
+			char buff[ 256 ] = "";
+			std::copy( texture.begin(), texture.end(), buff );
+			buff[ texture.length() ] = '\0';
+
+			ImGui::InputText( uniformName.c_str(), buff, 256, ImGuiInputTextFlags_ReadOnly );
+
+			if ( ImGui::BeginDragDropTarget() )
 			{
-			case GL_FLOAT: {
-				auto floatValue = m_Floats[ uniformName ];
-				if ( ImGui::DragFloat( uniformName.c_str(), &floatValue ) ) m_Floats[ uniformName ] = floatValue;
-				break;
-			}
-			case GL_SAMPLER_2D:
-				const auto& textureUUID = m_Textures[ uniformName ];
-				auto texture = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTextureName( textureUUID );
+				const ImGuiPayload* payload = ImGui::AcceptDragDropPayload( "TEXTURE_DRAG_DROP_PAYLOAD" );
 
-				char buff[ 256 ] = "";
-				std::copy( texture.begin(), texture.end(), buff );
-				buff[ texture.length() ] = '\0';
-
-				ImGui::InputText( uniformName.c_str(), buff, 256, ImGuiInputTextFlags_ReadOnly );
-
-				if ( ImGui::BeginDragDropTarget() )
+				if ( payload != nullptr )
 				{
-					const ImGuiPayload* payload = ImGui::AcceptDragDropPayload( "FILE_DRAG_DROP_PAYLOAD" );
-
-					if ( payload == nullptr ) return;
-
 					std::string filePath = static_cast<const char*>( payload->Data );
-
 					std::filesystem::path materialPath = filePath;
 
-					if ( materialPath.extension() != ".mat" ) return;
-
-					MIKU_CORE_INFO( "Received Material : {}", filePath );
-
-					ImGui::EndDragDropTarget();
+					const auto& texture = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath );
+					m_Textures[ uniformName ] = texture->GetUUID();
 				}
 
-				break;
+				ImGui::EndDragDropTarget();
 			}
 		}
+
+		// Render Floats
+		for ( auto& [ uniformName, value ] : m_Floats )
+		{
+			ImGui::DragFloat( uniformName.c_str(), &m_Floats[ uniformName ] );
+		}
+
+		// Render Save Material Button
+		ImGui::Separator();
+		if ( ImguiManager::FullWidthButton( "SAVE" ) )
+		{
+			SaveToFile( m_FilePath.c_str() );
+		}
+	}
+
+	void Material::RegisterUniform( std::string, ShaderUniform shaderUniform )
+	{
+		switch ( shaderUniform.Type ) {}
 	}
 }

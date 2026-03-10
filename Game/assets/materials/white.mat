@@ -1,4 +1,4 @@
 shader: 4729198698840679006
 properties:
-  texture1: !id 14934649494355436187
+  texture: !tex 9702185733994053337
   depth: !float 1.0

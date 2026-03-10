@@ -71,7 +71,6 @@ namespace MikuEngine
 	{
 		auto existing = m_Textures.find( identifier );
 
-		// Make sure texture is loaded first before it is returned
 		MIKU_ASSERT( existing != m_Textures.end(), "Texture not loaded!" );
 
 		return existing->second;

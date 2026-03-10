@@ -2,10 +2,7 @@
 
 #include <filesystem>
 
-#include "glm/glm.hpp"
-
 #include "MikuEngine/Core.h"
-#include "MikuEngine/Data/SelectableItem.h"
 #include "MikuEngine/Rendering/Texture.h"
 
 namespace MikuEngine
@@ -31,6 +28,6 @@ namespace MikuEditor
 
 		std::unordered_map<MikuEngine::AssetType, MikuEngine::Texture> m_IconTextures;
 
-		int m_IconSize = 100;
+		int m_IconSize = 64;
 	};
 }

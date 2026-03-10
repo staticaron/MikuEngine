@@ -73,7 +73,8 @@ namespace MikuEngine
 			return;
 		}
 
-		m_SelectedItem = { uuid, type };
+		m_SelectedItem = { uuid, type, assetType };
+		MIKU_CORE_INFO( "Selected Item set to {} ", uuid.ToString() );
 	}
 
 	std::vector<Entity> Scene::GetAllEntities()
@@ -138,7 +139,6 @@ namespace MikuEngine
 	bool Scene::Load( const char* sceneFilePath )
 	{
 		Clean();
-		MIKU_CORE_INFO( "Load" );
 		return m_Serializer.DeSerialize( *this, sceneFilePath );
 	}
 }
