@@ -11,7 +11,7 @@ entities:
       - type: SpriteRendererComponent
         values:
           texture: 11951034516196472530
-          material: 4519882476185908943
+          material: 14887372748977316421
           tint: [1, 1, 1, 1]
   - name: Camera
     id: 471711908562867175
@@ -38,7 +38,7 @@ entities:
       - type: SpriteRendererComponent
         values:
           texture: 14934649494355436187
-          material: 14887372748977316421
+          material: 4519882476185908943
           tint: [0, 0, 0, 0]
       - type: NativeScriptComponent
         values:
