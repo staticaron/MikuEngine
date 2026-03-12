@@ -31,7 +31,7 @@ namespace MikuEditor
 					break;
 				}
 
-				entity->GetComponent<MikuEngine::SpriteRendererComponent>().ShaderUUID = uuid;
+				entity->GetComponent<MikuEngine::SpriteRendererComponent>().MaterialUUID = uuid;
 				response = WindowResponse::COMPLETED;
 			}
 		}

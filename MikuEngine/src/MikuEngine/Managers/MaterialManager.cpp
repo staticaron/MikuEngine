@@ -32,26 +32,28 @@ namespace MikuEngine
 		}
 	}
 
-	std::optional<Material*> MaterialManager::GetMaterial( UUID uuid )
+	std::optional<MaterialContainer> MaterialManager::GetMaterial( UUID uuid )
 	{
-		auto exists = m_Materials.find( uuid );
-		if ( exists == m_Materials.end() ) return {};
+		auto materialExists = m_Materials.find( uuid );
+		auto materialIndexExists = m_MaterialIndex.find( uuid );
 
-		return &exists->second;
-	}
+		if ( materialExists == m_Materials.end() || materialIndexExists == m_MaterialIndex.end() ) return {};
 
-	std::optional<const Material*> MaterialManager::GetMaterial( UUID uuid ) const
-	{
-		auto exists = m_Materials.find( uuid );
-		if ( exists == m_Materials.end() ) return {};
-
-		return &exists->second;
+		return {
+		    { materialIndexExists->second.name, materialIndexExists->second.path, &materialExists->second }
+		    };
 	}
 
 	std::optional<Material*> MaterialManager::GetMaterialByFilePath( const std::string& filepath )
 	{
 		for ( auto [ uuid, materialIndex ] : m_MaterialIndex )
-			if ( materialIndex.path == filepath ) return { GetMaterial( uuid ) };
+		{
+			if ( materialIndex.path == filepath )
+			{
+				auto materialContainer = GetMaterial( uuid );
+				return materialContainer->material;
+			}
+		}
 
 		return {};
 	}

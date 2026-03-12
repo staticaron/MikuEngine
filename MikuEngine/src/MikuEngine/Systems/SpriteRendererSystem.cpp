@@ -10,6 +10,7 @@
 #include "Data/CameraData.h"
 #include "Entity.h"
 #include "Helpers/SerializationHelper.h"
+#include "Logger.h"
 #include "Managers/TextureManager.h"
 #include "Rendering/Renderer.h"
 #include "Scene/Scene.h"
@@ -24,27 +25,44 @@ namespace MikuEngine
 		const auto& quad = renderer.GetQuad();
 		const TextureManager& textureManager = appLevelStuff.GetAssetPoolManager().GetTextureManager();
 		const ShaderManager& shaderManager = appLevelStuff.GetAssetPoolManager().GetShaderManager();
+		MaterialManager& materialManager = appLevelStuff.GetAssetPoolManager().GetMaterialManager();
 
 		for ( const auto& [ entity, data, spriteRenderer ] : entities.each() )
 		{
-			auto shader = spriteRenderer.ShaderUUID.has_value() ? shaderManager.GetShader( spriteRenderer.ShaderUUID.value() ).shader : shaderManager.GetDefaultShader().shader;
-			shader.Bind();
+			Material* material = nullptr;
+
+			if ( spriteRenderer.MaterialUUID.has_value() )
+			{
+				auto materialContainer = materialManager.GetMaterial( spriteRenderer.MaterialUUID.value() );
+
+				if ( materialContainer.has_value() )
+					material = materialContainer->material;
+				else
+					MIKU_CORE_ERROR( "Material for this Sprite Renderer Not Found!" );
+			}
+
+			material->Bind();
+
+			auto shader = material->GetShader();
+
+			if ( shader.has_value() == false ) return;
+
+			/*
+			   if ( !spriteRenderer.TextureIdentifier.has_value() ) continue;
+				const Texture& texture = textureManager.GetTexture( spriteRenderer.TextureIdentifier.value() );
+				texture.Bind( 0 );
+				shader.value()->SetUniform<unsigned int>( "u_Tex", 0 );
+			*/
 
 			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
-
-			if ( !spriteRenderer.TextureIdentifier.has_value() ) continue;
-
-			const Texture& texture = textureManager.GetTexture( spriteRenderer.TextureIdentifier.value() );
-			texture.Bind( 0 );
-			shader.SetUniform<unsigned int>( "u_Tex", 0 );
 
 			glm::mat4 projViewMatrix = cameraData.GetProjViewMatrix();
 			glm::mat4 modelMatrix = transform.GetModelMatrix();
 			glm::mat4 mvp = projViewMatrix * modelMatrix;
 
-			shader.SetUniform<glm::mat4>( "u_MVP", mvp );
+			shader.value()->SetUniform<glm::mat4>( "u_MVP", mvp );
 
-			renderer.Draw( quad.GetVA(), quad.GetIB(), shader );
+			renderer.Draw( quad.GetVA(), quad.GetIB(), *shader.value() );
 		}
 	};
 
@@ -57,7 +75,7 @@ namespace MikuEngine
 	void SpriteRendererSystem::SpriteRendererComponentRenderImGui( Entity entity, SpriteRendererComponent& spriteRendererC, std::function<void()> textureEditBtnCallback, std::function<void()> shaderEditBtnCallback )
 	{
 		const auto& textureManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager();
-		const auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
+		auto& materialManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager();
 
 		bool keep = true;
 
@@ -91,23 +109,28 @@ namespace MikuEngine
 				ImGui::EndDragDropTarget();
 			}
 
-			auto shaderUUID = spriteRendererC.ShaderUUID;
+			auto materialUUID = spriteRendererC.MaterialUUID;
+			std::string materialName = "<NONE>";
 
-			auto shader = shaderUUID.has_value() ? shaderManager.GetShader( shaderUUID.value() ) : shaderManager.GetDefaultShader();
-			std::string shaderName = shader.shaderDetails.name;
+			if ( materialUUID.has_value() )
+			{
+				auto material = materialManager.GetMaterial( materialUUID.value() );
+				if ( material.has_value() ) materialName = material->name;
+			}
 
-			DISABLED_IMGUI( ImGui::Button( shaderName.c_str() ) );
+			DISABLED_IMGUI( ImGui::Button( materialName.c_str() ) );
 			ImGui::SameLine();
 			if ( ImGui::Button( "EDIT...##shader" ) ) shaderEditBtnCallback();
 
 			if ( ImGui::BeginDragDropTarget() )
 			{
-				auto payload = ImGui::AcceptDragDropPayload( "SHADER_DRAG_DROP_PAYLOAD" );
+				auto payload = ImGui::AcceptDragDropPayload( "MATERIAL_DRAG_DROP_PAYLOAD" );
 
 				if ( payload != nullptr )
 				{
-					auto shaderPath = static_cast<const char*>( payload->Data );
-					spriteRendererC.ShaderUUID = shaderManager.GetShaderByFilePath( shaderPath ).shader.GetUUID();
+					auto materialPath = static_cast<const char*>( payload->Data );
+					auto material = materialManager.GetMaterialByFilePath( materialPath );
+					if ( material.has_value() ) spriteRendererC.MaterialUUID = material.value()->GetUUID();
 				}
 
 				ImGui::EndDragDropTarget();
@@ -128,7 +151,7 @@ namespace MikuEngine
 
 		emitter << YAML::Key << "values" << YAML::Value << YAML::BeginMap;
 		emitter << YAML::Key << "texture" << YAML::Value << spriteRenderer.TextureIdentifier.value();
-		emitter << YAML::Key << "shader" << YAML::Value << ( spriteRenderer.ShaderUUID.has_value() ? spriteRenderer.ShaderUUID.value() : UUID( 0 ) );
+		emitter << YAML::Key << "material" << YAML::Value << ( spriteRenderer.MaterialUUID.has_value() ? spriteRenderer.MaterialUUID.value() : UUID( 0 ) );
 		emitter << YAML::Key << "tint" << YAML::Value << YAML::Flow << YAML::BeginSeq << spriteRenderer.Tint.x << spriteRenderer.Tint.y << spriteRenderer.Tint.z << spriteRenderer.Tint.w << YAML::EndSeq;
 		emitter << YAML::EndMap;
 
@@ -138,13 +161,13 @@ namespace MikuEngine
 	void SpriteRendererSystem::DeSerializeSpriteRendererComponent( SpriteRendererComponent& spriteRendererC, const YAML::Node& node )
 	{
 		std::string texture = node[ "texture" ].as<std::string>();
-		std::string shader = node[ "shader" ].as<std::string>();
+		std::string material = node[ "material" ].as<std::string>();
 
 		glm::vec4 tint;
 		DecodeVec4( node[ "tint" ], tint );
 
 		spriteRendererC.TextureIdentifier = texture.empty() ? std::optional<UUID>( std::nullopt ) : UUID( texture );
-		spriteRendererC.ShaderUUID = shader.empty() ? std::optional<UUID>( std::nullopt ) : UUID( shader );
+		spriteRendererC.MaterialUUID = material.empty() ? std::optional<UUID>( std::nullopt ) : UUID( material );
 		spriteRendererC.Tint = tint;
 	}
 }

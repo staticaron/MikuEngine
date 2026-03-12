@@ -112,6 +112,7 @@ namespace MikuEngine
 	void Material::Bind()
 	{
 		const auto& textureManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager();
+
 		m_Shader->Bind();
 
 		// Handle Floats
@@ -127,8 +128,10 @@ namespace MikuEngine
 			if ( uuid == 0 ) continue;
 
 			auto texture = textureManager.GetTexture( uuid );
-			texture.Bind( textureID++ );
+			texture.Bind( textureID );
 			m_Shader->SetUniform<unsigned int>( name, textureID );
+
+			textureID++;
 		}
 	}
 

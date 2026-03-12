@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 
 #include "Core.h"
+#include "Logger.h"
 #include "Shader.h"
 #include "UUID.h"
 
@@ -28,13 +29,18 @@ namespace MikuEngine
 		void LoadFromFile( const std::filesystem::path& materialPath );
 		void SaveToFile( const std::filesystem::path& filePath ) const;
 
-		const UUID& GetUUID() { return m_UUID; }
-
 		void Bind();
 		void UnBind();
 
+		const UUID& GetUUID() { return m_UUID; }
 		const std::filesystem::path& GetPath() const { return m_MaterialPath; }
 		std::string GetName() const { return m_MaterialPath.stem().string(); }
+		std::optional<Shader*> GetShader()
+		{
+			if ( m_Shader.has_value() ) return &m_Shader.value();
+			MIKU_CORE_ERROR( "This material has no Shader!" );
+			return {};
+		}
 
 		void RenderInspectorImGui() override;
 

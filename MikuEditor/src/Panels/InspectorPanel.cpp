@@ -141,9 +141,9 @@ namespace MikuEditor
 		case MikuEngine::AssetType::NONE:
 			break;
 		case MikuEngine::AssetType::MATERIAL: {
-			const auto& material = assetPoolManager.GetMaterialManager().GetMaterial( item.uuid );
+			auto material = assetPoolManager.GetMaterialManager().GetMaterial( item.uuid );
 			if ( material.has_value() == false ) break;
-			material.value()->RenderInspectorImGui();
+			material.value().material->RenderInspectorImGui();
 			break;
 		}
 		case MikuEngine::AssetType::SHADER:
@@ -153,6 +153,12 @@ namespace MikuEditor
 		case MikuEngine::AssetType::SCENE:
 			break;
 		case MikuEngine::AssetType::MODEL:
+			break;
+		case MikuEngine::AssetType::FILE:
+			break;
+		case MikuEngine::AssetType::SCRIPT:
+			break;
+		default:
 			break;
 		}
 	}

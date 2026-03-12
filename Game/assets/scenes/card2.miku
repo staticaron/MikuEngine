@@ -1,21 +1,18 @@
 scene: Untitled
 entities:
-  - name: Card
-    id: 5030660346100341033
+  - name: Miku
+    id: 4186582529910479368
     components:
       - type: TransformComponent
         values:
-          position: [0, 0, -10]
-          rotation: [0.0021071695, -0.0049977954, 0]
-          scale: [11.5, 16, 1]
+          position: [10, 0, -10]
+          rotation: [0, 0, 0]
+          scale: [5, 5, 1]
       - type: SpriteRendererComponent
         values:
-          texture: 14934649494355436187
+          texture: 11951034516196472530
           material: 4519882476185908943
-          tint: [0, 0, 0, 0]
-      - type: NativeScriptComponent
-        values:
-          scriptName: CardController
+          tint: [1, 1, 1, 1]
   - name: Camera
     id: 471711908562867175
     components:
@@ -30,16 +27,19 @@ entities:
           zoom: 1
           maincamera: true
           width: 32
-  - name: Miku
-    id: 4186582529910479368
+  - name: Card
+    id: 5030660346100341033
     components:
       - type: TransformComponent
         values:
-          position: [10, 0, -10]
-          rotation: [0, 0, 0]
-          scale: [5, 5, 1]
+          position: [0, 0, -10]
+          rotation: [0.0021071695, -0.0049977954, 0]
+          scale: [11.5, 16, 1]
       - type: SpriteRendererComponent
         values:
-          texture: 11951034516196472530
-          material: 4519882476185908943
-          tint: [1, 1, 1, 1]
+          texture: 14934649494355436187
+          material: 14887372748977316421
+          tint: [0, 0, 0, 0]
+      - type: NativeScriptComponent
+        values:
+          scriptName: CardController

@@ -18,7 +18,10 @@ namespace MikuEngine
 
 	struct MIKU_API MaterialContainer
 	{
-		UUID uuid;
+		std::string name;
+		std::string path;
+
+		Material* material;
 	};
 
 	class MIKU_API MaterialManager
@@ -29,8 +32,7 @@ namespace MikuEngine
 
 		void PrepareMaterialIndex();
 
-		std::optional<Material*> GetMaterial( UUID uuid );
-		std::optional<const Material*> GetMaterial( UUID uuid ) const;
+		std::optional<MaterialContainer> GetMaterial( UUID uuid );
 		bool MaterialExists( const UUID& uuid ) const;
 
 		std::optional<Material*> GetMaterialByFilePath( const std::string& filepath );
