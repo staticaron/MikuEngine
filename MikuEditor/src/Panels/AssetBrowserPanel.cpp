@@ -140,18 +140,22 @@ namespace MikuEditor
 			{
 			case MikuEngine::AssetType::TEXTURE: {
 				ImGui::SetDragDropPayload( "TEXTURE_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) );
+				ImGui::Text( "Texture" );
 				break;
 			}
 			case MikuEngine::AssetType::MATERIAL: {
 				ImGui::SetDragDropPayload( "MATERIAL_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) );
+				ImGui::Text( "Material" );
 				break;
 			}
 			case MikuEngine::AssetType::SHADER: {
 				ImGui::SetDragDropPayload( "SHADER_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) );
+				ImGui::Text( "Shader" );
 				break;
 			}
 			default: {
 				ImGui::SetDragDropPayload( "FILE_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) );
+				ImGui::Text( "File" );
 				break;
 			}
 			}
