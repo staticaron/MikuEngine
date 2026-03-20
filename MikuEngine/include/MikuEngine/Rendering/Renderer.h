@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Rendering/IndexBuffer.h"
+#include "Rendering/Managers/UniformBufferManager.h"
 #include "Rendering/Primitives/Cube.h"
 #include "Rendering/Primitives/Quad.h"
 #include "Rendering/Shader.h"
@@ -14,12 +15,16 @@ namespace MikuEngine
 		void Init();
 
 		void Draw( const VertexArray& va, const IndexBuffer& ib, const Shader& shader ) const;
+		static void ClearColor( glm::vec4 color );
 
 		const Quad& GetQuad() const { return m_QuadPrimitive; }
 		const Cube& GetCube() const { return m_CubePrimitive; }
+		UniformBufferManager& GetUniformBufferManager() { return m_UniformBufferManager; }
 
 	private:
 		Quad m_QuadPrimitive;
 		Cube m_CubePrimitive;
+
+		UniformBufferManager m_UniformBufferManager;
 	};
 }

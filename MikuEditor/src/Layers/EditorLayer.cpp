@@ -14,9 +14,7 @@ namespace MikuEditor
 	EditorLayer::EditorLayer( MikuEngine::Scene* scene ) : MikuEngine::Layer( scene )
 	{
 		s_EditorLayer = this;
-
 		m_AssetBrowserPanel.Init();
-
 		scene->Load( PROJECT_DIR "/scenes/card.miku" );
 	}
 
@@ -27,23 +25,21 @@ namespace MikuEditor
 
 	void EditorLayer::Update( double dt )
 	{
-		if ( m_EditorLevelStuff.m_CurrentPlayModeState == PlayModeState::PLAYING ) m_Scene->Update( dt );
+		// Do nothing if playmode is active
+		if ( m_EditorLevelStuff.m_CurrentPlayModeState == PlayModeState::PLAYING ) return;
 
+		// handle camera movement when viewport is active
 		if ( m_IsViewportPanelFocused ) m_EditorCamera.Translate( dt );
+
+		// Update the UniformBuffers and feed in the new matrices
+		MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateEditorMatrixData( { m_EditorCamera.GetProjMatrix(), m_EditorCamera.GetViewMatrix() } );
 	}
 
 	void EditorLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
 	{
-		auto& sceneFBO = MikuEngine::Application::GetApplication()->GetSceneFBO();
-
-		sceneFBO.Bind();
-
-		MikuEngine::SpriteRendererSystem::ClearColor( { 0.0f, 0.3f, 0.3f, 1.0f } );
-
+		// Editor Camera Data to be sent for rendering
 		MikuEngine::CameraData cameraData = { m_EditorCamera.GetViewMatrix(), m_EditorCamera.GetProjMatrix() };
 		m_Scene->RenderInEditor( appLevelStuff, cameraData );
-
-		sceneFBO.UnBind();
 	}
 
 	void EditorLayer::RenderImgui( const MikuEngine::AppLevelStuff& appLevelStuff )

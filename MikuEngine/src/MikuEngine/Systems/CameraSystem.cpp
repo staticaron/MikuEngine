@@ -28,7 +28,6 @@ namespace MikuEngine
 
 	glm::mat4 CameraSystem::GetProjViewMatrix( const Entity& cameraEntity, const CameraComponent& cameraComponent )
 	{
-
 		glm::mat4 projMatrix = GetProjMatrix( cameraComponent );
 		glm::mat4 viewMatrix = GetViewMatrix( cameraEntity );
 
@@ -37,15 +36,14 @@ namespace MikuEngine
 
 	glm::mat4 CameraSystem::GetProjMatrix( const CameraComponent& cameraComponent )
 	{
-		auto camWidth = cameraComponent.GetCameraSize().x;
-		auto camHeight = cameraComponent.GetCameraSize().y;
+		auto camSize = cameraComponent.GetCameraSize();
 
 		glm::mat4 projMatrix = glm::mat4( 1.0f );
 
 		if ( cameraComponent.m_IsPerspective )
 			projMatrix = glm::perspective( glm::pi<float>() * 0.5f, Application::GetApplication()->GetDataContainer().GetGameAspectRatio(), 0.0f, 1000.0f );
 		else
-			projMatrix = glm::ortho( -camWidth * 0.5f, camWidth * 0.5f, -camHeight * 0.5f, camHeight * 0.5f, -1000.0f, 1000.0f );
+			projMatrix = glm::ortho( -camSize.x * 0.5f, camSize.x * 0.5f, -camSize.y * 0.5f, camSize.y * 0.5f, -1000.0f, 1000.0f );
 
 		return projMatrix;
 	}
@@ -74,7 +72,9 @@ namespace MikuEngine
 			ImGui::Checkbox( "Is Perspective", &cameraComponent.m_IsPerspective );
 			ImGui::Checkbox( "Is Main Camera", &cameraComponent.m_IsMainCamera );
 			ImGui::DragFloat( "Zoom", &cameraComponent.Zoom );
-			ImGui::DragInt( "Width", &cameraComponent.m_CameraWidth );
+
+			// Width has no meaning in perspective camera
+			if ( cameraComponent.m_IsPerspective == false ) ImGui::DragInt( "Width", &cameraComponent.m_CameraWidth );
 		}
 
 		if ( !keep ) entity.RemoveComponent<CameraComponent>();

@@ -47,30 +47,13 @@ namespace MikuEngine
 
 			if ( shader.has_value() == false ) return;
 
-			/*
-			   if ( !spriteRenderer.TextureIdentifier.has_value() ) continue;
-				const Texture& texture = textureManager.GetTexture( spriteRenderer.TextureIdentifier.value() );
-				texture.Bind( 0 );
-				shader.value()->SetUniform<unsigned int>( "u_Tex", 0 );
-			*/
-
 			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
-
-			glm::mat4 projViewMatrix = cameraData.GetProjViewMatrix();
 			glm::mat4 modelMatrix = transform.GetModelMatrix();
-			glm::mat4 mvp = projViewMatrix * modelMatrix;
-
-			shader.value()->SetUniform<glm::mat4>( "u_MVP", mvp );
+			shader.value()->SetUniform<glm::mat4>( "u_Model", modelMatrix );
 
 			renderer.Draw( quad.GetVA(), quad.GetIB(), *shader.value() );
 		}
 	};
-
-	void SpriteRendererSystem::ClearColor( glm::vec4 color )
-	{
-		glClearColor( color.x, color.y, color.z, color.w );
-		glClear( GL_COLOR_BUFFER_BIT );
-	}
 
 	void SpriteRendererSystem::SpriteRendererComponentRenderImGui( Entity entity, SpriteRendererComponent& spriteRendererC, std::function<void()> textureEditBtnCallback, std::function<void()> shaderEditBtnCallback )
 	{

@@ -21,17 +21,42 @@ namespace MikuEngine
 
 	void Scene::Render( AppLevelStuff& appLevelStuff ) const
 	{
-		auto mainCamera = GetMainCamera();
+		// Bind the game frame buffer object; this will be used to render into the game view
+		auto& gameFBO = MikuEngine::Application::GetApplication()->GetGameFBO();
+		gameFBO.Bind();
 
+		auto& renderer = MikuEngine::Application::GetAppLevelStuff().GetRenderer();
+		renderer.ClearColor( { 0.23, 0.24f, 0.25f, 1.0f } );
+
+		// Render nothing if camera is not there
+		if ( GetMainCamera().has_value() == false ) return;
+
+		renderer.GetUniformBufferManager().GetGameUniformBuffer().Bind();
+
+		// Camera details for camera creating proj view matrices
+		auto mainCamera = GetMainCamera();
 		auto mainCameraEntity = mainCamera->first;
 		auto mainCameraComponent = mainCamera->second;
 
+		// Render the sprites
 		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, CameraData{ CameraSystem::GetViewMatrix( mainCameraEntity ), CameraSystem::GetProjMatrix( mainCameraComponent ) } );
+
+		gameFBO.UnBind();
 	}
 
 	void Scene::RenderInEditor( AppLevelStuff& appLevelStuff, const CameraData& cameraData ) const
 	{
+		auto& sceneFBO = MikuEngine::Application::GetApplication()->GetSceneFBO();
+		sceneFBO.Bind();
+
+		auto& renderer = MikuEngine::Application::GetAppLevelStuff().GetRenderer();
+
+		renderer.GetUniformBufferManager().GetEditorUniformBuffer().Bind();
+		renderer.ClearColor( { 0.23f, 0.24f, 0.25f, 1.0f } );
+
 		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, cameraData );
+
+		sceneFBO.UnBind();
 	}
 
 	void Scene::RenderImGui( const AppLevelStuff& appLevelStuff ) {}

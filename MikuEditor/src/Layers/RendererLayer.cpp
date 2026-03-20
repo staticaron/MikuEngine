@@ -1,5 +1,6 @@
 #include "Layers/RendererLayer.h"
 
+#include "Components/CameraComponent.h"
 #include "Layers/EditorLayer.h"
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Application.h"
@@ -15,22 +16,23 @@ namespace MikuEditor
 
 	void RendererLayer::Update( double dt )
 	{
-		if ( EditorLayer::GetEditorLayer()->GetEditorLayerInfo().GetPlayModeState() == PlayModeState::PLAYING ) m_Scene->Update( dt );
+		auto mainCamera = m_Scene->GetMainCamera();
+		if ( mainCamera.has_value() )
+		{
+			auto mainCameraEntity = mainCamera->first;
+			auto mainCameraComponent = mainCamera->second;
+
+			MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateGameMatrixData( { MikuEngine::CameraSystem::GetProjMatrix( mainCameraComponent ), MikuEngine::CameraSystem::GetViewMatrix( mainCameraEntity ) } );
+		}
+
+		if ( EditorLayer::GetEditorLayer()->GetEditorLayerInfo().GetPlayModeState() != PlayModeState::PLAYING ) return;
+
+		m_Scene->Update( dt );
 	}
 
 	void RendererLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
 	{
-		if ( m_Scene->GetMainCamera().has_value() == false ) return;
-
-		auto& gameFBO = MikuEngine::Application::GetApplication()->GetGameFBO();
-
-		gameFBO.Bind();
-
-		MikuEngine::SpriteRendererSystem::ClearColor( { 0.0f, 0.3f, 0.3f, 1.0f } );
-
 		m_Scene->Render( appLevelStuff );
-
-		gameFBO.UnBind();
 	}
 
 	void RendererLayer::RenderImgui( const MikuEngine::AppLevelStuff& appLevelStuff )
