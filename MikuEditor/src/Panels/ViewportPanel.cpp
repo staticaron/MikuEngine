@@ -10,22 +10,23 @@ namespace MikuEditor
 	{
 		bool isFocused = false;
 
-		ImGui::Begin( "Viewport" );
-
-		if ( ImGui::IsWindowFocused() ) isFocused = true;
-
-		ImVec2 windowSize = ImGui::GetContentRegionAvail();
-
-		glm::vec2 viewPortSize = MikuEngine::Application::GetDataContainer().GetViewportSize();
-
-		auto& frameBuffer = MikuEngine::Application::GetApplication()->GetSceneFBO();
-
-		if ( windowSize.x != viewPortSize.x || windowSize.y != viewPortSize.y )
+		if ( ImGui::Begin( "Viewport" ) )
 		{
-			frameBuffer.ResizeBufferTexture( { windowSize.x, windowSize.y } );
-		}
+			if ( ImGui::IsWindowFocused() ) isFocused = true;
 
-		ImGui::Image( ( void* )( intptr_t )frameBuffer.GetTextureID(), { windowSize.x, windowSize.y }, { 0, 1 }, { 1, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } );
+			ImVec2 windowSize = ImGui::GetContentRegionAvail();
+
+			glm::vec2 viewPortSize = MikuEngine::Application::GetDataContainer().GetViewportSize();
+
+			auto& frameBuffer = MikuEngine::Application::GetApplication()->GetSceneFBO();
+
+			if ( windowSize.x != viewPortSize.x || windowSize.y != viewPortSize.y )
+			{
+				frameBuffer.ResizeBufferTexture( { windowSize.x, windowSize.y } );
+			}
+
+			ImGui::Image( ( void* )( intptr_t )frameBuffer.GetTextureID(), { windowSize.x, windowSize.y }, { 0, 1 }, { 1, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } );
+		}
 
 		ImGui::End();
 

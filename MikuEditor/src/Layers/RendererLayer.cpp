@@ -40,34 +40,35 @@ namespace MikuEditor
 
 	void RendererLayer::RenderFrameBuffer( const MikuEngine::AppLevelStuff& appLevelStuff )
 	{
-		ImGui::Begin( "Game" );
-
-		ImVec2 windowSize = ImGui::GetContentRegionAvail();
-
-		auto& frameBuffer = MikuEngine::Application::GetApplication()->GetGameFBO();
-
-		ImVec2 imageSize;
-		ImVec2 imageStartPoint;
-
-		if ( windowSize.x > windowSize.y * frameBuffer.GetAspectRatio() )
+		if ( ImGui::Begin( "Game" ) )
 		{
-			imageSize.x = windowSize.y * frameBuffer.GetAspectRatio();
-			imageSize.y = windowSize.y;
+			ImVec2 windowSize = ImGui::GetContentRegionAvail();
 
-			imageStartPoint = { ( windowSize.x - imageSize.x + 20 ) * 0.5f, 0 };
+			auto& frameBuffer = MikuEngine::Application::GetApplication()->GetGameFBO();
+
+			ImVec2 imageSize;
+			ImVec2 imageStartPoint;
+
+			if ( windowSize.x > windowSize.y * frameBuffer.GetAspectRatio() )
+			{
+				imageSize.x = windowSize.y * frameBuffer.GetAspectRatio();
+				imageSize.y = windowSize.y;
+
+				imageStartPoint = { ( windowSize.x - imageSize.x + 20 ) * 0.5f, 0 };
+			}
+			else
+			{
+				imageSize.x = windowSize.x;
+				imageSize.y = windowSize.x / frameBuffer.GetAspectRatio();
+
+				imageStartPoint = { 0, ( windowSize.y - imageSize.y + 20 ) * 0.5f };
+			}
+
+			ImVec2 cursorPos = ImGui::GetCursorPos();
+			ImGui::SetCursorPos( ImVec2( cursorPos.x + ( windowSize.x - imageSize.x ) * 0.5f, cursorPos.y + ( windowSize.y - imageSize.y ) * 0.5f ) );
+
+			ImGui::Image( ( void* )( intptr_t )frameBuffer.GetTextureID(), { imageSize.x, imageSize.y }, { 0, 1 }, { 1, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } );
 		}
-		else
-		{
-			imageSize.x = windowSize.x;
-			imageSize.y = windowSize.x / frameBuffer.GetAspectRatio();
-
-			imageStartPoint = { 0, ( windowSize.y - imageSize.y + 20 ) * 0.5f };
-		}
-
-		ImVec2 cursorPos = ImGui::GetCursorPos();
-		ImGui::SetCursorPos( ImVec2( cursorPos.x + ( windowSize.x - imageSize.x ) * 0.5f, cursorPos.y + ( windowSize.y - imageSize.y ) * 0.5f ) );
-
-		ImGui::Image( ( void* )( intptr_t )frameBuffer.GetTextureID(), { imageSize.x, imageSize.y }, { 0, 1 }, { 1, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } );
 
 		ImGui::End();
 	}
