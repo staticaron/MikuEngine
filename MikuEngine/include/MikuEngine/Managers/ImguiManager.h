@@ -22,6 +22,8 @@ namespace MikuEngine
 	public:
 		void Init( GLFWwindow* window );
 
+		void SetTheme();
+
 		void PrepareFrame();
 		void RenderFrame();
 

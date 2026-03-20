@@ -1,7 +1,5 @@
 #include "Rendering/Managers/UniformBufferManager.h"
 
-#include "MikuEngine/Logger.h"
-
 namespace MikuEngine
 {
 	void UniformBufferManager::Init()
