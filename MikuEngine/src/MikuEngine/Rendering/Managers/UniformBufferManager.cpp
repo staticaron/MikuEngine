@@ -17,8 +17,6 @@ namespace MikuEngine
 
 		m_GameMatrixData = matrixData;
 		m_GameUniformBuffer.PutData( &m_GameMatrixData, sizeof( MatrixData ) );
-
-		MIKU_CORE_INFO( "Game Uniform Buffer Updated! {}", m_GameUniformBuffer.GetRendererID() );
 	}
 
 	void UniformBufferManager::UpdateEditorMatrixData( const MatrixData& matrixData )
@@ -27,7 +25,5 @@ namespace MikuEngine
 
 		m_EditorMatrixData = matrixData;
 		m_EditorUniformBuffer.PutData( &m_EditorMatrixData, sizeof( MatrixData ) );
-
-		MIKU_CORE_INFO( "Editor Uniform Buffer Updated! {}", m_EditorUniformBuffer.GetRendererID() );
 	}
 }
