@@ -32,11 +32,6 @@ namespace MikuEngine
 		UnBind();
 	}
 
-	SceneFBO::~SceneFBO()
-	{
-		Destroy();
-	}
-
 	void SceneFBO::Bind() const
 	{
 		glBindFramebuffer( GL_FRAMEBUFFER, m_RendererID );

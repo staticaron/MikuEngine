@@ -35,11 +35,6 @@ namespace MikuEngine
 		m_AspectRatio = static_cast<float>( viewPortSize.x ) / viewPortSize.y;
 	}
 
-	GameFBO::~GameFBO()
-	{
-		Destroy();
-	}
-
 	void GameFBO::Bind() const
 	{
 		glBindFramebuffer( GL_FRAMEBUFFER, m_RendererID );

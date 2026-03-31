@@ -1,9 +1,14 @@
-#include "Rendering/UniformBuffer.h"
+#include "Rendering/UniformBuffers/UniformBuffer.h"
 
 #include "glad/glad.h"
 
 namespace MikuEngine
 {
+	void UniformBuffer::Destroy()
+	{
+		glDeleteBuffers( 1, &m_RendererID );
+	}
+
 	void UniformBuffer::Bind() const
 	{
 		glBindBuffer( GL_UNIFORM_BUFFER, m_RendererID );

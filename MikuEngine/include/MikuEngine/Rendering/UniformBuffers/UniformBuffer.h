@@ -9,6 +9,8 @@ namespace MikuEngine
 	public:
 		virtual void Init( unsigned int size ) = 0;
 
+		void Destroy();
+
 		void Bind() const;
 		void UnBind() const;
 

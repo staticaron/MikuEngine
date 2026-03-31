@@ -4,8 +4,8 @@
 
 #include "Core.h"
 
-#include "Rendering/EditorUniformBuffer.h"
-#include "Rendering/GameUniformBuffer.h"
+#include "Rendering/UniformBuffers/EditorUniformBuffer.h"
+#include "Rendering/UniformBuffers/GameUniformBuffer.h"
 
 namespace MikuEngine
 {
