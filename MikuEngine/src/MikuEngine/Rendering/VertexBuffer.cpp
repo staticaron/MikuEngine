@@ -6,11 +6,6 @@ namespace MikuEngine
 {
 	VertexBuffer::VertexBuffer() {}
 
-	VertexBuffer::~VertexBuffer()
-	{
-		glDeleteBuffers( 1, &m_RendererID );
-	}
-
 	void VertexBuffer::Init( unsigned int size, void* data )
 	{
 		m_Size = size;
@@ -18,6 +13,11 @@ namespace MikuEngine
 		glCreateBuffers( 1, &m_RendererID );
 		glBindBuffer( GL_ARRAY_BUFFER, m_RendererID );
 		glBufferData( GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW );
+	}
+
+	void VertexBuffer::Destroy()
+	{
+		glDeleteBuffers( 1, &m_RendererID );
 	}
 
 	void VertexBuffer::Bind() const

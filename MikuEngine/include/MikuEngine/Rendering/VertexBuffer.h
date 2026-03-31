@@ -8,9 +8,9 @@ namespace MikuEngine
 	{
 	public:
 		VertexBuffer();
-		~VertexBuffer();
 
 		void Init( unsigned int size, void* data );
+		void Destroy();
 
 		void Bind() const;
 		void UnBind() const;

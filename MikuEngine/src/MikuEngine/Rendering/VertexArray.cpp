@@ -4,14 +4,14 @@ namespace MikuEngine
 {
 	VertexArray::VertexArray() {}
 
-	VertexArray::~VertexArray()
-	{
-		glDeleteBuffers( 1, &m_RendererID );
-	}
-
 	void VertexArray::Init()
 	{
 		glGenVertexArrays( 1, &m_RendererID );
+	}
+
+	void VertexArray::Destroy()
+	{
+		glDeleteBuffers( 1, &m_RendererID );
 	}
 
 	void VertexArray::Bind() const

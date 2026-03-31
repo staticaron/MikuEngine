@@ -8,9 +8,6 @@ namespace MikuEngine
 	class MIKU_API GameFBO
 	{
 	public:
-		GameFBO() = default;
-		~GameFBO();
-
 		void Init();
 
 		void Bind() const;

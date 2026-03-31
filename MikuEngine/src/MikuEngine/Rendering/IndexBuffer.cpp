@@ -6,11 +6,6 @@ namespace MikuEngine
 {
 	IndexBuffer::IndexBuffer() {}
 
-	IndexBuffer::~IndexBuffer()
-	{
-		glDeleteBuffers( 1, &m_RendererID );
-	}
-
 	void IndexBuffer::Init( unsigned int count, void* data )
 	{
 		m_Count = count;
@@ -18,6 +13,11 @@ namespace MikuEngine
 		glCreateBuffers( 1, &m_RendererID );
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_RendererID );
 		glBufferData( GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof( unsigned int ), data, GL_DYNAMIC_DRAW );
+	}
+
+	void IndexBuffer::Destroy()
+	{
+		glDeleteBuffers( 1, &m_RendererID );
 	}
 
 	void IndexBuffer::Bind() const

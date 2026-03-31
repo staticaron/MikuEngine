@@ -10,9 +10,9 @@ namespace MikuEngine
 	{
 	public:
 		VertexArray();
-		~VertexArray();
 
 		void Init();
+		void Destroy();
 
 		void Setup( const VertexBuffer& vb, const VertexBufferLayout& vbl );
 

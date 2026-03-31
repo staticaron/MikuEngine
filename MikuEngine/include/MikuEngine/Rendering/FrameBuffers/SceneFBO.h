@@ -9,9 +9,6 @@ namespace MikuEngine
 	class MIKU_API SceneFBO
 	{
 	public:
-		SceneFBO() = default;
-		~SceneFBO();
-
 		void Init();
 
 		void Bind() const;

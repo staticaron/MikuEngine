@@ -15,6 +15,8 @@ namespace MikuEngine
 		virtual void Init() = 0;
 		virtual void SetupVertsAndIndices() = 0;
 
+		virtual void Destory() {}
+
 		const VertexBuffer& GetVB() const { return m_VB; }
 		const VertexArray& GetVA() const { return m_VA; }
 		const IndexBuffer& GetIB() const { return m_IB; }

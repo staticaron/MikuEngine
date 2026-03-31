@@ -8,9 +8,9 @@ namespace MikuEngine
 	{
 	public:
 		IndexBuffer();
-		~IndexBuffer();
 
 		void Init( unsigned int count, void* data );
+		void Destroy();
 
 		void Bind() const;
 		void UnBind() const;
