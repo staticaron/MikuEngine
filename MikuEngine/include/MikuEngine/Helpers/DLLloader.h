@@ -27,7 +27,11 @@ extern "C" void RegisterScriptInEngine( std::string className, MikuEngine::Scrip
 
 namespace MikuEngine
 {
+#if MIKU_DEBUG
+	constexpr const char* GAME_LOGIC_DLL_PATH = "./build/bin/libGameLogicd.so";
+#else
 	constexpr const char* GAME_LOGIC_DLL_PATH = "./build/bin/libGameLogic.so";
+#endif
 
 	class MIKU_API DLLloader
 	{
