@@ -8,6 +8,9 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 project("MikuEngine" LANGUAGES CXX)
 
+set(ASSIMP_BUILD_ZLIB ON CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_NO_EXPORT ON CACHE BOOL "" FORCE)
+
 add_subdirectory(vendor/glad)
 add_subdirectory(vendor/glfw)
 add_subdirectory(vendor/spdlog)
@@ -18,6 +21,7 @@ add_subdirectory(vendor/entt)
 add_subdirectory(vendor/yaml-cpp)
 add_subdirectory(vendor/nativefiledialog)
 add_subdirectory(vendor/dylib)
+add_subdirectory(vendor/assimp)
 
 file(GLOB_RECURSE ENGINE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
@@ -44,6 +48,7 @@ target_link_libraries("MikuEngine" PUBLIC
 	yaml-cpp
 	nfd
 	dylib
+	assimp
 )
 
 target_link_libraries("MikuEngine" PRIVATE 

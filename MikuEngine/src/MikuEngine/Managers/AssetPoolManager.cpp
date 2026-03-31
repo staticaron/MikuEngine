@@ -7,6 +7,7 @@ namespace MikuEngine
 		m_TextureManager.LoadAllTextures();
 		m_ShaderManager.LoadAllShaders();
 		m_MaterialManager.LoadAllMaterials();
+		m_ModelManager.LoadAllModels();
 	}
 
 	AssetType AssetPoolManager::GetAssetTypeFromPool( const UUID& uuid ) const
@@ -14,6 +15,7 @@ namespace MikuEngine
 		if ( m_TextureManager.TextureExists( uuid ) ) return AssetType::TEXTURE;
 		if ( m_ShaderManager.ShaderExists( uuid ) ) return AssetType::SHADER;
 		if ( m_MaterialManager.MaterialExists( uuid ) ) return AssetType::MATERIAL;
+		if ( m_ModelManager.ModelExists( uuid ) ) return AssetType::MODEL;
 
 		return AssetType::NONE;
 	}
@@ -32,6 +34,8 @@ namespace MikuEngine
 			return AssetType::SHADER;
 		else if ( extension == ".h" || extension == ".cpp" )
 			return AssetType::SCRIPT;
+		else if ( extension == ".fbx" )
+			return AssetType::MODEL;
 
 		return AssetType::NONE;
 	}

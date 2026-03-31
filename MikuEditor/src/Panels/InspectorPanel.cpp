@@ -3,12 +3,12 @@
 #include "imgui.h"
 
 #include "Components.h"
-#include "Logger.h"
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Data/SelectableItem.h"
 #include "MikuEngine/Entity.h"
 #include "MikuEngine/Scene/Scene.h"
 #include "MikuEngine/Systems/CameraSystem.h"
+#include "MikuEngine/Systems/MeshRendererSystem.h"
 #include "MikuEngine/Systems/ScriptExecutionSystem.h"
 #include "MikuEngine/Systems/SpriteRendererSystem.h"
 #include "MikuEngine/Systems/TransformSystems.h"
@@ -69,6 +69,7 @@ namespace MikuEditor
 				if ( ImGui::IsItemDeactivatedAfterEdit() ) dataC.EntityName = std::string( entityName );
 			}
 
+			// TRANSFORM
 			if ( selectedEntity.value().HasComponent<MikuEngine::TransformComponent>() )
 			{
 				auto& transformC = selectedEntity.value().GetComponent<MikuEngine::TransformComponent>();
@@ -76,6 +77,7 @@ namespace MikuEditor
 				MikuEngine::TransformSystem::TransformComponentRenderImGui( selectedEntity.value(), transformC );
 			}
 
+			// SPRITE RENDERER
 			if ( selectedEntity.value().HasComponent<MikuEngine::SpriteRendererComponent>() )
 			{
 				auto& spriteRendererC = selectedEntity.value().GetComponent<MikuEngine::SpriteRendererComponent>();
@@ -86,12 +88,25 @@ namespace MikuEditor
 				MikuEngine::SpriteRendererSystem::SpriteRendererComponentRenderImGui( selectedEntity.value(), spriteRendererC, textureEditBtnCallback, shaderEditBtnCallback );
 			}
 
+			// MESH RENDERER
+			if ( selectedEntity.value().HasComponent<MikuEngine::MeshRendererComponent>() )
+			{
+				auto& meshRendererC = selectedEntity.value().GetComponent<MikuEngine::MeshRendererComponent>();
+
+				std::function<void()> modelEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID ]() {};
+				std::function<void()> materialEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID ]() {};
+
+				MikuEngine::MeshRendererSystem::MeshRendererComponentRenderImGui( selectedEntity.value(), meshRendererC, modelEditBtnCallback, materialEditBtnCallback );
+			}
+
+			// CAMERA
 			if ( selectedEntity.value().HasComponent<MikuEngine::CameraComponent>() )
 			{
 				auto& cameraC = selectedEntity.value().GetComponent<MikuEngine::CameraComponent>();
 				MikuEngine::CameraSystem::CameraComponentRenderImGui( selectedEntity.value(), cameraC );
 			}
 
+			// NATIVE SCRIPT
 			if ( selectedEntity.value().HasComponent<MikuEngine::NativeScriptComponent>() )
 			{
 				auto& nativeScriptC = selectedEntity.value().GetComponent<MikuEngine::NativeScriptComponent>();
@@ -107,6 +122,7 @@ namespace MikuEditor
 			{
 				if ( ImGui::Selectable( "CameraComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::CameraComponent>();
 				if ( ImGui::Selectable( "SpriteRendererComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::SpriteRendererComponent>();
+				if ( ImGui::Selectable( "MeshRendererComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::MeshRendererComponent>();
 				if ( ImGui::Selectable( "NativeScriptComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::NativeScriptComponent>();
 
 				ImGui::EndPopup();

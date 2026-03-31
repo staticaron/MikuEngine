@@ -1,29 +1,25 @@
 #include "Systems/MeshRendererSystem.h"
 
-#include "Application.h"
 #include "Components.h"
 #include "Data/CameraData.h"
+#include "Helpers/ImGuiHelper.h"
 #include "Scene/Scene.h"
 
 namespace MikuEngine
 {
-	void MeshRendererSystem::RenderMesh( const Scene& scene, const CameraData& cameraData )
+	void MeshRendererSystem::RenderMesh( const Scene& scene, const CameraData& cameraData ) {}
+
+	void MeshRendererSystem::MeshRendererComponentRenderImGui( Entity entity, MeshRendererComponent& meshRendererC, std::function<void()> modelEditBtnCallback, std::function<void()> materialEditBtnCallback )
 	{
-		const auto& appLevelStuff = Application::GetAppLevelStuff();
-		const auto& renderer = appLevelStuff.GetRenderer();
-		const auto& cube = renderer.GetCube();
+		bool keep = true;
 
-		auto entities = scene.GetRegistry().view<DataComponent, MeshRendererComponent>();
-
-		for ( const auto& [ entity, dataC, meshRendererC ] : entities.each() )
+		if ( ImGui::CollapsingHeader( "MeshRendererComponent", &keep ) )
 		{
-			const auto& transformC = scene.GetRegistry().get<TransformComponent>( entity );
-
-			auto mvp = transformC.GetModelMatrix();
-
-			const auto& shader = appLevelStuff.GetAssetPoolManager().GetShaderManager().GetDefaultShader().shader;
-
-			renderer.Draw( cube.GetVA(), cube.GetIB(), shader );
+			ImGuiHelper::RenderDragableModelInput( meshRendererC.Model, modelEditBtnCallback );
+			ImGuiHelper::RenderDragableMaterialInput( meshRendererC.Material, materialEditBtnCallback );
 		}
 	}
+
+	void MeshRendererSystem::SerializeMeshRendererComponent( const Entity& entity, YAML::Emitter& emitter ) {}
+	void MeshRendererSystem::DeSerializeMeshRendererComponent( MeshRendererComponent& spriteRendererC, const YAML::Node& node ) {}
 }

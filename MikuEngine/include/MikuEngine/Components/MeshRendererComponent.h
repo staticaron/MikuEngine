@@ -7,6 +7,7 @@ namespace MikuEngine
 {
 	struct MIKU_API MeshRendererComponent : BaseComponent
 	{
-		glm::vec4 Tint;
+		std::optional<UUID> Model;
+		std::optional<UUID> Material;
 	};
 }

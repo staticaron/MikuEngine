@@ -9,6 +9,7 @@
 #include "Components.h"
 #include "Data/CameraData.h"
 #include "Entity.h"
+#include "Helpers/ImGuiHelper.h"
 #include "Helpers/SerializationHelper.h"
 #include "Logger.h"
 #include "Managers/TextureManager.h"
@@ -55,7 +56,7 @@ namespace MikuEngine
 		}
 	};
 
-	void SpriteRendererSystem::SpriteRendererComponentRenderImGui( Entity entity, SpriteRendererComponent& spriteRendererC, std::function<void()> textureEditBtnCallback, std::function<void()> shaderEditBtnCallback )
+	void SpriteRendererSystem::SpriteRendererComponentRenderImGui( Entity entity, SpriteRendererComponent& spriteRendererC, std::function<void()> textureEditBtnCallback, std::function<void()> materialEditBtnCallback )
 	{
 		const auto& textureManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager();
 		auto& materialManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager();
@@ -64,60 +65,8 @@ namespace MikuEngine
 
 		if ( ImGui::CollapsingHeader( "SpriteRendererComponent", &keep ) )
 		{
-			auto textureUUID = spriteRendererC.TextureIdentifier;
-
-			std::string textureName = "NONE";
-
-			if ( textureUUID.has_value() )
-			{
-				// TODO: Combine Texture and TextureName Into one TextureContainer
-				auto texture = textureManager.GetTexture( textureUUID.value() );
-				textureName = textureManager.GetTextureName( textureUUID.value() );
-			}
-
-			DISABLED_IMGUI( ImGui::Button( textureName.c_str() ) );
-			ImGui::SameLine();
-			if ( ImGui::Button( "EDIT...##texture" ) ) textureEditBtnCallback();
-
-			if ( ImGui::BeginDragDropTarget() )
-			{
-				auto payload = ImGui::AcceptDragDropPayload( "TEXTURE_DRAG_DROP_PAYLOAD" );
-
-				if ( payload != nullptr )
-				{
-					auto texturePath = static_cast<const char*>( payload->Data );
-					spriteRendererC.TextureIdentifier = textureManager.GetTextureByFilePath( texturePath )->GetUUID();
-				}
-
-				ImGui::EndDragDropTarget();
-			}
-
-			auto materialUUID = spriteRendererC.MaterialUUID;
-			std::string materialName = "<NONE>";
-
-			if ( materialUUID.has_value() )
-			{
-				auto material = materialManager.GetMaterial( materialUUID.value() );
-				if ( material.has_value() ) materialName = material->name;
-			}
-
-			DISABLED_IMGUI( ImGui::Button( materialName.c_str() ) );
-			ImGui::SameLine();
-			if ( ImGui::Button( "EDIT...##shader" ) ) shaderEditBtnCallback();
-
-			if ( ImGui::BeginDragDropTarget() )
-			{
-				auto payload = ImGui::AcceptDragDropPayload( "MATERIAL_DRAG_DROP_PAYLOAD" );
-
-				if ( payload != nullptr )
-				{
-					auto materialPath = static_cast<const char*>( payload->Data );
-					auto material = materialManager.GetMaterialByFilePath( materialPath );
-					if ( material.has_value() ) spriteRendererC.MaterialUUID = material.value()->GetUUID();
-				}
-
-				ImGui::EndDragDropTarget();
-			}
+			ImGuiHelper::RenderDragableTextureInput( spriteRendererC.TextureIdentifier, textureEditBtnCallback );
+			ImGuiHelper::RenderDragableMaterialInput( spriteRendererC.MaterialUUID, materialEditBtnCallback );
 
 			ImGui::DragFloat4( "Tint", &spriteRendererC.Tint.x );
 		};
