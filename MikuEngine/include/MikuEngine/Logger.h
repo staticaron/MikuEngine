@@ -49,8 +49,11 @@ namespace MikuEngine
 #define MIKU_CLIENT_WARN( ... )
 #define MIKU_CLIENT_ERROR( ... )
 
+#define MIKU_CORE_DEBUG( ... )
 #define MIKU_CORE_INFO( ... )
 #define MIKU_CORE_WARN( ... )
 #define MIKU_CORE_ERROR( ... )
+
+#define MIKU_ASSERT( check, msg )
 
 #endif
