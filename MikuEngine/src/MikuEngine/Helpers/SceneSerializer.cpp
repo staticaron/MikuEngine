@@ -44,6 +44,11 @@ namespace MikuEngine
 			SpriteRendererSystem::SerializeSpriteRendererComponent( entity, emitter );
 		}
 
+		if ( entity.HasComponent<MeshRendererComponent>() )
+		{
+			MeshRendererSystem::SerializeMeshRendererComponent( entity, emitter );
+		}
+
 		if ( entity.HasComponent<CameraComponent>() )
 		{
 			CameraSystem::SerializeCameraComponent( entity, emitter );
@@ -143,6 +148,14 @@ namespace MikuEngine
 					auto& spriteRendererC = entt.GetComponent<SpriteRendererComponent>();
 
 					SpriteRendererSystem::DeSerializeSpriteRendererComponent( spriteRendererC, values );
+				}
+
+				if ( type == "MeshRendererComponent" )
+				{
+					entt.AddComponent<MeshRendererComponent>();
+					auto& meshRendererC = entt.GetComponent<MeshRendererComponent>();
+
+					MeshRendererSystem::DeSerializeMeshRendererComponent( meshRendererC, values );
 				}
 
 				if ( type == "CameraComponent" )
