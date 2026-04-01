@@ -48,11 +48,15 @@ namespace MikuEngine
 			modelName = model.index.Name;
 		}
 
+		ImGui::PushID( "Model" );
+
 		ImGui::Text( "Model" );
 		ImGui::SameLine();
+
 		DISABLED_IMGUI( ImGui::Button( modelName.c_str() ) );
 		ImGui::SameLine();
-		if ( ImGui::Button( "EDIT...##Model" ) ) modelEditBtnCallback();
+
+		if ( ImGui::Button( "EDIT..." ) ) modelEditBtnCallback();
 
 		if ( ImGui::BeginDragDropTarget() )
 		{
@@ -66,6 +70,8 @@ namespace MikuEngine
 
 			ImGui::EndDragDropTarget();
 		}
+
+		ImGui::PopID();
 	}
 
 	void ImGuiHelper::RenderDragableMaterialInput( std::optional<UUID>& materialUUID, std::function<void()> materialEditBtnCallback )
@@ -76,14 +82,18 @@ namespace MikuEngine
 
 		if ( materialUUID.has_value() )
 		{
-			auto material = materialManager.GetMaterial( materialUUID.value() );
-			if ( material.has_value() ) materialName = material->name;
+			auto& material = materialManager.GetMaterial( materialUUID.value() );
+			materialName = material.index.name;
 		}
+
+		ImGui::PushID( "Material" );
 
 		ImGui::Text( "Material" );
 		ImGui::SameLine();
+
 		DISABLED_IMGUI( ImGui::Button( materialName.c_str() ) );
 		ImGui::SameLine();
+
 		if ( ImGui::Button( "EDIT...##material" ) ) materialEditBtnCallback();
 
 		if ( ImGui::BeginDragDropTarget() )
@@ -99,5 +109,7 @@ namespace MikuEngine
 
 			ImGui::EndDragDropTarget();
 		}
+
+		ImGui::PopID();
 	};
 }

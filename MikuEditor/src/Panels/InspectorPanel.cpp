@@ -83,9 +83,9 @@ namespace MikuEditor
 				auto& spriteRendererC = selectedEntity.value().GetComponent<MikuEngine::SpriteRendererComponent>();
 
 				std::function<void()> textureEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID ]() { editorLayer.m_TextureSelectionWindow.emplace_back( selectedEntityUUID ); };
-				std::function<void()> shaderEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID ]() { editorLayer.m_ShaderSelectionWindow.emplace_back( selectedEntityUUID ); };
+				std::function<void()> materialEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID ]() { editorLayer.m_MaterialSelectionWindow.emplace_back( selectedEntityUUID ); };
 
-				MikuEngine::SpriteRendererSystem::SpriteRendererComponentRenderImGui( selectedEntity.value(), spriteRendererC, textureEditBtnCallback, shaderEditBtnCallback );
+				MikuEngine::SpriteRendererSystem::SpriteRendererComponentRenderImGui( selectedEntity.value(), spriteRendererC, textureEditBtnCallback, materialEditBtnCallback );
 			}
 
 			// MESH RENDERER
@@ -157,9 +157,8 @@ namespace MikuEditor
 		case MikuEngine::AssetType::NONE:
 			break;
 		case MikuEngine::AssetType::MATERIAL: {
-			auto material = assetPoolManager.GetMaterialManager().GetMaterial( item.uuid );
-			if ( material.has_value() == false ) break;
-			material.value().material->RenderInspectorImGui();
+			auto& material = assetPoolManager.GetMaterialManager().GetMaterial( item.uuid );
+			material.material.RenderInspectorImGui();
 			break;
 		}
 		case MikuEngine::AssetType::SHADER:

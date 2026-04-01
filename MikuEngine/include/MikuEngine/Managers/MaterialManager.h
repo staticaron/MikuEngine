@@ -18,10 +18,8 @@ namespace MikuEngine
 
 	struct MIKU_API MaterialContainer
 	{
-		std::string name;
-		std::string path;
-
-		Material* material;
+		MaterialIndex index;
+		Material material;
 	};
 
 	class MIKU_API MaterialManager
@@ -32,13 +30,15 @@ namespace MikuEngine
 
 		void PrepareMaterialIndex();
 
-		std::optional<MaterialContainer> GetMaterial( UUID uuid );
+		const std::unordered_map<UUID, MaterialContainer> GetAllLoadedMaterials() const;
+
+		MaterialContainer& GetMaterial( const UUID& uuid );
 		bool MaterialExists( const UUID& uuid ) const;
 
 		std::optional<Material*> GetMaterialByFilePath( const std::string& filepath );
 
 	private:
 		std::unordered_map<UUID, MaterialIndex> m_MaterialIndex;
-		std::unordered_map<UUID, Material> m_Materials;
+		std::unordered_map<UUID, MaterialContainer> m_Materials;
 	};
 }

@@ -60,6 +60,7 @@ namespace MikuEditor
 
 			ManageTextureSelectionWindows( appLevelStuff );
 			ManageShaderSelectionWindows( appLevelStuff );
+			ManageMaterialSelectionWindows( appLevelStuff );
 
 			m_Scene->RenderImGui( appLevelStuff );
 
@@ -101,5 +102,21 @@ namespace MikuEditor
 		// Remove the texture selection windows that are completed!
 		for ( size_t x = 0; x < completedShaderWindow.size(); x++ )
 			m_ShaderSelectionWindow.erase( m_ShaderSelectionWindow.begin() + completedShaderWindow.at( x ) );
+	}
+
+	void EditorLayer::ManageMaterialSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff )
+	{
+		std::vector<unsigned int> completedMaterialWindow;
+		completedMaterialWindow.reserve( m_MaterialSelectionWindow.size() );
+
+		for ( size_t x = 0; x < m_MaterialSelectionWindow.size(); x++ )
+		{
+			auto response = m_MaterialSelectionWindow.at( x ).RenderMaterialSelectionWindow( appLevelStuff, *m_Scene );
+			if ( response == WindowResponse::ERROR || response == WindowResponse::COMPLETED || response == WindowResponse::CLOSED ) completedMaterialWindow.push_back( x );
+		}
+
+		// Remove the texture selection windows that are completed!
+		for ( size_t x = 0; x < completedMaterialWindow.size(); x++ )
+			m_MaterialSelectionWindow.erase( m_MaterialSelectionWindow.begin() + completedMaterialWindow.at( x ) );
 	}
 }

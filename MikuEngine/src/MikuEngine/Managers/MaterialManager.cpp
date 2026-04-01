@@ -14,7 +14,7 @@ namespace MikuEngine
 		for ( const auto& [ uuid, index ] : m_MaterialIndex )
 		{
 			Material material( uuid, index.path );
-			m_Materials[ uuid ] = material;
+			m_Materials[ uuid ] = { index, material };
 		}
 	}
 
@@ -32,16 +32,17 @@ namespace MikuEngine
 		}
 	}
 
-	std::optional<MaterialContainer> MaterialManager::GetMaterial( UUID uuid )
+	const std::unordered_map<UUID, MaterialContainer> MaterialManager::GetAllLoadedMaterials() const
+	{
+		return m_Materials;
+	}
+
+	MaterialContainer& MaterialManager::GetMaterial( const UUID& uuid )
 	{
 		auto materialExists = m_Materials.find( uuid );
-		auto materialIndexExists = m_MaterialIndex.find( uuid );
+		MIKU_ASSERT( materialExists != m_Materials.end(), "Material is not loaded!" );
 
-		if ( materialExists == m_Materials.end() || materialIndexExists == m_MaterialIndex.end() ) return {};
-
-		return {
-		    { materialIndexExists->second.name, materialIndexExists->second.path, &materialExists->second }
-		    };
+		return materialExists->second;
 	}
 
 	std::optional<Material*> MaterialManager::GetMaterialByFilePath( const std::string& filepath )
@@ -50,8 +51,8 @@ namespace MikuEngine
 		{
 			if ( materialIndex.path == filepath )
 			{
-				auto materialContainer = GetMaterial( uuid );
-				return materialContainer->material;
+				auto& materialContainer = GetMaterial( uuid );
+				return &materialContainer.material;
 			}
 		}
 

@@ -34,12 +34,13 @@ namespace MikuEngine
 
 			if ( spriteRenderer.MaterialUUID.has_value() )
 			{
-				auto materialContainer = materialManager.GetMaterial( spriteRenderer.MaterialUUID.value() );
-
-				if ( materialContainer.has_value() )
-					material = materialContainer->material;
-				else
-					MIKU_CORE_ERROR( "Material for this Sprite Renderer Not Found!" );
+				auto& materialContainer = materialManager.GetMaterial( spriteRenderer.MaterialUUID.value() );
+				material = &materialContainer.material;
+			}
+			else
+			{
+				MIKU_CORE_ERROR( "Material for this Sprite Renderer Not Found!" );
+				return;
 			}
 
 			material->Bind();
