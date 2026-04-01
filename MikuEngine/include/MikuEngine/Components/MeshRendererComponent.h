@@ -7,7 +7,7 @@ namespace MikuEngine
 {
 	struct MIKU_API MeshRendererComponent : BaseComponent
 	{
-		std::optional<UUID> Model;
-		std::optional<UUID> Material;
+		std::optional<UUID> ModelIdentifier;
+		std::optional<UUID> MaterialIdentifier;
 	};
 }
