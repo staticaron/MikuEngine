@@ -1,6 +1,7 @@
 #pragma once
 
-#include "glm/glm.hpp"
+#include <functional>
+
 #include "yaml-cpp/emitter.h"
 
 #include "Core.h"

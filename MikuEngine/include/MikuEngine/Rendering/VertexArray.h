@@ -20,6 +20,6 @@ namespace MikuEngine
 		void UnBind() const;
 
 	private:
-		unsigned int m_RendererID;
+		unsigned int m_RendererID = 0;
 	};
 }

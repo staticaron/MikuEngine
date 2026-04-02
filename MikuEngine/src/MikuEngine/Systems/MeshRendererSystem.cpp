@@ -7,7 +7,49 @@
 
 namespace MikuEngine
 {
-	void MeshRendererSystem::RenderMesh( const Scene& scene, const CameraData& cameraData ) {}
+	void MeshRendererSystem::RenderMesh( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData )
+	{
+		const auto& entities = scene.GetRegistry().view<DataComponent, MeshRendererComponent>();
+
+		const auto& renderer = appLevelStuff.GetRenderer();
+		auto& materialManager = appLevelStuff.GetAssetPoolManager().GetMaterialManager();
+		auto& modelManager = appLevelStuff.GetAssetPoolManager().GetModelManager();
+
+		for ( const auto& [ entity, dataC, meshRendererC ] : entities.each() )
+		{
+			const auto& modelUUID = meshRendererC.ModelIdentifier;
+
+			if ( modelUUID.has_value() == false ) continue;
+
+			const auto& model = modelManager.GetModel( meshRendererC.ModelIdentifier.value() );
+
+			Material* material = nullptr;
+
+			if ( meshRendererC.MaterialIdentifier.has_value() )
+			{
+				auto& materialContainer = materialManager.GetMaterial( meshRendererC.MaterialIdentifier.value() );
+				material = &materialContainer.material;
+			}
+			else
+				return;
+
+			material->Bind();
+
+			auto shader = material->GetShader();
+
+			if ( shader.has_value() == false ) return;
+
+			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
+			glm::mat4 modelMatrix = transform.GetModelMatrix();
+			shader.value()->SetUniform<glm::mat4>( "u_Model", modelMatrix );
+
+			// Render all the meshes in the model
+			for ( const auto& mesh : model.model.GetMeshes() )
+			{
+				renderer.Draw( mesh.GetVA(), mesh.GetIB(), *shader.value() );
+			}
+		}
+	}
 
 	void MeshRendererSystem::MeshRendererComponentRenderImGui( Entity entity, MeshRendererComponent& meshRendererC, std::function<void()> modelEditBtnCallback, std::function<void()> materialEditBtnCallback )
 	{
@@ -15,11 +57,34 @@ namespace MikuEngine
 
 		if ( ImGui::CollapsingHeader( "MeshRendererComponent", &keep ) )
 		{
-			ImGuiHelper::RenderDragableModelInput( meshRendererC.Model, modelEditBtnCallback );
-			ImGuiHelper::RenderDragableMaterialInput( meshRendererC.Material, materialEditBtnCallback );
+			ImGuiHelper::RenderDragableModelInput( meshRendererC.ModelIdentifier, modelEditBtnCallback );
+			ImGuiHelper::RenderDragableMaterialInput( meshRendererC.MaterialIdentifier, materialEditBtnCallback );
 		}
+
+		if ( !keep ) entity.RemoveComponent<MeshRendererComponent>();
 	}
 
-	void MeshRendererSystem::SerializeMeshRendererComponent( const Entity& entity, YAML::Emitter& emitter ) {}
-	void MeshRendererSystem::DeSerializeMeshRendererComponent( MeshRendererComponent& spriteRendererC, const YAML::Node& node ) {}
+	void MeshRendererSystem::SerializeMeshRendererComponent( const Entity& entity, YAML::Emitter& emitter )
+	{
+		emitter << YAML::BeginMap;
+
+		auto meshRenderer = entity.GetReadOnlyComponent<MeshRendererComponent>();
+		emitter << YAML::Key << "type" << YAML::Value << "MeshRendererComponent";
+
+		emitter << YAML::Key << "values" << YAML::Value << YAML::BeginMap;
+		emitter << YAML::Key << "model" << YAML::Value << meshRenderer.ModelIdentifier.value();
+		emitter << YAML::Key << "material" << YAML::Value << ( meshRenderer.MaterialIdentifier.has_value() ? meshRenderer.MaterialIdentifier.value() : UUID( 0 ) );
+		emitter << YAML::EndMap;
+
+		emitter << YAML::EndMap;
+	}
+
+	void MeshRendererSystem::DeSerializeMeshRendererComponent( MeshRendererComponent& modelRendererC, const YAML::Node& node )
+	{
+		std::string model = node[ "model" ].as<std::string>();
+		std::string material = node[ "material" ].as<std::string>();
+
+		modelRendererC.ModelIdentifier = model.empty() ? std::optional<UUID>( std::nullopt ) : UUID( model );
+		modelRendererC.MaterialIdentifier = material.empty() ? std::optional<UUID>( std::nullopt ) : UUID( material );
+	}
 }

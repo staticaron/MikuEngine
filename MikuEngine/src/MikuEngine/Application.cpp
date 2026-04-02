@@ -173,14 +173,18 @@ namespace MikuEngine
 		glEnable( GL_BLEND );
 		glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
+		glEnable( GL_DEPTH_TEST );
+
+		glEnable( GL_CULL_FACE );
+
 		// Initializing of member vars
 		LAST = NOW = std::chrono::high_resolution_clock::now();
 
 		m_SceneFBO.Init();
 		m_GameFBO.Init();
 
-		m_AppLevelStuff.GetRenderer().Init();
 		m_AppLevelStuff.GetAssetPoolManager().Init();
+		m_AppLevelStuff.GetRenderer().Init();
 		m_AppLevelStuff.GetImGuiManager().Init( m_Window );
 
 		// RenderTemp();

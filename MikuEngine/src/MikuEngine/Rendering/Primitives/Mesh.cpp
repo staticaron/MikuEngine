@@ -1,5 +1,7 @@
 #include "Rendering/Primitives/Mesh.h"
 
+#include "Logger.h"
+
 namespace MikuEngine
 {
 	Mesh::Mesh( std::vector<Vertex3D> vertices, std::vector<unsigned int> indices )
@@ -22,6 +24,8 @@ namespace MikuEngine
 
 		m_VA.Init();
 		m_VA.Setup( m_VB, m_VBL );
+
+		MIKU_CORE_INFO( "Mesh Initialized!" );
 	}
 
 	void Mesh::SetupVertsAndIndices() {}

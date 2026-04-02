@@ -59,9 +59,6 @@ namespace MikuEngine
 
 	void SpriteRendererSystem::SpriteRendererComponentRenderImGui( Entity entity, SpriteRendererComponent& spriteRendererC, std::function<void()> textureEditBtnCallback, std::function<void()> materialEditBtnCallback )
 	{
-		const auto& textureManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager();
-		auto& materialManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager();
-
 		bool keep = true;
 
 		if ( ImGui::CollapsingHeader( "SpriteRendererComponent", &keep ) )

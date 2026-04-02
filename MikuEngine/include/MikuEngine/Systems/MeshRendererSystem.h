@@ -12,6 +12,7 @@ namespace MikuEngine
 	class CameraData;
 	class Entity;
 	class MeshRendererComponent;
+	class AppLevelStuff;
 }
 
 namespace MikuEngine
@@ -19,7 +20,7 @@ namespace MikuEngine
 	class MIKU_API MeshRendererSystem
 	{
 	public:
-		static void RenderMesh( const Scene& scene, const CameraData& cameraData );
+		static void RenderMesh( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData );
 
 		static void MeshRendererComponentRenderImGui( Entity entity, MeshRendererComponent& meshRendererC, std::function<void()> modelEditBtnCallback, std::function<void()> materialEditBtnCallback );
 		static void SerializeMeshRendererComponent( const Entity& entity, YAML::Emitter& emitter );

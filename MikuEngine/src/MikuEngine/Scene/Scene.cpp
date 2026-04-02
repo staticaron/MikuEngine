@@ -7,6 +7,7 @@
 #include "Data/CameraData.h"
 #include "Entity.h"
 #include "Systems/CameraSystem.h"
+#include "Systems/MeshRendererSystem.h"
 #include "Systems/ScriptExecutionSystem.h"
 #include "Systems/SpriteRendererSystem.h"
 
@@ -40,6 +41,7 @@ namespace MikuEngine
 
 		// Render the sprites
 		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, CameraData{ CameraSystem::GetViewMatrix( mainCameraEntity ), CameraSystem::GetProjMatrix( mainCameraComponent ) } );
+		MeshRendererSystem::RenderMesh( *this, appLevelStuff, CameraData{ CameraSystem::GetViewMatrix( mainCameraEntity ), CameraSystem::GetProjMatrix( mainCameraComponent ) } );
 
 		gameFBO.UnBind();
 	}
@@ -55,6 +57,7 @@ namespace MikuEngine
 		renderer.ClearColor( { 0.23f, 0.24f, 0.25f, 1.0f } );
 
 		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, cameraData );
+		MeshRendererSystem::RenderMesh( *this, appLevelStuff, cameraData );
 
 		sceneFBO.UnBind();
 	}
