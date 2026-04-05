@@ -30,8 +30,6 @@ namespace MikuEngine
 				UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
 
 				m_DefaultModelIndex[ uuid ] = { file.path().stem().string(), file.path().string() };
-
-				MIKU_CORE_DEBUG( "Default Models are Indexed!" );
 			}
 		}
 		else
@@ -49,8 +47,6 @@ namespace MikuEngine
 				UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
 				m_ModelIndex[ uuid ] = { file.path().stem().string(), file.path().string(), uuid };
 			}
-
-			MIKU_CORE_DEBUG( "Project Models are Indexed!" );
 		}
 		else
 			MIKU_CORE_WARN( "Project Model Directory not found! Skipping" );
@@ -80,9 +76,6 @@ namespace MikuEngine
 
 			m_DefaultModels[ type ] = { index, newModel };
 		}
-
-		MIKU_CORE_INFO( "Models for Project Ready with count {}", m_Models.size() );
-		MIKU_CORE_INFO( "Model for Engine Ready with count {}", m_DefaultModels.size() );
 	}
 
 	const ModelContainer& ModelManager::GetModel( UUID modelUUID ) const

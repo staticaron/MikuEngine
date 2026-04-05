@@ -24,8 +24,6 @@ namespace MikuEngine
 
 		m_VA.Init();
 		m_VA.Setup( m_VB, m_VBL );
-
-		MIKU_CORE_INFO( "Mesh Initialized!" );
 	}
 
 	void Mesh::SetupVertsAndIndices() {}
