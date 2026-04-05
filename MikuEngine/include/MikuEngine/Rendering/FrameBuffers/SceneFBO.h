@@ -19,6 +19,7 @@ namespace MikuEngine
 		void ResizeBufferTexture( glm::vec2 viewPortSize );
 
 		unsigned int GetTextureID() const { return m_ColorTextureID; }
+		unsigned int GetDepthTextureID() const { return m_DepthTextureID; }
 
 	private:
 		unsigned int m_RendererID = 0;

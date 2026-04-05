@@ -16,6 +16,7 @@ namespace MikuEngine
 		void Destroy();
 
 		unsigned int GetTextureID() const { return m_ColorTextureID; }
+		unsigned int GetDepthTextureID() const { return m_DepthTextureID; }
 
 		float GetAspectRatio() const { return m_AspectRatio; }
 
