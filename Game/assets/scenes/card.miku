@@ -5,8 +5,8 @@ entities:
     components:
       - type: TransformComponent
         values:
-          position: [-10, 7, -8]
-          rotation: [1.76, 0, -3.22]
+          position: [3.1101305, 0.12993507, -8]
+          rotation: [1.76, 0, 3.8520842]
           scale: [1, 1, 1]
       - type: MeshRendererComponent
         values:
@@ -14,14 +14,14 @@ entities:
           material: 2543867387895967176
       - type: NativeScriptComponent
         values:
-          scriptName: WASDController
+          scriptName: Rotator
   - name: Card
     id: 5030660346100341033
     components:
       - type: TransformComponent
         values:
           position: [-5.67, -0.23, -10]
-          rotation: [-0.0049968637, -0.0031123194, 0]
+          rotation: [-0.0049966006, 0.0031818163, 0]
           scale: [11.5, 16, 1]
       - type: SpriteRendererComponent
         values:
