@@ -145,23 +145,23 @@ namespace MikuEditor
 			switch ( assetType )
 			{
 			case MikuEngine::AssetType::TEXTURE: {
-				ImGui::SetDragDropPayload( "TEXTURE_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) );
+				ImGui::SetDragDropPayload( "TEXTURE_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) + 1 );
 				break;
 			}
 			case MikuEngine::AssetType::MODEL: {
-				ImGui::SetDragDropPayload( "MODEL_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) );
+				ImGui::SetDragDropPayload( "MODEL_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) + 1 );
 				break;
 			}
 			case MikuEngine::AssetType::MATERIAL: {
-				ImGui::SetDragDropPayload( "MATERIAL_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) );
+				ImGui::SetDragDropPayload( "MATERIAL_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) + 1 );
 				break;
 			}
 			case MikuEngine::AssetType::SHADER: {
-				ImGui::SetDragDropPayload( "SHADER_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) );
+				ImGui::SetDragDropPayload( "SHADER_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) + 1 );
 				break;
 			}
 			default: {
-				ImGui::SetDragDropPayload( "FILE_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) );
+				ImGui::SetDragDropPayload( "FILE_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) + 1 );
 				break;
 			}
 			}
