@@ -2,14 +2,13 @@
 
 #include "imgui.h"
 
+#include "Entity.h"
 #include "MikuEngine/AppLevelStuff.h"
-#include "MikuEngine/Components.h"
-#include "MikuEngine/Entity.h"
 #include "MikuEngine/Scene/Scene.h"
 
 namespace MikuEditor
 {
-	MaterialSelectionWindow::MaterialSelectionWindow( MikuEngine::UUID uuid ) : m_EntityUUID( uuid ) {}
+	MaterialSelectionWindow::MaterialSelectionWindow( MikuEngine::UUID uuid, std::function<void( MikuEngine::Scene& scene, MikuEngine::UUID itemUUId )> onItemSelected ) : m_EntityUUID( uuid ), onItemSelected( onItemSelected ) {}
 
 	WindowResponse MaterialSelectionWindow::RenderMaterialSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene )
 	{
@@ -31,7 +30,7 @@ namespace MikuEditor
 					break;
 				}
 
-				entity->GetComponent<MikuEngine::SpriteRendererComponent>().MaterialUUID = uuid;
+				onItemSelected( scene, uuid );
 				response = WindowResponse::COMPLETED;
 			}
 		}

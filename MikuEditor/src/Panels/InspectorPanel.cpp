@@ -83,7 +83,8 @@ namespace MikuEditor
 				auto& spriteRendererC = selectedEntity.value().GetComponent<MikuEngine::SpriteRendererComponent>();
 
 				std::function<void()> textureEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID ]() { editorLayer.m_TextureSelectionWindow.emplace_back( selectedEntityUUID ); };
-				std::function<void()> materialEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID ]() { editorLayer.m_MaterialSelectionWindow.emplace_back( selectedEntityUUID ); };
+				std::function<void( MikuEngine::Scene & scene, MikuEngine::UUID itemUUID )> onitemSelected = [ selectedEntityUUID ]( MikuEngine::Scene& scene, MikuEngine::UUID itemUUID ) { scene.GetEntityByID( selectedEntityUUID ).value().GetComponent<MikuEngine::SpriteRendererComponent>().MaterialUUID = itemUUID; };
+				std::function<void()> materialEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID, onitemSelected ]() { editorLayer.m_MaterialSelectionWindow.emplace_back( selectedEntityUUID, onitemSelected ); };
 
 				MikuEngine::SpriteRendererSystem::SpriteRendererComponentRenderImGui( selectedEntity.value(), spriteRendererC, textureEditBtnCallback, materialEditBtnCallback );
 			}
@@ -93,8 +94,9 @@ namespace MikuEditor
 			{
 				auto& meshRendererC = selectedEntity.value().GetComponent<MikuEngine::MeshRendererComponent>();
 
-				std::function<void()> modelEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID ]() {};
-				std::function<void()> materialEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID ]() {};
+				std::function<void()> modelEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID ]() { editorLayer.m_ModelSelectionWindow.emplace_back( selectedEntityUUID ); };
+				std::function<void( MikuEngine::Scene & scene, MikuEngine::UUID itemUUID )> onitemSelected = [ selectedEntityUUID ]( MikuEngine::Scene& scene, MikuEngine::UUID itemUUID ) { scene.GetEntityByID( selectedEntityUUID ).value().GetComponent<MikuEngine::MeshRendererComponent>().MaterialIdentifier = itemUUID; };
+				std::function<void()> materialEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID, onitemSelected ]() { editorLayer.m_MaterialSelectionWindow.emplace_back( selectedEntityUUID, onitemSelected ); };
 
 				MikuEngine::MeshRendererSystem::MeshRendererComponentRenderImGui( selectedEntity.value(), meshRendererC, modelEditBtnCallback, materialEditBtnCallback );
 			}
