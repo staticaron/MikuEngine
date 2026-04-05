@@ -36,6 +36,7 @@ namespace MikuEngine
 		const ModelContainer& GetModelByName( const std::string& name ) const;
 		const ModelContainer& GetModelByFilePath( const std::filesystem::path& path ) const;
 
+		const std::unordered_map<UUID, ModelContainer> GetAllLoadedModels() const;
 		const ModelContainer& GetDefaultModel( DefaultModelType type ) const;
 
 		bool ModelExists( const UUID& uuid ) const;

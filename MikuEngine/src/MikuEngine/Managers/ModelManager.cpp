@@ -112,6 +112,11 @@ namespace MikuEngine
 		MIKU_ASSERT( false, "Requested Model is not loaded!" );
 	}
 
+	const std::unordered_map<UUID, ModelContainer> ModelManager::GetAllLoadedModels() const
+	{
+		return m_Models;
+	}
+
 	const ModelContainer& ModelManager::GetDefaultModel( DefaultModelType type ) const
 	{
 		return m_DefaultModels.begin()->second;

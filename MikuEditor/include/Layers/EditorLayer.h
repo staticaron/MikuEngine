@@ -6,6 +6,7 @@
 #include "Panels/AssetBrowserPanel.h"
 #include "Utility/EditorCamera.h"
 #include "Windows/MaterialSelectionWindow.h"
+#include "Windows/ModelSelectionWindow.h"
 #include "Windows/ShaderSelectionWindow.h"
 #include "Windows/TextureSelectionWindow.h"
 
@@ -35,6 +36,7 @@ namespace MikuEditor
 		void ManageTextureSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff );
 		void ManageShaderSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff );
 		void ManageMaterialSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff );
+		void ManageModelSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff );
 
 	private:
 		EditorLevelStuff m_EditorLevelStuff;
@@ -43,6 +45,7 @@ namespace MikuEditor
 		std::vector<TextureSelectionWindow> m_TextureSelectionWindow;
 		std::vector<ShaderSelectionWindow> m_ShaderSelectionWindow;
 		std::vector<MaterialSelectionWindow> m_MaterialSelectionWindow;
+		std::vector<ModelSelectionWindow> m_ModelSelectionWindow;
 
 		bool m_IsViewportPanelFocused = false;
 
