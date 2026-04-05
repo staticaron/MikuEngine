@@ -41,7 +41,7 @@ namespace MikuEngine
 		glm::mat4 projMatrix = glm::mat4( 1.0f );
 
 		if ( cameraComponent.m_IsPerspective )
-			projMatrix = glm::perspective( glm::pi<float>() * 0.5f, Application::GetApplication()->GetDataContainer().GetGameAspectRatio(), 0.0f, 1000.0f );
+			projMatrix = glm::perspective( glm::radians( 60.0f ), Application::GetApplication()->GetDataContainer().GetGameAspectRatio(), 0.0f, 1000.0f );
 		else
 			projMatrix = glm::ortho( -camSize.x * 0.5f, camSize.x * 0.5f, -camSize.y * 0.5f, camSize.y * 0.5f, -1000.0f, 1000.0f );
 

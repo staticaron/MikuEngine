@@ -11,7 +11,7 @@ namespace MikuEditor
 		if ( m_IsPerspective == false )
 			return glm::ortho( 0.0f, MikuEngine::Application::GetDataContainer().GetViewportSize().x, MikuEngine::Application::GetDataContainer().GetViewportSize().y, 0.0f, -1000.0f, 1000.0f );
 		else
-			return glm::perspective( glm::pi<float>() * 0.5f, MikuEngine::Application::GetDataContainer().GetViewportAspectRatio(), 0.0f, 1000.0f );
+			return glm::perspective( glm::radians( 60.0f ), MikuEngine::Application::GetDataContainer().GetViewportAspectRatio(), 1.0f, 1000.0f );
 	}
 
 	glm::mat4 EditorCamera::GetViewMatrix() const
