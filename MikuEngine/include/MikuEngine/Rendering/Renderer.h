@@ -14,7 +14,7 @@ namespace MikuEngine
 		void Init();
 
 		void Draw( const VertexArray& va, const IndexBuffer& ib, const Shader& shader ) const;
-		static void ClearColor( glm::vec4 color );
+		static void ClearColor( glm::vec4 color = { 0.1f, 0.1f, 0.1f, 1.0f } );
 
 		const Quad& GetQuad() const { return m_QuadPrimitive; }
 		UniformBufferManager& GetUniformBufferManager() { return m_UniformBufferManager; }

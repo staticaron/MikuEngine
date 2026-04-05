@@ -7,7 +7,6 @@ namespace MikuEngine
 	void Renderer::Init()
 	{
 		m_QuadPrimitive.Init();
-
 		m_UniformBufferManager.Init();
 	}
 
@@ -22,7 +21,7 @@ namespace MikuEngine
 
 	void Renderer::ClearColor( glm::vec4 color )
 	{
-		glClearColor( color.x, color.y, color.z, color.w );
+		glClearColor( color.x, color.y, color.z, 1.0f );
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	}
 }

@@ -27,12 +27,12 @@ namespace MikuEngine
 		gameFBO.Bind();
 
 		auto& renderer = MikuEngine::Application::GetAppLevelStuff().GetRenderer();
-		renderer.ClearColor( { 0.23, 0.24f, 0.25f, 1.0f } );
 
 		// Render nothing if camera is not there
 		if ( GetMainCamera().has_value() == false ) return;
 
 		renderer.GetUniformBufferManager().GetGameUniformBuffer().Bind();
+		renderer.ClearColor();
 
 		// Camera details for camera creating proj view matrices
 		auto mainCamera = GetMainCamera();
@@ -54,7 +54,7 @@ namespace MikuEngine
 		auto& renderer = MikuEngine::Application::GetAppLevelStuff().GetRenderer();
 
 		renderer.GetUniformBufferManager().GetEditorUniformBuffer().Bind();
-		renderer.ClearColor( { 0.23f, 0.24f, 0.25f, 1.0f } );
+		renderer.ClearColor();
 
 		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, cameraData );
 		MeshRendererSystem::RenderMesh( *this, appLevelStuff, cameraData );
