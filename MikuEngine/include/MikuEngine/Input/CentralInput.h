@@ -15,8 +15,8 @@ namespace MikuEngine
 		const glm::dvec2& GetMousePosition() const { return m_MousePosition; }
 		glm::dvec2 GetMousePositionDelta() const { return m_MousePosition - m_LastMousePosition; }
 
-		const glm::ivec2& GetAxisRaw() { return m_AxisRaw; }
-		bool IsKeyPressed( int keycode );
+		const glm::ivec2& GetAxisRaw() const { return m_AxisRaw; }
+		bool IsKeyPressed( int keycode ) const;
 
 	private:
 		void UpdateKeyboardButtons();

@@ -6,24 +6,35 @@
 
 namespace MikuEditor
 {
-	glm::mat4 EditorCamera::GetProjMatrix() const
+	EditorCamera::EditorCamera()
 	{
-		if ( m_IsPerspective == false )
-			return glm::ortho( 0.0f, MikuEngine::Application::GetDataContainer().GetViewportSize().x, MikuEngine::Application::GetDataContainer().GetViewportSize().y, 0.0f, -1000.0f, 1000.0f );
-		else
-			return glm::perspective( glm::radians( 60.0f ), MikuEngine::Application::GetDataContainer().GetViewportAspectRatio(), 1.0f, 1000.0f );
+		UpdateProjectionMatrix();
+		UpdateViewMatrix();
 	}
 
-	glm::mat4 EditorCamera::GetViewMatrix() const
+	void EditorCamera::UpdateProjectionMatrix()
 	{
-		auto transform = glm::translate( glm::mat4( 1.0f ), Position );
+		m_ProjectionMatrix = glm::perspective( glm::radians( 60.0f ), MikuEngine::Application::GetDataContainer().GetViewportAspectRatio(), 1.0f, 1000.0f );
+	}
 
-		auto rotationX = glm::rotate( glm::mat4( 1.0f ), Rotation.x, glm::vec3( 1.0f, 0.0f, 0.0f ) );
-		auto rotationY = glm::rotate( glm::mat4( 1.0f ), Rotation.y, glm::vec3( 0.0f, 1.0f, 0.0f ) );
-		auto rotationZ = glm::rotate( glm::mat4( 1.0f ), Rotation.z, glm::vec3( 0.0f, 0.0f, 1.0f ) );
+	void EditorCamera::UpdateViewMatrix()
+	{
+		m_ViewMatrix = glm::translate( glm::mat4( 1.0f ), Position ) * glm::toMat4( GetOrientation() );
+	}
 
-		auto rotation = rotationX * rotationY * rotationZ;
-		return glm::inverse( transform * rotation );
+	void EditorCamera::Update( double dt )
+	{
+		const auto& centralInput = MikuEngine::Application::GetAppLevelStuff().GetCentralInput();
+
+		if ( centralInput.IsKeyPressed( GLFW_KEY_LEFT_ALT ) )
+		{
+			const auto& mouseDelta = centralInput.GetMousePositionDelta();
+
+			m_Yaw += mouseDelta.x * m_RotationSpeed;
+			m_Pitch += mouseDelta.y + m_RotationSpeed;
+
+			UpdateViewMatrix();
+		}
 	}
 
 	void EditorCamera::Translate( double dt )
