@@ -218,6 +218,8 @@ namespace MikuEngine
 
 	void Application::Update()
 	{
+		m_AppLevelStuff.GetCentralInput().Update( m_DeltaTime );
+
 		for ( int x = 0; x < m_Layers.size(); x++ )
 			m_Layers[ x ]->Update( m_DeltaTime );
 	}

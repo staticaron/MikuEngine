@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core.h"
+#include "Input/CentralInput.h"
 #include "Managers/AssetPoolManager.h"
 #include "Managers/ImguiManager.h"
 #include "Rendering/Renderer.h"
@@ -19,6 +20,9 @@ namespace MikuEngine
 		AssetPoolManager& GetAssetPoolManager() { return m_AssetPoolManager; }
 		const AssetPoolManager& GetAssetPoolManager() const { return m_AssetPoolManager; }
 
+		CentralInput& GetCentralInput() { return m_CentralInput; }
+		const CentralInput& GetCentralInput() const { return m_CentralInput; }
+
 		unsigned int GetFPS() const { return FPS; }
 		double GetDeltaTime() const { return DeltaTime; }
 
@@ -26,6 +30,7 @@ namespace MikuEngine
 		Renderer m_Renderer;
 		ImguiManager m_ImGuiManager;
 		AssetPoolManager m_AssetPoolManager;
+		CentralInput m_CentralInput;
 
 		unsigned int FPS;
 		double DeltaTime;
