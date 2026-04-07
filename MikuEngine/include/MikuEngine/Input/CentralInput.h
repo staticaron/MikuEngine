@@ -18,6 +18,9 @@ namespace MikuEngine
 		const glm::ivec2& GetAxisRaw() const { return m_AxisRaw; }
 		bool IsKeyPressed( int keycode ) const;
 
+		void LockCursor() const;
+		void UnlockCursor() const;
+
 	private:
 		void UpdateKeyboardButtons();
 		void UpdateAxisRaw();

@@ -60,12 +60,22 @@ namespace MikuEngine
 		return existing->second == GLFW_PRESS || existing->second == GLFW_REPEAT;
 	};
 
-	bool CentralInput::IsKeyPressed( int keycode )
+	bool CentralInput::IsKeyPressed( int keycode ) const
 	{
 		const auto& existing = m_KeyCodeState.find( keycode );
 
 		MIKU_ASSERT( existing != m_KeyCodeState.end(), "KEY NOT FOUND!" );
 
 		return existing->second == GLFW_PRESS || existing->second == GLFW_REPEAT;
+	}
+
+	void CentralInput::LockCursor() const
+	{
+		glfwSetInputMode( Application::GetApplication()->GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED );
+	}
+
+	void CentralInput::UnlockCursor() const
+	{
+		glfwSetInputMode( Application::GetApplication()->GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL );
 	}
 }

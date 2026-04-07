@@ -29,7 +29,7 @@ namespace MikuEditor
 		if ( m_EditorLevelStuff.m_CurrentPlayModeState == PlayModeState::PLAYING ) return;
 
 		// handle camera movement when viewport is active
-		if ( m_IsViewportPanelFocused ) m_EditorCamera.Translate( dt );
+		if ( m_IsViewportPanelFocused ) m_EditorCamera.Update( dt );
 
 		// Update the UniformBuffers and feed in the new matrices
 		MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateEditorMatrixData( { m_EditorCamera.GetProjMatrix(), m_EditorCamera.GetViewMatrix() } );

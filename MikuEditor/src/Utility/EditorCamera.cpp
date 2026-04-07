@@ -1,7 +1,8 @@
 #include "Utility/EditorCamera.h"
 
+#include "glm/gtx/quaternion.hpp"
+
 #include "Application.h"
-#include "Input/Input.h"
 #include "Layers/EditorLevelStuff.h"
 
 namespace MikuEditor
@@ -20,27 +21,49 @@ namespace MikuEditor
 	void EditorCamera::UpdateViewMatrix()
 	{
 		m_ViewMatrix = glm::translate( glm::mat4( 1.0f ), Position ) * glm::toMat4( GetOrientation() );
+		m_ViewMatrix = glm::inverse( m_ViewMatrix );
 	}
 
 	void EditorCamera::Update( double dt )
 	{
 		const auto& centralInput = MikuEngine::Application::GetAppLevelStuff().GetCentralInput();
 
-		if ( centralInput.IsKeyPressed( GLFW_KEY_LEFT_ALT ) )
+		if ( centralInput.IsMouseButtonPressed( GLFW_MOUSE_BUTTON_2 ) )
 		{
-			const auto& mouseDelta = centralInput.GetMousePositionDelta();
-
-			m_Yaw += mouseDelta.x * m_RotationSpeed;
-			m_Pitch += mouseDelta.y + m_RotationSpeed;
-
-			UpdateViewMatrix();
+			if ( m_MovementLocked == true ) centralInput.LockCursor();
+			m_MovementLocked = false;
 		}
+		else if ( centralInput.IsMouseButtonPressed( GLFW_MOUSE_BUTTON_2 ) == false )
+		{
+			if ( m_MovementLocked == false ) centralInput.UnlockCursor();
+			m_MovementLocked = true;
+		}
+
+		if ( m_MovementLocked != false ) return;
+
+		Translate( dt );
+
+		const auto& mouseDelta = centralInput.GetMousePositionDelta();
+
+		m_Yaw += mouseDelta.x * m_RotationSpeed;
+		m_Pitch -= mouseDelta.y * m_RotationSpeed;
+
+		UpdateViewMatrix();
 	}
 
 	void EditorCamera::Translate( double dt )
 	{
-		const auto& [ xAxis, yAxis ] = MikuEngine::Input::GetAxisRaw();
-		Position = { Position.x + xAxis * m_CameraSpeed * dt, Position.y + yAxis * m_CameraSpeed * dt, Position.z };
+		const auto& centralInput = MikuEngine::Application::GetAppLevelStuff().GetCentralInput();
+		const auto& axisRaw = centralInput.GetAxisRaw();
+		// Position = { Position.x + axisRaw.x * m_CameraSpeed * dt, Position.y + axisRaw.y * m_CameraSpeed * dt, Position.z };
+
+		float forwardMovement = axisRaw.y * dt * m_CameraSpeed;
+		const auto& forwardDirection = GetForwardDirection();
+		Position = { Position.x - forwardDirection.x * forwardMovement, Position.y - forwardDirection.y * forwardMovement, Position.z - forwardDirection.z * forwardMovement };
+
+		float lateralMovement = axisRaw.x * dt * m_CameraSpeed;
+		const auto& rightDirection = GetRightDirection();
+		Position = { Position.x + rightDirection.x * lateralMovement, Position.y + rightDirection.y * lateralMovement, Position.z + rightDirection.z * lateralMovement };
 	}
 
 	void EditorCamera::RenderImGui( EditorLevelStuff& editorLevelStuff )
@@ -50,10 +73,9 @@ namespace MikuEditor
 		if ( ImGui::Begin( "Editor Camera", &open ) == false ) return;
 
 		ImGui::DragFloat3( "Position", &Position.x );
-		ImGui::DragFloat3( "Rotation", &Rotation.x );
-		ImGui::DragFloat( "Speed", &m_CameraSpeed );
+		ImGui::DragFloat( "Move Speed", &m_CameraSpeed );
+		ImGui::DragFloat( "Rotation Speed", &m_RotationSpeed );
 
 		ImGui::End();
 	}
-
 }
