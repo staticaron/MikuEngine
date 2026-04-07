@@ -4,8 +4,10 @@ namespace MikuEngine
 {
 	void UniformBufferManager::Init()
 	{
-		m_GameUniformBuffer.Init( sizeof( MatrixData ) );
-		m_EditorUniformBuffer.Init( sizeof( MatrixData ) );
+		m_GameUniformBuffer.Init( 0, sizeof( MatrixData ) );
+		m_EditorUniformBuffer.Init( 0, sizeof( MatrixData ) );
+
+		m_LightingUniformBuffer.Init( 1, sizeof( LightingData ) );
 	}
 
 	void UniformBufferManager::UpdateGameMatrixData( const MatrixData& matrixData )
@@ -23,5 +25,13 @@ namespace MikuEngine
 
 		m_EditorMatrixData = matrixData;
 		m_EditorUniformBuffer.PutData( &m_EditorMatrixData, sizeof( MatrixData ) );
+	}
+
+	void UniformBufferManager::UpdateLightingData( const LightingData& lightingData )
+	{
+		if ( lightingData == m_LightingData ) return;
+
+		m_LightingData = lightingData;
+		m_LightingUniformBuffer.PutData( &m_LightingData, sizeof( LightingData ) );
 	}
 }

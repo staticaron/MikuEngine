@@ -9,6 +9,6 @@ namespace MikuEngine
 	class MIKU_API GameUniformBuffer : public UniformBuffer
 	{
 	public:
-		void Init( unsigned int size ) override;
+		void Init( unsigned int bindIndex, unsigned int size ) override;
 	};
 }

@@ -7,7 +7,7 @@ namespace MikuEngine
 	class MIKU_API UniformBuffer
 	{
 	public:
-		virtual void Init( unsigned int size ) = 0;
+		virtual void Init( unsigned int bindIndex, unsigned int size ) = 0;
 
 		void Destroy();
 
@@ -20,5 +20,6 @@ namespace MikuEngine
 
 	protected:
 		unsigned int m_RendererID;
+		unsigned int m_BindIndex;
 	};
 }

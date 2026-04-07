@@ -1,10 +1,10 @@
-#include "Rendering/UniformBuffers/EditorUniformBuffer.h"
+#include "Rendering/UniformBuffers/LightingUniformBuffer.h"
 
 #include "glad/glad.h"
 
 namespace MikuEngine
 {
-	void EditorUniformBuffer::Init( unsigned int bindIndex, unsigned int size )
+	void LightingUniformBuffer::Init( unsigned int bindIndex, unsigned int size )
 	{
 		m_BindIndex = bindIndex;
 

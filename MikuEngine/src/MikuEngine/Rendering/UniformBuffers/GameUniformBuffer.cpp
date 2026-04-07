@@ -4,12 +4,16 @@
 
 namespace MikuEngine
 {
-	void GameUniformBuffer::Init( unsigned int size )
+	void GameUniformBuffer::Init( unsigned int bindIndex, unsigned int size )
 	{
+		m_BindIndex = bindIndex;
+
 		glGenBuffers( 1, &m_RendererID );
+
 		Bind();
 		glBufferData( GL_UNIFORM_BUFFER, size, nullptr, GL_DYNAMIC_DRAW );
 		UnBind();
-		glBindBufferBase( GL_UNIFORM_BUFFER, 0, m_RendererID );
+
+		glBindBufferBase( GL_UNIFORM_BUFFER, bindIndex, m_RendererID );
 	}
 }

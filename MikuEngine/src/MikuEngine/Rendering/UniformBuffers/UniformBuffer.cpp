@@ -12,7 +12,7 @@ namespace MikuEngine
 	void UniformBuffer::Bind() const
 	{
 		glBindBuffer( GL_UNIFORM_BUFFER, m_RendererID );
-		glBindBufferBase( GL_UNIFORM_BUFFER, 0, m_RendererID );
+		glBindBufferBase( GL_UNIFORM_BUFFER, m_BindIndex, m_RendererID );
 	}
 
 	void UniformBuffer::UnBind() const
