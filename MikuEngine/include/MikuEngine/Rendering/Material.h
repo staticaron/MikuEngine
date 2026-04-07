@@ -29,6 +29,8 @@ namespace MikuEngine
 		void LoadFromFile( const std::filesystem::path& materialPath );
 		void SaveToFile( const std::filesystem::path& filePath ) const;
 
+		static void CreateAssetAtPath( const std::string& name, const std::filesystem::path& path );
+
 		void Bind();
 		void UnBind();
 

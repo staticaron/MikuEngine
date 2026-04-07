@@ -30,6 +30,10 @@ namespace MikuEngine
 
 		void PrepareMaterialIndex();
 
+		void Refresh();
+		void RefreshMaterialIndex();
+		void RefreshMaterials();
+
 		const std::unordered_map<UUID, MaterialContainer> GetAllLoadedMaterials() const;
 
 		MaterialContainer& GetMaterial( const UUID& uuid );

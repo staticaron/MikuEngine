@@ -93,6 +93,14 @@ namespace MikuEditor
 
 		ImGui::PopStyleColor( 3 );
 
+		if ( ImGui::BeginPopupContextWindow() )
+		{
+			if ( ImGui::MenuItem( "Create Material" ) ) MikuEngine::Material::CreateAssetAtPath( "gigaNewMat", m_ContentBrowserLocation );
+			if ( ImGui::MenuItem( "Create Shader" ) ) MIKU_CLIENT_INFO( "Created Material" );
+
+			ImGui::EndPopup();
+		}
+
 		ImGui::End();
 	}
 

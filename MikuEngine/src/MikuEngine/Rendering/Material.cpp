@@ -54,8 +54,11 @@ namespace MikuEngine
 
 		const ShaderManager& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
-		auto shaderUUID = UUID( rootNode[ "shader" ].as<std::string>() );
-		m_Shader = shaderManager.GetShader( shaderUUID ).shader;
+		auto shaderUUID = rootNode[ "shader" ].as<std::string>();
+
+		if ( shaderUUID == "<NONE>" ) return;
+
+		m_Shader = shaderManager.GetShader( UUID( shaderUUID ) ).shader;
 
 		YAML::Node paramterNodes = rootNode[ "properties" ];
 
@@ -109,6 +112,29 @@ namespace MikuEngine
 		fout << emitter.c_str();
 	}
 
+	void Material::CreateAssetAtPath( const std::string& name, const std::filesystem::path& path )
+	{
+		YAML::Emitter emitter;
+
+		emitter << YAML::BeginMap;
+		emitter << YAML::Key << "shader" << YAML::Value << "<NONE>";
+		emitter << YAML::EndMap;
+
+		unsigned int count = 0;
+		std::filesystem::path pathToSave = path.string() + "/" + name + ".mat";
+
+		while ( std::filesystem::exists( pathToSave ) )
+		{
+			count++;
+			pathToSave = path.string() + "/" + name + "_" + std::to_string( count ) + ".mat";
+		}
+
+		std::ofstream fout( pathToSave );
+		fout << emitter.c_str();
+
+		// Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().Refresh();
+	}
+
 	void Material::Bind()
 	{
 		const auto& textureManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager();
@@ -154,10 +180,8 @@ namespace MikuEngine
 		ImGui::Separator();
 		ImGui::Separator();
 
-		if ( m_Shader.has_value() == false ) return;
-
 		// Render Shader Details
-		auto shaderName = m_Shader->GetName();
+		auto shaderName = m_Shader.has_value() ? m_Shader->GetName() : "<NONE>";
 		char shaderNameBuff[ 256 ];
 		std::copy( shaderName.begin(), shaderName.begin() + shaderName.size(), shaderNameBuff );
 		shaderNameBuff[ shaderName.size() ] = '\0';
@@ -181,41 +205,45 @@ namespace MikuEngine
 			ImGui::EndDragDropTarget();
 		}
 
-		// Render Textures
-		for ( auto& [ uniformName, uuid ] : m_Textures )
+		// If no shader is attached then no need to render the shader properties
+		if ( m_Shader.has_value() )
 		{
-			const auto& textureUUID = m_Textures[ uniformName ];
-			std::string textureName = "<none>";
-
-			if ( textureUUID != 0 ) textureName = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTextureName( textureUUID );
-
-			char buff[ 256 ] = "";
-			std::copy( textureName.begin(), textureName.end(), buff );
-			buff[ textureName.length() ] = '\0';
-
-			ImGui::InputText( uniformName.c_str(), buff, 256, ImGuiInputTextFlags_ReadOnly );
-
-			if ( ImGui::BeginDragDropTarget() )
+			// Render Textures
+			for ( auto& [ uniformName, uuid ] : m_Textures )
 			{
-				const ImGuiPayload* payload = ImGui::AcceptDragDropPayload( "TEXTURE_DRAG_DROP_PAYLOAD" );
+				const auto& textureUUID = m_Textures[ uniformName ];
+				std::string textureName = "<none>";
 
-				if ( payload != nullptr )
+				if ( textureUUID != 0 ) textureName = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTextureName( textureUUID );
+
+				char buff[ 256 ] = "";
+				std::copy( textureName.begin(), textureName.end(), buff );
+				buff[ textureName.length() ] = '\0';
+
+				ImGui::InputText( uniformName.c_str(), buff, 256, ImGuiInputTextFlags_ReadOnly );
+
+				if ( ImGui::BeginDragDropTarget() )
 				{
-					std::string filePath = static_cast<const char*>( payload->Data );
-					std::filesystem::path materialPath = filePath;
+					const ImGuiPayload* payload = ImGui::AcceptDragDropPayload( "TEXTURE_DRAG_DROP_PAYLOAD" );
 
-					const auto& texture = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath );
-					m_Textures[ uniformName ] = texture->GetUUID();
+					if ( payload != nullptr )
+					{
+						std::string filePath = static_cast<const char*>( payload->Data );
+						std::filesystem::path materialPath = filePath;
+
+						const auto& texture = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath );
+						m_Textures[ uniformName ] = texture->GetUUID();
+					}
+
+					ImGui::EndDragDropTarget();
 				}
-
-				ImGui::EndDragDropTarget();
 			}
-		}
 
-		// Render Floats
-		for ( auto& [ uniformName, value ] : m_Floats )
-		{
-			ImGui::DragFloat( uniformName.c_str(), &m_Floats[ uniformName ] );
+			// Render Floats
+			for ( auto& [ uniformName, value ] : m_Floats )
+			{
+				ImGui::DragFloat( uniformName.c_str(), &m_Floats[ uniformName ] );
+			}
 		}
 
 		// Render Save Material Button
