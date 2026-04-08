@@ -55,15 +55,18 @@ namespace MikuEditor
 	{
 		const auto& centralInput = MikuEngine::Application::GetAppLevelStuff().GetCentralInput();
 		const auto& axisRaw = centralInput.GetAxisRaw();
-		// Position = { Position.x + axisRaw.x * m_CameraSpeed * dt, Position.y + axisRaw.y * m_CameraSpeed * dt, Position.z };
 
 		float forwardMovement = axisRaw.y * dt * m_CameraSpeed;
 		const auto& forwardDirection = GetForwardDirection();
-		Position = { Position.x - forwardDirection.x * forwardMovement, Position.y - forwardDirection.y * forwardMovement, Position.z - forwardDirection.z * forwardMovement };
+		Position = { Position.x + forwardDirection.x * forwardMovement, Position.y + forwardDirection.y * forwardMovement, Position.z + forwardDirection.z * forwardMovement };
 
 		float lateralMovement = axisRaw.x * dt * m_CameraSpeed;
 		const auto& rightDirection = GetRightDirection();
 		Position = { Position.x + rightDirection.x * lateralMovement, Position.y + rightDirection.y * lateralMovement, Position.z + rightDirection.z * lateralMovement };
+
+		float verticalMovement = axisRaw.z * dt * m_CameraSpeed;
+		const auto& upDirection = GetUpDirection();
+		Position = { Position.x + upDirection.x * verticalMovement, Position.y + upDirection.y * verticalMovement, Position.z + upDirection.z * verticalMovement };
 	}
 
 	void EditorCamera::RenderImGui( EditorLevelStuff& editorLevelStuff )

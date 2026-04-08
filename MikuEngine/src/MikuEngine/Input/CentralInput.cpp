@@ -23,6 +23,8 @@ namespace MikuEngine
 		m_KeyCodeState[ GLFW_KEY_S ] = glfwGetKey( window, GLFW_KEY_S );
 		m_KeyCodeState[ GLFW_KEY_D ] = glfwGetKey( window, GLFW_KEY_D );
 		m_KeyCodeState[ GLFW_KEY_A ] = glfwGetKey( window, GLFW_KEY_A );
+		m_KeyCodeState[ GLFW_KEY_Q ] = glfwGetKey( window, GLFW_KEY_Q );
+		m_KeyCodeState[ GLFW_KEY_E ] = glfwGetKey( window, GLFW_KEY_E );
 
 		m_KeyCodeState[ GLFW_KEY_SPACE ] = glfwGetKey( window, GLFW_KEY_SPACE );
 	}
@@ -31,11 +33,14 @@ namespace MikuEngine
 	{
 		bool rightPressed = IsKeyPressed( GLFW_KEY_D );
 		bool leftPressed = IsKeyPressed( GLFW_KEY_A );
-		bool upPressed = IsKeyPressed( GLFW_KEY_W );
-		bool downPressed = IsKeyPressed( GLFW_KEY_S );
+		bool upPressed = IsKeyPressed( GLFW_KEY_Q );
+		bool downPressed = IsKeyPressed( GLFW_KEY_E );
+		bool forwardPressed = IsKeyPressed( GLFW_KEY_W );
+		bool backwardPressed = IsKeyPressed( GLFW_KEY_S );
 
 		m_AxisRaw.x = rightPressed - leftPressed;
-		m_AxisRaw.y = downPressed - upPressed;
+		m_AxisRaw.y = forwardPressed - backwardPressed;
+		m_AxisRaw.z = downPressed - upPressed;
 	}
 
 	void CentralInput::UpdateMousePosition()

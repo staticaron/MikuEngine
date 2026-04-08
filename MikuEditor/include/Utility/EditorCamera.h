@@ -33,6 +33,7 @@ namespace MikuEditor
 		glm::quat GetOrientation() const { return glm::quat( glm::vec3( -m_Pitch, -m_Yaw, 0.0f ) ); }
 		glm::vec3 GetForwardDirection() const { return glm::rotate( GetOrientation(), glm::vec3( 0.0f, 0.0f, -1.0f ) ); }
 		glm::vec3 GetRightDirection() const { return glm::rotate( GetOrientation(), glm::vec3( 1.0f, 0.0f, 0.0f ) ); }
+		glm::vec3 GetUpDirection() const { return glm::rotate( GetOrientation(), glm::vec3( 0.0f, 1.0f, 0.0f ) ); }
 
 		void Translate( double dt );
 

@@ -15,7 +15,7 @@ namespace MikuEngine
 		const glm::dvec2& GetMousePosition() const { return m_MousePosition; }
 		glm::dvec2 GetMousePositionDelta() const { return m_MousePosition - m_LastMousePosition; }
 
-		const glm::ivec2& GetAxisRaw() const { return m_AxisRaw; }
+		const glm::ivec3& GetAxisRaw() const { return m_AxisRaw; }
 		bool IsKeyPressed( int keycode ) const;
 
 		void LockCursor() const;
@@ -29,7 +29,7 @@ namespace MikuEngine
 		void UpdateMouseButtons();
 
 	private:
-		glm::ivec2 m_AxisRaw = { 0, 0 };
+		glm::ivec3 m_AxisRaw = { 0, 0, 0 };
 
 		glm::dvec2 m_MousePosition = {};
 		glm::dvec2 m_LastMousePosition = {};
