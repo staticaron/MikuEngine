@@ -121,18 +121,19 @@ namespace MikuEngine
 		emitter << YAML::EndMap;
 
 		unsigned int count = 0;
-		std::filesystem::path pathToSave = path.string() + "/" + name + ".mat";
+		std::filesystem::path pathToSave = path / ( name + ".mat" );
 
 		while ( std::filesystem::exists( pathToSave ) )
 		{
 			count++;
-			pathToSave = path.string() + "/" + name + "_" + std::to_string( count ) + ".mat";
+			pathToSave = path / ( name + "_" + std::to_string( count ) + ".mat" );
 		}
 
 		std::ofstream fout( pathToSave );
 		fout << emitter.c_str();
+		fout.close();
 
-		// Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().Refresh();
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().Refresh();
 	}
 
 	void Material::Bind()
@@ -196,8 +197,6 @@ namespace MikuEngine
 			{
 				std::string shaderFilePath = static_cast<const char*>( payload->Data );
 				m_Shader = shaderManager.GetShaderByFilePath( shaderFilePath ).shader;
-
-				MIKU_CORE_INFO( "Shader Dropped! : {}", m_Shader->GetName() );
 
 				CreateFromShader( m_Shader.value() );
 			}
