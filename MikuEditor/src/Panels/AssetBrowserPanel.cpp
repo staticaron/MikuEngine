@@ -96,7 +96,7 @@ namespace MikuEditor
 		if ( ImGui::BeginPopupContextWindow() )
 		{
 			if ( ImGui::MenuItem( "Create Material" ) ) MikuEngine::Material::CreateAssetAtPath( "gigaNewMat", m_ContentBrowserLocation );
-			if ( ImGui::MenuItem( "Create Shader" ) ) MIKU_CLIENT_INFO( "Created Material" );
+			if ( ImGui::MenuItem( "Create Shader" ) ) MikuEngine::Shader::CreateAssetAtPath( "gigaNewShader", m_ContentBrowserLocation );
 
 			ImGui::EndPopup();
 		}
@@ -140,8 +140,10 @@ namespace MikuEditor
 				break;
 			}
 			case MikuEngine::AssetType::SCENE:
+				MIKU_CLIENT_WARN( "Scene Button Click Behavior is not Implemented!" );
 				break;
 			case MikuEngine::AssetType::SHADER:
+				MIKU_CLIENT_WARN( "Shader Button Click Behavior is not Implemented!" );
 				break;
 			default:
 				break;

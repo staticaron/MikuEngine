@@ -11,6 +11,7 @@ namespace MikuEngine
 {
 	struct ShaderIndexEntry
 	{
+		UUID uuid;
 		std::string name;
 		std::string path;
 	};
@@ -30,8 +31,9 @@ namespace MikuEngine
 		void LoadDefaultShaders();
 		void LoadAllShaders();
 
-		void PrepareShaderIndex();
 		const std::unordered_map<UUID, ShaderIndexEntry>& GetShaderIndex() const;
+
+		void Refresh();
 
 		const ShaderContainer& GetShader( UUID shaderUUID ) const;
 		const ShaderContainer& GetShaderByName( const std::string& name ) const;
@@ -42,6 +44,12 @@ namespace MikuEngine
 
 		std::string GetShaderName( UUID shaderUUID ) const;
 		const ShaderContainer& GetDefaultShader() const;
+
+	private:
+		void PrepareShaderIndex();
+
+		void RefreshShaderIndex();
+		void RefreshShaders();
 
 	private:
 		std::unordered_map<UUID, ShaderIndexEntry> m_ShaderIndex;

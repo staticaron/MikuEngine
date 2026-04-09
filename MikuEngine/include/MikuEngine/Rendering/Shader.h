@@ -16,7 +16,7 @@
 
 namespace MikuEngine
 {
-	constexpr std::string_view DEFAULT_SHADER_LOCATION = RESOURCE_DIR "/shaders/quad.shader";
+	constexpr std::string_view DEFAULT_SHADER_LOCATION = RESOURCE_DIR "/shaders/default.shader";
 
 	struct MIKU_API ShaderUniform
 	{
@@ -29,12 +29,14 @@ namespace MikuEngine
 	{
 	public:
 		Shader() : Asset( AssetType::SHADER ) {};
-		Shader( UUID uuid, const std::filesystem::path& path = DEFAULT_SHADER_LOCATION );
+		Shader( UUID uuid, const std::filesystem::path& path );
 
 		void ParseShader( std::string_view filepath, std::string& vs, std::string& gs, std::string& fs );
 
 		unsigned int CompileShader( const std::string& source, unsigned int type );
 		unsigned int CreateShader( const std::string& vs, const std::string& gs, const std::string& fs );
+
+		static void CreateAssetAtPath( const std::string& name, const std::filesystem::path& path );
 
 		void LoadFromFile( const std::filesystem::path& filepath );
 		void PrepareUniforms();

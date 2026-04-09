@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 
+#include "Application.h"
 #include "Logger.h"
 
 #include "Rendering/VertexBufferLayout.h"
@@ -111,6 +112,22 @@ namespace MikuEngine
 		return program;
 	}
 
+	void Shader::CreateAssetAtPath( const std::string& name, const std::filesystem::path& folderPath )
+	{
+		unsigned int count = 0;
+		std::filesystem::path pathToSave = folderPath / ( name + ".shader" );
+
+		while ( std::filesystem::exists( pathToSave ) )
+		{
+			count++;
+			pathToSave = folderPath / ( name + "_" + std::to_string( count ) + ".shader" );
+		}
+
+		std::filesystem::copy( DEFAULT_SHADER_LOCATION, pathToSave );
+
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().Refresh();
+	}
+
 	void Shader::LoadFromFile( const std::filesystem::path& filepath )
 	{
 		m_ShaderPath = filepath;
@@ -121,6 +138,8 @@ namespace MikuEngine
 		m_RendererID = CreateShader( vs, gs, fs );
 
 		PrepareUniforms();
+
+		MIKU_CORE_INFO( "Shader Loaded! {}", filepath.string() );
 	}
 
 	void Shader::PrepareUniforms()
