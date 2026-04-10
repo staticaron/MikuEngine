@@ -169,7 +169,7 @@ namespace MikuEngine
 
 	void Material::RenderInspectorImGui()
 	{
-		const auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
+		auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
 		// Render Material Details
 		auto materialName = GetName();

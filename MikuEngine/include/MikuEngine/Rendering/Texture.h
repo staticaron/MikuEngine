@@ -25,6 +25,7 @@ namespace MikuEngine
 		unsigned int GetRendererID() const { return m_RendererID; }
 
 		void RenderInspectorImGui() override {}
+		void DeleteAsset() override {}
 
 	private:
 		UUID m_UUID;

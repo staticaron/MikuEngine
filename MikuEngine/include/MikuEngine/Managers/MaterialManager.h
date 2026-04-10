@@ -12,14 +12,17 @@ namespace MikuEngine
 	struct MIKU_API MaterialIndex
 	{
 		UUID uuid;
-		std::string name;
-		std::string path;
+		std::filesystem::path path;
+
+		std::string GetName() const { return path.stem().string(); }
 	};
 
 	struct MIKU_API MaterialContainer
 	{
 		MaterialIndex index;
 		Material material;
+
+		std::string GetName() const { return index.path.stem().string(); }
 	};
 
 	class MIKU_API MaterialManager

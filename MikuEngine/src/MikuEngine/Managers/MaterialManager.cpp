@@ -30,7 +30,7 @@ namespace MikuEngine
 			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
 
 			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
-			m_MaterialIndex[ uuid ] = { uuid, file.path().stem().string(), file.path().string() };
+			m_MaterialIndex[ uuid ] = { uuid, file.path().string() };
 		}
 	}
 
@@ -57,7 +57,7 @@ namespace MikuEngine
 
 			if ( existingIndex != m_MaterialIndex.end() ) continue;
 
-			m_MaterialIndex[ uuid ] = { uuid, file.path().stem().string(), file.path().string() };
+			m_MaterialIndex[ uuid ] = { uuid, file.path().string() };
 
 			refreshCount++;
 		}

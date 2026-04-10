@@ -48,7 +48,7 @@ namespace MikuEngine
 		std::string GetName() const { return m_ShaderPath.stem().string(); }
 		const UUID& GetUUID() const { return m_ShaderUUID; }
 
-		void RenderInspectorImGui() override {};
+		void RenderInspectorImGui() override;
 
 		unsigned int GetUniformLocation( const std::string& uniformName )
 		{
@@ -67,6 +67,8 @@ namespace MikuEngine
 		{
 			static_assert( sizeof( T ) == 0, "No specialization of this type!" );
 		}
+
+		void DeleteAsset() override;
 
 	private:
 		unsigned int m_RendererID = 0;

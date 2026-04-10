@@ -163,8 +163,11 @@ namespace MikuEditor
 			material.material.RenderInspectorImGui();
 			break;
 		}
-		case MikuEngine::AssetType::SHADER:
+		case MikuEngine::AssetType::SHADER: {
+			auto& shader = assetPoolManager.GetShaderManager().GetShader( item.uuid );
+			shader.shader.RenderInspectorImGui();
 			break;
+		}
 		case MikuEngine::AssetType::TEXTURE:
 			break;
 		case MikuEngine::AssetType::SCENE:

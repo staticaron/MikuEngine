@@ -83,7 +83,7 @@ namespace MikuEngine
 		if ( materialUUID.has_value() )
 		{
 			auto& material = materialManager.GetMaterial( materialUUID.value() );
-			materialName = material.index.name;
+			materialName = material.GetName();
 		}
 
 		ImGui::PushID( "Material" );

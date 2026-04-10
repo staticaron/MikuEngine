@@ -12,14 +12,26 @@ namespace MikuEngine
 	struct ShaderIndexEntry
 	{
 		UUID uuid;
-		std::string name;
-		std::string path;
+		std::filesystem::path path;
 	};
 
 	struct ShaderContainer
 	{
-		ShaderIndexEntry shaderDetails;
+		ShaderIndexEntry index;
 		Shader shader;
+
+		std::string GetName() const
+		{
+			// Comment
+			return index.path.stem().string();
+		}
+
+		void SetName( const std::string& newName )
+		{
+			std::filesystem::path newNamePath = index.path.parent_path() / ( newName + ".shader" );
+			std::filesystem::rename( index.path, newNamePath );
+			index.path = newNamePath;
+		}
 	};
 
 	class MIKU_API ShaderManager
@@ -28,22 +40,26 @@ namespace MikuEngine
 		ShaderManager();
 
 		void LoadShader( const std::string& name, const std::string& filepath );
-		void LoadDefaultShaders();
 		void LoadAllShaders();
+		void LoadDefaultShaders();
 
-		const std::unordered_map<UUID, ShaderIndexEntry>& GetShaderIndex() const;
+		void RenameShader( const UUID& uuid, const std::string& newName );
+		void DeleteShader( const UUID& uuid );
 
 		void Refresh();
 
-		const ShaderContainer& GetShader( UUID shaderUUID ) const;
-		const ShaderContainer& GetShaderByName( const std::string& name ) const;
-		const ShaderContainer& GetShaderByFilePath( const std::filesystem::path& path ) const;
-		bool ShaderExists( const UUID& uuid ) const;
-
+		const std::unordered_map<UUID, ShaderIndexEntry>& GetShaderIndex() const;
 		const std::unordered_map<UUID, ShaderContainer>& GetAllLoadedShaders() const;
 
-		std::string GetShaderName( UUID shaderUUID ) const;
+		ShaderContainer& GetShader( UUID shaderUUID );
+		const ShaderContainer& GetShader( UUID shaderUUID ) const;
 		const ShaderContainer& GetDefaultShader() const;
+
+		ShaderContainer& GetShaderByName( const std::string& name );
+		ShaderContainer& GetShaderByFilePath( const std::filesystem::path& path );
+		std::string GetShaderName( UUID shaderUUID ) const;
+
+		bool ShaderExists( const UUID& uuid ) const;
 
 	private:
 		void PrepareShaderIndex();

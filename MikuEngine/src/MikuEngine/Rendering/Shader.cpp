@@ -176,4 +176,22 @@ namespace MikuEngine
 	{
 		glUseProgram( 0 );
 	}
+
+	void Shader::RenderInspectorImGui()
+	{
+		auto& assetDetails = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().GetShader( m_ShaderUUID );
+		std::string newName = assetDetails.GetName();
+
+		RenderBaseImGui( newName );
+
+		if ( newName != assetDetails.GetName() )
+		{
+			Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().RenameShader( assetDetails.index.uuid, newName );
+		}
+	}
+
+	void Shader::DeleteAsset()
+	{
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().DeleteShader( m_ShaderUUID );
+	}
 }

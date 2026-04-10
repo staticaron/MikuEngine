@@ -45,6 +45,7 @@ namespace MikuEngine
 		}
 
 		void RenderInspectorImGui() override;
+		void DeleteAsset() override {}
 
 	private:
 		void RegisterUniform( std::string, ShaderUniform );

@@ -1,4 +1,4 @@
-#include "Rendering/Managers/UniformBufferManager.h"
+#include "Managers/UniformBufferManager.h"
 
 namespace MikuEngine
 {

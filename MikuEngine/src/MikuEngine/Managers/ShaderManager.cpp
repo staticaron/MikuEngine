@@ -42,38 +42,36 @@ namespace MikuEngine
 			m_Shaders[ uuid ] = { shaderIndex, shader };
 		}
 
-		MIKU_CORE_INFO( "All {} Shaders Loaded!", m_Shaders.size() );
+		MIKU_CORE_DEBUG( "All {} Shaders Loaded!", m_Shaders.size() );
+	}
+
+	void ShaderManager::RenameShader( const UUID& uuid, const std::string& newName )
+	{
+		const auto& existing = m_Shaders.find( uuid );
+		MIKU_ASSERT( existing != m_Shaders.end(), "Shader not found! Aborting Rename" );
+
+		existing->second.SetName( newName );
+
+		MIKU_CORE_INFO( "Shader New Path : {}", existing->second.GetName() );
+	}
+
+	void ShaderManager::DeleteShader( const UUID& uuid )
+	{
+		MIKU_CORE_INFO( "Number of Shaders before removal : {}", m_Shaders.size() );
+
+		auto& shader = GetShader( uuid );
+		if ( std::filesystem::exists( shader.index.path ) ) std::filesystem::remove( shader.index.path );
+
+		const auto& existing = m_Shaders.find( uuid );
+		m_Shaders.erase( existing );
+
+		MIKU_CORE_INFO( "Number of Shaders after removal : {}", m_Shaders.size() );
 	}
 
 	void ShaderManager::Refresh()
 	{
-		RefreshShaderIndex();
+		PrepareShaderIndex();
 		RefreshShaders();
-	}
-
-	void ShaderManager::RefreshShaderIndex()
-	{
-		if ( !std::filesystem::exists( PROJECT_DIR "/shaders/" ) ) return;
-
-		unsigned int refreshCount = 0;
-
-		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/shaders/" ) )
-		{
-			if ( file.path().extension() == ".meta" ) continue;
-			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
-
-			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
-
-			const auto& existingIndex = m_ShaderIndex.find( uuid );
-
-			if ( existingIndex != m_ShaderIndex.end() ) continue;
-
-			m_ShaderIndex[ uuid ] = { uuid, file.path().stem().string(), file.path().string() };
-
-			refreshCount++;
-		}
-
-		MIKU_CORE_INFO( "Material Index Refresh Completed with count : {}", refreshCount );
 	}
 
 	void ShaderManager::RefreshShaders()
@@ -92,7 +90,7 @@ namespace MikuEngine
 			refreshCount++;
 		}
 
-		MIKU_CORE_INFO( "Material Refresh Completed with count : {}", refreshCount );
+		MIKU_CORE_DEBUG( "Material Refresh Completed with count : {}", refreshCount );
 	}
 
 	void ShaderManager::PrepareShaderIndex()
@@ -104,7 +102,7 @@ namespace MikuEngine
 			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
 
 			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
-			m_DefaultShaderIndex[ uuid ] = { uuid, file.path().stem().string(), file.path().string() };
+			m_DefaultShaderIndex[ uuid ] = { uuid, file.path().string() };
 		}
 
 		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/shaders/" ) )
@@ -114,15 +112,25 @@ namespace MikuEngine
 			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
 
 			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
-			m_ShaderIndex[ uuid ] = { uuid, file.path().stem().string(), file.path().string() };
+			m_ShaderIndex[ uuid ] = { uuid, file.path().string() };
 		}
 
-		MIKU_CORE_INFO( "Shader Indexing Complete!", m_ShaderIndex.size() );
+		MIKU_CORE_DEBUG( "Shader Indexing Complete!", m_ShaderIndex.size() );
 	}
 
 	const std::unordered_map<UUID, ShaderIndexEntry>& ShaderManager::GetShaderIndex() const
 	{
 		return m_ShaderIndex;
+	}
+
+	ShaderContainer& ShaderManager::GetShader( UUID shaderUUID )
+	{
+		auto count = m_Shaders.size();
+		auto existing = m_Shaders.find( shaderUUID );
+
+		MIKU_ASSERT( existing != m_Shaders.end(), "Shader not loaded!" );
+
+		return existing->second;
 	}
 
 	const ShaderContainer& ShaderManager::GetShader( UUID shaderUUID ) const
@@ -137,21 +145,21 @@ namespace MikuEngine
 		return existing->second;
 	}
 
-	const ShaderContainer& ShaderManager::GetShaderByName( const std::string& name ) const
+	ShaderContainer& ShaderManager::GetShaderByName( const std::string& name )
 	{
-		for ( const auto& [ uuid, textureIndexEntry ] : m_ShaderIndex )
+		for ( auto& [ uuid, shaderContainer ] : m_Shaders )
 		{
-			if ( textureIndexEntry.name == name ) return m_Shaders.at( uuid );
+			if ( shaderContainer.GetName() == name ) return shaderContainer;
 		}
 
 		MIKU_ASSERT( false, "Requested Shader is not loaded!" );
 	}
 
-	const ShaderContainer& ShaderManager::GetShaderByFilePath( const std::filesystem::path& path ) const
+	ShaderContainer& ShaderManager::GetShaderByFilePath( const std::filesystem::path& path )
 	{
-		for ( const auto& [ uuid, textureIndexEntry ] : m_ShaderIndex )
+		for ( const auto& [ uuid, shaderContainer ] : m_Shaders )
 		{
-			if ( textureIndexEntry.path == path ) return m_Shaders.at( uuid );
+			if ( shaderContainer.index.path == path ) return m_Shaders.at( uuid );
 		}
 
 		MIKU_ASSERT( false, "Requested Shader is not loaded!" );
@@ -170,8 +178,8 @@ namespace MikuEngine
 
 	std::string ShaderManager::GetShaderName( UUID textureUUID ) const
 	{
-		auto existing = m_ShaderIndex.find( textureUUID );
-		return existing->second.name;
+		auto existing = m_Shaders.find( textureUUID );
+		return existing->second.GetName();
 	}
 
 	const ShaderContainer& ShaderManager::GetDefaultShader() const

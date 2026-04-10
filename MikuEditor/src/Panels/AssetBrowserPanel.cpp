@@ -122,32 +122,39 @@ namespace MikuEditor
 
 		if ( ImGui::ImageButton( filePath.c_str(), iconTexture.GetRendererID(), { static_cast<float>( m_IconSize ), static_cast<float>( m_IconSize ) }, { 0, 1 }, { 1, 0 } ) )
 		{
+			std::optional<MikuEngine::UUID> assetUUID = std::nullopt;
+
 			switch ( assetType )
 			{
 			case MikuEngine::AssetType::TEXTURE: {
-				auto assetUUID = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath.string() ).value().GetUUID();
-				onClickFunc( assetUUID, MikuEngine::AssetType::TEXTURE );
+				assetUUID = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath.string() ).value().GetUUID();
 				break;
 			}
 			case MikuEngine::AssetType::MATERIAL: {
-				auto assetUUID = appLevelStuff.GetAssetPoolManager().GetMaterialManager().GetMaterialByFilePath( filePath.string() ).value()->GetUUID();
-				onClickFunc( assetUUID, MikuEngine::AssetType::MATERIAL );
+				assetUUID = appLevelStuff.GetAssetPoolManager().GetMaterialManager().GetMaterialByFilePath( filePath.string() ).value()->GetUUID();
 				break;
 			}
 			case MikuEngine::AssetType::MODEL: {
-				auto assetUUID = appLevelStuff.GetAssetPoolManager().GetModelManager().GetModelByFilePath( filePath.string() ).index.uuid;
-				onClickFunc( assetUUID, MikuEngine::AssetType::MODEL );
+				assetUUID = appLevelStuff.GetAssetPoolManager().GetModelManager().GetModelByFilePath( filePath.string() ).index.uuid;
 				break;
 			}
 			case MikuEngine::AssetType::SCENE:
-				MIKU_CLIENT_WARN( "Scene Button Click Behavior is not Implemented!" );
 				break;
-			case MikuEngine::AssetType::SHADER:
-				MIKU_CLIENT_WARN( "Shader Button Click Behavior is not Implemented!" );
+			case MikuEngine::AssetType::SHADER: {
+				assetUUID = appLevelStuff.GetAssetPoolManager().GetShaderManager().GetShaderByFilePath( filePath.string() ).index.uuid;
 				break;
+			}
 			default:
 				break;
 			}
+
+			if ( !assetUUID.has_value() )
+			{
+				MIKU_CLIENT_WARN( "Button Click Behaviour Not Implemented!" );
+				return;
+			};
+
+			onClickFunc( assetUUID.value(), assetType );
 		}
 
 		if ( ImGui::BeginDragDropSource() )
