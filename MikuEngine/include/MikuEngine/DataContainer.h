@@ -1,8 +1,7 @@
 #pragma once
 
-#include "glm/glm.hpp"
-
 #include "Core.h"
+#include "glm/ext/vector_float2.hpp"
 
 namespace MikuEngine
 {

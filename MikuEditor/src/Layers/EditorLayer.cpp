@@ -31,6 +31,9 @@ namespace MikuEditor
 		// handle camera movement when viewport is active
 		if ( m_IsViewportPanelFocused ) m_EditorCamera.Update( dt );
 
+		// Update the Projection Matrix every frame to account for the changes in the viewport panel size
+		m_EditorCamera.UpdateProjectionMatrix();
+
 		// Update the UniformBuffers and feed in the new matrices
 		MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateEditorMatrixData( { m_EditorCamera.GetProjMatrix(), m_EditorCamera.GetViewMatrix() } );
 	}
