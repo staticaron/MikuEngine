@@ -220,6 +220,8 @@ namespace MikuEngine
 	{
 		m_AppLevelStuff.GetCentralInput().Update( m_DeltaTime );
 
+		m_AppLevelStuff.GetAssetPoolManager().GetShaderManager().InitFrame();
+
 		for ( int x = 0; x < m_Layers.size(); x++ )
 			m_Layers[ x ]->Update( m_DeltaTime );
 	}

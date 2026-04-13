@@ -12,6 +12,12 @@ namespace MikuEngine
 		PrepareShaderIndex();
 	}
 
+	void ShaderManager::InitFrame()
+	{
+		// Perform deletions queued during the previous frame
+		PerformDeletions();
+	}
+
 	void ShaderManager::LoadShader( const std::string& name, const std::string& filepath )
 	{
 		UUID newUUID;
@@ -59,8 +65,11 @@ namespace MikuEngine
 	{
 		MIKU_CORE_INFO( "Number of Shaders before removal : {}", m_Shaders.size() );
 
-		auto& shader = GetShader( uuid );
-		if ( std::filesystem::exists( shader.index.path ) ) std::filesystem::remove( shader.index.path );
+		auto shader = GetShader( uuid );
+
+		if ( shader.has_value() == false ) return;
+
+		if ( std::filesystem::exists( shader.value().get().index.path ) ) std::filesystem::remove( shader.value().get().index.path );
 
 		const auto& existing = m_Shaders.find( uuid );
 		m_Shaders.erase( existing );
@@ -72,6 +81,21 @@ namespace MikuEngine
 	{
 		PrepareShaderIndex();
 		RefreshShaders();
+	}
+
+	void ShaderManager::PerformDeletions()
+	{
+		unsigned int deleteCount = 0;
+
+		for ( const UUID& uuid : m_DeleteQueue )
+		{
+			DeleteShader( uuid );
+			deleteCount++;
+		}
+
+		if ( deleteCount > 0 ) MIKU_CORE_INFO( "{} Shaders Deleted", deleteCount );
+
+		m_DeleteQueue.clear();
 	}
 
 	void ShaderManager::RefreshShaders()
@@ -123,14 +147,13 @@ namespace MikuEngine
 		return m_ShaderIndex;
 	}
 
-	ShaderContainer& ShaderManager::GetShader( UUID shaderUUID )
+	std::optional<std::reference_wrapper<ShaderContainer>> ShaderManager::GetShader( UUID shaderUUID )
 	{
-		auto count = m_Shaders.size();
 		auto existing = m_Shaders.find( shaderUUID );
 
-		MIKU_ASSERT( existing != m_Shaders.end(), "Shader not loaded!" );
+		if ( existing == m_Shaders.end() ) return std::nullopt;
 
-		return existing->second;
+		return std::ref( existing->second );
 	}
 
 	const ShaderContainer& ShaderManager::GetShader( UUID shaderUUID ) const

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <string>
 #include <unordered_map>
 
@@ -39,19 +40,23 @@ namespace MikuEngine
 	public:
 		ShaderManager();
 
+		void InitFrame();
+
 		void LoadShader( const std::string& name, const std::string& filepath );
 		void LoadAllShaders();
 		void LoadDefaultShaders();
 
 		void RenameShader( const UUID& uuid, const std::string& newName );
-		void DeleteShader( const UUID& uuid );
 
 		void Refresh();
+
+		void AddToDeleteQueue( const UUID& uuid ) { m_DeleteQueue.push_back( uuid ); }
+		void PerformDeletions();
 
 		const std::unordered_map<UUID, ShaderIndexEntry>& GetShaderIndex() const;
 		const std::unordered_map<UUID, ShaderContainer>& GetAllLoadedShaders() const;
 
-		ShaderContainer& GetShader( UUID shaderUUID );
+		std::optional<std::reference_wrapper<ShaderContainer>> GetShader( UUID shaderUUID );
 		const ShaderContainer& GetShader( UUID shaderUUID ) const;
 		const ShaderContainer& GetDefaultShader() const;
 
@@ -67,11 +72,15 @@ namespace MikuEngine
 		void RefreshShaderIndex();
 		void RefreshShaders();
 
+		void DeleteShader( const UUID& uuid );
+
 	private:
 		std::unordered_map<UUID, ShaderIndexEntry> m_ShaderIndex;
 		std::unordered_map<UUID, ShaderIndexEntry> m_DefaultShaderIndex;
 
 		std::unordered_map<UUID, ShaderContainer> m_Shaders;
 		std::unordered_map<UUID, ShaderContainer> m_DefaultShaders;
+
+		std::vector<UUID> m_DeleteQueue;
 	};
 }

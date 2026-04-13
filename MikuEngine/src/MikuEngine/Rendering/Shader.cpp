@@ -179,19 +179,18 @@ namespace MikuEngine
 
 	void Shader::RenderInspectorImGui()
 	{
-		auto& assetDetails = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().GetShader( m_ShaderUUID );
-		std::string newName = assetDetails.GetName();
+		std::string newName = GetName();
 
 		RenderBaseImGui( newName );
 
-		if ( newName != assetDetails.GetName() )
+		if ( newName != GetName() )
 		{
-			Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().RenameShader( assetDetails.index.uuid, newName );
+			Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().RenameShader( m_ShaderUUID, newName );
 		}
 	}
 
 	void Shader::DeleteAsset()
 	{
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().DeleteShader( m_ShaderUUID );
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().AddToDeleteQueue( m_ShaderUUID );
 	}
 }
