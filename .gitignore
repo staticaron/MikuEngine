@@ -45,3 +45,4 @@ opt/
 
 # debug information files
 *.dwo
+/TODO.txt

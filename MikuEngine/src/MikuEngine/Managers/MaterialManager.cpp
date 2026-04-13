@@ -89,21 +89,20 @@ namespace MikuEngine
 		return m_Materials;
 	}
 
-	MaterialContainer& MaterialManager::GetMaterial( const UUID& uuid )
+	std::optional<MaterialContainer*> MaterialManager::GetMaterial( const UUID& uuid )
 	{
-		auto materialExists = m_Materials.find( uuid );
-		MIKU_ASSERT( materialExists != m_Materials.end(), "Material is not loaded!" );
-
-		return materialExists->second;
+		if ( auto existingMaterial = m_Materials.find( uuid ); existingMaterial != m_Materials.end() )
+			return &existingMaterial->second;
+		else
+			return std::nullopt;
 	}
 
 	std::optional<Material*> MaterialManager::GetMaterialByFilePath( const std::string& filepath )
 	{
-		for ( auto [ uuid, materialIndex ] : m_MaterialIndex )
+		for ( auto [ uuid, materialContainer ] : m_Materials )
 		{
-			if ( materialIndex.path == filepath )
+			if ( materialContainer.index.path == filepath )
 			{
-				auto& materialContainer = GetMaterial( uuid );
 				return &materialContainer.material;
 			}
 		}

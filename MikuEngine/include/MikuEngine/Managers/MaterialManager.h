@@ -39,7 +39,7 @@ namespace MikuEngine
 
 		const std::unordered_map<UUID, MaterialContainer> GetAllLoadedMaterials() const;
 
-		MaterialContainer& GetMaterial( const UUID& uuid );
+		std::optional<MaterialContainer*> GetMaterial( const UUID& uuid );
 		bool MaterialExists( const UUID& uuid ) const;
 
 		std::optional<Material*> GetMaterialByFilePath( const std::string& filepath );

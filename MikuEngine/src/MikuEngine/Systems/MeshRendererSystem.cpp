@@ -27,8 +27,8 @@ namespace MikuEngine
 
 			if ( meshRendererC.MaterialIdentifier.has_value() )
 			{
-				auto& materialContainer = materialManager.GetMaterial( meshRendererC.MaterialIdentifier.value() );
-				material = &materialContainer.material;
+				auto materialContainer = materialManager.GetMaterial( meshRendererC.MaterialIdentifier.value() );
+				material = &materialContainer.value()->material;
 			}
 			else
 				return;

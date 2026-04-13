@@ -24,7 +24,8 @@ namespace MikuEngine
 		Material() : Asset( AssetType::MATERIAL ) {}
 		Material( UUID uuid, const std::filesystem::path& materialPath );
 
-		void CreateFromShader( const Shader& shader );
+		void CreateFromShader( const UUID& shader );
+		void Refresh();
 
 		void LoadFromFile( const std::filesystem::path& materialPath );
 		void SaveToFile( const std::filesystem::path& filePath ) const;
@@ -37,12 +38,11 @@ namespace MikuEngine
 		const UUID& GetUUID() { return m_UUID; }
 		const std::filesystem::path& GetPath() const { return m_MaterialPath; }
 		std::string GetName() const { return m_MaterialPath.stem().string(); }
-		std::optional<Shader*> GetShader()
-		{
-			if ( m_Shader.has_value() ) return &m_Shader.value();
-			MIKU_CORE_ERROR( "This material has no Shader!" );
-			return {};
-		}
+
+		std::optional<Shader*> GetShader();
+		const std::optional<Shader*> GetShader() const;
+
+		void SetShader( const UUID& uuid );
 
 		void RenderInspectorImGui() override;
 		void DeleteAsset() override {}
@@ -53,7 +53,7 @@ namespace MikuEngine
 	private:
 		UUID m_UUID;
 
-		std::optional<Shader> m_Shader;
+		std::optional<UUID> m_Shader;
 
 		std::filesystem::path m_MaterialPath;
 

@@ -159,13 +159,15 @@ namespace MikuEditor
 		case MikuEngine::AssetType::NONE:
 			break;
 		case MikuEngine::AssetType::MATERIAL: {
-			auto& material = assetPoolManager.GetMaterialManager().GetMaterial( item.uuid );
-			material.material.RenderInspectorImGui();
+			auto material = assetPoolManager.GetMaterialManager().GetMaterial( item.uuid );
+			if ( material.has_value() == false ) return;
+			material.value()->material.RenderInspectorImGui();
 			break;
 		}
 		case MikuEngine::AssetType::SHADER: {
-			auto& shader = assetPoolManager.GetShaderManager().GetShader( item.uuid );
-			shader.shader.RenderInspectorImGui();
+			auto shaderContainer = assetPoolManager.GetShaderManager().GetShader( item.uuid );
+			if ( shaderContainer.has_value() == false ) return;
+			shaderContainer.value().get().shader.RenderInspectorImGui();
 			break;
 		}
 		case MikuEngine::AssetType::TEXTURE:
