@@ -67,7 +67,7 @@ namespace MikuEngine
 
 		if ( shaderUUID == "<NONE>" ) return;
 
-		SetShader( shaderManager.GetShader( UUID( shaderUUID ) ).index.uuid );
+		SetShader( shaderManager.GetShader( shaderUUID ).index.uuid );
 
 		YAML::Node paramterNodes = rootNode[ "properties" ];
 
@@ -97,14 +97,14 @@ namespace MikuEngine
 		}
 	}
 
-	void Material::SaveToFile( const std::filesystem::path& filepath ) const
+	void Material::SaveToFile( const std::filesystem::path& filepath )
 	{
-		const auto& shader = GetShader();
+		const auto shader = GetShader();
 
 		YAML::Emitter emitter;
 
 		emitter << YAML::BeginMap;
-		emitter << YAML::Key << "shader" << YAML::Value << shader.value()->GetUUID().ToString();
+		emitter << YAML::Key << "shader" << YAML::Value << ( shader.has_value() ? shader.value()->GetUUID().ToString() : "<NONE>" );
 		emitter << YAML::Key << "properties" << YAML::Value << YAML::BeginMap;
 
 		for ( const auto& [ name, value ] : m_Textures )
@@ -192,24 +192,19 @@ namespace MikuEngine
 
 		auto value = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().GetShader( m_Shader.value() );
 
-		if ( value.has_value() == false ) return std::nullopt;
-
-		return &value.value().get().shader;
-	}
-
-	const std::optional<Shader*> Material::GetShader() const
-	{
-		if ( m_Shader.has_value() == false )
+		if ( value.has_value() == false )
 		{
-			MIKU_CORE_ERROR( "This material has no Shader!" );
+			// Empty the shader UUID container and the loaded properties
+			m_Shader = std::nullopt;
+			m_Textures.clear();
+			m_Floats.clear();
+			m_Mat4s.clear();
+			m_Vec4s.clear();
+
 			return std::nullopt;
 		}
 
-		auto value = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().GetShader( m_Shader.value() );
-
-		if ( value.has_value() == false ) return std::nullopt;
-
-		return &value.value().get().shader;
+		return &value.value()->shader;
 	}
 
 	void Material::SetShader( const UUID& uuid )
@@ -221,8 +216,6 @@ namespace MikuEngine
 	{
 		auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
-		const auto& shader = GetShader();
-
 		// Render Material Details
 		auto materialName = GetName();
 		char materialNameBuff[ 256 ];
@@ -232,6 +225,8 @@ namespace MikuEngine
 		DISABLED_IMGUI( ImGui::InputText( "##MaterialName", materialNameBuff, 256 ) );
 		ImGui::Separator();
 		ImGui::Separator();
+
+		const auto& shader = GetShader();
 
 		// Render Shader Details
 		auto shaderName = shader.has_value() ? shader.value()->GetName() : "<NONE>";
@@ -257,7 +252,7 @@ namespace MikuEngine
 		}
 
 		// If no shader is attached then no need to render the shader properties
-		if ( m_Shader.has_value() )
+		if ( shader.has_value() )
 		{
 			// Render Textures
 			for ( auto& [ uniformName, uuid ] : m_Textures )

@@ -7,7 +7,6 @@
 #include <glm/glm.hpp>
 
 #include "Core.h"
-#include "Logger.h"
 #include "Shader.h"
 #include "UUID.h"
 
@@ -28,9 +27,12 @@ namespace MikuEngine
 		void Refresh();
 
 		void LoadFromFile( const std::filesystem::path& materialPath );
-		void SaveToFile( const std::filesystem::path& filePath ) const;
+		void SaveToFile( const std::filesystem::path& filePath );
 
 		static void CreateAssetAtPath( const std::string& name, const std::filesystem::path& path );
+
+		void RenderInspectorImGui() override;
+		void DeleteAsset() override {}
 
 		void Bind();
 		void UnBind();
@@ -40,12 +42,7 @@ namespace MikuEngine
 		std::string GetName() const { return m_MaterialPath.stem().string(); }
 
 		std::optional<Shader*> GetShader();
-		const std::optional<Shader*> GetShader() const;
-
 		void SetShader( const UUID& uuid );
-
-		void RenderInspectorImGui() override;
-		void DeleteAsset() override {}
 
 	private:
 		void RegisterUniform( std::string, ShaderUniform );
