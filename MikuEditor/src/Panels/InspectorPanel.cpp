@@ -167,7 +167,7 @@ namespace MikuEditor
 		case MikuEngine::AssetType::SHADER: {
 			auto shaderContainer = assetPoolManager.GetShaderManager().GetShader( item.uuid );
 			if ( shaderContainer.has_value() == false ) return;
-			shaderContainer.value().get().shader.RenderInspectorImGui();
+			shaderContainer.value()->shader.RenderInspectorImGui();
 			break;
 		}
 		case MikuEngine::AssetType::TEXTURE:

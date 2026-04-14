@@ -5,6 +5,7 @@
 #include "imgui.h"
 
 #include "Application.h"
+#include "Logger.h"
 #include "MikuEngine/Data/AssetType.h"
 #include "Scene/Scene.h"
 #include "UUID.h"

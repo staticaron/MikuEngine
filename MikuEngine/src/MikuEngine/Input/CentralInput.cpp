@@ -1,6 +1,7 @@
 #include "Input/CentralInput.h"
 
 #include "Application.h"
+#include "Logger.h"
 
 namespace MikuEngine
 {
