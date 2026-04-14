@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 
+#include "AssetManagerBase.h"
 #include "Core.h"
 #include "Rendering/Shader.h"
 #include "UUID.h"
@@ -29,13 +30,12 @@ namespace MikuEngine
 
 		void SetName( const std::string& newName )
 		{
-			std::filesystem::path newNamePath = index.path.parent_path() / ( newName + ".shader" );
-			std::filesystem::rename( index.path, newNamePath );
-			index.path = newNamePath;
+			std::filesystem::path newFilePath = index.path.parent_path() / ( newName + ".shader" );
+			index.path = newFilePath;
 		}
 	};
 
-	class MIKU_API ShaderManager
+	class MIKU_API ShaderManager : public AssetManagerBase
 	{
 	public:
 		ShaderManager();
@@ -46,25 +46,23 @@ namespace MikuEngine
 		void LoadAllShaders();
 		void LoadDefaultShaders();
 
-		void RenameShader( const UUID& uuid, const std::string& newName );
-
 		void Refresh();
 
-		void AddToDeleteQueue( const UUID& uuid ) { m_DeleteQueue.push_back( uuid ); }
-		void PerformDeletions();
-
-		const std::unordered_map<UUID, ShaderIndexEntry>& GetShaderIndex() const;
-		const std::unordered_map<UUID, ShaderContainer>& GetAllLoadedShaders() const;
-
-		std::optional<std::reference_wrapper<ShaderContainer>> GetShader( UUID shaderUUID );
+		std::optional<ShaderContainer*> GetShader( UUID shaderUUID );
 		const ShaderContainer& GetShader( UUID shaderUUID ) const;
 		const ShaderContainer& GetDefaultShader() const;
+
+		const std::unordered_map<UUID, ShaderContainer>& GetAllLoadedShaders() const;
 
 		ShaderContainer& GetShaderByName( const std::string& name );
 		ShaderContainer& GetShaderByFilePath( const std::filesystem::path& path );
 		std::string GetShaderName( UUID shaderUUID ) const;
 
 		bool ShaderExists( const UUID& uuid ) const;
+		void RenameAssetCleanup( const UUID& uuid, const std::string& newName ) override;
+
+		void AddToDeleteQueue( const UUID& uuid ) override { m_DeleteQueue.push_back( uuid ); }
+		void PerformDeletions() override;
 
 	private:
 		void PrepareShaderIndex();
@@ -72,7 +70,10 @@ namespace MikuEngine
 		void RefreshShaderIndex();
 		void RefreshShaders();
 
-		void DeleteShader( const UUID& uuid );
+		const std::unordered_map<UUID, ShaderIndexEntry>& GetShaderIndex() const;
+
+		const std::filesystem::path& GetFilePathFromUUID( const UUID& uuid ) override;
+		void DeleteAssetCleanup( const UUID& uuid ) override;
 
 	private:
 		std::unordered_map<UUID, ShaderIndexEntry> m_ShaderIndex;

@@ -44,9 +44,10 @@ namespace MikuEngine
 		void Bind() const;
 		void UnBind() const;
 
-		const std::filesystem::path& GetPath() const { return m_ShaderPath; }
-		std::string GetName() const { return m_ShaderPath.stem().string(); }
+		const std::filesystem::path& GetPath() const;
 		const UUID& GetUUID() const { return m_ShaderUUID; }
+
+		std::string GetName() const;
 
 		void RenderInspectorImGui() override;
 
@@ -72,7 +73,6 @@ namespace MikuEngine
 
 	private:
 		unsigned int m_RendererID = 0;
-		std::filesystem::path m_ShaderPath = "";
 		UUID m_ShaderUUID;
 
 		std::unordered_map<std::string, ShaderUniform> m_Uniforms = {};

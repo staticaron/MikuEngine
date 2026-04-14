@@ -9,7 +9,7 @@
 
 namespace MikuEngine
 {
-	Shader::Shader( UUID uuid, const std::filesystem::path& path ) : Asset( AssetType::SHADER ), m_ShaderPath( path ), m_ShaderUUID( uuid )
+	Shader::Shader( UUID uuid, const std::filesystem::path& path ) : Asset( AssetType::SHADER ), m_ShaderUUID( uuid )
 	{
 		LoadFromFile( path );
 	}
@@ -130,8 +130,6 @@ namespace MikuEngine
 
 	void Shader::LoadFromFile( const std::filesystem::path& filepath )
 	{
-		m_ShaderPath = filepath;
-
 		std::string vs, gs, fs;
 		ParseShader( filepath.string(), vs, gs, fs );
 
@@ -177,15 +175,24 @@ namespace MikuEngine
 		glUseProgram( 0 );
 	}
 
+	std::string Shader::GetName() const
+	{
+		auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
+		return shaderManager.GetShader( m_ShaderUUID ).value()->GetName();
+	}
+
 	void Shader::RenderInspectorImGui()
 	{
-		std::string newName = GetName();
+		auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
+
+		auto oldName = GetName();
+		std::string newName = oldName;
 
 		RenderBaseImGui( newName );
 
-		if ( newName != GetName() )
+		if ( oldName != newName )
 		{
-			Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().RenameShader( m_ShaderUUID, newName );
+			shaderManager.RenameAsset( m_ShaderUUID, newName );
 		}
 	}
 
