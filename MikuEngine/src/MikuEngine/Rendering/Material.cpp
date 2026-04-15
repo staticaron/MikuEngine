@@ -205,7 +205,6 @@ namespace MikuEngine
 	{
 		if ( m_Shader.has_value() == false )
 		{
-			MIKU_CORE_ERROR( "This material has no Shader!" );
 			return std::nullopt;
 		}
 

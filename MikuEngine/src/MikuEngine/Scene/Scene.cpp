@@ -102,7 +102,6 @@ namespace MikuEngine
 		}
 
 		m_SelectedItem = { uuid, type, assetType };
-		MIKU_CORE_INFO( "Selected Item set to {} ", uuid.ToString() );
 	}
 
 	std::vector<Entity> Scene::GetAllEntities()
@@ -149,6 +148,20 @@ namespace MikuEngine
 			return {
 			    { { idComponent.ID, entity, const_cast<Scene*>( this ) }, cameraComponent }
 			};
+		}
+
+		return {};
+	}
+
+	std::optional<std::pair<const Entity, const DirectionalLightComponent&>> Scene::GetMainLight() const
+	{
+		auto directionalLightView = m_Registry.view<IDComponent, DirectionalLightComponent>();
+
+		for ( auto [ entity, idComponent, directionalLightC ] : directionalLightView.each() )
+		{
+			return {
+			    { { idComponent.ID, entity, const_cast<Scene*>( this ) }, directionalLightC }
+			  };
 		}
 
 		return {};

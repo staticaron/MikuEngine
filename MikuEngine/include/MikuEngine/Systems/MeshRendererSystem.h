@@ -2,7 +2,8 @@
 
 #include <functional>
 
-#include "yaml-cpp/yaml.h"
+#include "yaml-cpp/emitter.h"
+#include "yaml-cpp/node/node.h"
 
 #include "Core.h"
 

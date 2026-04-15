@@ -42,7 +42,7 @@ namespace MikuEngine
 			m_Shaders[ uuid ] = { shaderIndex, shader };
 		}
 
-		MIKU_CORE_DEBUG( "All {} Shaders Loaded!", m_Shaders.size() );
+		MIKU_CORE_DEBUG( "{} Shaders Loaded!", m_Shaders.size() );
 	}
 
 	void ShaderManager::Refresh()

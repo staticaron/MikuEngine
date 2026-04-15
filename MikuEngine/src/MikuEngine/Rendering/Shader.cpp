@@ -132,12 +132,9 @@ namespace MikuEngine
 	{
 		std::string vs, gs, fs;
 		ParseShader( filepath.string(), vs, gs, fs );
-
 		m_RendererID = CreateShader( vs, gs, fs );
 
 		PrepareUniforms();
-
-		MIKU_CORE_INFO( "Shader Loaded! {}", filepath.string() );
 	}
 
 	void Shader::PrepareUniforms()

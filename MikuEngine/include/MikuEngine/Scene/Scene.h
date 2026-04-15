@@ -16,6 +16,7 @@ namespace MikuEngine
 	class AppLevelStuff;
 	class Entity;
 	class CameraComponent;
+	class DirectionalLightComponent;
 	class CameraData;
 }
 
@@ -41,7 +42,9 @@ namespace MikuEngine
 		std::vector<Entity> GetAllEntities();
 		std::optional<Entity> GetEntityByID( UUID id );
 		std::optional<Entity> GetEntityFromEntt( entt::entity entity );
+
 		std::optional<std::pair<const Entity, const CameraComponent&>> GetMainCamera() const;
+		std::optional<std::pair<const Entity, const DirectionalLightComponent&>> GetMainLight() const;
 
 		entt::registry& GetRegistry() { return m_Registry; }
 		const entt::registry& GetRegistry() const { return m_Registry; }

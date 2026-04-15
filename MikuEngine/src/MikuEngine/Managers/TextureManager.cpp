@@ -37,7 +37,7 @@ namespace MikuEngine
 			  } );
 		}
 
-		MIKU_CORE_DEBUG( "All Textures Loaded!" );
+		MIKU_CORE_DEBUG( "{} Textures Loaded!", m_Textures.size() );
 	}
 
 	void TextureManager::LoadTexture( const std::string& name, const std::filesystem::path& filepath )
