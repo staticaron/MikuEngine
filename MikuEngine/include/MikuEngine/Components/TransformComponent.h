@@ -1,7 +1,7 @@
 #pragma once
 
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/quaternion.hpp"
 
 #include "Core.h"
 
@@ -33,5 +33,9 @@ namespace MikuEngine
 
 			return transformMat * rotationMat * scaleMat;
 		}
+
+		glm::quat GetQuaternionRotation() const { return glm::quat( glm::vec3{ Rotation.x, Rotation.y, Rotation.z } ); }
+
+		glm::vec3 GetForward() const { return glm::rotate( GetQuaternionRotation(), glm::vec3( 0.0f, 0.0f, 1.0f ) ); }
 	};
 }

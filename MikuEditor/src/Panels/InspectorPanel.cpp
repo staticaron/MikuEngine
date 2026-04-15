@@ -8,6 +8,7 @@
 #include "MikuEngine/Entity.h"
 #include "MikuEngine/Scene/Scene.h"
 #include "MikuEngine/Systems/CameraSystem.h"
+#include "MikuEngine/Systems/LightingSystem.h"
 #include "MikuEngine/Systems/MeshRendererSystem.h"
 #include "MikuEngine/Systems/ScriptExecutionSystem.h"
 #include "MikuEngine/Systems/SpriteRendererSystem.h"
@@ -114,6 +115,13 @@ namespace MikuEditor
 				auto& nativeScriptC = selectedEntity.value().GetComponent<MikuEngine::NativeScriptComponent>();
 				MikuEngine::ScriptExecutionSystem::NativeScriptComponentRenderImGui( selectedEntity.value(), nativeScriptC );
 			}
+
+			// DIRECTIONAL LIGHT
+			if ( selectedEntity.value().HasComponent<MikuEngine::DirectionalLightComponent>() )
+			{
+				auto& directionalLightC = selectedEntity.value().GetComponent<MikuEngine::DirectionalLightComponent>();
+				MikuEngine::LightingSystem::DirectionalLightComponentRenderImGui( selectedEntity.value(), directionalLightC );
+			}
 		}
 
 		if ( scene.GetSelectedItem().has_value() )
@@ -126,6 +134,7 @@ namespace MikuEditor
 				if ( ImGui::Selectable( "SpriteRendererComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::SpriteRendererComponent>();
 				if ( ImGui::Selectable( "MeshRendererComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::MeshRendererComponent>();
 				if ( ImGui::Selectable( "NativeScriptComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::NativeScriptComponent>();
+				if ( ImGui::Selectable( "DirectionalLightComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::DirectionalLightComponent>();
 
 				ImGui::EndPopup();
 			}

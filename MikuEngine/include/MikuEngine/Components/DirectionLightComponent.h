@@ -9,8 +9,7 @@ namespace MikuEngine
 {
 	struct MIKU_API DirectionalLightComponent : BaseComponent
 	{
-		glm::vec3 Position;
-		glm::vec3 Rotation;
+		glm::vec3 Color;
 		float Intensity;
 	};
 }

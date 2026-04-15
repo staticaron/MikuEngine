@@ -34,30 +34,12 @@ namespace MikuEngine
 
 		emitter << YAML::Key << "components" << YAML::Value << YAML::BeginSeq;
 
-		if ( entity.HasComponent<TransformComponent>() )
-		{
-			TransformSystem::SerializeTransformComponent( entity, emitter );
-		}
-
-		if ( entity.HasComponent<SpriteRendererComponent>() )
-		{
-			SpriteRendererSystem::SerializeSpriteRendererComponent( entity, emitter );
-		}
-
-		if ( entity.HasComponent<MeshRendererComponent>() )
-		{
-			MeshRendererSystem::SerializeMeshRendererComponent( entity, emitter );
-		}
-
-		if ( entity.HasComponent<CameraComponent>() )
-		{
-			CameraSystem::SerializeCameraComponent( entity, emitter );
-		}
-
-		if ( entity.HasComponent<NativeScriptComponent>() )
-		{
-			ScriptExecutionSystem::SerializeNativeScriptComponent( entity, emitter );
-		}
+		if ( entity.HasComponent<TransformComponent>() ) TransformSystem::SerializeTransformComponent( entity, emitter );
+		if ( entity.HasComponent<SpriteRendererComponent>() ) SpriteRendererSystem::SerializeSpriteRendererComponent( entity, emitter );
+		if ( entity.HasComponent<MeshRendererComponent>() ) MeshRendererSystem::SerializeMeshRendererComponent( entity, emitter );
+		if ( entity.HasComponent<CameraComponent>() ) CameraSystem::SerializeCameraComponent( entity, emitter );
+		if ( entity.HasComponent<NativeScriptComponent>() ) ScriptExecutionSystem::SerializeNativeScriptComponent( entity, emitter );
+		if ( entity.HasComponent<DirectionalLightComponent>() ) LightingSystem::SerializeDirectionalLightComponent( entity, emitter );
 
 		emitter << YAML::EndSeq;
 
@@ -172,6 +154,14 @@ namespace MikuEngine
 					auto& nativeScriptC = entt.GetComponent<NativeScriptComponent>();
 
 					ScriptExecutionSystem::DeSerializeNativeScriptComponent( nativeScriptC, values );
+				}
+
+				if ( type == "DirectionalLightComponent" )
+				{
+					entt.AddComponent<DirectionalLightComponent>();
+					auto& directionalLightC = entt.GetComponent<DirectionalLightComponent>();
+
+					LightingSystem::DeSerializeDirectionalLightComponent( directionalLightC, values );
 				}
 			}
 		}
