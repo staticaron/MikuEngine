@@ -1,9 +1,10 @@
 #include "Layers/EditorLayer.h"
 
-#include "AppLevelStuff.h"
 #include "Application.h"
+#include "Components.h"
 #include "Data/CameraData.h"
-#include "MikuEngine/Systems/SpriteRendererSystem.h"
+#include "Logger.h"
+#include "MikuEngine/Entity.h"
 #include "Panels/Panels.h"
 #include "Windows/WindowResponse.h"
 
@@ -31,11 +32,21 @@ namespace MikuEditor
 		// handle camera movement when viewport is active
 		if ( m_IsViewportPanelFocused ) m_EditorCamera.Update( dt );
 
+		// TODO: IMPROVE THIS
 		// Update the Projection Matrix every frame to account for the changes in the viewport panel size
 		m_EditorCamera.UpdateProjectionMatrix();
 
 		// Update the UniformBuffers and feed in the new matrices
 		MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateEditorMatrixData( { m_EditorCamera.GetProjMatrix(), m_EditorCamera.GetViewMatrix() } );
+
+		const auto& mainLight = m_Scene->GetMainLight();
+		if ( mainLight.has_value() == false )
+			MIKU_CLIENT_WARN( "No Active Light" );
+		else
+		{
+			const auto& mainLightTransform = mainLight.value().first.GetReadOnlyComponent<MikuEngine::TransformComponent>();
+			MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateLightingData( { mainLight.value().second.Color, mainLight.value().second.Intensity } );
+		}
 	}
 
 	void EditorLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const

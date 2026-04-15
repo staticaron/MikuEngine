@@ -31,7 +31,9 @@ namespace MikuEngine
 		// Render nothing if camera is not there
 		if ( GetMainCamera().has_value() == false ) return;
 
-		renderer.GetUniformBufferManager().GetGameUniformBuffer().Bind();
+		renderer.GetUniformBufferManager().GetGameUniformBuffer().Bind();     // Bind Matrix Data at 0
+		renderer.GetUniformBufferManager().GetLightingUniformBuffer().Bind(); // Bind Lighting Data at 1
+
 		renderer.ClearColor();
 
 		// Camera details for camera creating proj view matrices
@@ -53,7 +55,8 @@ namespace MikuEngine
 
 		auto& renderer = MikuEngine::Application::GetAppLevelStuff().GetRenderer();
 
-		renderer.GetUniformBufferManager().GetEditorUniformBuffer().Bind();
+		renderer.GetUniformBufferManager().GetEditorUniformBuffer().Bind();   // Bind Matrix Data at 0
+		renderer.GetUniformBufferManager().GetLightingUniformBuffer().Bind(); // Bind Lighting Data at 1
 		renderer.ClearColor();
 
 		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, cameraData );

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "glm/ext/matrix_float4x4.hpp"
-
 #include "Core.h"
+
+#include "Data/UniformBuffer/LightingData.h"
+#include "Data/UniformBuffer/MatrixData.h"
 
 #include "Rendering/UniformBuffers/EditorUniformBuffer.h"
 #include "Rendering/UniformBuffers/GameUniformBuffer.h"
@@ -10,23 +11,6 @@
 
 namespace MikuEngine
 {
-	struct MatrixData
-	{
-		glm::mat4 projectionMatrix;
-		glm::mat4 viewMatrix;
-
-		bool operator==( const MatrixData& matrixData ) const { return ( matrixData.projectionMatrix == projectionMatrix ) && ( matrixData.viewMatrix == viewMatrix ); }
-	};
-
-	struct LightingData
-	{
-		glm::vec3 position;
-		glm::vec3 direction;
-		float intensity;
-
-		bool operator==( const LightingData& lightingData ) const { return ( lightingData.position == position ) && ( lightingData.direction == direction ) && ( lightingData.intensity == intensity ); }
-	};
-
 	class MIKU_API UniformBufferManager
 	{
 	public:
@@ -34,6 +18,7 @@ namespace MikuEngine
 
 		const UniformBuffer& GetGameUniformBuffer() const { return m_GameUniformBuffer; }
 		const UniformBuffer& GetEditorUniformBuffer() const { return m_EditorUniformBuffer; }
+		const UniformBuffer& GetLightingUniformBuffer() const { return m_LightingUniformBuffer; }
 
 		void UpdateBuffer();
 
