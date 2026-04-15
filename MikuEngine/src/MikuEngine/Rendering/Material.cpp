@@ -235,16 +235,6 @@ namespace MikuEngine
 	{
 		auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
-		// Render Material Details
-		auto materialName = GetName();
-		char materialNameBuff[ 256 ];
-		std::copy( materialName.begin(), materialName.begin() + materialName.size(), materialNameBuff );
-		materialNameBuff[ materialName.size() ] = '\0';
-
-		DISABLED_IMGUI( ImGui::InputText( "##MaterialName", materialNameBuff, 256 ) );
-		ImGui::Separator();
-		ImGui::Separator();
-
 		const auto& shader = GetShader();
 
 		// Render Shader Details
