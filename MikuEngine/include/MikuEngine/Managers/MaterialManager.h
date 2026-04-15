@@ -4,6 +4,7 @@
 
 #include "Core.h"
 
+#include "AssetManagerBase.h"
 #include "Rendering/Material.h"
 #include "UUID.h"
 
@@ -23,9 +24,15 @@ namespace MikuEngine
 		Material material;
 
 		std::string GetName() const { return index.path.stem().string(); }
+
+		void SetName( const std::string& newName )
+		{
+			std::filesystem::path newFilePath = index.path.parent_path() / ( newName + index.path.extension().string() );
+			index.path = newFilePath;
+		}
 	};
 
-	class MIKU_API MaterialManager
+	class MIKU_API MaterialManager : public AssetManagerBase
 	{
 	public:
 		void LoadAllMaterials();
@@ -43,6 +50,11 @@ namespace MikuEngine
 		bool MaterialExists( const UUID& uuid ) const;
 
 		std::optional<Material*> GetMaterialByFilePath( const std::string& filepath );
+
+		const std::filesystem::path& GetFilePathFromUUID( const UUID& uuid ) override;
+
+		void RenameAssetCleanup( const UUID& uuid, const std::string& newName ) override;
+		void DeleteAssetCleanup( const UUID& uuid ) override;
 
 	private:
 		std::unordered_map<UUID, MaterialIndex> m_MaterialIndex;

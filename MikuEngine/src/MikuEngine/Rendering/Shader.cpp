@@ -181,19 +181,16 @@ namespace MikuEngine
 		return shaderManager.GetShader( m_ShaderUUID ).value()->GetName();
 	}
 
-	void Shader::RenderInspectorImGui()
+	void Shader::SetName( const std::string& newName )
 	{
-		auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().RenameAsset( m_ShaderUUID, newName );
+	}
 
-		auto oldName = GetName();
-		std::string newName = oldName;
-
-		RenderBaseImGui( newName );
-
-		if ( oldName != newName )
-		{
-			shaderManager.RenameAsset( m_ShaderUUID, newName );
-		}
+	const std::filesystem::path& Shader::GetPath() const
+	{
+		auto shader = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().GetShader( m_ShaderUUID );
+		MIKU_ASSERT( shader.has_value(), "This Shader with UUID doesn't exists!" );
+		return shader.value()->index.path;
 	}
 
 	void Shader::DeleteAsset()

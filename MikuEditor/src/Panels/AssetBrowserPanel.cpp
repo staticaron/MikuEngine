@@ -128,7 +128,7 @@ namespace MikuEditor
 			switch ( assetType )
 			{
 			case MikuEngine::AssetType::TEXTURE: {
-				assetUUID = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath.string() ).value().GetUUID();
+				assetUUID = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath.string() ).value()->texture.GetUUID();
 				break;
 			}
 			case MikuEngine::AssetType::MATERIAL: {

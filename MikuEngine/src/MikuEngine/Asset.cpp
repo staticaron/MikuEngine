@@ -4,23 +4,39 @@
 
 namespace MikuEngine
 {
-	void Asset::RenderBaseImGui( std::string& assetName )
+	void Asset::RenderInspectorImGui()
 	{
-		// Name
+		auto oldName = GetName();
+		std::string newName = oldName;
+
+		// RENDER ASSET NAME FIELD
+		//
+		//
 		ImGui::TextUnformatted( "Asset Name" );
 		ImGui::SameLine();
 
 		char assetNameContainer[ 255 ];
 
-		std::copy( assetName.begin(), assetName.begin() + assetName.length(), assetNameContainer );
-		assetNameContainer[ assetName.length() ] = '\0';
+		std::copy( newName.begin(), newName.begin() + newName.length(), assetNameContainer );
+		assetNameContainer[ newName.length() ] = '\0';
 
 		ImGui::InputText( "##AssetBase", assetNameContainer, 255 );
 
-		if ( ImGui::IsItemDeactivatedAfterEdit() ) assetName = std::string( assetNameContainer );
+		if ( ImGui::IsItemDeactivatedAfterEdit() ) newName = std::string( assetNameContainer );
 
-		// Delete Button
+		if ( oldName != newName )
+		{
+			SetName( newName );
+		}
 
+		// RENDER THE ASSET IMGUI
+		//
+		//
+		AssetImGui();
+
+		// RENDER DELETE ASSET BUTTON
+		//
+		//
 		if ( ImguiManager::FullWidthButton( "<DEL>" ) )
 		{
 			DeleteAsset();

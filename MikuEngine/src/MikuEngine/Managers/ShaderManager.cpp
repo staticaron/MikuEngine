@@ -12,12 +12,6 @@ namespace MikuEngine
 		PrepareShaderIndex();
 	}
 
-	void ShaderManager::InitFrame()
-	{
-		// Perform deletions queued during the previous frame
-		PerformDeletions();
-	}
-
 	void ShaderManager::LoadShader( const std::string& name, const std::string& filepath )
 	{
 		UUID newUUID;
@@ -51,36 +45,10 @@ namespace MikuEngine
 		MIKU_CORE_DEBUG( "All {} Shaders Loaded!", m_Shaders.size() );
 	}
 
-	void ShaderManager::RenameAssetCleanup( const UUID& uuid, const std::string& newName )
-	{
-		if ( auto existing = m_Shaders.find( uuid ); existing != m_Shaders.end() )
-		{
-			MIKU_CORE_INFO( "Before Rename : {}", existing->second.GetName() );
-			existing->second.SetName( newName );
-			MIKU_CORE_INFO( "After Rename : {}", existing->second.GetName() );
-			MIKU_CORE_DEBUG( "Shader New Path : {}", existing->second.GetName() );
-		}
-	}
-
 	void ShaderManager::Refresh()
 	{
 		PrepareShaderIndex();
 		RefreshShaders();
-	}
-
-	void ShaderManager::PerformDeletions()
-	{
-		unsigned int deleteCount = 0;
-
-		for ( const UUID& uuid : m_DeleteQueue )
-		{
-			DeleteAsset( uuid );
-			deleteCount++;
-		}
-
-		if ( deleteCount > 0 ) MIKU_CORE_INFO( "{} Shaders Deleted", deleteCount );
-
-		m_DeleteQueue.clear();
 	}
 
 	void ShaderManager::RefreshShaders()
@@ -110,6 +78,14 @@ namespace MikuEngine
 		}
 
 		MIKU_ASSERT( false, "This shader is not loaded!" );
+	}
+
+	void ShaderManager::RenameAssetCleanup( const UUID& uuid, const std::string& newName )
+	{
+		if ( auto existing = m_Shaders.find( uuid ); existing != m_Shaders.end() )
+		{
+			existing->second.SetName( newName );
+		}
 	}
 
 	void ShaderManager::DeleteAssetCleanup( const UUID& uuid )

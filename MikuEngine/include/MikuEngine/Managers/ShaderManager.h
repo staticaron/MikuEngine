@@ -22,11 +22,7 @@ namespace MikuEngine
 		ShaderIndexEntry index;
 		Shader shader;
 
-		std::string GetName() const
-		{
-			// Comment
-			return index.path.stem().string();
-		}
+		std::string GetName() const { return index.path.stem().string(); }
 
 		void SetName( const std::string& newName )
 		{
@@ -39,8 +35,6 @@ namespace MikuEngine
 	{
 	public:
 		ShaderManager();
-
-		void InitFrame();
 
 		void LoadShader( const std::string& name, const std::string& filepath );
 		void LoadAllShaders();
@@ -61,9 +55,6 @@ namespace MikuEngine
 		bool ShaderExists( const UUID& uuid ) const;
 		void RenameAssetCleanup( const UUID& uuid, const std::string& newName ) override;
 
-		void AddToDeleteQueue( const UUID& uuid ) override { m_DeleteQueue.push_back( uuid ); }
-		void PerformDeletions() override;
-
 	private:
 		void PrepareShaderIndex();
 
@@ -81,7 +72,5 @@ namespace MikuEngine
 
 		std::unordered_map<UUID, ShaderContainer> m_Shaders;
 		std::unordered_map<UUID, ShaderContainer> m_DefaultShaders;
-
-		std::vector<UUID> m_DeleteQueue;
 	};
 }

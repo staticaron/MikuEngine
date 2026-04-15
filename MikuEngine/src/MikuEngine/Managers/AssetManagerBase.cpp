@@ -4,6 +4,11 @@
 
 namespace MikuEngine
 {
+	void AssetManagerBase::InitFrame()
+	{
+		PerformDeletions();
+	}
+
 	void AssetManagerBase::DeleteAsset( const UUID& uuid )
 	{
 		const std::filesystem::path& filePath = GetFilePathFromUUID( uuid );
@@ -26,5 +31,13 @@ namespace MikuEngine
 		std::filesystem::rename( filePath.string() + ".meta", newMetaFilePath );
 
 		RenameAssetCleanup( uuid, newName );
+	}
+
+	void AssetManagerBase::PerformDeletions()
+	{
+		for ( const UUID& uuid : m_DeleteQueue )
+			DeleteAsset( uuid );
+
+		m_DeleteQueue.clear();
 	}
 }

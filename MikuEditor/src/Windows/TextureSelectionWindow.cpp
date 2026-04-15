@@ -20,12 +20,12 @@ namespace MikuEditor
 
 		auto allTextures = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetAllLoadedTextures();
 
-		for ( auto [ uuid, texture ] : allTextures )
+		for ( auto [ uuid, textureContainer ] : allTextures )
 		{
 			ImGui::TableNextColumn();
-			ImGui::PushID( texture.GetUUID() );
+			ImGui::PushID( textureContainer.texture.GetUUID() );
 
-			if ( ImGui::ImageButton( "##TextureBtn", ( void* )( intptr_t )texture.GetRendererID(), ImVec2( 100, 100 ), ImVec2( 1, 1 ), ImVec2( 0, 0 ) ) )
+			if ( ImGui::ImageButton( "##TextureBtn", ( void* )( intptr_t )textureContainer.texture.GetRendererID(), ImVec2( 100, 100 ), ImVec2( 1, 1 ), ImVec2( 0, 0 ) ) )
 			{
 				auto entity = scene.GetEntityByID( m_EntityUUID );
 
@@ -35,7 +35,7 @@ namespace MikuEditor
 				}
 				else
 				{
-					entity.value().GetComponent<MikuEngine::SpriteRendererComponent>().TextureIdentifier = texture.GetUUID();
+					entity.value().GetComponent<MikuEngine::SpriteRendererComponent>().TextureIdentifier = textureContainer.texture.GetUUID();
 					response = WindowResponse::COMPLETED;
 				}
 			}

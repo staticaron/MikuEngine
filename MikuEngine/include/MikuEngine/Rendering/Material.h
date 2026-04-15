@@ -17,7 +17,7 @@ namespace MikuEngine
 
 namespace MikuEngine
 {
-	class MIKU_API Material : Asset
+	class MIKU_API Material : public Asset
 	{
 	public:
 		Material() : Asset( AssetType::MATERIAL ) {}
@@ -31,15 +31,17 @@ namespace MikuEngine
 
 		static void CreateAssetAtPath( const std::string& name, const std::filesystem::path& path );
 
-		void RenderInspectorImGui() override;
-		void DeleteAsset() override {}
+		void AssetImGui() override;
+		void DeleteAsset() override;
 
 		void Bind();
 		void UnBind();
 
 		const UUID& GetUUID() { return m_UUID; }
-		const std::filesystem::path& GetPath() const { return m_MaterialPath; }
-		std::string GetName() const { return m_MaterialPath.stem().string(); }
+
+		const std::filesystem::path& GetPath() const override;
+		std::string GetName() const override;
+		void SetName( const std::string& newName ) override;
 
 		std::optional<Shader*> GetShader();
 		void SetShader( const UUID& uuid );
@@ -51,8 +53,6 @@ namespace MikuEngine
 		UUID m_UUID;
 
 		std::optional<UUID> m_Shader;
-
-		std::filesystem::path m_MaterialPath;
 
 		std::vector<std::string> m_UniformOrder;
 

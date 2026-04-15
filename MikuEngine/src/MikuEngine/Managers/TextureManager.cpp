@@ -17,7 +17,7 @@ namespace MikuEngine
 	TextureManager::~TextureManager()
 	{
 		for ( auto [ identifier, texture ] : m_Textures )
-			texture.Destroy();
+			texture.texture.Destroy();
 	}
 
 	void TextureManager::LoadAllTextures()
@@ -26,24 +26,29 @@ namespace MikuEngine
 		{
 			if ( TextureAlreadyPresent( identifier ) )
 			{
-				MIKU_CORE_ERROR( "Texture with ID : {} is already loaded!", textureIndexEntry.name );
+				MIKU_CORE_ERROR( "Texture with ID : {} is already loaded!", textureIndexEntry.path.stem().string() );
 				continue;
 			}
 
 			Texture newTexture( identifier );
 			newTexture.LoadFromFile( textureIndexEntry.path );
-			m_Textures.insert( { identifier, newTexture } );
+			m_Textures.insert( {
+			    identifier, { textureIndexEntry, newTexture }
+			  } );
 		}
 
-		MIKU_CORE_INFO( "All Textures Loaded!" );
+		MIKU_CORE_DEBUG( "All Textures Loaded!" );
 	}
 
-	void TextureManager::LoadTexture( const std::string& name, const std::string& filepath )
+	void TextureManager::LoadTexture( const std::string& name, const std::filesystem::path& filepath )
 	{
-		Texture newTexture(( UUID() ));
+		UUID newUUID = UUID();
+		Texture newTexture( newUUID );
 		newTexture.LoadFromFile( filepath );
 
-		m_Textures.insert( { newTexture.GetUUID(), newTexture } );
+		m_Textures.insert( {
+		    newTexture.GetUUID(), { { newUUID, filepath }, newTexture }
+		} );
 
 		MIKU_CORE_INFO( "Texture with ID : {} loaded!", name );
 	}
@@ -56,7 +61,7 @@ namespace MikuEngine
 			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
 
 			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
-			m_TextureIndex[ uuid ] = { uuid, file.path().stem().string(), file.path().string() };
+			m_TextureIndex[ uuid ] = { uuid, file.path().string() };
 		}
 
 		MIKU_CORE_INFO( "Texture Indexing Complete!" );
@@ -67,30 +72,29 @@ namespace MikuEngine
 		return m_TextureIndex;
 	}
 
-	const Texture& TextureManager::GetTexture( UUID identifier ) const
+	std::optional<TextureContainer*> TextureManager::GetTexture( UUID textureUUID )
 	{
-		auto existing = m_Textures.find( identifier );
-
-		MIKU_ASSERT( existing != m_Textures.end(), "Texture not loaded!" );
-
-		return existing->second;
+		if ( auto existing = m_Textures.find( textureUUID ); existing != m_Textures.end() ) return &existing->second;
+		return {};
 	}
 
-	const Texture& TextureManager::GetTextureByName( const std::string& filename ) const
+	std::optional<const TextureContainer*> TextureManager::GetTexture( UUID uuid ) const
 	{
-		for ( const auto& [ uuid, textureIndexEntry ] : m_TextureIndex )
+		if ( auto existing = m_Textures.find( uuid ); existing != m_Textures.end() ) return &existing->second;
+		return {};
+	}
+
+	std::optional<const TextureContainer*> TextureManager::GetTextureByName( const std::string& filename ) const
+	{
+		for ( const auto& [ uuid, textureContainer ] : m_Textures )
 		{
-			if ( textureIndexEntry.name == filename )
-			{
-				return m_Textures.at( uuid );
-			}
+			if ( textureContainer.GetName() == filename ) return &m_Textures.at( uuid );
 		}
 
-		// Make sure texture is loaded first before it is returned
-		MIKU_ASSERT( false, "Requested Texture is not loaded!" );
+		return {};
 	}
 
-	std::optional<Texture> TextureManager::GetTextureByFilePath( const std::string& path ) const
+	std::optional<const TextureContainer*> TextureManager::GetTextureByFilePath( const std::string& path ) const
 	{
 		for ( const auto [ uuid, textureIndex ] : m_TextureIndex )
 			if ( textureIndex.path == path ) return { GetTexture( uuid ) };
@@ -104,18 +108,30 @@ namespace MikuEngine
 		return exists != m_Textures.end();
 	}
 
-	const std::unordered_map<UUID, Texture>& TextureManager::GetAllLoadedTextures() const
+	const std::unordered_map<UUID, TextureContainer>& TextureManager::GetAllLoadedTextures() const
 	{
 		return m_Textures;
 	}
 
-	std::string TextureManager::GetTextureName( UUID identifier ) const
+	const std::filesystem::path& TextureManager::GetFilePathFromUUID( const UUID& uuid )
 	{
-		auto existing = m_TextureIndex.find( identifier );
-		MIKU_ASSERT( existing != m_TextureIndex.end(), "Texture is not loaded!" );
+		if ( auto existing = m_Textures.find( uuid ); existing != m_Textures.end() )
+		{
+			return existing->second.index.path;
+		}
 
-		return existing->second.name;
+		MIKU_ASSERT( false, "This texture is not loaded!" );
 	}
+
+	void TextureManager::RenameAssetCleanup( const UUID& uuid, const std::string& newName )
+	{
+		if ( auto existing = m_Textures.find( uuid ); existing != m_Textures.end() )
+		{
+			existing->second.SetName( newName );
+		}
+	}
+
+	void TextureManager::DeleteAssetCleanup( const UUID& uuid ) {}
 
 	bool TextureManager::TextureAlreadyPresent( UUID identifier ) const
 	{

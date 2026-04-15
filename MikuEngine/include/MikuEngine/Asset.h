@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <string>
 
 #include "Core.h"
@@ -13,11 +14,15 @@ namespace MikuEngine
 		Asset( AssetType assetType ) : m_AssetType( assetType ) {}
 		const AssetType& GetAssetType() const { return m_AssetType; }
 
-		virtual void RenderInspectorImGui() = 0;
+		void RenderInspectorImGui();
+
+		virtual void AssetImGui() = 0;
 		virtual void DeleteAsset() = 0;
 
-	protected:
-		void RenderBaseImGui( std::string& name );
+		virtual std::string GetName() const = 0;
+		virtual void SetName( const std::string& newName ) = 0;
+
+		virtual const std::filesystem::path& GetPath() const = 0;
 
 	protected:
 		AssetType m_AssetType;

@@ -115,4 +115,30 @@ namespace MikuEngine
 		auto exists = m_Materials.find( uuid );
 		return exists != m_Materials.end();
 	}
+
+	const std::filesystem::path& MaterialManager::GetFilePathFromUUID( const UUID& uuid )
+	{
+		if ( auto existing = m_Materials.find( uuid ); existing != m_Materials.end() )
+		{
+			return existing->second.index.path;
+		}
+
+		MIKU_ASSERT( false, "This material is not loaded!" );
+	}
+
+	void MaterialManager::RenameAssetCleanup( const UUID& uuid, const std::string& newName )
+	{
+		if ( auto existing = m_Materials.find( uuid ); existing != m_Materials.end() )
+		{
+			existing->second.SetName( newName );
+		}
+	}
+
+	void MaterialManager::DeleteAssetCleanup( const UUID& uuid )
+	{
+		if ( auto existing = m_Materials.find( uuid ); existing != m_Materials.end() )
+		{
+			m_Materials.erase( existing );
+		}
+	}
 }

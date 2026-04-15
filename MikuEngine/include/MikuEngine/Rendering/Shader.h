@@ -44,12 +44,13 @@ namespace MikuEngine
 		void Bind() const;
 		void UnBind() const;
 
-		const std::filesystem::path& GetPath() const;
 		const UUID& GetUUID() const { return m_ShaderUUID; }
 
-		std::string GetName() const;
+		std::string GetName() const override;
+		void SetName( const std::string& newName ) override;
+		const std::filesystem::path& GetPath() const override;
 
-		void RenderInspectorImGui() override;
+		void AssetImGui() override {}
 
 		unsigned int GetUniformLocation( const std::string& uniformName )
 		{

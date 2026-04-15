@@ -10,7 +10,7 @@
 
 namespace MikuEngine
 {
-	Material::Material( UUID uuid, const std::filesystem::path& materialPath ) : Asset( AssetType::MATERIAL ), m_UUID( uuid ), m_MaterialPath( materialPath )
+	Material::Material( UUID uuid, const std::filesystem::path& materialPath ) : Asset( AssetType::MATERIAL ), m_UUID( uuid )
 	{
 		LoadFromFile( materialPath );
 	}
@@ -168,9 +168,11 @@ namespace MikuEngine
 		{
 			// Ignore the textures uniforms with no Bound Values
 			if ( uuid == 0 ) continue;
+			const auto& textureContainer = textureManager.GetTexture( uuid );
 
-			auto texture = textureManager.GetTexture( uuid );
-			texture.Bind( textureID );
+			if ( textureContainer.has_value() == false ) continue;
+
+			textureContainer.value()->texture.Bind( textureID );
 			shader.value()->SetUniform<unsigned int>( name, textureID );
 
 			textureID++;
@@ -180,6 +182,23 @@ namespace MikuEngine
 	void Material::UnBind()
 	{
 		GetShader().value()->UnBind();
+	}
+
+	const std::filesystem::path& Material::GetPath() const
+	{
+		auto material = Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().GetMaterial( m_UUID );
+		MIKU_ASSERT( material.has_value(), "This Shader with UUID doesn't exists!" );
+		return material.value()->index.path;
+	}
+
+	std::string Material::GetName() const
+	{
+		return GetPath().stem().string();
+	}
+
+	void Material::SetName( const std::string& newName )
+	{
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().RenameAsset( m_UUID, newName );
 	}
 
 	std::optional<Shader*> Material::GetShader()
@@ -212,7 +231,7 @@ namespace MikuEngine
 		m_Shader = uuid;
 	}
 
-	void Material::RenderInspectorImGui()
+	void Material::AssetImGui()
 	{
 		auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
@@ -258,9 +277,11 @@ namespace MikuEngine
 			for ( auto& [ uniformName, uuid ] : m_Textures )
 			{
 				const auto& textureUUID = m_Textures[ uniformName ];
-				std::string textureName = "<none>";
 
-				if ( textureUUID != 0 ) textureName = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTextureName( textureUUID );
+				auto texture = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTexture( uuid );
+
+				std::string textureName = "<NONE>";
+				if ( texture.has_value() ) textureName = texture.value()->GetName();
 
 				char buff[ 256 ] = "";
 				std::copy( textureName.begin(), textureName.end(), buff );
@@ -278,7 +299,7 @@ namespace MikuEngine
 						std::filesystem::path materialPath = filePath;
 
 						const auto& texture = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath );
-						m_Textures[ uniformName ] = texture->GetUUID();
+						m_Textures[ uniformName ] = texture.value()->index.uuid;
 					}
 
 					ImGui::EndDragDropTarget();
@@ -298,6 +319,12 @@ namespace MikuEngine
 		{
 			SaveToFile( GetPath() );
 		}
+	}
+
+	void Material::DeleteAsset()
+	{
+		MIKU_CORE_WARN( "Deleting Material!!" );
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().AddToDeleteQueue( m_UUID );
 	}
 
 	void Material::RegisterUniform( std::string, ShaderUniform shaderUniform )

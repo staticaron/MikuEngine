@@ -4,8 +4,8 @@
 #include <string>
 #include <unordered_map>
 
+#include "AssetManagerBase.h"
 #include "Core.h"
-
 #include "Rendering/Texture.h"
 
 namespace MikuEngine
@@ -13,37 +13,50 @@ namespace MikuEngine
 	struct TextureIndexEntry
 	{
 		UUID uuid;
-		std::string name;
-		std::string path;
+		std::filesystem::path path;
 	};
 
-	class MIKU_API TextureManager
+	struct TextureContainer
+	{
+		TextureIndexEntry index;
+		Texture texture;
+
+		std::string GetName() const { return index.path.stem().string(); }
+		void SetName( const std::string& newName ) {}
+	};
+
+	class MIKU_API TextureManager : public AssetManagerBase
 	{
 	public:
 		TextureManager();
 		~TextureManager();
 
-		void LoadTexture( const std::string& name, const std::string& filepath );
+		void LoadTexture( const std::string& name, const std::filesystem::path& filepath );
 		void LoadAllTextures();
 
 		void PrepareTextureIndex();
-		const std::unordered_map<UUID, TextureIndexEntry>& GetTextureIndex() const;
+		const std::unordered_map<UUID, TextureContainer>& GetAllLoadedTextures() const;
 
-		const Texture& GetTexture( UUID textureUUID ) const;
-		const Texture& GetTextureByName( const std::string& name ) const;
-		std::optional<Texture> GetTextureByFilePath( const std::string& path ) const;
+		std::optional<TextureContainer*> GetTexture( UUID textureUUID );
+		std::optional<const TextureContainer*> GetTexture( UUID textureUUID ) const;
+		std::optional<const TextureContainer*> GetTextureByName( const std::string& name ) const;
+		std::optional<const TextureContainer*> GetTextureByFilePath( const std::string& path ) const;
 
 		bool TextureExists( const UUID& uuid ) const;
 
-		const std::unordered_map<UUID, Texture>& GetAllLoadedTextures() const;
+		const std::filesystem::path& GetFilePathFromUUID( const UUID& uuid );
 
-		std::string GetTextureName( UUID textureUUID ) const;
+		void RenameAssetCleanup( const UUID& uuid, const std::string& newName );
+		void DeleteAssetCleanup( const UUID& uuid );
+
+	private:
+		const std::unordered_map<UUID, TextureIndexEntry>& GetTextureIndex() const;
 
 	private:
 		bool TextureAlreadyPresent( UUID textureID ) const;
 
 	private:
 		std::unordered_map<UUID, TextureIndexEntry> m_TextureIndex;
-		std::unordered_map<UUID, Texture> m_Textures;
+		std::unordered_map<UUID, TextureContainer> m_Textures;
 	};
 }

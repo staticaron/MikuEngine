@@ -91,7 +91,7 @@ namespace MikuEngine
 			shader.SetUniform<glm::mat4>( "u_MVP", mvp );
 
 			auto texture = m_AppLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByName( "miku" );
-			texture.Bind( 0 );
+			texture.value()->texture.Bind( 0 );
 
 			shader.SetUniform<unsigned int>( "u_Tex", 0 );
 
@@ -221,6 +221,7 @@ namespace MikuEngine
 		m_AppLevelStuff.GetCentralInput().Update( m_DeltaTime );
 
 		m_AppLevelStuff.GetAssetPoolManager().GetShaderManager().InitFrame();
+		m_AppLevelStuff.GetAssetPoolManager().GetMaterialManager().InitFrame();
 
 		for ( int x = 0; x < m_Layers.size(); x++ )
 			m_Layers[ x ]->Update( m_DeltaTime );

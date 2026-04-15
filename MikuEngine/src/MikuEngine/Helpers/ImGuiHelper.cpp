@@ -12,8 +12,8 @@ namespace MikuEngine
 
 		if ( textureUUID.has_value() )
 		{
-			auto model = textureManager.GetTexture( textureUUID.value() );
-			textureName = textureManager.GetTextureName( textureUUID.value() );
+			auto texture = textureManager.GetTexture( textureUUID.value() );
+			if ( texture.has_value() ) textureName = texture.value()->GetName();
 		}
 
 		ImGui::Text( "Texture" );
@@ -29,7 +29,8 @@ namespace MikuEngine
 			if ( payload != nullptr )
 			{
 				auto texturePath = static_cast<const char*>( payload->Data );
-				textureUUID = textureManager.GetTextureByFilePath( texturePath )->GetUUID();
+				auto texture = textureManager.GetTextureByFilePath( texturePath );
+				if ( texture.has_value() ) textureUUID = texture.value()->index.uuid;
 			}
 
 			ImGui::EndDragDropTarget();
