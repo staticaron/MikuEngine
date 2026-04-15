@@ -1,59 +1,6 @@
 scene: Untitled
 entities:
-  - name: LowRes
-    id: 6933560136604711389
-    components:
-      - type: TransformComponent
-        values:
-          position: [3.04, -4.47, -7.22]
-          rotation: [1.59, 0, 17.740433]
-          scale: [1, 1, 1]
-      - type: MeshRendererComponent
-        values:
-          model: 6321326824597677874
-          material: 259975975496740564
-      - type: NativeScriptComponent
-        values:
-          scriptName: Rotator
-  - name: Miku
-    id: 4186582529910479368
-    components:
-      - type: TransformComponent
-        values:
-          position: [10, 0, -10]
-          rotation: [0, 0, 0]
-          scale: [5, 5, 1]
-  - name: Camera
-    id: 471711908562867175
-    components:
-      - type: TransformComponent
-        values:
-          position: [0, 0, 10]
-          rotation: [0, 0, 0]
-          scale: [1, 1, 1]
-      - type: CameraComponent
-        values:
-          perspective: true
-          zoom: 1
-          maincamera: true
-          width: 32
-  - name: Card
-    id: 5030660346100341033
-    components:
-      - type: TransformComponent
-        values:
-          position: [-5.67, -0.23, -10]
-          rotation: [0.0026706073, -0.0049998336, 0]
-          scale: [11.5, 16, 1]
-      - type: SpriteRendererComponent
-        values:
-          texture: 14934649494355436187
-          material: 4519882476185908943
-          tint: [0, 0, 0, 0]
-      - type: NativeScriptComponent
-        values:
-          scriptName: CardController
-  - name: Mesh
+  - name: High Res Miku
     id: 7668711299297732014
     components:
       - type: TransformComponent
@@ -68,3 +15,60 @@ entities:
       - type: NativeScriptComponent
         values:
           scriptName: Rotator
+  - name: Card
+    id: 5030660346100341033
+    components:
+      - type: TransformComponent
+        values:
+          position: [-5.67, -0.23, -10]
+          rotation: [0.0026706073, -0.0049998336, 0]
+          scale: [11.5, 16, 1]
+      - type: SpriteRendererComponent
+        values:
+          texture: 14934649494355436187
+          material: 983640164684192375
+          tint: [0, 0, 0, 0]
+      - type: NativeScriptComponent
+        values:
+          scriptName: CardController
+  - name: Main Camera
+    id: 471711908562867175
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 10]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+      - type: CameraComponent
+        values:
+          perspective: true
+          zoom: 1
+          maincamera: true
+          width: 32
+  - name: Low Res Miku
+    id: 6933560136604711389
+    components:
+      - type: TransformComponent
+        values:
+          position: [3.04, -4.47, -7.22]
+          rotation: [1.59, 0, 17.740433]
+          scale: [1, 1, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 6321326824597677874
+          material: 259975975496740564
+      - type: NativeScriptComponent
+        values:
+          scriptName: Rotator
+  - name: Directional Light
+    id: 11212606969459364440
+    components:
+      - type: TransformComponent
+        values:
+          position: [15, 30, 14]
+          rotation: [20, 12, 22]
+          scale: [1, 1, 1]
+      - type: DirectionalLightComponent
+        values:
+          color: [0.9957806, 0.83191794, 0]
+          intensity: 23
