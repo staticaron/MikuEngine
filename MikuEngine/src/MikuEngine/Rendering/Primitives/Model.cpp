@@ -48,7 +48,7 @@ namespace MikuEngine
 			Vertex3D vertex;
 
 			vertex.Position = { mesh->mVertices[ x ].x, mesh->mVertices[ x ].y, mesh->mVertices[ x ].z };
-			vertex.Normal = { mesh->mNormals[ x ].x, mesh->mNormals[ x ].y };
+			vertex.Normal = { mesh->mNormals[ x ].x, mesh->mNormals[ x ].y, mesh->mNormals[ x ].z };
 
 			if ( mesh->mTextureCoords[ 0 ] )
 				vertex.UV = { mesh->mTextureCoords[ 0 ][ x ].x, mesh->mTextureCoords[ 0 ][ x ].y };

@@ -26,6 +26,8 @@ namespace MikuEditor
 
 	void EditorLayer::Update( double dt )
 	{
+		m_Scene->PerformDeletions();
+
 		// Do nothing if playmode is active
 		if ( m_EditorLevelStuff.m_CurrentPlayModeState == PlayModeState::PLAYING ) return;
 
@@ -45,7 +47,12 @@ namespace MikuEditor
 		else
 		{
 			const auto& mainLightTransform = mainLight.value().first.GetReadOnlyComponent<MikuEngine::TransformComponent>();
-			MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateLightingData( { mainLight.value().second.Color, mainLight.value().second.Intensity } );
+			MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateLightingData( {
+			    {    mainLightTransform.Position, 0.0f},
+				   {mainLightTransform.GetForward(), 0.0f},
+			      { mainLight.value().second.Color, 0.0f},
+				mainLight.value().second.Intensity
+			   } );
 		}
 	}
 
