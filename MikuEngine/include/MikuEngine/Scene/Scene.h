@@ -35,6 +35,9 @@ namespace MikuEngine
 
 		Entity CreateEntity( const std::string& name, Scene* parentScene );
 		Entity LoadEntity( const std::string& name, UUID uuid, Scene* parentScene );
+		void AddEntityToDeleteQueue( const UUID& uuid ) { m_DeleteQueue.push_back( uuid ); }
+
+		void PerformDeletions();
 
 		std::optional<SelectableItem> GetSelectedItem();
 		void SetSelectedItem( UUID uuid, SelectableType type, AssetType assetType = AssetType::NONE );
@@ -54,10 +57,15 @@ namespace MikuEngine
 		void Clean();
 
 	private:
+		void DeleteEntity( const UUID& uuid );
+
+	private:
 		entt::registry m_Registry;
 		SceneSerializer m_Serializer;
 
 		std::optional<SelectableItem> m_SelectedItem;
+
+		std::vector<UUID> m_DeleteQueue;
 
 		Material mat;
 

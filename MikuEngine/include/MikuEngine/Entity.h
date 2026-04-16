@@ -21,6 +21,8 @@ namespace MikuEngine
 			return idC.ID;
 		}
 
+		const entt::entity& GetEntt() const { return m_Entity; }
+
 		void SetUUID( UUID uuid ) { GetOrAddComponent<IDComponent>().ID = uuid; }
 
 		template <typename T>

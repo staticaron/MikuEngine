@@ -68,6 +68,10 @@ namespace MikuEditor
 				ImGui::InputText( "##DataComponent", entityName, 255 );
 
 				if ( ImGui::IsItemDeactivatedAfterEdit() ) dataC.EntityName = std::string( entityName );
+
+				ImGui::SameLine();
+
+				if ( ImGui::Button( "< DEL >" ) ) scene.AddEntityToDeleteQueue( selectedEntityUUID );
 			}
 
 			// TRANSFORM

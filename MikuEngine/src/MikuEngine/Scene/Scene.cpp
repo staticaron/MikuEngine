@@ -70,7 +70,6 @@ namespace MikuEngine
 	Entity Scene::CreateEntity( const std::string& name, Scene* parentScene )
 	{
 		auto entity = m_Registry.create();
-
 		Entity entt( ( UUID() ), entity, parentScene );
 
 		m_Registry.emplace<DataComponent>( entity, name );
@@ -89,6 +88,28 @@ namespace MikuEngine
 		auto& transformC = m_Registry.emplace<TransformComponent>( entity );
 
 		return entt;
+	}
+
+	void Scene::DeleteEntity( const UUID& uuid )
+	{
+		auto entity = GetEntityByID( uuid );
+
+		if ( entity.has_value() == false )
+		{
+			MIKU_CORE_WARN( "Entity you are trying to delete doesn't exists!" );
+			return;
+		}
+
+		m_Registry.destroy( entity.value().GetEntt() );
+		MIKU_CORE_WARN( "Entity Deleted" );
+	}
+
+	void Scene::PerformDeletions()
+	{
+		for ( auto entity : m_DeleteQueue )
+			DeleteEntity( entity );
+
+		m_DeleteQueue.clear();
 	}
 
 	std::optional<SelectableItem> Scene::GetSelectedItem()

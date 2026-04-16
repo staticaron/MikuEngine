@@ -3,8 +3,6 @@
 #include "Components.h"
 #include "MikuEngine/Managers/ImguiManager.h"
 
-#include "Entity.h"
-
 namespace MikuEditor
 {
 	void HierarchyPanel::RenderHierarchy( MikuEngine::Scene& scene )
