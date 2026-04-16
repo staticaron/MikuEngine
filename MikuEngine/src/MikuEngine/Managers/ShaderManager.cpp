@@ -66,8 +66,6 @@ namespace MikuEngine
 
 			refreshCount++;
 		}
-
-		MIKU_CORE_DEBUG( "Material Refresh Completed with count : {}", refreshCount );
 	}
 
 	const std::filesystem::path& ShaderManager::GetFilePathFromUUID( const UUID& uuid )

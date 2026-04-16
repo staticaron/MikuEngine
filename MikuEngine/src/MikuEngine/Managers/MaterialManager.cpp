@@ -80,8 +80,6 @@ namespace MikuEngine
 
 			refreshCount++;
 		}
-
-		MIKU_CORE_INFO( "Material Refresh Completed with count : {}", refreshCount );
 	}
 
 	const std::unordered_map<UUID, MaterialContainer> MaterialManager::GetAllLoadedMaterials() const
