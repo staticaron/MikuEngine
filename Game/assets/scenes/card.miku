@@ -1,17 +1,32 @@
 scene: Untitled
 entities:
+  - name: Cube
+    id: 201022912326916973
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0]
+          rotation: [1.55, 0, 0]
+          scale: [1, 1, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 2717482290592677701
+          material: 12640939573752356792
+      - type: NativeScriptComponent
+        values:
+          scriptName: Rotator
   - name: High Res Miku
     id: 7668711299297732014
     components:
       - type: TransformComponent
         values:
           position: [6.14, 1.39, -8]
-          rotation: [1.76, 0, 133.88136]
+          rotation: [1.76, 0, 162.94324]
           scale: [3, 3, 3]
       - type: MeshRendererComponent
         values:
           model: 12103165659442951605
-          material: 2543867387895967176
+          material: 9619682756762773337
       - type: NativeScriptComponent
         values:
           scriptName: Rotator
@@ -21,12 +36,12 @@ entities:
       - type: TransformComponent
         values:
           position: [-5.67, -0.23, -10]
-          rotation: [0.0026706073, -0.0049998336, 0]
+          rotation: [-0.0049955677, 0.000209988, 0]
           scale: [11.5, 16, 1]
       - type: SpriteRendererComponent
         values:
           texture: 14934649494355436187
-          material: 983640164684192375
+          material: 4519882476185908943
           tint: [0, 0, 0, 0]
       - type: NativeScriptComponent
         values:
@@ -51,12 +66,12 @@ entities:
       - type: TransformComponent
         values:
           position: [3.04, -4.47, -7.22]
-          rotation: [1.59, 0, 17.740433]
+          rotation: [1.59, 0, 46.803234]
           scale: [1, 1, 1]
       - type: MeshRendererComponent
         values:
           model: 6321326824597677874
-          material: 259975975496740564
+          material: 14056027861775677514
       - type: NativeScriptComponent
         values:
           scriptName: Rotator
@@ -70,5 +85,5 @@ entities:
           scale: [1, 1, 1]
       - type: DirectionalLightComponent
         values:
-          color: [0.9957806, 0.83191794, 0]
-          intensity: 23
+          color: [1, 0.970838, 0.8227848]
+          intensity: 0.2

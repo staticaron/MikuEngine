@@ -1,0 +1,4 @@
+shader: 9494421210146801033
+properties:
+  u_Tex: !tex 11076069059039092874
+  lightIntensity: !float 0
