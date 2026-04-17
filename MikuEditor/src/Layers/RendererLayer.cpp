@@ -1,6 +1,8 @@
 #include "Layers/RendererLayer.h"
 
 #include "Components/CameraComponent.h"
+#include "Components/DirectionLightComponent.h"
+#include "Components/TransformComponent.h"
 #include "Layers/EditorLayer.h"
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Application.h"
@@ -17,12 +19,29 @@ namespace MikuEditor
 	void RendererLayer::Update( double dt )
 	{
 		auto mainCamera = m_Scene->GetMainCamera();
+
 		if ( mainCamera.has_value() )
 		{
 			auto mainCameraEntity = mainCamera->first;
 			auto mainCameraComponent = mainCamera->second;
 
 			MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateGameMatrixData( { MikuEngine::CameraSystem::GetProjMatrix( mainCameraComponent ), MikuEngine::CameraSystem::GetViewMatrix( mainCameraEntity ) } );
+
+			auto mainLight = m_Scene->GetMainLight();
+
+			if ( mainLight.has_value() )
+			{
+				auto mainLightEntity = mainLight->first;
+				auto mainLightComponent = mainLight->second;
+				auto mainLightTransform = mainLightEntity.GetComponent<MikuEngine::TransformComponent>();
+
+				MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateLightingData( {
+				    {    mainLightTransform.Position, 1.0},
+					  {mainLightTransform.GetForward(), 1.0},
+				    {	      mainLightComponent.Color, 1.0},
+				       mainLightComponent.Intensity
+				    } );
+			}
 		}
 
 		if ( EditorLayer::GetEditorLayer()->GetEditorLayerInfo().GetPlayModeState() != PlayModeState::PLAYING ) return;
