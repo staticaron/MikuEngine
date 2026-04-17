@@ -30,3 +30,4 @@
 [submodule "ImGuizmo"]
 	path = MikuEngine/vendor/ImGuizmo
 	url = https://github.com/CedricGuillemet/ImGuizmo.git
+	ignore = dirty
