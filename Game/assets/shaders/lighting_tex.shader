@@ -48,10 +48,15 @@ in vec2 v_UV;
 
 uniform sampler2D u_Tex;
 
+uniform float u_Ambient = 0.0;
+
 void main()
 {
-	vec3 lightRay = normalize( vec3(lightPos) - v_WorldPos );
-	float intensity = max( dot( lightRay, v_Normal ), 0.0 );
+	vec4 tex = texture(u_Tex, v_UV);
 
-	color = vec4( intensity, intensity, intensity, 1.0 );
+	// vec3 lightRay = normalize( vec3(lightPos) - v_WorldPos );
+	vec3 lightRay = normalize( vec3( lightDir ) );
+	float intensity = min( max( dot( lightRay, v_Normal ), 0.0 ) + u_Ambient, 1.0 ) * lightIntensity;
+
+	color = vec4( tex.x * intensity, tex.y * intensity, tex.z * intensity, 1.0);
 }

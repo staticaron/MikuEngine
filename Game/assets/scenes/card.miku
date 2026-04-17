@@ -1,5 +1,48 @@
 scene: Untitled
 entities:
+  - name: Super High Res Miku
+    id: 201022912326916973
+    components:
+      - type: TransformComponent
+        values:
+          position: [5.06, -0.09, -10.1]
+          rotation: [1.55, 0, 1.77]
+          scale: [1, 1, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 2717482290592677701
+          material: 12640939573752356792
+  - name: Directional Light
+    id: 11212606969459364440
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0]
+          rotation: [0, 19.632687, 33.422035]
+          scale: [1, 1, 1]
+      - type: NativeScriptComponent
+        values:
+          scriptName: Rotator
+      - type: DirectionalLightComponent
+        values:
+          color: [1, 0.970838, 0.8227848]
+          intensity: 0.95
+  - name: Card
+    id: 5030660346100341033
+    components:
+      - type: TransformComponent
+        values:
+          position: [-5.67, -0.23, -10]
+          rotation: [-0.004994201, 0.0006127611, 0]
+          scale: [11.5, 16, 1]
+      - type: SpriteRendererComponent
+        values:
+          texture: 14934649494355436187
+          material: 4519882476185908943
+          tint: [0, 0, 0, 0]
+      - type: NativeScriptComponent
+        values:
+          scriptName: CardController
   - name: Main Camera
     id: 471711908562867175
     components:
@@ -14,46 +57,3 @@ entities:
           zoom: 1
           maincamera: true
           width: 32
-  - name: Card
-    id: 5030660346100341033
-    components:
-      - type: TransformComponent
-        values:
-          position: [-5.67, -0.23, -10]
-          rotation: [-0.0049955677, 0.000209988, 0]
-          scale: [11.5, 16, 1]
-      - type: SpriteRendererComponent
-        values:
-          texture: 14934649494355436187
-          material: 4519882476185908943
-          tint: [0, 0, 0, 0]
-      - type: NativeScriptComponent
-        values:
-          scriptName: CardController
-  - name: Directional Light
-    id: 11212606969459364440
-    components:
-      - type: TransformComponent
-        values:
-          position: [15, 30, 14]
-          rotation: [20, 12, 22]
-          scale: [1, 1, 1]
-      - type: DirectionalLightComponent
-        values:
-          color: [1, 0.970838, 0.8227848]
-          intensity: 0.2
-  - name: Super High Res Miku
-    id: 201022912326916973
-    components:
-      - type: TransformComponent
-        values:
-          position: [5.06, -0.09, -10.1]
-          rotation: [1.55, 0, 47.073418]
-          scale: [1, 1, 1]
-      - type: MeshRendererComponent
-        values:
-          model: 2717482290592677701
-          material: 12640939573752356792
-      - type: NativeScriptComponent
-        values:
-          scriptName: Rotator
