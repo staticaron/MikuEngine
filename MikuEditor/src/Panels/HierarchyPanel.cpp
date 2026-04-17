@@ -11,6 +11,8 @@ namespace MikuEditor
 
 		float footer_height_to_reserve = ImGui::GetFrameHeightWithSpacing();
 
+		ImGui::PushStyleColor( ImGuiCol_FrameBg, { 0.0f, 0.0f, 0.0f, 1.0f } );
+
 		if ( ImGui::BeginChild( "##Entities", ImVec2( 0, -footer_height_to_reserve ), false ) )
 		{
 			if ( ImGui::BeginListBox( "##Scene Hierarchy", ImVec2( -FLT_MIN, -FLT_MIN ) ) )
@@ -37,6 +39,8 @@ namespace MikuEditor
 			}
 
 			ImGui::EndChild();
+
+			ImGui::PopStyleColor();
 		}
 
 		if ( MikuEngine::ImguiManager::FullWidthButton( "ADD" ) ) scene.CreateEntity( "New GameObject", &scene );
