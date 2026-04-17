@@ -1,3 +1,5 @@
 #!/bin/bash
 
-./build/bin/MikuEditor
+#./build/bin/MikuEditor
+
+gdb build/bin/MikuEditor
