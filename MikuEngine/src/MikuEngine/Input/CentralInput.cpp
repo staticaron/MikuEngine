@@ -26,6 +26,10 @@ namespace MikuEngine
 		m_KeyCodeState[ GLFW_KEY_A ] = glfwGetKey( window, GLFW_KEY_A );
 		m_KeyCodeState[ GLFW_KEY_Q ] = glfwGetKey( window, GLFW_KEY_Q );
 		m_KeyCodeState[ GLFW_KEY_E ] = glfwGetKey( window, GLFW_KEY_E );
+		m_KeyCodeState[ GLFW_KEY_T ] = glfwGetKey( window, GLFW_KEY_T );
+		m_KeyCodeState[ GLFW_KEY_R ] = glfwGetKey( window, GLFW_KEY_R );
+		m_KeyCodeState[ GLFW_KEY_X ] = glfwGetKey( window, GLFW_KEY_X );
+		m_KeyCodeState[ GLFW_KEY_G ] = glfwGetKey( window, GLFW_KEY_G );
 
 		m_KeyCodeState[ GLFW_KEY_SPACE ] = glfwGetKey( window, GLFW_KEY_SPACE );
 	}
@@ -70,7 +74,7 @@ namespace MikuEngine
 	{
 		const auto& existing = m_KeyCodeState.find( keycode );
 
-		MIKU_ASSERT( existing != m_KeyCodeState.end(), "KEY NOT FOUND!" );
+		MIKU_ASSERT( existing != m_KeyCodeState.end(), "KEY NOT FOUND! Load the key in CentralInput first!" );
 
 		return existing->second == GLFW_PRESS || existing->second == GLFW_REPEAT;
 	}

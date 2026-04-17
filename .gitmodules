@@ -27,3 +27,6 @@
 [submodule "MikuEngine/vendor/assimp"]
 	path = MikuEngine/vendor/assimp
 	url = https://github.com/assimp/assimp.git
+[submodule "ImGuizmo"]
+	path = MikuEngine/vendor/ImGuizmo
+	url = https://github.com/CedricGuillemet/ImGuizmo.git

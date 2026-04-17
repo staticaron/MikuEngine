@@ -4,6 +4,7 @@
 
 #include "EditorLevelStuff.h"
 #include "Panels/AssetBrowserPanel.h"
+#include "Panels/ViewportPanel.h"
 #include "Utility/EditorCamera.h"
 #include "Windows/MaterialSelectionWindow.h"
 #include "Windows/ModelSelectionWindow.h"
@@ -38,6 +39,8 @@ namespace MikuEditor
 		void ManageMaterialSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff );
 		void ManageModelSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff );
 
+		EditorCamera& GetEditorCamera() { return m_EditorCamera; }
+
 	private:
 		EditorLevelStuff m_EditorLevelStuff;
 		EditorCamera m_EditorCamera;
@@ -51,6 +54,7 @@ namespace MikuEditor
 
 		// Panels
 		AssetBrowserPanel m_AssetBrowserPanel;
+		ViewportPanel m_ViewportPanel;
 
 		friend class InspectorPanel;
 	};

@@ -26,19 +26,19 @@ namespace MikuEditor
 
 	void EditorLayer::Update( double dt )
 	{
+		// PERFORM THE QUEUED DELETIONS
 		m_Scene->PerformDeletions();
 
-		// Do nothing if playmode is active
 		if ( m_EditorLevelStuff.m_CurrentPlayModeState == PlayModeState::PLAYING ) return;
 
-		// handle camera movement when viewport is active
+		// MOVE EDITOR CAMERA
 		if ( m_IsViewportPanelFocused ) m_EditorCamera.Update( dt );
 
 		// TODO: IMPROVE THIS
 		// Update the Projection Matrix every frame to account for the changes in the viewport panel size
 		m_EditorCamera.UpdateProjectionMatrix();
 
-		// Update the UniformBuffers and feed in the new matrices
+		// UNIFORM BUFFERS ARE UPDATED!
 		MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateEditorMatrixData( { m_EditorCamera.GetProjMatrix(), m_EditorCamera.GetViewMatrix() } );
 
 		const auto& mainLight = m_Scene->GetMainLight();
@@ -54,6 +54,9 @@ namespace MikuEditor
 				mainLight.value().second.Intensity
 			   } );
 		}
+
+		// PANELS ARE UPDATED
+		m_ViewportPanel.Update();
 	}
 
 	void EditorLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
@@ -77,7 +80,7 @@ namespace MikuEditor
 			MikuEditor::InspectorPanel::RenderInspectorPanel( *this, appLevelStuff, *m_Scene );
 			m_AssetBrowserPanel.RenderAssetBrowserPanel( *m_Scene );
 			MikuEditor::EditorOverlayPanel::RenderEditorOverlayPanel( *this, appLevelStuff, m_EditorLevelStuff, *m_Scene );
-			m_IsViewportPanelFocused = MikuEditor::ViewportPanel::RenderViewportPanel( *m_Scene );
+			m_IsViewportPanelFocused = m_ViewportPanel.RenderViewportPanel( *this, *m_Scene );
 
 			ManageTextureSelectionWindows( appLevelStuff );
 			ManageShaderSelectionWindows( appLevelStuff );

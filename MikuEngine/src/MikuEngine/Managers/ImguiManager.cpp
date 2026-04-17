@@ -5,6 +5,7 @@
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 #include "imgui.h"
+#include "ImGuizmo.h"
 
 #include "Application.h"
 #include "Rendering/FrameBuffers/SceneFBO.h"
@@ -108,6 +109,8 @@ namespace MikuEngine
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+
+		ImGuizmo::BeginFrame();
 
 		ImGuiDockNodeFlags mainDockspaceFlags = ImGuiDockNodeFlags_PassthruCentralNode;
 		ImGui::DockSpaceOverViewport( ImGui::GetID( "Dockspace" ), ImGui::GetMainViewport(), mainDockspaceFlags );
