@@ -25,5 +25,6 @@ namespace MikuEditor
 
 	private:
 		ImGuizmo::OPERATION m_CurrentOperation = ImGuizmo::OPERATION::TRANSLATE;
+		bool m_IsSnapping;
 	};
 }
