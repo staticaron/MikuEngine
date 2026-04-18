@@ -1,6 +1,7 @@
 #include "Panels/ViewportPanel.h"
 
 #include "Components/TransformComponent.h"
+#include "glm/ext.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui.h"
 #include "ImGuizmo.h"
@@ -8,7 +9,6 @@
 #include "Entity.h"
 #include "Input/CentralInput.h"
 #include "Layers/EditorLayer.h"
-#include "Logger.h"
 #include "MikuEngine/Application.h"
 #include "MikuEngine/Scene/Scene.h"
 #include "Systems/CameraSystem.h"
@@ -69,7 +69,15 @@ namespace MikuEditor
 				{
 					auto& transform = selectedEntity->GetComponent<MikuEngine::TransformComponent>();
 					auto transformMtx = transform.GetModelMatrix();
-					auto oldRotation = transform.Rotation;
+
+					glm::mat4 pureRotationMtx = transformMtx;
+
+					pureRotationMtx[ 0 ] = glm::normalize( pureRotationMtx[ 0 ] );
+					pureRotationMtx[ 1 ] = glm::normalize( pureRotationMtx[ 1 ] );
+					pureRotationMtx[ 2 ] = glm::normalize( pureRotationMtx[ 2 ] );
+
+					glm::vec3 oldRotation = {};
+					glm::extractEulerAngleXYZ( pureRotationMtx, oldRotation.x, oldRotation.y, oldRotation.z );
 
 					auto& editorCam = editorLayer.GetEditorCamera();
 
@@ -80,17 +88,23 @@ namespace MikuEditor
 
 					if ( ImGuizmo::IsUsing() )
 					{
-						glm::vec3 translation, rotation, scale;
-
-						ImGuizmo::DecomposeMatrixToComponents( glm::value_ptr( transformMtx ), glm::value_ptr( translation ), glm::value_ptr( rotation ), glm::value_ptr( scale ) );
-
-						const glm::vec3 deltaRotation = rotation - transform.Rotation;
-
-						MIKU_CLIENT_INFO( "Rotation Delta {} {} {} ", deltaRotation.x, deltaRotation.y, deltaRotation.z );
+						glm::vec3 translation, rotationDegrees, scale;
+						ImGuizmo::DecomposeMatrixToComponents( glm::value_ptr( transformMtx ), glm::value_ptr( translation ), glm::value_ptr( rotationDegrees ), glm::value_ptr( scale ) );
 
 						transform.Position = translation;
-						transform.Rotation += glm::radians( deltaRotation );
 						transform.Scale = scale;
+
+						glm::mat4 pureRotationMtx = transformMtx;
+
+						pureRotationMtx[ 0 ] = glm::normalize( pureRotationMtx[ 0 ] );
+						pureRotationMtx[ 1 ] = glm::normalize( pureRotationMtx[ 1 ] );
+						pureRotationMtx[ 2 ] = glm::normalize( pureRotationMtx[ 2 ] );
+
+						glm::vec3 eulerAngles = {};
+						glm::extractEulerAngleXYZ( pureRotationMtx, eulerAngles.x, eulerAngles.y, eulerAngles.z );
+						glm::vec3 deltaRot = eulerAngles - oldRotation;
+
+						transform.Rotation += deltaRot;
 					}
 				}
 			}
