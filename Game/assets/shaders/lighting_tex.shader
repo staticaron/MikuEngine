@@ -58,5 +58,5 @@ void main()
 	vec3 lightRay = normalize( vec3( lightDir ) );
 	float intensity = min( max( dot( lightRay, v_Normal ), 0.0 ) + u_Ambient, 1.0 ) * lightIntensity;
 
-	color = vec4( tex.x * intensity, tex.y * intensity, tex.z * intensity, 1.0);
+	color = vec4( tex.x * intensity, tex.y * intensity, tex.z * intensity, tex.w);
 }
