@@ -144,7 +144,7 @@ namespace MikuEngine
 
 		Bind();
 
-		for ( int x = 0; x < uniformCount; x++ )
+		for ( unsigned int x = 0; x < uniformCount; x++ )
 		{
 			const int bufferSize = 256;
 			int length;
@@ -154,8 +154,13 @@ namespace MikuEngine
 
 			glGetActiveUniform( m_RendererID, x, 256, &length, &size, &type, name );
 
-			unsigned int index = GetUniformLocation( name );
+			int blockIndex;
+			glGetActiveUniformsiv( m_RendererID, 1, &x, GL_UNIFORM_BLOCK_INDEX, &blockIndex );
 
+			// IGNORE THE UNIFORMS PART OF UNIFOR BUFFER OBJECT ( THEY HAVE A UNIFORM BUFFER INDEX)
+			if ( blockIndex != -1 ) continue;
+
+			unsigned int index = GetUniformLocation( name );
 			m_Uniforms[ name ] = { name, index, type };
 		}
 
