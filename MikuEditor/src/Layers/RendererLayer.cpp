@@ -23,9 +23,13 @@ namespace MikuEditor
 		if ( mainCamera.has_value() )
 		{
 			auto mainCameraEntity = mainCamera->first;
+			auto mainCameraTransform = mainCameraEntity.GetComponent<MikuEngine::TransformComponent>();
 			auto mainCameraComponent = mainCamera->second;
 
-			MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateGameMatrixData( { MikuEngine::CameraSystem::GetProjMatrix( mainCameraComponent ), MikuEngine::CameraSystem::GetViewMatrix( mainCameraEntity ) } );
+			MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateGameCameraData( {
+			    MikuEngine::CameraSystem::GetProjMatrix( mainCameraComponent ), MikuEngine::CameraSystem::GetViewMatrix( mainCameraEntity ), {	   mainCameraTransform.Position, 0.0},
+					{mainCameraTransform.GetForward(), 0.0}
+			  } );
 
 			auto mainLight = m_Scene->GetMainLight();
 
@@ -39,8 +43,8 @@ namespace MikuEditor
 				    {    mainLightTransform.Position, 1.0},
 					  {mainLightTransform.GetForward(), 1.0},
 				    {	      mainLightComponent.Color, 1.0},
-				       mainLightComponent.Intensity
-				    } );
+				       mainLightComponent.Intensity, mainLightComponent.AmbientIntensity, mainLightComponent.SpecularStrength
+				      } );
 			}
 		}
 
