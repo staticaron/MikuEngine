@@ -10,6 +10,10 @@ namespace MikuEngine
 	struct MIKU_API DirectionalLightComponent : BaseComponent
 	{
 		glm::vec3 Color;
+
 		float Intensity;
+		float AmbientIntensity;
+
+		float SpecularStrength;
 	};
 }
