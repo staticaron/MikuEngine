@@ -3,6 +3,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/quaternion.hpp"
 
+#include "Logger.h"
+
 namespace MikuEditor
 {
 	class EditorLevelStuff;
@@ -33,6 +35,8 @@ namespace MikuEditor
 		glm::vec3 GetForwardDirection() const { return glm::rotate( GetOrientation(), glm::vec3( 0.0f, 0.0f, -1.0f ) ); }
 		glm::vec3 GetRightDirection() const { return glm::rotate( GetOrientation(), glm::vec3( 1.0f, 0.0f, 0.0f ) ); }
 		glm::vec3 GetUpDirection() const { return glm::rotate( GetOrientation(), glm::vec3( 0.0f, 1.0f, 0.0f ) ); }
+
+		const glm::vec3& GetPosition() const { return Position; }
 
 		void Translate( double dt );
 

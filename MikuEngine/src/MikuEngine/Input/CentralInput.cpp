@@ -32,14 +32,15 @@ namespace MikuEngine
 		m_KeyCodeState[ GLFW_KEY_G ] = glfwGetKey( window, GLFW_KEY_G );
 
 		m_KeyCodeState[ GLFW_KEY_SPACE ] = glfwGetKey( window, GLFW_KEY_SPACE );
+		m_KeyCodeState[ GLFW_KEY_LEFT_CONTROL ] = glfwGetKey( window, GLFW_KEY_LEFT_CONTROL );
 	}
 
 	void CentralInput::UpdateAxisRaw()
 	{
 		bool rightPressed = IsKeyPressed( GLFW_KEY_D );
 		bool leftPressed = IsKeyPressed( GLFW_KEY_A );
-		bool upPressed = IsKeyPressed( GLFW_KEY_Q );
-		bool downPressed = IsKeyPressed( GLFW_KEY_E );
+		bool upPressed = IsKeyPressed( GLFW_KEY_E );
+		bool downPressed = IsKeyPressed( GLFW_KEY_Q );
 		bool forwardPressed = IsKeyPressed( GLFW_KEY_W );
 		bool backwardPressed = IsKeyPressed( GLFW_KEY_S );
 
