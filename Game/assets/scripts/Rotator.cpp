@@ -6,5 +6,5 @@ void Rotator::OnUpdate( double dt )
 {
 	auto& transformComponent = m_Entity->GetComponent<MikuEngine::TransformComponent>();
 
-	transformComponent.Rotation.y += m_RotateSpeed * dt;
+	transformComponent.Rotation.z += m_RotateSpeed * dt;
 }

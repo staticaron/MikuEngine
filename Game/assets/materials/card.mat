@@ -1,5 +1,3 @@
 shader: 2670866218237688430
 properties:
   u_Tex: !tex 12047856255820212010
-  lightIntensity: !float 0
-  u_Ambient: !float 0
