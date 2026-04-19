@@ -67,10 +67,12 @@ namespace MikuEngine
 
 		Scene m_Scene;
 
-		// Delta Time
 		double m_DeltaTime = 0.0;
 		std::chrono::high_resolution_clock::time_point LAST;
 		std::chrono::high_resolution_clock::time_point NOW;
+
+		unsigned int m_FrameCountPerSecond = 0;
+		std::chrono::high_resolution_clock::time_point m_LastRecordTimePoint;
 
 		std::vector<std::unique_ptr<Layer>> m_Layers;
 	};

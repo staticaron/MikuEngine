@@ -179,7 +179,7 @@ namespace MikuEngine
 		glEnable( GL_CULL_FACE );
 
 		// Initializing of member vars
-		LAST = NOW = std::chrono::high_resolution_clock::now();
+		LAST = NOW = m_LastRecordTimePoint = std::chrono::high_resolution_clock::now();
 
 		m_SceneFBO.Init();
 		m_GameFBO.Init();
@@ -211,9 +211,21 @@ namespace MikuEngine
 		NOW = std::chrono::high_resolution_clock::now();
 		m_DeltaTime = std::chrono::duration<double>( NOW - LAST ).count();
 		m_DeltaTime = std::clamp( m_DeltaTime, 0.0, 0.01 );
-
 		m_AppLevelStuff.DeltaTime = static_cast<double>( m_DeltaTime );
-		m_AppLevelStuff.FPS = static_cast<unsigned int>( 1 / m_DeltaTime );
+
+		// CALCULATE FPS PER SECOND
+
+		constexpr float FPS_TEST_TIME_GAP = 0.5f;
+
+		m_FrameCountPerSecond++;
+		auto timeGap = std::chrono::duration<double>( NOW - m_LastRecordTimePoint ).count();
+
+		if ( timeGap > FPS_TEST_TIME_GAP )
+		{
+			m_AppLevelStuff.FPS = m_FrameCountPerSecond / FPS_TEST_TIME_GAP;
+			m_FrameCountPerSecond = 0;
+			m_LastRecordTimePoint = NOW;
+		}
 	}
 
 	void Application::Update()

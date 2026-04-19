@@ -41,7 +41,7 @@ namespace MikuEditor
 		// UNIFORM BUFFERS ARE UPDATED!
 		MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateEditorCameraData( {
 		    m_EditorCamera.GetProjMatrix(), m_EditorCamera.GetViewMatrix(), {	      m_EditorCamera.GetPosition(), 0.0f},
-			    {m_EditorCamera.GetForwardDirection(), 0.0f}
+		    {m_EditorCamera.GetForwardDirection(), 0.0f}
 		   } );
 
 		const auto& mainLight = m_Scene->GetMainLight();
@@ -52,10 +52,10 @@ namespace MikuEditor
 			const auto& mainLightTransform = mainLight.value().first.GetReadOnlyComponent<MikuEngine::TransformComponent>();
 			MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateLightingData( {
 			    {    mainLightTransform.Position, 0.0f},
-				   {mainLightTransform.GetForward(), 0.0f},
-			      { mainLight.value().second.Color, 0.0f},
-				mainLight.value().second.Intensity, mainLight.value().second.AmbientIntensity, mainLight.value().second.SpecularStrength
-			 } );
+			    {mainLightTransform.GetForward(), 0.0f},
+			    { mainLight.value().second.Color, 0.0f},
+			    mainLight.value().second.Intensity, mainLight.value().second.AmbientIntensity, mainLight.value().second.SpecularStrength
+			     } );
 		}
 
 		// PANELS ARE UPDATED
