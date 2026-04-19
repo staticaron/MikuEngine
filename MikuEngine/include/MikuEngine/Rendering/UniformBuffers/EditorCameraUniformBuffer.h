@@ -6,7 +6,7 @@
 
 namespace MikuEngine
 {
-	class MIKU_API GameUniformBuffer : public UniformBuffer
+	class MIKU_API EditorCameraUniformBuffer : public UniformBuffer
 	{
 	public:
 		void Init( unsigned int bindIndex, unsigned int size ) override;

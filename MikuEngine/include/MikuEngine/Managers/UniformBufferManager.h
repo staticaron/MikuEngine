@@ -2,11 +2,11 @@
 
 #include "Core.h"
 
-#include "Data/UniformBuffer/LightingData.h"
-#include "Data/UniformBuffer/MatrixData.h"
+#include "Data/UniformBuffer/CameraUniformData.h"
+#include "Data/UniformBuffer/LightingUniformData.h"
 
-#include "Rendering/UniformBuffers/EditorUniformBuffer.h"
-#include "Rendering/UniformBuffers/GameUniformBuffer.h"
+#include "Rendering/UniformBuffers/EditorCameraUniformBuffer.h"
+#include "Rendering/UniformBuffers/GameCameraUniformBuffer.h"
 #include "Rendering/UniformBuffers/LightingUniformBuffer.h"
 
 namespace MikuEngine
@@ -16,24 +16,25 @@ namespace MikuEngine
 	public:
 		void Init();
 
-		const UniformBuffer& GetGameUniformBuffer() const { return m_GameUniformBuffer; }
-		const UniformBuffer& GetEditorUniformBuffer() const { return m_EditorUniformBuffer; }
+		const UniformBuffer& GetGameUniformBuffer() const { return m_GameCameraUniformBuffer; }
+		const UniformBuffer& GetEditorUniformBuffer() const { return m_EditorCameraUniformBuffer; }
 		const UniformBuffer& GetLightingUniformBuffer() const { return m_LightingUniformBuffer; }
 
 		void UpdateBuffer();
 
-		void UpdateGameMatrixData( const MatrixData& matrixData );
-		void UpdateEditorMatrixData( const MatrixData& matrixData );
-		void UpdateLightingData( const LightingData& lightingData );
+		void UpdateGameCameraData( const CameraUniformData& cameraData );
+		void UpdateEditorCameraData( const CameraUniformData& cameraData );
+		void UpdateLightingData( const LightingUniformData& lightingData );
 
 	private:
-		GameUniformBuffer m_GameUniformBuffer;
-		EditorUniformBuffer m_EditorUniformBuffer;
+		GameCameraUniformBuffer m_GameCameraUniformBuffer;
+		EditorCameraUniformBuffer m_EditorCameraUniformBuffer;
+
 		LightingUniformBuffer m_LightingUniformBuffer;
 
-		MatrixData m_GameMatrixData;
-		MatrixData m_EditorMatrixData;
+		CameraUniformData m_GameMatrixData;
+		CameraUniformData m_EditorMatrixData;
 
-		LightingData m_LightingData;
+		LightingUniformData m_LightingData;
 	};
 }

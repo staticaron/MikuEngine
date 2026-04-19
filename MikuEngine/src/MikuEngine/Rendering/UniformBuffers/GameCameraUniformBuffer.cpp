@@ -1,10 +1,10 @@
-#include "Rendering/UniformBuffers/GameUniformBuffer.h"
+#include "Rendering/UniformBuffers/GameCameraUniformBuffer.h"
 
 #include "glad/glad.h"
 
 namespace MikuEngine
 {
-	void GameUniformBuffer::Init( unsigned int bindIndex, unsigned int size )
+	void GameCameraUniformBuffer::Init( unsigned int bindIndex, unsigned int size )
 	{
 		m_BindIndex = bindIndex;
 

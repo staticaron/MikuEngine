@@ -1,61 +1,38 @@
 #include "Managers/UniformBufferManager.h"
 
-#include "glad/glad.h"
-
-#include "Logger.h"
-
 namespace MikuEngine
 {
 	void UniformBufferManager::Init()
 	{
-		m_GameUniformBuffer.Init( 0, sizeof( MatrixData ) );
-		m_EditorUniformBuffer.Init( 0, sizeof( MatrixData ) );
+		m_GameCameraUniformBuffer.Init( 0, sizeof( CameraUniformData ) );
+		m_EditorCameraUniformBuffer.Init( 0, sizeof( CameraUniformData ) );
 
-		m_LightingUniformBuffer.Init( 1, sizeof( LightingData ) );
+		m_LightingUniformBuffer.Init( 1, sizeof( LightingUniformData ) );
 	}
 
-	void UniformBufferManager::UpdateGameMatrixData( const MatrixData& matrixData )
+	void UniformBufferManager::UpdateGameCameraData( const CameraUniformData& matrixData )
 	{
 		bool result = matrixData == m_GameMatrixData;
 		if ( result ) return;
 
 		m_GameMatrixData = matrixData;
-		m_GameUniformBuffer.PutData( &m_GameMatrixData, sizeof( MatrixData ) );
+		m_GameCameraUniformBuffer.PutData( &m_GameMatrixData, sizeof( CameraUniformData ) );
 	}
 
-	void UniformBufferManager::UpdateEditorMatrixData( const MatrixData& matrixData )
+	void UniformBufferManager::UpdateEditorCameraData( const CameraUniformData& matrixData )
 	{
 		if ( matrixData == m_EditorMatrixData ) return;
 
 		m_EditorMatrixData = matrixData;
-		m_EditorUniformBuffer.PutData( &m_EditorMatrixData, sizeof( MatrixData ) );
+		m_EditorCameraUniformBuffer.PutData( &m_EditorMatrixData, sizeof( CameraUniformData ) );
 	}
 
-	void UniformBufferManager::UpdateLightingData( const LightingData& lightingData )
+	void UniformBufferManager::UpdateLightingData( const LightingUniformData& lightingData )
 	{
 		if ( lightingData == m_LightingData ) return;
 
-#define TESTJ
-#ifdef TEST
-		MIKU_CORE_INFO( "Intensity is {}", lightingData.intensity );
-
-		LightingData oldData;
-
-		m_LightingUniformBuffer.Bind();
-		glGetBufferSubData( GL_UNIFORM_BUFFER, 0, sizeof( oldData ), &oldData );
-		MIKU_CORE_INFO( "Intesity Before Change : {}", oldData.intensity );
-		m_LightingUniformBuffer.UnBind();
-#endif
-
 		m_LightingData = lightingData;
-		m_LightingUniformBuffer.PutData( &m_LightingData, sizeof( LightingData ) );
-
-#define TEST_AFTERJ
-#ifdef TEST_AFTER
-		m_LightingUniformBuffer.Bind();
-		glGetBufferSubData( GL_UNIFORM_BUFFER, 0, sizeof( oldData ), &oldData );
-		MIKU_CORE_INFO( "Intensity After Change : {}", oldData.intensity );
-#endif
+		m_LightingUniformBuffer.PutData( &m_LightingData, sizeof( LightingUniformData ) );
 
 		m_LightingUniformBuffer.UnBind();
 	}
