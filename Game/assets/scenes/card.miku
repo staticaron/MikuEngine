@@ -1,27 +1,12 @@
 scene: Untitled
 entities:
-  - name: Super High Res Miku
-    id: 201022912326916973
-    components:
-      - type: TransformComponent
-        values:
-          position: [5.06, -0.09, -10.1]
-          rotation: [1.5707963, 2.584209e-18, 80.58402]
-          scale: [0.99999976, 0.99999905, 0.9998851]
-      - type: MeshRendererComponent
-        values:
-          model: 2717482290592677701
-          material: 12640939573752356792
-      - type: NativeScriptComponent
-        values:
-          scriptName: Rotator
   - name: Directional Light
     id: 11212606969459364440
     components:
       - type: TransformComponent
         values:
           position: [2.368357, 0.13016962, 1.3710387]
-          rotation: [0.53806967, 50.383, 30.9552]
+          rotation: [0, 0, 0]
           scale: [0.7499985, 0.75000507, 0.74996585]
       - type: DirectionalLightComponent
         values:
@@ -35,7 +20,7 @@ entities:
       - type: TransformComponent
         values:
           position: [-5.67, -0.23, -10]
-          rotation: [0.0049991175, 0.00117098, 0]
+          rotation: [-0.009029641, -0.0049848882, 0]
           scale: [5.635, 7.84, 0.49]
       - type: MeshRendererComponent
         values:
@@ -58,3 +43,18 @@ entities:
           zoom: 1
           maincamera: true
           width: 32
+  - name: Super High Res Miku
+    id: 201022912326916973
+    components:
+      - type: TransformComponent
+        values:
+          position: [5.06, -0.09, -10.1]
+          rotation: [1.5707963, 2.584209e-18, 127.2722]
+          scale: [0.99999976, 0.99999905, 0.9998851]
+      - type: MeshRendererComponent
+        values:
+          model: 2717482290592677701
+          material: 12640939573752356792
+      - type: NativeScriptComponent
+        values:
+          scriptName: Rotator

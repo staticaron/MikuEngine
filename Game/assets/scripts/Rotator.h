@@ -9,7 +9,7 @@ public:
 	void OnUpdate( double dt ) override;
 
 private:
-	float m_RotateSpeed = 3.0f;
+	float m_RotateSpeed = 1.0f;
 };
 
 REGISTER_SCRIPT( Rotator, "Rotator" );

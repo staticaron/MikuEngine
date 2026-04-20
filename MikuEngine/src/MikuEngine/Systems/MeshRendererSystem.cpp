@@ -31,7 +31,7 @@ namespace MikuEngine
 				material = &materialContainer.value()->material;
 			}
 			else
-				return;
+				continue;
 
 			material->Bind();
 
@@ -73,7 +73,7 @@ namespace MikuEngine
 
 		emitter << YAML::Key << "values" << YAML::Value << YAML::BeginMap;
 		emitter << YAML::Key << "model" << YAML::Value << meshRenderer.ModelIdentifier.value();
-		emitter << YAML::Key << "material" << YAML::Value << ( meshRenderer.MaterialIdentifier.has_value() ? meshRenderer.MaterialIdentifier.value() : UUID( 0 ) );
+		emitter << YAML::Key << "material" << YAML::Value << ( meshRenderer.MaterialIdentifier.has_value() ? meshRenderer.MaterialIdentifier.value().ToString() : "<NONE>" );
 		emitter << YAML::EndMap;
 
 		emitter << YAML::EndMap;
@@ -84,7 +84,20 @@ namespace MikuEngine
 		std::string model = node[ "model" ].as<std::string>();
 		std::string material = node[ "material" ].as<std::string>();
 
-		modelRendererC.ModelIdentifier = model.empty() ? std::optional<UUID>( std::nullopt ) : UUID( model );
-		modelRendererC.MaterialIdentifier = material.empty() ? std::optional<UUID>( std::nullopt ) : UUID( material );
+		if ( model.empty() == false )
+		{
+			if ( model == "<NONE>" )
+				modelRendererC.ModelIdentifier = std::nullopt;
+			else
+				modelRendererC.ModelIdentifier = UUID( model );
+		}
+
+		if ( material.empty() == false )
+		{
+			if ( material == "<NONE>" )
+				modelRendererC.MaterialIdentifier = std::nullopt;
+			else
+				modelRendererC.MaterialIdentifier = UUID( material );
+		}
 	}
 }
