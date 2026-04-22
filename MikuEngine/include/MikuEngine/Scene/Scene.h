@@ -8,7 +8,6 @@
 #include "Core.h"
 #include "Data/SelectableItem.h"
 #include "Helpers/SceneSerializer.h"
-#include "Rendering/Material.h"
 #include "UUID.h"
 
 namespace MikuEngine
@@ -56,6 +55,8 @@ namespace MikuEngine
 		bool Load( const char* sceneFilePath = nullptr );
 		void Clean();
 
+		void CopyFrom( const Scene& scene );
+
 	private:
 		void DeleteEntity( const UUID& uuid );
 
@@ -66,8 +67,6 @@ namespace MikuEngine
 		std::optional<SelectableItem> m_SelectedItem;
 
 		std::vector<UUID> m_DeleteQueue;
-
-		Material mat;
 
 	protected:
 		friend class SceneSerializer;

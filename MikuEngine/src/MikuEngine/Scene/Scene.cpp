@@ -1,5 +1,7 @@
 #include "Scene/Scene.h"
 
+#include "entt/entt.hpp"
+
 #include "AppLevelStuff.h"
 #include "Logger.h"
 
@@ -191,11 +193,6 @@ namespace MikuEngine
 		return {};
 	}
 
-	void Scene::Clean()
-	{
-		m_Registry.clear();
-	}
-
 	void Scene::Save()
 	{
 		m_Serializer.Serialize( *this );
@@ -205,5 +202,33 @@ namespace MikuEngine
 	{
 		Clean();
 		return m_Serializer.DeSerialize( *this, sceneFilePath );
+	}
+
+	void Scene::Clean()
+	{
+		m_Registry.clear();
+	}
+
+	void Scene::CopyFrom( const Scene& scene )
+	{
+		m_Registry.clear();
+
+		const entt::registry& srcRegistry = scene.GetRegistry();
+
+		auto view = srcRegistry.view<IDComponent>();
+
+		// RECREATE THE ENTITIES
+		for ( auto [ entity, idC ] : view.each() )
+			static_cast<void>( m_Registry.create( entity ) );
+
+		// RECREATE THE COMPONENTS
+		srcRegistry.view<IDComponent>().each( [ & ]( auto entity, const IDComponent& tranformC ) { m_Registry.emplace_or_replace<IDComponent>( entity, tranformC ); } );
+		srcRegistry.view<DataComponent>().each( [ & ]( auto entity, const DataComponent& tranformC ) { m_Registry.emplace_or_replace<DataComponent>( entity, tranformC ); } );
+		srcRegistry.view<TransformComponent>().each( [ & ]( auto entity, const TransformComponent& tranformC ) { m_Registry.emplace_or_replace<TransformComponent>( entity, tranformC ); } );
+		srcRegistry.view<SpriteRendererComponent>().each( [ & ]( auto entity, const SpriteRendererComponent& tranformC ) { m_Registry.emplace_or_replace<SpriteRendererComponent>( entity, tranformC ); } );
+		srcRegistry.view<MeshRendererComponent>().each( [ & ]( auto entity, const MeshRendererComponent& tranformC ) { m_Registry.emplace_or_replace<MeshRendererComponent>( entity, tranformC ); } );
+		srcRegistry.view<CameraComponent>().each( [ & ]( auto entity, const CameraComponent& tranformC ) { m_Registry.emplace_or_replace<CameraComponent>( entity, tranformC ); } );
+		srcRegistry.view<DirectionalLightComponent>().each( [ & ]( auto entity, const DirectionalLightComponent& tranformC ) { m_Registry.emplace_or_replace<DirectionalLightComponent>( entity, tranformC ); } );
+		srcRegistry.view<NativeScriptComponent>().each( [ & ]( auto entity, const NativeScriptComponent& tranformC ) { m_Registry.emplace_or_replace<NativeScriptComponent>( entity, tranformC ); } );
 	}
 }
