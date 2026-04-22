@@ -9,6 +9,14 @@
 
 namespace MikuEngine
 {
+	enum class ShaderType
+	{
+		NONE = -1,
+		VERTEX = 0,
+		GEOMETRY = 1,
+		FRAGMENT = 2,
+	};
+
 	Shader::Shader( UUID uuid, const std::filesystem::path& path ) : Asset( AssetType::SHADER ), m_ShaderUUID( uuid )
 	{
 		LoadFromFile( path );
@@ -16,13 +24,7 @@ namespace MikuEngine
 
 	void Shader::ParseShader( std::string_view filepath, std::string& vs, std::string& gs, std::string& fs )
 	{
-		enum class ShaderType
-		{
-			NONE = -1,
-			VERTEX = 0,
-			GEOMETRY = 1,
-			FRAGMENT = 2,
-		};
+		auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
 		std::ifstream stream( filepath.data() );
 
@@ -47,6 +49,13 @@ namespace MikuEngine
 					currentShader = ShaderType::GEOMETRY;
 				else if ( line.find( "fragment" ) != std::string::npos )
 					currentShader = ShaderType::FRAGMENT;
+			}
+			else if ( line.find( "#include" ) != std::string::npos )
+			{
+				auto include = line.find( "#include" );
+				std::string incName = line.erase( include, sizeof( "#include" ) );
+
+				ss[ ( int )currentShader ] << shaderManager.GetShaderIncludeCode( incName ) << "\n";
 			}
 			else
 			{

@@ -38,13 +38,14 @@ namespace MikuEngine
 
 		void LoadShader( const std::string& name, const std::string& filepath );
 		void LoadAllShaders();
-		void LoadDefaultShaders();
 
 		void Refresh();
 
 		std::optional<ShaderContainer*> GetShader( UUID shaderUUID );
 		const ShaderContainer& GetShader( UUID shaderUUID ) const;
 		const ShaderContainer& GetDefaultShader() const;
+
+		const std::string& GetShaderIncludeCode( const std::string& identifier ) const;
 
 		const std::unordered_map<UUID, ShaderContainer>& GetAllLoadedShaders() const;
 
@@ -57,6 +58,8 @@ namespace MikuEngine
 
 	private:
 		void PrepareShaderIndex();
+		void LoadDefaultShaders();
+		void LoadShaderIncludes();
 
 		void RefreshShaderIndex();
 		void RefreshShaders();
@@ -72,5 +75,7 @@ namespace MikuEngine
 
 		std::unordered_map<UUID, ShaderContainer> m_Shaders;
 		std::unordered_map<UUID, ShaderContainer> m_DefaultShaders;
+
+		std::unordered_map<std::string, std::string> m_ShaderIncludes;
 	};
 }

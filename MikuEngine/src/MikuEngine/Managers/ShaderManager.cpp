@@ -1,6 +1,7 @@
 #include "Managers/ShaderManager.h"
 
 #include <filesystem>
+#include <fstream>
 
 #include "Logger.h"
 #include "Managers/MetaFileManager.h"
@@ -10,6 +11,7 @@ namespace MikuEngine
 	ShaderManager::ShaderManager()
 	{
 		PrepareShaderIndex();
+		LoadShaderIncludes();
 	}
 
 	void ShaderManager::LoadShader( const std::string& name, const std::string& filepath )
@@ -29,6 +31,27 @@ namespace MikuEngine
 		{
 			Shader shader( uuid, shaderIndex.path );
 			m_DefaultShaders[ uuid ] = { shaderIndex, shader };
+		}
+	}
+
+	void ShaderManager::LoadShaderIncludes()
+	{
+		for ( auto file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/shaders/includes/" ) )
+		{
+			if ( file.path().extension() != ".inc" ) continue;
+
+			std::ifstream contentFile( file.path().string() );
+
+			if ( !contentFile.is_open() )
+			{
+				MIKU_CORE_WARN( "Unable to load {}! Shaders might not work correctly!", file.path().filename().string() );
+				return;
+			}
+
+			std::stringstream buffer;
+			buffer << std::ifstream( file.path().string().c_str() ).rdbuf();
+
+			m_ShaderIncludes.insert( { file.path().stem().string(), buffer.str() } );
 		}
 	}
 
@@ -98,7 +121,7 @@ namespace MikuEngine
 	{
 		for ( auto& file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/shaders/" ) )
 		{
-			if ( file.path().extension() == ".meta" ) continue;
+			if ( file.path().extension() != ".shader" ) continue;
 
 			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
 
@@ -108,7 +131,7 @@ namespace MikuEngine
 
 		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/shaders/" ) )
 		{
-			if ( file.path().extension() == ".meta" ) continue;
+			if ( file.path().extension() != ".shader" ) continue;
 
 			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
 
@@ -183,5 +206,10 @@ namespace MikuEngine
 	const ShaderContainer& ShaderManager::GetDefaultShader() const
 	{
 		return m_DefaultShaders.begin()->second;
+	}
+
+	const std::string& ShaderManager::GetShaderIncludeCode( const std::string& identifier ) const
+	{
+		return m_ShaderIncludes.at( identifier );
 	}
 }

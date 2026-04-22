@@ -1,18 +1,11 @@
 #shader vertex
 #version 450 core
 
+#include common
+
 layout(location = 0) in vec4 position;
 layout(location = 1) in vec3 normal;
 layout(location = 2) in vec2 uv;
-
-layout(std140, binding = 0) uniform u_Matrices
-{
-    mat4 cameraProj;
-    mat4 cameraView;
-
-    vec4 cameraPos;
-    vec4 cameraDir;
-};
 
 out vec3 v_WorldPos;
 out vec2 v_UV;
@@ -34,29 +27,10 @@ void main()
 #shader fragment
 #version 450 core
 
+#include common
+
 // output color
 layout(location = 0) out vec4 color;
-
-layout(std140, binding = 0) uniform u_Matrices
-{
-    mat4 cameraProj;
-    mat4 cameraView;
-
-    vec4 cameraPos;
-    vec4 cameraDir;
-};
-
-layout(std140, binding = 1) uniform m_LightingData
-{
-    vec4 lightPos;
-    vec4 lightDir;
-    vec4 lightColor;
-
-    float lightIntensity;
-    float lightAmbientIntensity;
-
-    float specularStrength;
-};
 
 in vec3 v_WorldPos;
 in vec3 v_Normal;
