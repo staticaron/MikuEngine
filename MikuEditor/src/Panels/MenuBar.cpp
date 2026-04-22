@@ -2,6 +2,7 @@
 
 #include "imgui.h"
 
+#include "Application.h"
 #include "Layers/EditorLayer.h"
 #include "MikuEngine/Logger.h"
 #include "MikuEngine/Managers/MetaFileManager.h"
@@ -19,12 +20,16 @@ namespace MikuEditor
 				{
 					MIKU_CLIENT_INFO( "PLAY" );
 					editorLevelStuff.SetPlayModeState( PlayModeState::PLAYING );
+
+					MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().StartPlayMode();
 				}
 
 				if ( ImGui::MenuItem( "Stop" ) )
 				{
 					MIKU_CLIENT_INFO( "STOP" );
 					editorLevelStuff.SetPlayModeState( PlayModeState::NOTPLAYING );
+
+					MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().EndPlayMode();
 				}
 
 				ImGui::EndMenu();

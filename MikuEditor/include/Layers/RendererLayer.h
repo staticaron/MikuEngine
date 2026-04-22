@@ -20,7 +20,7 @@ namespace MikuEditor
 	class RendererLayer : public MikuEngine::Layer
 	{
 	public:
-		RendererLayer( MikuEngine::Scene* scene );
+		RendererLayer();
 
 		void Update( double dt ) override;
 		void Render( MikuEngine::AppLevelStuff& appLevelStuff ) const override;

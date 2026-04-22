@@ -38,7 +38,7 @@ namespace MikuEngine
 			requires( std::is_base_of_v<Layer, TLayer> )
 		void PushLayer()
 		{
-			m_Layers.push_back( std::make_unique<TLayer>( &m_Scene ) );
+			m_Layers.push_back( std::make_unique<TLayer>() );
 		}
 
 		std::unique_ptr<Layer>& GetLayer( unsigned int index ) { return m_Layers[ index ]; }
@@ -64,8 +64,6 @@ namespace MikuEngine
 
 		SceneFBO m_SceneFBO;
 		GameFBO m_GameFBO;
-
-		Scene m_Scene;
 
 		double m_DeltaTime = 0.0;
 		std::chrono::high_resolution_clock::time_point LAST;

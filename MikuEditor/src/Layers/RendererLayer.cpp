@@ -11,14 +11,16 @@
 
 namespace MikuEditor
 {
-	RendererLayer::RendererLayer( MikuEngine::Scene* scene ) : MikuEngine::Layer( scene )
+	RendererLayer::RendererLayer() : MikuEngine::Layer()
 	{
 		MikuEngine::ScriptRegistry::RefreshScripts();
 	}
 
 	void RendererLayer::Update( double dt )
 	{
-		auto mainCamera = m_Scene->GetMainCamera();
+		auto& activeScene = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().GetScene();
+
+		auto mainCamera = activeScene.GetMainCamera();
 
 		if ( mainCamera.has_value() )
 		{
@@ -31,7 +33,7 @@ namespace MikuEditor
 					{mainCameraTransform.GetForward(), 0.0}
 			  } );
 
-			auto mainLight = m_Scene->GetMainLight();
+			auto mainLight = activeScene.GetMainLight();
 
 			if ( mainLight.has_value() )
 			{
@@ -50,12 +52,13 @@ namespace MikuEditor
 
 		if ( EditorLayer::GetEditorLayer()->GetEditorLayerInfo().GetPlayModeState() != PlayModeState::PLAYING ) return;
 
-		m_Scene->Update( dt );
+		activeScene.Update( dt );
 	}
 
 	void RendererLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
 	{
-		m_Scene->Render( appLevelStuff );
+		auto& activeScene = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().GetScene();
+		activeScene.Render( appLevelStuff );
 	}
 
 	void RendererLayer::RenderImgui( const MikuEngine::AppLevelStuff& appLevelStuff )

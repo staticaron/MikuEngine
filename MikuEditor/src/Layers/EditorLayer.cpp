@@ -12,11 +12,13 @@ namespace MikuEditor
 {
 	static EditorLayer* s_EditorLayer;
 
-	EditorLayer::EditorLayer( MikuEngine::Scene* scene ) : MikuEngine::Layer( scene )
+	EditorLayer::EditorLayer() : MikuEngine::Layer()
 	{
 		s_EditorLayer = this;
 		m_AssetBrowserPanel.Init();
-		scene->Load( PROJECT_DIR "/scenes/card.miku" );
+
+		auto& activeScene = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().GetScene();
+		activeScene.Load( PROJECT_DIR "/scenes/card.miku" );
 	}
 
 	EditorLayer* EditorLayer::GetEditorLayer()
@@ -26,8 +28,10 @@ namespace MikuEditor
 
 	void EditorLayer::Update( double dt )
 	{
+		auto& activeScene = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().GetScene();
+
 		// PERFORM THE QUEUED DELETIONS
-		m_Scene->PerformDeletions();
+		activeScene.PerformDeletions();
 
 		if ( m_EditorLevelStuff.m_CurrentPlayModeState == PlayModeState::PLAYING ) return;
 
@@ -41,10 +45,10 @@ namespace MikuEditor
 		// UNIFORM BUFFERS ARE UPDATED!
 		MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateEditorCameraData( {
 		    m_EditorCamera.GetProjMatrix(), m_EditorCamera.GetViewMatrix(), {	      m_EditorCamera.GetPosition(), 0.0f},
-		    {m_EditorCamera.GetForwardDirection(), 0.0f}
+			    {m_EditorCamera.GetForwardDirection(), 0.0f}
 		   } );
 
-		const auto& mainLight = m_Scene->GetMainLight();
+		const auto& mainLight = activeScene.GetMainLight();
 		if ( mainLight.has_value() == false )
 			MIKU_CLIENT_WARN( "No Active Light" );
 		else
@@ -52,10 +56,10 @@ namespace MikuEditor
 			const auto& mainLightTransform = mainLight.value().first.GetReadOnlyComponent<MikuEngine::TransformComponent>();
 			MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateLightingData( {
 			    {    mainLightTransform.Position, 0.0f},
-			    {mainLightTransform.GetForward(), 0.0f},
-			    { mainLight.value().second.Color, 0.0f},
-			    mainLight.value().second.Intensity, mainLight.value().second.AmbientIntensity, mainLight.value().second.SpecularStrength
-			     } );
+				   {mainLightTransform.GetForward(), 0.0f},
+			      { mainLight.value().second.Color, 0.0f},
+				mainLight.value().second.Intensity, mainLight.value().second.AmbientIntensity, mainLight.value().second.SpecularStrength
+			 } );
 		}
 
 		// PANELS ARE UPDATED
@@ -66,31 +70,35 @@ namespace MikuEditor
 	{
 		// Editor Camera Data to be sent for rendering
 		MikuEngine::CameraData cameraData = { m_EditorCamera.GetViewMatrix(), m_EditorCamera.GetProjMatrix() };
-		m_Scene->RenderInEditor( appLevelStuff, cameraData );
+
+		auto& activeScene = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().GetScene();
+		activeScene.RenderInEditor( appLevelStuff, cameraData );
 	}
 
 	void EditorLayer::RenderImgui( const MikuEngine::AppLevelStuff& appLevelStuff )
 	{
+		auto& activeScene = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().GetScene();
+
 		if ( m_EditorLevelStuff.m_CurrentPlayModeState == PlayModeState::PLAYING )
 		{
-			MikuEditor::MenuBar::RenderMenuBar( *this, appLevelStuff, m_EditorLevelStuff, *m_Scene );
-			MikuEditor::EditorOverlayPanel::RenderEditorOverlayPanel( *this, appLevelStuff, m_EditorLevelStuff, *m_Scene );
+			MikuEditor::MenuBar::RenderMenuBar( *this, appLevelStuff, m_EditorLevelStuff, activeScene );
+			MikuEditor::EditorOverlayPanel::RenderEditorOverlayPanel( *this, appLevelStuff, m_EditorLevelStuff, activeScene );
 		}
 		else
 		{
-			MikuEditor::MenuBar::RenderMenuBar( *this, appLevelStuff, m_EditorLevelStuff, *m_Scene );
-			MikuEditor::HierarchyPanel::RenderHierarchy( *m_Scene );
-			MikuEditor::InspectorPanel::RenderInspectorPanel( *this, appLevelStuff, *m_Scene );
-			m_AssetBrowserPanel.RenderAssetBrowserPanel( *m_Scene );
-			MikuEditor::EditorOverlayPanel::RenderEditorOverlayPanel( *this, appLevelStuff, m_EditorLevelStuff, *m_Scene );
-			m_IsViewportPanelFocused = m_ViewportPanel.RenderViewportPanel( *this, *m_Scene );
+			MikuEditor::MenuBar::RenderMenuBar( *this, appLevelStuff, m_EditorLevelStuff, activeScene );
+			MikuEditor::HierarchyPanel::RenderHierarchy( activeScene );
+			MikuEditor::InspectorPanel::RenderInspectorPanel( *this, appLevelStuff, activeScene );
+			m_AssetBrowserPanel.RenderAssetBrowserPanel( activeScene );
+			MikuEditor::EditorOverlayPanel::RenderEditorOverlayPanel( *this, appLevelStuff, m_EditorLevelStuff, activeScene );
+			m_IsViewportPanelFocused = m_ViewportPanel.RenderViewportPanel( *this, activeScene );
 
 			ManageTextureSelectionWindows( appLevelStuff );
 			ManageShaderSelectionWindows( appLevelStuff );
 			ManageMaterialSelectionWindows( appLevelStuff );
 			ManageModelSelectionWindows( appLevelStuff );
 
-			m_Scene->RenderImGui( appLevelStuff );
+			activeScene.RenderImGui( appLevelStuff );
 
 			if ( m_EditorLevelStuff.IsEditorCameraEditorWindowOpen ) m_EditorCamera.RenderImGui( m_EditorLevelStuff );
 		}
@@ -98,12 +106,14 @@ namespace MikuEditor
 
 	void EditorLayer::ManageTextureSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff )
 	{
+		auto& activeScene = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().GetScene();
+
 		std::vector<unsigned int> completedTextureWindows;
 		completedTextureWindows.reserve( m_TextureSelectionWindow.size() );
 
 		for ( size_t x = 0; x < m_TextureSelectionWindow.size(); x++ )
 		{
-			auto response = m_TextureSelectionWindow.at( x ).RenderTextureSelectionWindow( appLevelStuff, *m_Scene );
+			auto response = m_TextureSelectionWindow.at( x ).RenderTextureSelectionWindow( appLevelStuff, activeScene );
 
 			if ( response == WindowResponse::ERROR || response == WindowResponse::COMPLETED || response == WindowResponse::CLOSED )
 			{
@@ -118,12 +128,14 @@ namespace MikuEditor
 
 	void EditorLayer::ManageShaderSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff )
 	{
+		auto& activeScene = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().GetScene();
+
 		std::vector<unsigned int> completedShaderWindow;
 		completedShaderWindow.reserve( m_ShaderSelectionWindow.size() );
 
 		for ( size_t x = 0; x < m_ShaderSelectionWindow.size(); x++ )
 		{
-			auto response = m_ShaderSelectionWindow.at( x ).RenderShaderSelectionWindow( appLevelStuff, *m_Scene );
+			auto response = m_ShaderSelectionWindow.at( x ).RenderShaderSelectionWindow( appLevelStuff, activeScene );
 			if ( response == WindowResponse::ERROR || response == WindowResponse::COMPLETED || response == WindowResponse::CLOSED ) completedShaderWindow.push_back( x );
 		}
 
@@ -134,12 +146,14 @@ namespace MikuEditor
 
 	void EditorLayer::ManageMaterialSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff )
 	{
+		auto& activeScene = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().GetScene();
+
 		std::vector<unsigned int> completedMaterialWindow;
 		completedMaterialWindow.reserve( m_MaterialSelectionWindow.size() );
 
 		for ( size_t x = 0; x < m_MaterialSelectionWindow.size(); x++ )
 		{
-			auto response = m_MaterialSelectionWindow.at( x ).RenderMaterialSelectionWindow( appLevelStuff, *m_Scene );
+			auto response = m_MaterialSelectionWindow.at( x ).RenderMaterialSelectionWindow( appLevelStuff, activeScene );
 			if ( response == WindowResponse::ERROR || response == WindowResponse::COMPLETED || response == WindowResponse::CLOSED ) completedMaterialWindow.push_back( x );
 		}
 
@@ -150,12 +164,14 @@ namespace MikuEditor
 
 	void EditorLayer::ManageModelSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff )
 	{
+		auto& activeScene = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().GetScene();
+
 		std::vector<unsigned int> completedModelWindow;
 		completedModelWindow.reserve( m_ModelSelectionWindow.size() );
 
 		for ( size_t x = 0; x < m_ModelSelectionWindow.size(); x++ )
 		{
-			auto response = m_ModelSelectionWindow.at( x ).RenderModelSelectionWindow( appLevelStuff, *m_Scene );
+			auto response = m_ModelSelectionWindow.at( x ).RenderModelSelectionWindow( appLevelStuff, activeScene );
 			if ( response == WindowResponse::ERROR || response == WindowResponse::COMPLETED || response == WindowResponse::CLOSED ) completedModelWindow.push_back( x );
 		}
 

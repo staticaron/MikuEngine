@@ -25,7 +25,7 @@ namespace MikuEditor
 	class EditorLayer : public MikuEngine::Layer
 	{
 	public:
-		EditorLayer( MikuEngine::Scene* scene );
+		EditorLayer();
 
 		static EditorLayer* GetEditorLayer();
 

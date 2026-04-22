@@ -3,6 +3,7 @@
 #include "Core.h"
 #include "Managers/MaterialManager.h"
 #include "Managers/ModelManager.h"
+#include "Managers/SceneManager.h"
 #include "Managers/ShaderManager.h"
 #include "Managers/TextureManager.h"
 
@@ -27,6 +28,9 @@ namespace MikuEngine
 		ModelManager& GetModelManager() { return m_ModelManager; }
 		const ModelManager& GetModelManager() const { return m_ModelManager; }
 
+		SceneManager& GetSceneManager() { return m_SceneManager; }
+		const SceneManager& GetSceneManager() const { return m_SceneManager; }
+
 		AssetType GetAssetTypeFromFileExtension( const std::string& extension ) const;
 
 	private:
@@ -34,5 +38,6 @@ namespace MikuEngine
 		ShaderManager m_ShaderManager;
 		MaterialManager m_MaterialManager;
 		ModelManager m_ModelManager;
+		SceneManager m_SceneManager;
 	};
 }
