@@ -142,9 +142,10 @@ namespace MikuEngine
 		glfwWindowHint( GLFW_BLUE_BITS, mode->blueBits );
 		glfwWindowHint( GLFW_GREEN_BITS, mode->greenBits );
 		glfwWindowHint( GLFW_REFRESH_RATE, mode->refreshRate );
+		glfwWindowHint( GLFW_MAXIMIZED, 1 );
 
 		// Create GLFW Window
-		m_Window = glfwCreateWindow( mode->width, mode->height, "Miku Engine", NULL, NULL );
+		m_Window = glfwCreateWindow( 800, 600, "Miku Engine", NULL, NULL );
 
 		if ( !m_Window )
 		{
