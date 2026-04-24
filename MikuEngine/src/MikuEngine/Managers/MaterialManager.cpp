@@ -29,6 +29,8 @@ namespace MikuEngine
 			if ( file.path().extension() == ".meta" ) continue;
 			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
 
+			if ( file.is_directory() ) continue;
+
 			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
 			m_MaterialIndex[ uuid ] = { uuid, file.path().string() };
 		}

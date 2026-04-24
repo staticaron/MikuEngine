@@ -122,8 +122,9 @@ namespace MikuEngine
 		for ( auto& file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/shaders/" ) )
 		{
 			if ( file.path().extension() != ".shader" ) continue;
-
 			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
+
+			if ( file.is_directory() ) continue;
 
 			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
 			m_DefaultShaderIndex[ uuid ] = { uuid, file.path().string() };
