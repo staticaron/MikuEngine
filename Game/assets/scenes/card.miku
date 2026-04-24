@@ -55,6 +55,6 @@ entities:
       - type: DirectionalLightComponent
         values:
           color: [1, 1, 1]
-          intensity: 0.9
-          ambient_intensity: 0.1
+          intensity: 0.5
+          ambient_intensity: 0.5
           specular_strength: 256

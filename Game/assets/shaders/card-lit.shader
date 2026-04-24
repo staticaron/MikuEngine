@@ -10,6 +10,7 @@ layout(location = 2) in vec2 uv;
 out vec3 v_WorldPos;
 out vec2 v_UV;
 out vec3 v_Normal;
+out mat4 v_ModelMtx;
 
 uniform mat4 u_Model;
 
@@ -22,6 +23,8 @@ void main()
     v_Normal = normalize(normalMatrix * normal);
 
     v_WorldPos = vec3(u_Model * position);
+
+    v_ModelMtx = u_Model;
 }
 
 #shader fragment
@@ -29,31 +32,66 @@ void main()
 
 #include common
 
-// output color
 layout(location = 0) out vec4 color;
 
 in vec3 v_WorldPos;
 in vec3 v_Normal;
 in vec2 v_UV;
+in mat4 v_ModelMtx;
 
-uniform sampler2D u_Tex;
+uniform sampler2D u_CardMask;
+uniform sampler2D u_Bg;
+uniform sampler2D u_CardBg;
+uniform sampler2D u_Char;
+uniform sampler2D u_CardFg;
 
 void main()
 {
-    vec4 tex = texture(u_Tex, v_UV);
+    vec4 card_mask_rgb = texture(u_CardMask, v_UV);
 
-    vec3 viewDirection = normalize(cameraPos.xyz - v_WorldPos);
+    float max_offset_char = 0.1;
+    float max_offset_bg = 0.2;
 
-    vec3 lightRay = normalize(vec3(lightDir));
-    vec3 reflectedRay = reflect(lightRay, v_Normal);
+    // Calculate the offset according to the view direction
+    vec3 viewDir = normalize(-cameraDir.xyz);
+    float dotNV = dot(normalize(v_Normal), viewDir);
+    float glazingAngle = acos(clamp(dotNV, 0.0, 1.0));
 
-    float specularIntensity = pow(max(dot(reflectedRay, -viewDirection), 0.0), specularStrength);
+    vec3 modelRight = GetRightFromMatrix(v_ModelMtx);
+    vec3 modelUp = GetUpFromMatrix(v_ModelMtx);
 
-    float diffuseIntensity = min(max(dot(lightRay, v_Normal), 0.0), 1.0) * lightIntensity;
+    float isRight = dot(modelRight, viewDir);
+    float isUp = dot(modelUp, viewDir);
 
-    float intensity = max(diffuseIntensity + specularIntensity + lightAmbientIntensity, 0.0);
+    vec2 offset = vec2(0.0);
 
-    vec4 lightRGB = lightColor * intensity;
+    offset.x = -isRight * 0.5 * glazingAngle;
+    offset.y = isUp * 0.5 * glazingAngle;
 
-    color = vec4(tex.x * lightRGB.x, tex.y * lightRGB.y, tex.z * lightRGB.z, tex.w);
+    // UV used by character texture
+    vec2 ch_UV = v_UV;
+
+    // UV used by background elements
+    vec2 bg_UV = v_UV * (1 - 2 * max_offset_bg);
+    bg_UV += vec2(max_offset_bg);
+
+    // apply the offset to both the UVs
+    ch_UV = vec2(ch_UV.x - offset.x * max_offset_char, ch_UV.y - offset.y * max_offset_char);
+    bg_UV = vec2(bg_UV.x + offset.x * max_offset_bg, bg_UV.y + offset.y * max_offset_bg);
+
+    // texture colors
+    vec4 bg = texture(u_Bg, bg_UV);
+    vec4 ch = texture(u_Char, ch_UV);
+    vec4 card_bg = texture(u_CardBg, v_UV);
+    vec4 card_fg = texture(u_CardFg, v_UV);
+
+    // apply the texture colors based on the opacity and order
+    vec4 rgb = bg;
+    rgb = mix(rgb, card_bg, card_bg.w);
+    rgb = mix(rgb, ch, ch.w);
+    rgb = mix(rgb, card_fg, card_fg.w);
+
+    vec4 lightRGB = GetLightIntensity(v_WorldPos, v_Normal);
+
+    color = vec4(rgb.x * lightRGB.x, rgb.y * lightRGB.y, rgb.z * lightRGB.z, card_mask_rgb.w);
 }
