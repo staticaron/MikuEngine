@@ -37,12 +37,11 @@ namespace MikuEditor
 
 			if ( ImGui::BeginMenu( "Scene" ) )
 			{
-				ImGui::Separator();
-				if ( ImGui::MenuItem( "Save...", "CTRL+S" ) ) scene.Save();
-				ImGui::Separator();
-				if ( ImGui::MenuItem( "Open...", "CTRL+O" ) ) scene.Load();
-				ImGui::Separator();
-				if ( ImGui::MenuItem( "Clean", "CTRL+W" ) ) scene.Clean();
+				if ( ImGui::MenuItem( "Save...", "Ctrl+S" ) ) scene.Save();
+
+				if ( ImGui::MenuItem( "Open...", "Ctrl+O" ) ) scene.Load();
+
+				if ( ImGui::MenuItem( "Clean", "Ctrl+W" ) ) scene.Clean();
 				ImGui::EndMenu();
 			}
 
