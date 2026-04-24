@@ -50,7 +50,7 @@ void main()
     vec4 card_mask_rgb = texture(u_CardMask, v_UV);
 
     float max_offset_char = 0.1;
-    float max_offset_bg = 0.2;
+    float max_offset_bg = 0.15;
 
     // Calculate the offset according to the view direction
     vec3 viewDir = normalize(-cameraDir.xyz);
