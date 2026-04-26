@@ -1,19 +1,31 @@
 scene: Untitled
 entities:
-  - name: Camera
-    id: 17778570235886712619
+  - name: Miku
+    id: 12919088606145517897
     components:
       - type: TransformComponent
         values:
-          position: [1, 1, 10]
+          position: [0, 0, 0]
+          rotation: [-2.6175735, -1.5701059, 2.0944703]
+          scale: [0.009999997, 0.010000603, 0.009999962]
+      - type: MeshRendererComponent
+        values:
+          model: 2375910245460997946
+          material: 12640939573752356792
+  - name: Directional Light
+    id: 10218622187770125646
+    components:
+      - type: TransformComponent
+        values:
+          position: [1, 1, 1]
           rotation: [0, 0, 0]
           scale: [1, 1, 1]
-      - type: CameraComponent
+      - type: DirectionalLightComponent
         values:
-          perspective: true
-          zoom: 1
-          maincamera: true
-          width: 30
+          color: [1, 1, 1]
+          intensity: 0.5
+          ambient_intensity: 0.5
+          specular_strength: 200
   - name: Card
     id: 1835020089989369736
     components:
@@ -29,17 +41,17 @@ entities:
       - type: NativeScriptComponent
         values:
           scriptName: CardController
-  - name: Directional Light
-    id: 10218622187770125646
+  - name: Camera
+    id: 17778570235886712619
     components:
       - type: TransformComponent
         values:
-          position: [1, 1, 1]
+          position: [1, 1, 10]
           rotation: [0, 0, 0]
           scale: [1, 1, 1]
-      - type: DirectionalLightComponent
+      - type: CameraComponent
         values:
-          color: [1, 1, 1]
-          intensity: 0.5
-          ambient_intensity: 0.5
-          specular_strength: 200
+          perspective: true
+          zoom: 1
+          maincamera: true
+          width: 30

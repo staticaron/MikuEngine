@@ -91,7 +91,7 @@ void main()
     rgb = mix(rgb, ch, ch.w);
     rgb = mix(rgb, card_fg, card_fg.w);
 
-    vec4 lightRGB = GetLightIntensity(v_WorldPos, v_Normal);
+    vec4 lightRGB = GetLightColor(v_WorldPos, v_Normal);
 
     color = vec4(rgb.x * lightRGB.x, rgb.y * lightRGB.y, rgb.z * lightRGB.z, card_mask_rgb.w);
 }

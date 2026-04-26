@@ -41,18 +41,7 @@ uniform sampler2D u_Tex;
 void main()
 {
     vec4 tex = texture(u_Tex, v_UV);
+    vec4 lightRGB = GetLightColor(v_WorldPos, v_Normal);
 
-    vec3 viewDirection = normalize(cameraPos.xyz - v_WorldPos);
-
-    vec3 lightRay = normalize(vec3(lightDir));
-    vec3 reflectedRay = reflect(lightRay, v_Normal);
-
-    // float specularIntensity = pow(max(dot(reflectedRay, -viewDirection), 0.0), specularStrength);
-
-    float diffuseIntensity = min(max(dot(lightRay, v_Normal), 0.0), 1.0) * lightIntensity;
-
-    float intensity = max(diffuseIntensity + lightAmbientIntensity, 0.0);
-
-    vec4 lightRGB = lightColor * intensity;
     color = vec4(tex.x * lightRGB.x, tex.y * lightRGB.y, tex.z * lightRGB.z, tex.w);
 }
