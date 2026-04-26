@@ -50,10 +50,14 @@ namespace MikuEditor
 
 		const auto& mainLight = activeScene.GetMainLight();
 		if ( mainLight.has_value() == false )
+		{
+			MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateLightingData( {} );
 			MIKU_CLIENT_WARN( "No Active Light" );
+		}
 		else
 		{
 			const auto& mainLightTransform = mainLight.value().first.GetReadOnlyComponent<MikuEngine::TransformComponent>();
+
 			MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateLightingData( {
 			    {    mainLightTransform.Position, 0.0f},
 				   {mainLightTransform.GetForward(), 0.0f},

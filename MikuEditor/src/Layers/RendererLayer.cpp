@@ -48,6 +48,10 @@ namespace MikuEditor
 				       mainLightComponent.Intensity, mainLightComponent.AmbientIntensity, mainLightComponent.SpecularStrength
 				      } );
 			}
+			else
+			{
+				MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateLightingData( {} );
+			}
 		}
 
 		if ( EditorLayer::GetEditorLayer()->GetEditorLayerInfo().GetPlayModeState() != PlayModeState::PLAYING ) return;
