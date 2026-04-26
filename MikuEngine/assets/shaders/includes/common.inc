@@ -34,6 +34,20 @@ vec3 GetUpFromMatrix( mat4 mtx )
 	return normalize(vec3(mtx[1]));
 }
 
+vec2 GetDiffuseSpecular( vec3 v_WorldPos, vec3 v_Normal )
+{
+    vec3 viewDirection = normalize(cameraPos.xyz - v_WorldPos);
+
+    vec3 lightRay = normalize(vec3(lightDir));
+    vec3 reflectedRay = reflect(lightRay, v_Normal);
+
+    float specularIntensity = pow(max(dot(reflectedRay, -viewDirection), 0.0), specularStrength);
+
+    float diffuseIntensity = min(max(dot(lightRay, v_Normal), 0.0), 1.0) * lightIntensity;
+
+	return vec2( diffuseIntensity, specularIntensity );
+}
+
 vec4 GetLightIntensity( vec3 v_WorldPos, vec3 v_Normal)
 {
     vec3 viewDirection = normalize(cameraPos.xyz - v_WorldPos);
