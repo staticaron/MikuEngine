@@ -48,7 +48,7 @@ vec2 GetDiffuseSpecular( vec3 v_WorldPos, vec3 v_Normal )
 	return vec2( diffuseIntensity, specularIntensity );
 }
 
-vec4 GetLightIntensity( vec3 v_WorldPos, vec3 v_Normal)
+vec4 GetLightColor( vec3 v_WorldPos, vec3 v_Normal)
 {
     vec3 viewDirection = normalize(cameraPos.xyz - v_WorldPos);
 
