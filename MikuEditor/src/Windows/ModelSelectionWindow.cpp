@@ -17,23 +17,57 @@ namespace MikuEditor
 
 		ImGui::Begin( "Select Model", &m_IsOpen );
 
-		auto models = appLevelstuff.GetAssetPoolManager().GetModelManager().GetAllLoadedModels();
-
-		for ( const auto& [ uuid, modelContainer ] : models )
+		if ( ImGui::BeginTabBar( "Select Model" ) )
 		{
-			if ( ImGui::Selectable( modelContainer.index.path.c_str() ) )
+			if ( ImGui::BeginTabItem( "Project" ) )
 			{
-				auto entity = scene.GetEntityByID( m_EntityUUID );
+				auto models = appLevelstuff.GetAssetPoolManager().GetModelManager().GetAllLoadedModels();
 
-				if ( entity.has_value() == false )
+				for ( const auto& [ uuid, modelContainer ] : models )
 				{
-					response = WindowResponse::ERROR;
-					break;
+					if ( ImGui::Selectable( modelContainer.index.path.c_str() ) )
+					{
+						auto entity = scene.GetEntityByID( m_EntityUUID );
+
+						if ( entity.has_value() == false )
+						{
+							response = WindowResponse::ERROR;
+							break;
+						}
+
+						entity->GetComponent<MikuEngine::MeshRendererComponent>().ModelIdentifier = uuid;
+						response = WindowResponse::COMPLETED;
+					}
 				}
 
-				entity->GetComponent<MikuEngine::MeshRendererComponent>().ModelIdentifier = uuid;
-				response = WindowResponse::COMPLETED;
+				ImGui::EndTabItem();
 			}
+
+			if ( ImGui::BeginTabItem( "Default" ) )
+			{
+				auto defaultModels = appLevelstuff.GetAssetPoolManager().GetModelManager().GetAllDefaultModels();
+
+				for ( const auto& [ uuid, modelContainer ] : defaultModels )
+				{
+					if ( ImGui::Selectable( modelContainer.index.path.c_str() ) )
+					{
+						auto entity = scene.GetEntityByID( m_EntityUUID );
+
+						if ( entity.has_value() == false )
+						{
+							response = WindowResponse::ERROR;
+							break;
+						}
+
+						entity->GetComponent<MikuEngine::MeshRendererComponent>().ModelIdentifier = uuid;
+						response = WindowResponse::COMPLETED;
+					}
+				}
+
+				ImGui::EndTabItem();
+			}
+
+			ImGui::EndTabBar();
 		}
 
 		ImGui::End();

@@ -193,11 +193,6 @@ namespace MikuEngine
 		return exists != m_Shaders.end();
 	}
 
-	const std::unordered_map<UUID, ShaderContainer>& ShaderManager::GetAllLoadedShaders() const
-	{
-		return m_Shaders;
-	}
-
 	std::string ShaderManager::GetShaderName( UUID textureUUID ) const
 	{
 		auto existing = m_Shaders.find( textureUUID );

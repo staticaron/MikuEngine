@@ -47,7 +47,8 @@ namespace MikuEngine
 
 		const std::string& GetShaderIncludeCode( const std::string& identifier ) const;
 
-		const std::unordered_map<UUID, ShaderContainer>& GetAllLoadedShaders() const;
+		const std::unordered_map<UUID, ShaderContainer>& GetAllLoadedShaders() const { return m_Shaders; }
+		const std::unordered_map<UUID, ShaderContainer>& GetAllDefaultShaders() const { return m_DefaultShaders; }
 
 		ShaderContainer& GetShaderByName( const std::string& name );
 		ShaderContainer& GetShaderByFilePath( const std::filesystem::path& path );

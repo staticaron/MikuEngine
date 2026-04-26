@@ -17,22 +17,50 @@ namespace MikuEditor
 
 		ImGui::Begin( "Select Shader", &m_IsOpen );
 
-		auto shaders = appLevelstuff.GetAssetPoolManager().GetShaderManager().GetAllLoadedShaders();
-
-		for ( const auto& [ uuid, shaderContainer ] : shaders )
+		if ( ImGui::BeginTabBar( "Shader Selection Tabs" ) )
 		{
-			if ( ImGui::Selectable( shaderContainer.index.path.c_str() ) )
+			if ( ImGui::BeginTabItem( "Project" ) )
 			{
-				auto entity = scene.GetEntityByID( m_EntityUUID );
+				auto projectShaders = appLevelstuff.GetAssetPoolManager().GetShaderManager().GetAllLoadedShaders();
 
-				if ( entity.has_value() == false )
+				for ( const auto& [ uuid, shaderContainer ] : projectShaders )
 				{
-					response = WindowResponse::ERROR;
-					break;
-				}
+					if ( ImGui::Selectable( shaderContainer.index.path.c_str() ) )
+					{
+						auto entity = scene.GetEntityByID( m_EntityUUID );
 
-				entity->GetComponent<MikuEngine::SpriteRendererComponent>().MaterialUUID = uuid;
-				response = WindowResponse::COMPLETED;
+						if ( entity.has_value() == false )
+						{
+							response = WindowResponse::ERROR;
+							break;
+						}
+
+						entity->GetComponent<MikuEngine::SpriteRendererComponent>().MaterialUUID = uuid;
+						response = WindowResponse::COMPLETED;
+					}
+				}
+			}
+
+			if ( ImGui::BeginTabItem( "Default" ) )
+			{
+				auto defaultShaders = appLevelstuff.GetAssetPoolManager().GetShaderManager().GetAllDefaultShaders();
+
+				for ( const auto& [ uuid, shaderContainer ] : defaultShaders )
+				{
+					if ( ImGui::Selectable( shaderContainer.index.path.c_str() ) )
+					{
+						auto entity = scene.GetEntityByID( m_EntityUUID );
+
+						if ( entity.has_value() == false )
+						{
+							response = WindowResponse::ERROR;
+							break;
+						}
+
+						entity->GetComponent<MikuEngine::SpriteRendererComponent>().MaterialUUID = uuid;
+						response = WindowResponse::COMPLETED;
+					}
+				}
 			}
 		}
 

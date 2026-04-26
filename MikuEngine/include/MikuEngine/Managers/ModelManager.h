@@ -33,11 +33,12 @@ namespace MikuEngine
 		std::unordered_map<UUID, ModelIndexEntry> GetModelIndex() const { return m_ModelIndex; }
 
 		const ModelContainer& GetModel( UUID modelUUID ) const;
+		const ModelContainer& GetDefaultModel( DefaultModelType type ) const;
 		const ModelContainer& GetModelByName( const std::string& name ) const;
 		const ModelContainer& GetModelByFilePath( const std::filesystem::path& path ) const;
 
-		const std::unordered_map<UUID, ModelContainer> GetAllLoadedModels() const;
-		const ModelContainer& GetDefaultModel( DefaultModelType type ) const;
+		const std::unordered_map<UUID, ModelContainer> GetAllLoadedModels() const { return m_Models; }
+		const std::unordered_map<UUID, ModelContainer> GetAllDefaultModels() const { return m_DefaultModels; }
 
 		bool ModelExists( const UUID& uuid ) const;
 

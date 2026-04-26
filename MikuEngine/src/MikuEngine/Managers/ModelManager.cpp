@@ -57,7 +57,8 @@ namespace MikuEngine
 	{
 		PrepareModelIndex();
 
-		// Load Project Models
+		LoadDefaultModels();
+
 		for ( const auto& [ uuid, index ] : m_ModelIndex )
 		{
 			Model newModel;
@@ -68,8 +69,10 @@ namespace MikuEngine
 			    newModel,
 			};
 		}
+	}
 
-		// Load Default Models
+	void ModelManager::LoadDefaultModels()
+	{
 		for ( const auto& [ type, index ] : m_DefaultModelIndex )
 		{
 			Model newModel;
@@ -111,11 +114,6 @@ namespace MikuEngine
 		}
 
 		MIKU_ASSERT( false, "Requested Model is not loaded!" );
-	}
-
-	const std::unordered_map<UUID, ModelContainer> ModelManager::GetAllLoadedModels() const
-	{
-		return m_Models;
 	}
 
 	const ModelContainer& ModelManager::GetDefaultModel( DefaultModelType type ) const
