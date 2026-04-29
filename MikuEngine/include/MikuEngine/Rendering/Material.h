@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 
 #include "Core.h"
+#include "Managers/ShaderManager.h"
 #include "Shader.h"
 #include "UUID.h"
 
@@ -43,8 +44,11 @@ namespace MikuEngine
 		std::string GetName() const override;
 		void SetName( const std::string& newName ) override;
 
-		std::optional<Shader*> GetShader();
+		std::optional<ShaderContainer*> GetShader();
 		void SetShader( const UUID& uuid );
+
+		const std::unordered_map<std::string, UUID>& GetTextures() const { return m_Textures; }
+		const std::unordered_map<std::string, float>& GetFloats() const { return m_Floats; }
 
 	private:
 		void RegisterUniform( std::string, ShaderUniform );
