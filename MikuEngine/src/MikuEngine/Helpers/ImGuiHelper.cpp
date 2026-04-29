@@ -75,6 +75,47 @@ namespace MikuEngine
 		ImGui::PopID();
 	}
 
+	// Renders a Property where the shader can be changed by either selecting from the shader selection window or dropping the shader itself.
+	// This only modifies the shaderUUID container provided as parameter.
+	void ImGuiHelper::RenderDragableShaderInput( std::optional<UUID>& shaderUUID, std::function<void()> shaderEditBtnCallback )
+	{
+		auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
+
+		std::string shaderName = "<NONE>";
+
+		if ( shaderUUID.has_value() )
+		{
+			auto shader = shaderManager.GetShader( shaderUUID.value() );
+			if ( shader.has_value() ) shaderName = shader.value()->GetName();
+		}
+
+		ImGui::PushID( "Shader" );
+
+		ImGui::Text( "Shader" );
+		ImGui::SameLine();
+
+		DISABLED_IMGUI( ImGui::Button( shaderName.c_str() ) );
+		ImGui::SameLine();
+
+		if ( ImGui::Button( "EDIT...##shader" ) ) shaderEditBtnCallback();
+
+		if ( ImGui::BeginDragDropTarget() )
+		{
+			auto payload = ImGui::AcceptDragDropPayload( "shader_DRAG_DROP_PAYLOAD" );
+
+			if ( payload != nullptr )
+			{
+				auto shaderPath = static_cast<const char*>( payload->Data );
+				auto shader = shaderManager.GetShaderByFilePath( shaderPath );
+				if ( shader.has_value() ) shaderUUID = shader.value()->index.uuid;
+			}
+
+			ImGui::EndDragDropTarget();
+		}
+
+		ImGui::PopID();
+	};
+
 	void ImGuiHelper::RenderDragableMaterialInput( std::optional<UUID>& materialUUID, std::function<void()> materialEditBtnCallback )
 	{
 		auto& materialManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager();

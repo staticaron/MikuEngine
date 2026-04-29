@@ -13,6 +13,7 @@ namespace MikuEngine
 	public:
 		static void RenderDragableTextureInput( std::optional<UUID>& textureUUID, std::function<void()> textureEditBtnCallback );
 		static void RenderDragableModelInput( std::optional<UUID>& modelUUID, std::function<void()> modelEditBtnCallback );
+		static void RenderDragableShaderInput( std::optional<UUID>& shaderUUID, std::function<void()> shaderEditBtnCallback );
 		static void RenderDragableMaterialInput( std::optional<UUID>& materialUUID, std::function<void()> materialEditBtnCallback );
 	};
 }
