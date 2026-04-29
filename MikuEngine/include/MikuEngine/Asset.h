@@ -14,9 +14,6 @@ namespace MikuEngine
 		Asset( AssetType assetType ) : m_AssetType( assetType ) {}
 		const AssetType& GetAssetType() const { return m_AssetType; }
 
-		void RenderInspectorImGui();
-
-		virtual void AssetImGui() = 0;
 		virtual void DeleteAsset() = 0;
 
 		virtual std::string GetName() const = 0;

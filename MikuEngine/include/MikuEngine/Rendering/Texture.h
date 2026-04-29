@@ -28,7 +28,6 @@ namespace MikuEngine
 		std::string GetName() const override;
 		void SetName( const std::string& newName ) override;
 
-		void AssetImGui() override {}
 		void DeleteAsset() override {}
 
 	private:

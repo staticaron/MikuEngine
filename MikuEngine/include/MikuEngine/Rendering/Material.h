@@ -32,7 +32,6 @@ namespace MikuEngine
 
 		static void CreateAssetAtPath( const std::string& name, const std::filesystem::path& path );
 
-		void AssetImGui() override;
 		void DeleteAsset() override;
 
 		void Bind();
@@ -51,6 +50,7 @@ namespace MikuEngine
 		const std::unordered_map<std::string, float>& GetFloats() const { return m_Floats; }
 
 	private:
+		void RefreshUniforms();
 		void RegisterUniform( std::string, ShaderUniform );
 
 	private:
