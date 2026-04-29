@@ -177,14 +177,14 @@ namespace MikuEngine
 		MIKU_ASSERT( false, "Requested Shader is not loaded!" );
 	}
 
-	ShaderContainer& ShaderManager::GetShaderByFilePath( const std::filesystem::path& path )
+	std::optional<const ShaderContainer*> ShaderManager::GetShaderByFilePath( const std::filesystem::path& path )
 	{
 		for ( const auto& [ uuid, shaderContainer ] : m_Shaders )
 		{
-			if ( shaderContainer.index.path == path ) return m_Shaders.at( uuid );
+			if ( shaderContainer.index.path == path ) return &m_Shaders.at( uuid );
 		}
 
-		MIKU_ASSERT( false, "Requested Shader is not loaded!" );
+		return {};
 	}
 
 	bool ShaderManager::ShaderExists( const UUID& uuid ) const

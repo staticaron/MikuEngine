@@ -6,7 +6,6 @@
 
 #include "Application.h"
 #include "Logger.h"
-#include "Managers/ImguiManager.h"
 
 namespace MikuEngine
 {
@@ -24,7 +23,7 @@ namespace MikuEngine
 
 		const auto& shader = GetShader();
 
-		for ( const auto& [ x, y ] : shader.value()->GetUniforms() )
+		for ( const auto& [ x, y ] : shader.value()->shader.GetUniforms() )
 		{
 			switch ( y.Type )
 			{
@@ -104,7 +103,7 @@ namespace MikuEngine
 		YAML::Emitter emitter;
 
 		emitter << YAML::BeginMap;
-		emitter << YAML::Key << "shader" << YAML::Value << ( shader.has_value() ? shader.value()->GetUUID().ToString() : "<NONE>" );
+		emitter << YAML::Key << "shader" << YAML::Value << ( shader.has_value() ? shader.value()->shader.GetUUID().ToString() : "<NONE>" );
 		emitter << YAML::Key << "properties" << YAML::Value << YAML::BeginMap;
 
 		for ( const auto& [ name, value ] : m_Textures )
@@ -155,11 +154,11 @@ namespace MikuEngine
 
 		if ( shader.has_value() == false ) return;
 
-		shader.value()->Bind();
+		shader.value()->shader.Bind();
 
 		// Handle Floats
 		for ( const auto& [ name, value ] : m_Floats )
-			shader.value()->SetUniform<float>( name, value );
+			shader.value()->shader.SetUniform<float>( name, value );
 
 		// Handle Textures
 		unsigned int textureID = 0;
@@ -173,7 +172,7 @@ namespace MikuEngine
 			if ( textureContainer.has_value() == false ) continue;
 
 			textureContainer.value()->texture.Bind( textureID );
-			shader.value()->SetUniform<unsigned int>( name, textureID );
+			shader.value()->shader.SetUniform<unsigned int>( name, textureID );
 
 			textureID++;
 		}
@@ -181,7 +180,7 @@ namespace MikuEngine
 
 	void Material::UnBind()
 	{
-		GetShader().value()->UnBind();
+		GetShader().value()->shader.UnBind();
 	}
 
 	const std::filesystem::path& Material::GetPath() const
@@ -201,7 +200,7 @@ namespace MikuEngine
 		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().RenameAsset( m_UUID, newName );
 	}
 
-	std::optional<Shader*> Material::GetShader()
+	std::optional<ShaderContainer*> Material::GetShader()
 	{
 		if ( m_Shader.has_value() == false )
 		{
@@ -222,7 +221,7 @@ namespace MikuEngine
 			return std::nullopt;
 		}
 
-		return &value.value()->shader;
+		return value;
 	}
 
 	void Material::SetShader( const UUID& uuid )
@@ -230,85 +229,7 @@ namespace MikuEngine
 		m_Shader = uuid;
 	}
 
-	void Material::AssetImGui()
-	{
-		auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
-
-		const auto& shader = GetShader();
-
-		// Render Shader Details
-		auto shaderName = shader.has_value() ? shader.value()->GetName() : "<NONE>";
-		char shaderNameBuff[ 256 ];
-		std::copy( shaderName.begin(), shaderName.begin() + shaderName.size(), shaderNameBuff );
-		shaderNameBuff[ shaderName.size() ] = '\0';
-
-		ImGui::InputText( "Shader", shaderNameBuff, 256, ImGuiInputTextFlags_ReadOnly );
-
-		if ( ImGui::BeginDragDropTarget() )
-		{
-			auto payload = ImGui::AcceptDragDropPayload( "SHADER_DRAG_DROP_PAYLOAD" );
-
-			if ( payload != nullptr )
-			{
-				std::string shaderFilePath = static_cast<const char*>( payload->Data );
-				SetShader( shaderManager.GetShaderByFilePath( shaderFilePath ).index.uuid );
-
-				Refresh();
-			}
-
-			ImGui::EndDragDropTarget();
-		}
-
-		// If no shader is attached then no need to render the shader properties
-		if ( shader.has_value() )
-		{
-			// Render Textures
-			for ( auto& [ uniformName, uuid ] : m_Textures )
-			{
-				const auto& textureUUID = m_Textures[ uniformName ];
-
-				auto texture = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTexture( uuid );
-
-				std::string textureName = "<NONE>";
-				if ( texture.has_value() ) textureName = texture.value()->GetName();
-
-				char buff[ 256 ] = "";
-				std::copy( textureName.begin(), textureName.end(), buff );
-				buff[ textureName.length() ] = '\0';
-
-				ImGui::InputText( uniformName.c_str(), buff, 256, ImGuiInputTextFlags_ReadOnly );
-
-				if ( ImGui::BeginDragDropTarget() )
-				{
-					const ImGuiPayload* payload = ImGui::AcceptDragDropPayload( "TEXTURE_DRAG_DROP_PAYLOAD" );
-
-					if ( payload != nullptr )
-					{
-						std::string filePath = static_cast<const char*>( payload->Data );
-						std::filesystem::path materialPath = filePath;
-
-						const auto& texture = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath );
-						m_Textures[ uniformName ] = texture.value()->index.uuid;
-					}
-
-					ImGui::EndDragDropTarget();
-				}
-			}
-
-			// Render Floats
-			for ( auto& [ uniformName, value ] : m_Floats )
-			{
-				ImGui::DragFloat( uniformName.c_str(), &m_Floats[ uniformName ] );
-			}
-		}
-
-		// Render Save Material Button
-		ImGui::Separator();
-		if ( ImguiManager::FullWidthButton( "SAVE" ) )
-		{
-			SaveToFile( GetPath() );
-		}
-	}
+	void Material::AssetImGui() {}
 
 	void Material::DeleteAsset()
 	{

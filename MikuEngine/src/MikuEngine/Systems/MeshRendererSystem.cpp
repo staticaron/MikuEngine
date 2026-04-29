@@ -41,12 +41,12 @@ namespace MikuEngine
 
 			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
 			glm::mat4 modelMatrix = transform.GetModelMatrix();
-			shader.value()->SetUniform<glm::mat4>( "u_Model", modelMatrix );
+			shader.value()->shader.SetUniform<glm::mat4>( "u_Model", modelMatrix );
 
 			// Render all the meshes in the model
 			for ( const auto& mesh : model.model.GetMeshes() )
 			{
-				renderer.Draw( mesh.GetVA(), mesh.GetIB(), *shader.value() );
+				renderer.Draw( mesh.GetVA(), mesh.GetIB(), shader.value()->shader );
 			}
 		}
 	}

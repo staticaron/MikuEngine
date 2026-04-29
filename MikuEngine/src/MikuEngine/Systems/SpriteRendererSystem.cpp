@@ -56,9 +56,9 @@ namespace MikuEngine
 
 			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
 			glm::mat4 modelMatrix = transform.GetModelMatrix();
-			shader.value()->SetUniform<glm::mat4>( "u_Model", modelMatrix );
+			shader.value()->shader.SetUniform<glm::mat4>( "u_Model", modelMatrix );
 
-			renderer.Draw( quad.GetVA(), quad.GetIB(), *shader.value() );
+			renderer.Draw( quad.GetVA(), quad.GetIB(), shader.value()->shader );
 		}
 	};
 
