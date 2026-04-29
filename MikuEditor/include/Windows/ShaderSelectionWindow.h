@@ -16,11 +16,11 @@ namespace MikuEditor
 	class MIKU_API ShaderSelectionWindow
 	{
 	public:
-		ShaderSelectionWindow( MikuEngine::UUID entityUUID );
+		ShaderSelectionWindow( std::function<void( MikuEngine::UUID itemUUID )> onShaderSelection );
 		WindowResponse RenderShaderSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
 
 	private:
-		MikuEngine::UUID m_EntityUUID;
+		std::function<void( MikuEngine::UUID shaderUUID )> onShaderSelection;
 
 		bool m_IsOpen = true;
 	};
