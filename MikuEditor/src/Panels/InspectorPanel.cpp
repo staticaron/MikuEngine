@@ -2,6 +2,8 @@
 
 #include "imgui.h"
 
+#include "Component/MaterialComponent.h"
+#include "Component/ShaderComponent.h"
 #include "Components.h"
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Data/SelectableItem.h"
@@ -172,15 +174,17 @@ namespace MikuEditor
 		case MikuEngine::AssetType::NONE:
 			break;
 		case MikuEngine::AssetType::MATERIAL: {
-			auto material = assetPoolManager.GetMaterialManager().GetMaterial( item.uuid );
-			if ( material.has_value() == false ) return;
-			material.value()->material.RenderInspectorImGui();
+			auto materialContainer = assetPoolManager.GetMaterialManager().GetMaterial( item.uuid );
+			if ( materialContainer.has_value() == false ) return;
+
+			MaterialComponent::RenderMaterialComponent( editorLayer, *materialContainer.value() );
 			break;
 		}
 		case MikuEngine::AssetType::SHADER: {
 			auto shaderContainer = assetPoolManager.GetShaderManager().GetShader( item.uuid );
 			if ( shaderContainer.has_value() == false ) return;
-			shaderContainer.value()->shader.RenderInspectorImGui();
+
+			ShaderComponent::RenderShaderComponent( *shaderContainer.value() );
 			break;
 		}
 		case MikuEngine::AssetType::TEXTURE:
