@@ -89,7 +89,8 @@ namespace MikuEditor
 			{
 				auto& spriteRendererC = selectedEntity.value().GetComponent<MikuEngine::SpriteRendererComponent>();
 
-				std::function<void()> textureEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID ]() { editorLayer.m_TextureSelectionWindow.emplace_back( selectedEntityUUID ); };
+				std::function<void( MikuEngine::UUID itemUUID )> onTextureSelected = [ &scene, selectedEntityUUID ]( MikuEngine::UUID itemUUID ) { scene.GetEntityByID( selectedEntityUUID ).value().GetComponent<MikuEngine::SpriteRendererComponent>().TextureIdentifier = itemUUID; };
+				std::function<void()> textureEditBtnCallback = [ &editorLayer, selectedEntityUUID, &onTextureSelected ]() { editorLayer.m_TextureSelectionWindow.emplace_back( onTextureSelected ); };
 				std::function<void( MikuEngine::UUID itemUUID )> onitemSelected = [ &scene, selectedEntityUUID ]( MikuEngine::UUID itemUUID ) { scene.GetEntityByID( selectedEntityUUID ).value().GetComponent<MikuEngine::SpriteRendererComponent>().MaterialUUID = itemUUID; };
 				std::function<void()> materialEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID, onitemSelected ]() { editorLayer.m_MaterialSelectionWindow.emplace_back( onitemSelected ); };
 

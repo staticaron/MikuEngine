@@ -49,6 +49,9 @@ namespace MikuEngine
 		const std::unordered_map<std::string, UUID>& GetTextures() const { return m_Textures; }
 		const std::unordered_map<std::string, float>& GetFloats() const { return m_Floats; }
 
+		void SetTexture( std::string identifier, UUID uuid ) { m_Textures[ identifier ] = uuid; }
+		void SetFloat( std::string identifier, float value ) { m_Floats[ identifier ] = value; }
+
 	private:
 		void RefreshUniforms();
 		void RegisterUniform( std::string, ShaderUniform );

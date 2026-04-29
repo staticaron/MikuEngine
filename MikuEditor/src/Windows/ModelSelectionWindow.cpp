@@ -3,7 +3,6 @@
 #include "imgui.h"
 
 #include "MikuEngine/AppLevelStuff.h"
-#include "MikuEngine/Components.h"
 #include "MikuEngine/Scene/Scene.h"
 
 namespace MikuEditor

@@ -1,11 +1,11 @@
 #include "Windows/TextureSelectionWindow.h"
 
-#include "Components.h"
 #include "MikuEngine/AppLevelStuff.h"
 
 namespace MikuEditor
 {
-	TextureSelectionWindow::TextureSelectionWindow( MikuEngine::UUID entityUUID ) : m_EntityUUID( entityUUID ) {}
+	TextureSelectionWindow::TextureSelectionWindow( std::function<void( MikuEngine::UUID selectedTextureItem )> onTextureSelection ) : m_OnTextureSelection( onTextureSelection ) {}
+
 	WindowResponse TextureSelectionWindow::RenderTextureSelectionWindow( const MikuEngine::AppLevelStuff& appLevelStuff, MikuEngine::Scene& scene )
 	{
 		WindowResponse response;
@@ -27,17 +27,8 @@ namespace MikuEditor
 
 			if ( ImGui::ImageButton( "##TextureBtn", ( void* )( intptr_t )textureContainer.texture.GetRendererID(), ImVec2( 100, 100 ), ImVec2( 1, 1 ), ImVec2( 0, 0 ) ) )
 			{
-				auto entity = scene.GetEntityByID( m_EntityUUID );
-
-				if ( !entity.has_value() )
-				{
-					response = WindowResponse::ERROR;
-				}
-				else
-				{
-					entity.value().GetComponent<MikuEngine::SpriteRendererComponent>().TextureIdentifier = textureContainer.texture.GetUUID();
-					response = WindowResponse::COMPLETED;
-				}
+				m_OnTextureSelection( uuid );
+				response = WindowResponse::COMPLETED;
 			}
 
 			ImGui::PopID();

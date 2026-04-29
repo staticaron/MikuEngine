@@ -42,34 +42,20 @@ namespace MikuEditor
 
 			for ( auto& [ uniformName, uuid ] : textures )
 			{
-				const auto& textureUUID = textures[ uniformName ];
+				std::optional<MikuEngine::UUID> texture = uuid;
 
-				auto texture = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTexture( uuid );
-
-				std::string textureName = "<NONE>";
-				if ( texture.has_value() ) textureName = texture.value()->GetName();
-
-				char buff[ 256 ] = "";
-				std::copy( textureName.begin(), textureName.end(), buff );
-				buff[ textureName.length() ] = '\0';
-
-				ImGui::InputText( uniformName.c_str(), buff, 256, ImGuiInputTextFlags_ReadOnly );
-
-				if ( ImGui::BeginDragDropTarget() )
-				{
-					const ImGuiPayload* payload = ImGui::AcceptDragDropPayload( "TEXTURE_DRAG_DROP_PAYLOAD" );
-
-					if ( payload != nullptr )
+				std::function<void( MikuEngine::UUID )> onTextureSelection = [ materialUUID, uniformName ]( MikuEngine::UUID selectedTextureUUID ) {
+					auto materialSearch = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().GetMaterial( materialUUID );
+					if ( materialSearch.has_value() == false )
 					{
-						std::string filePath = static_cast<const char*>( payload->Data );
-						std::filesystem::path materialPath = filePath;
-
-						const auto& texture = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath );
-						textures[ uniformName ] = texture.value()->index.uuid;
+						MIKU_CLIENT_WARN( "The item for which this window was opened no longer exists!" );
+						return;
 					}
+					materialSearch.value()->material.SetTexture( uniformName, selectedTextureUUID );
+				};
 
-					ImGui::EndDragDropTarget();
-				}
+				std::function<void()> textureEditBtnCallback = [ &editorLayer, &onTextureSelection ]() { editorLayer.m_TextureSelectionWindow.emplace_back( onTextureSelection ); };
+				MikuEngine::ImGuiHelper::RenderDragableTextureInput( texture, textureEditBtnCallback );
 			}
 
 			// Render Floats

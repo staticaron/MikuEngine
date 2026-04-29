@@ -153,7 +153,10 @@ namespace MikuEngine
 		if ( auto existing = m_Shaders.find( shaderUUID ); existing != m_Shaders.end() )
 			return &existing->second;
 		else
+		{
+			if ( auto existing = m_DefaultShaders.find( shaderUUID ); existing != m_Shaders.end() ) return &existing->second;
 			return std::nullopt;
+		}
 	}
 
 	const ShaderContainer& ShaderManager::GetShader( UUID shaderUUID ) const

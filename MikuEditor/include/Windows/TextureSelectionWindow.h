@@ -16,12 +16,12 @@ namespace MikuEditor
 	class MIKU_API TextureSelectionWindow
 	{
 	public:
-		TextureSelectionWindow( MikuEngine::UUID entityUUID );
+		TextureSelectionWindow( std::function<void( MikuEngine::UUID selectedTextureItem )> onTextureSelection );
 
 		WindowResponse RenderTextureSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
 
 	private:
-		MikuEngine::UUID m_EntityUUID;
+		std::function<void( MikuEngine::UUID selectedTextureItem )> m_OnTextureSelection;
 
 		bool m_IsOpen = true;
 
