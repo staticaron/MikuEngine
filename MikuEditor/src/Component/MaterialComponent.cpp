@@ -83,6 +83,12 @@ namespace MikuEditor
 			}
 		}
 
+		ImGui::Separator();
+		if ( MikuEngine::ImguiManager::FullWidthButton( "SAVE" ) )
+		{
+			materialContainer.material.SaveToFile( materialContainer.material.GetPath() );
+		}
+
 		ComponentFooter( [ materialContainer ]() { MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().AddToDeleteQueue( materialContainer.index.uuid ); } );
 	}
 }
