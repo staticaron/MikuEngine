@@ -4,12 +4,11 @@
 
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Components.h"
-#include "MikuEngine/Entity.h"
 #include "MikuEngine/Scene/Scene.h"
 
 namespace MikuEditor
 {
-	ModelSelectionWindow::ModelSelectionWindow( MikuEngine::UUID uuid ) : m_EntityUUID( uuid ) {}
+	ModelSelectionWindow::ModelSelectionWindow( std::function<void( MikuEngine::UUID )> onModelSelection ) : m_OnModelSelection( onModelSelection ) {}
 
 	WindowResponse ModelSelectionWindow::RenderModelSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene )
 	{
@@ -27,15 +26,7 @@ namespace MikuEditor
 				{
 					if ( ImGui::Selectable( modelContainer.index.path.c_str() ) )
 					{
-						auto entity = scene.GetEntityByID( m_EntityUUID );
-
-						if ( entity.has_value() == false )
-						{
-							response = WindowResponse::ERROR;
-							break;
-						}
-
-						entity->GetComponent<MikuEngine::MeshRendererComponent>().ModelIdentifier = uuid;
+						m_OnModelSelection( uuid );
 						response = WindowResponse::COMPLETED;
 					}
 				}
@@ -51,15 +42,7 @@ namespace MikuEditor
 				{
 					if ( ImGui::Selectable( modelContainer.index.path.c_str() ) )
 					{
-						auto entity = scene.GetEntityByID( m_EntityUUID );
-
-						if ( entity.has_value() == false )
-						{
-							response = WindowResponse::ERROR;
-							break;
-						}
-
-						entity->GetComponent<MikuEngine::MeshRendererComponent>().ModelIdentifier = uuid;
+						m_OnModelSelection( uuid );
 						response = WindowResponse::COMPLETED;
 					}
 				}

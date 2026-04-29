@@ -15,12 +15,11 @@ namespace MikuEditor
 	class MIKU_API MaterialSelectionWindow
 	{
 	public:
-		MaterialSelectionWindow( MikuEngine::UUID entityUUID, std::function<void( MikuEngine::Scene& scene, MikuEngine::UUID itemUUID )> onItemSelected );
+		MaterialSelectionWindow( std::function<void( MikuEngine::UUID itemUUID )> onMaterialSelection );
 		WindowResponse RenderMaterialSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
 
 	private:
-		MikuEngine::UUID m_EntityUUID;
-		std::function<void( MikuEngine::Scene& scene, MikuEngine::UUID itemUUID )> onItemSelected;
+		std::function<void( MikuEngine::UUID itemUUID )> onItemSelected;
 
 		bool m_IsOpen = true;
 	};

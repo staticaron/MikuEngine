@@ -2,13 +2,12 @@
 
 #include "imgui.h"
 
-#include "Entity.h"
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Scene/Scene.h"
 
 namespace MikuEditor
 {
-	MaterialSelectionWindow::MaterialSelectionWindow( MikuEngine::UUID uuid, std::function<void( MikuEngine::Scene& scene, MikuEngine::UUID itemUUId )> onItemSelected ) : m_EntityUUID( uuid ), onItemSelected( onItemSelected ) {}
+	MaterialSelectionWindow::MaterialSelectionWindow( std::function<void( MikuEngine::UUID itemUUId )> onItemSelected ) : onItemSelected( onItemSelected ) {}
 
 	WindowResponse MaterialSelectionWindow::RenderMaterialSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene )
 	{
@@ -22,15 +21,7 @@ namespace MikuEditor
 		{
 			if ( ImGui::Selectable( materialContainer.index.path.c_str() ) )
 			{
-				auto entity = scene.GetEntityByID( m_EntityUUID );
-
-				if ( entity.has_value() == false )
-				{
-					response = WindowResponse::ERROR;
-					break;
-				}
-
-				onItemSelected( scene, uuid );
+				onItemSelected( uuid );
 				response = WindowResponse::COMPLETED;
 			}
 		}

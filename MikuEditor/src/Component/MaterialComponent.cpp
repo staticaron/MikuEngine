@@ -18,7 +18,6 @@ namespace MikuEditor
 		if ( shader.has_value() ) shaderUUID = shader.value()->shader.GetUUID();
 
 		MikuEngine::UUID materialUUID = materialContainer.index.uuid;
-		// callback to add additional shader selection window to the editor
 		std::function<void( MikuEngine::UUID itemUUID )> onShaderSelection = [ materialUUID ]( MikuEngine::UUID selectedShaderUUID ) {
 			auto materialSearch = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().GetMaterial( materialUUID );
 			if ( materialSearch.has_value() == false )
@@ -28,6 +27,7 @@ namespace MikuEditor
 			}
 			materialSearch.value()->material.SetShader( selectedShaderUUID );
 		};
+
 		std::function<void()> shaderEditBtnCallback = [ &editorLayer, &shaderUUID, onShaderSelection ]() { editorLayer.m_ShaderSelectionWindow.emplace_back( onShaderSelection ); };
 
 		MikuEngine::ImGuiHelper::RenderDragableShaderInput( shaderUUID, shaderEditBtnCallback );

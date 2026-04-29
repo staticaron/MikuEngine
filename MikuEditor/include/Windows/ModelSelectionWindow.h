@@ -16,11 +16,11 @@ namespace MikuEditor
 	class MIKU_API ModelSelectionWindow
 	{
 	public:
-		ModelSelectionWindow( MikuEngine::UUID entityUUID );
+		ModelSelectionWindow( std::function<void( MikuEngine::UUID )> onModelSelection );
 		WindowResponse RenderModelSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
 
 	private:
-		MikuEngine::UUID m_EntityUUID;
+		std::function<void( MikuEngine::UUID )> m_OnModelSelection;
 
 		bool m_IsOpen = true;
 	};
