@@ -18,6 +18,7 @@ namespace MikuEngine
 namespace MikuEditor
 {
 	class InspectorPanel;
+	class MaterialComponent;
 }
 
 namespace MikuEditor
@@ -34,12 +35,13 @@ namespace MikuEditor
 		void RenderImgui( const MikuEngine::AppLevelStuff& appLevelStuff ) override;
 		const EditorLevelStuff& GetEditorLayerInfo() const { return m_EditorLevelStuff; }
 
+		EditorCamera& GetEditorCamera() { return m_EditorCamera; }
+
+	private:
 		void ManageTextureSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff );
 		void ManageShaderSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff );
 		void ManageMaterialSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff );
 		void ManageModelSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff );
-
-		EditorCamera& GetEditorCamera() { return m_EditorCamera; }
 
 	private:
 		EditorLevelStuff m_EditorLevelStuff;
@@ -57,5 +59,6 @@ namespace MikuEditor
 		ViewportPanel m_ViewportPanel;
 
 		friend class InspectorPanel;
+		friend class MaterialComponent;
 	};
 }
