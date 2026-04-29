@@ -16,7 +16,7 @@
 
 namespace MikuEngine
 {
-	constexpr std::string_view DEFAULT_SHADER_LOCATION = RESOURCE_DIR "/shaders/default.shader";
+	constexpr std::string_view DEFAULT_SHADER_LOCATION = RESOURCE_DIR "/shaders/default-2d.shader";
 
 	struct MIKU_API ShaderUniform
 	{
