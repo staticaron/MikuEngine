@@ -16,6 +16,11 @@ namespace MikuEngine
 
 	void Material::CreateFromShader( const UUID& uuid )
 	{
+		SetShader( uuid );
+	}
+
+	void Material::RefreshUniforms()
+	{
 		m_Textures.clear();
 		m_Floats.clear();
 		m_Vec4s.clear();
@@ -227,9 +232,8 @@ namespace MikuEngine
 	void Material::SetShader( const UUID& uuid )
 	{
 		m_Shader = uuid;
+		RefreshUniforms();
 	}
-
-	void Material::AssetImGui() {}
 
 	void Material::DeleteAsset()
 	{
