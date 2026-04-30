@@ -16,11 +16,14 @@ namespace MikuEngine
 			if ( texture.has_value() ) textureName = texture.value()->GetName();
 		}
 
+		ImGui::PushID( textureUUID->ToString().c_str() );
+
 		ImGui::Text( "Texture" );
 		ImGui::SameLine();
 		DISABLED_IMGUI( ImGui::Button( textureName.c_str() ) );
 		ImGui::SameLine();
-		if ( ImGui::Button( "EDIT...##Texture" ) ) textureEditBtnCallback();
+
+		if ( ImGui::Button( "EDIT..." ) ) textureEditBtnCallback();
 
 		if ( ImGui::BeginDragDropTarget() )
 		{
@@ -35,6 +38,8 @@ namespace MikuEngine
 
 			ImGui::EndDragDropTarget();
 		}
+
+		ImGui::PopID();
 	}
 
 	void ImGuiHelper::RenderDragableModelInput( std::optional<UUID>& modelUUID, std::function<void()> modelEditBtnCallback )
@@ -49,7 +54,7 @@ namespace MikuEngine
 			modelName = model.index.Name;
 		}
 
-		ImGui::PushID( "Model" );
+		ImGui::PushID( modelUUID->ToString().c_str() );
 
 		ImGui::Text( "Model" );
 		ImGui::SameLine();
@@ -89,7 +94,7 @@ namespace MikuEngine
 			if ( shader.has_value() ) shaderName = shader.value()->GetName();
 		}
 
-		ImGui::PushID( "Shader" );
+		ImGui::PushID( shaderUUID->ToString().c_str() );
 
 		ImGui::Text( "Shader" );
 		ImGui::SameLine();
@@ -97,11 +102,11 @@ namespace MikuEngine
 		DISABLED_IMGUI( ImGui::Button( shaderName.c_str() ) );
 		ImGui::SameLine();
 
-		if ( ImGui::Button( "EDIT...##shader" ) ) shaderEditBtnCallback();
+		if ( ImGui::Button( "EDIT..." ) ) shaderEditBtnCallback();
 
 		if ( ImGui::BeginDragDropTarget() )
 		{
-			auto payload = ImGui::AcceptDragDropPayload( "shader_DRAG_DROP_PAYLOAD" );
+			auto payload = ImGui::AcceptDragDropPayload( "SHADER_DRAG_DROP_PAYLOAD" );
 
 			if ( payload != nullptr )
 			{
@@ -128,7 +133,7 @@ namespace MikuEngine
 			if ( material.has_value() ) materialName = material.value()->GetName();
 		}
 
-		ImGui::PushID( "Material" );
+		ImGui::PushID( materialUUID->ToString().c_str() );
 
 		ImGui::Text( "Material" );
 		ImGui::SameLine();
@@ -136,7 +141,7 @@ namespace MikuEngine
 		DISABLED_IMGUI( ImGui::Button( materialName.c_str() ) );
 		ImGui::SameLine();
 
-		if ( ImGui::Button( "EDIT...##material" ) ) materialEditBtnCallback();
+		if ( ImGui::Button( "EDIT..." ) ) materialEditBtnCallback();
 
 		if ( ImGui::BeginDragDropTarget() )
 		{
