@@ -39,8 +39,8 @@ namespace MikuEditor
 			//
 			//
 			auto textures = materialContainer.material.GetTextures();
-
 			for ( auto& [ uniformName, uuid ] : textures )
+
 			{
 				std::optional<MikuEngine::UUID> texture = uuid;
 
