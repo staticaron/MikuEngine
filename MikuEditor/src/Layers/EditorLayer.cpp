@@ -117,7 +117,7 @@ namespace MikuEditor
 
 		for ( size_t x = 0; x < m_TextureSelectionWindow.size(); x++ )
 		{
-			auto response = m_TextureSelectionWindow.at( x ).RenderTextureSelectionWindow( appLevelStuff, activeScene );
+			auto response = m_TextureSelectionWindow.at( x ).RenderTextureSelectionWindow( std::to_string( x ), appLevelStuff, activeScene );
 
 			if ( response == WindowResponse::ERROR || response == WindowResponse::COMPLETED || response == WindowResponse::CLOSED )
 			{
@@ -139,7 +139,7 @@ namespace MikuEditor
 
 		for ( size_t x = 0; x < m_ShaderSelectionWindow.size(); x++ )
 		{
-			auto response = m_ShaderSelectionWindow.at( x ).RenderShaderSelectionWindow( appLevelStuff, activeScene );
+			auto response = m_ShaderSelectionWindow.at( x ).RenderShaderSelectionWindow( std::to_string( x ), appLevelStuff, activeScene );
 			if ( response == WindowResponse::ERROR || response == WindowResponse::COMPLETED || response == WindowResponse::CLOSED ) completedShaderWindow.push_back( x );
 		}
 
@@ -157,7 +157,7 @@ namespace MikuEditor
 
 		for ( size_t x = 0; x < m_MaterialSelectionWindow.size(); x++ )
 		{
-			auto response = m_MaterialSelectionWindow.at( x ).RenderMaterialSelectionWindow( appLevelStuff, activeScene );
+			auto response = m_MaterialSelectionWindow.at( x ).RenderMaterialSelectionWindow( std::to_string( x ), appLevelStuff, activeScene );
 			if ( response == WindowResponse::ERROR || response == WindowResponse::COMPLETED || response == WindowResponse::CLOSED ) completedMaterialWindow.push_back( x );
 		}
 
@@ -175,7 +175,7 @@ namespace MikuEditor
 
 		for ( size_t x = 0; x < m_ModelSelectionWindow.size(); x++ )
 		{
-			auto response = m_ModelSelectionWindow.at( x ).RenderModelSelectionWindow( appLevelStuff, activeScene );
+			auto response = m_ModelSelectionWindow.at( x ).RenderModelSelectionWindow( std::to_string( x ), appLevelStuff, activeScene );
 			if ( response == WindowResponse::ERROR || response == WindowResponse::COMPLETED || response == WindowResponse::CLOSED ) completedModelWindow.push_back( x );
 		}
 
