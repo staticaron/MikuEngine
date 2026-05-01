@@ -22,6 +22,8 @@ namespace MikuEngine
 
 	void TextureManager::LoadAllTextures()
 	{
+		LoadAllDefaultTextures();
+
 		for ( auto [ identifier, textureIndexEntry ] : m_TextureIndex )
 		{
 			if ( TextureAlreadyPresent( identifier ) )
@@ -37,7 +39,27 @@ namespace MikuEngine
 			  } );
 		}
 
-		MIKU_CORE_DEBUG( "{} Textures Loaded!", m_Textures.size() );
+		MIKU_CORE_DEBUG( "PROJECT {} Textures Loaded!", m_Textures.size() );
+	}
+
+	void TextureManager::LoadAllDefaultTextures()
+	{
+		for ( auto [ identifier, textureIndexEntry ] : m_DefaultTextureIndex )
+		{
+			if ( TextureAlreadyPresent( identifier ) )
+			{
+				MIKU_CORE_ERROR( "Texture with ID : {} is already loaded!", textureIndexEntry.path.stem().string() );
+				continue;
+			}
+
+			Texture newTexture( identifier );
+			newTexture.LoadFromFile( textureIndexEntry.path );
+			m_DefaultTextures.insert( {
+			    identifier, { textureIndexEntry, newTexture }
+			  } );
+		}
+
+		MIKU_CORE_DEBUG( "DEFAULT {} Textures Loaded!", m_DefaultTextures.size() );
 	}
 
 	void TextureManager::LoadTexture( const std::string& name, const std::filesystem::path& filepath )
@@ -55,6 +77,19 @@ namespace MikuEngine
 
 	void TextureManager::PrepareTextureIndex()
 	{
+		// LOAD DEFAULT TEXTURES
+		for ( auto& file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/textures/" ) )
+		{
+			if ( file.path().extension() == ".meta" ) continue;
+			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
+
+			if ( file.is_directory() ) continue;
+
+			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
+			m_DefaultTextureIndex[ uuid ] = { uuid, file.path().string() };
+		}
+
+		// LOAD PROJECT TEXTURES
 		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/textures/" ) )
 		{
 			if ( file.path().extension() == ".meta" ) continue;
@@ -76,14 +111,24 @@ namespace MikuEngine
 
 	std::optional<TextureContainer*> TextureManager::GetTexture( UUID textureUUID )
 	{
-		if ( auto existing = m_Textures.find( textureUUID ); existing != m_Textures.end() ) return &existing->second;
-		return {};
+		if ( auto existing = m_Textures.find( textureUUID ); existing != m_Textures.end() )
+			return &existing->second;
+		else
+		{
+			if ( auto existing = m_DefaultTextures.find( textureUUID ); existing != m_DefaultTextures.end() ) return &existing->second;
+			return {};
+		}
 	}
 
 	std::optional<const TextureContainer*> TextureManager::GetTexture( UUID uuid ) const
 	{
-		if ( auto existing = m_Textures.find( uuid ); existing != m_Textures.end() ) return &existing->second;
-		return {};
+		if ( auto existing = m_Textures.find( uuid ); existing != m_Textures.end() )
+			return &existing->second;
+		else
+		{
+			if ( auto existing = m_DefaultTextures.find( uuid ); existing != m_DefaultTextures.end() ) return &existing->second;
+			return {};
+		}
 	}
 
 	std::optional<const TextureContainer*> TextureManager::GetTextureByName( const std::string& filename ) const
@@ -113,6 +158,11 @@ namespace MikuEngine
 	const std::unordered_map<UUID, TextureContainer>& TextureManager::GetAllLoadedTextures() const
 	{
 		return m_Textures;
+	}
+
+	const std::unordered_map<UUID, TextureContainer>& TextureManager::GetAllDefaultTextures() const
+	{
+		return m_DefaultTextures;
 	}
 
 	const std::filesystem::path& TextureManager::GetFilePathFromUUID( const UUID& uuid )

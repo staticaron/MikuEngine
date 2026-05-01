@@ -32,10 +32,13 @@ namespace MikuEngine
 		~TextureManager();
 
 		void LoadTexture( const std::string& name, const std::filesystem::path& filepath );
+
 		void LoadAllTextures();
+		void LoadAllDefaultTextures();
 
 		void PrepareTextureIndex();
 		const std::unordered_map<UUID, TextureContainer>& GetAllLoadedTextures() const;
+		const std::unordered_map<UUID, TextureContainer>& GetAllDefaultTextures() const;
 
 		std::optional<TextureContainer*> GetTexture( UUID textureUUID );
 		std::optional<const TextureContainer*> GetTexture( UUID textureUUID ) const;
@@ -57,6 +60,9 @@ namespace MikuEngine
 
 	private:
 		std::unordered_map<UUID, TextureIndexEntry> m_TextureIndex;
+		std::unordered_map<UUID, TextureIndexEntry> m_DefaultTextureIndex;
+
+		std::unordered_map<UUID, TextureContainer> m_DefaultTextures;
 		std::unordered_map<UUID, TextureContainer> m_Textures;
 	};
 }
