@@ -165,7 +165,6 @@ namespace MikuEditor
 			{
 			case MikuEngine::AssetType::TEXTURE: {
 				ImGui::SetDragDropPayload( "TEXTURE_DRAG_DROP_PAYLOAD", filePath.string().c_str(), strlen( filePath.string().c_str() ) + 1 );
-				std::cout << filePath.string() << std::endl;
 				break;
 			}
 			case MikuEngine::AssetType::MODEL: {

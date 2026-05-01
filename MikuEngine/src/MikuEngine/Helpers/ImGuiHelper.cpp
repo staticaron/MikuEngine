@@ -4,8 +4,10 @@
 
 namespace MikuEngine
 {
-	void ImGuiHelper::RenderDragableTextureInput( const std::string& identifier, std::optional<UUID>& textureUUID, std::function<void()> textureEditBtnCallback )
+	bool ImGuiHelper::RenderDragableTextureInput( const std::string& identifier, std::optional<UUID>& textureUUID, std::function<void()> textureEditBtnCallback )
 	{
+		bool wasChanged = false;
+
 		const auto& textureManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager();
 
 		std::string textureName = "<NONE>";
@@ -18,7 +20,7 @@ namespace MikuEngine
 
 		ImGui::PushID( identifier.c_str() );
 
-		ImGui::Text( "Texture" );
+		ImGui::Text( "Texture ( %s )", identifier.c_str() );
 		ImGui::SameLine();
 		DISABLED_IMGUI( ImGui::Button( textureName.c_str() ) );
 		ImGui::SameLine();
@@ -33,17 +35,25 @@ namespace MikuEngine
 			{
 				auto texturePath = static_cast<const char*>( payload->Data );
 				auto texture = textureManager.GetTextureByFilePath( texturePath );
-				if ( texture.has_value() ) textureUUID = texture.value()->index.uuid;
+				if ( texture.has_value() )
+				{
+					wasChanged = true;
+					textureUUID = texture.value()->index.uuid;
+				}
 			}
 
 			ImGui::EndDragDropTarget();
 		}
 
 		ImGui::PopID();
+
+		return wasChanged;
 	}
 
-	void ImGuiHelper::RenderDragableModelInput( const std::string& identifier, std::optional<UUID>& modelUUID, std::function<void()> modelEditBtnCallback )
+	bool ImGuiHelper::RenderDragableModelInput( const std::string& identifier, std::optional<UUID>& modelUUID, std::function<void()> modelEditBtnCallback )
 	{
+		bool wasChanged = false;
+
 		const auto& modelManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetModelManager();
 
 		std::string modelName = "<NONE>";
@@ -72,18 +82,23 @@ namespace MikuEngine
 			{
 				auto modelPath = static_cast<const char*>( payload->Data );
 				modelUUID = modelManager.GetModelByFilePath( modelPath ).index.uuid;
+				wasChanged = true;
 			}
 
 			ImGui::EndDragDropTarget();
 		}
 
 		ImGui::PopID();
+
+		return wasChanged;
 	}
 
 	// Renders a Property where the shader can be changed by either selecting from the shader selection window or dropping the shader itself.
 	// This only modifies the shaderUUID container provided as parameter.
-	void ImGuiHelper::RenderDragableShaderInput( const std::string& identifier, std::optional<UUID>& shaderUUID, std::function<void()> shaderEditBtnCallback )
+	bool ImGuiHelper::RenderDragableShaderInput( const std::string& identifier, std::optional<UUID>& shaderUUID, std::function<void()> shaderEditBtnCallback )
 	{
+		bool wasChanged = false;
+
 		auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
 		std::string shaderName = "<NONE>";
@@ -112,17 +127,25 @@ namespace MikuEngine
 			{
 				auto shaderPath = static_cast<const char*>( payload->Data );
 				auto shader = shaderManager.GetShaderByFilePath( shaderPath );
-				if ( shader.has_value() ) shaderUUID = shader.value()->index.uuid;
+				if ( shader.has_value() )
+				{
+					wasChanged = true;
+					shaderUUID = shader.value()->index.uuid;
+				}
 			}
 
 			ImGui::EndDragDropTarget();
 		}
 
 		ImGui::PopID();
+
+		return wasChanged;
 	};
 
-	void ImGuiHelper::RenderDragableMaterialInput( const std::string& identifier, std::optional<UUID>& materialUUID, std::function<void()> materialEditBtnCallback )
+	bool ImGuiHelper::RenderDragableMaterialInput( const std::string& identifier, std::optional<UUID>& materialUUID, std::function<void()> materialEditBtnCallback )
 	{
+		bool wasChanged = false;
+
 		auto& materialManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager();
 
 		std::string materialName = "<NONE>";
@@ -151,12 +174,18 @@ namespace MikuEngine
 			{
 				auto materialPath = static_cast<const char*>( payload->Data );
 				auto material = materialManager.GetMaterialByFilePath( materialPath );
-				if ( material.has_value() ) materialUUID = material.value()->GetUUID();
+				if ( material.has_value() )
+				{
+					wasChanged = true;
+					materialUUID = material.value()->GetUUID();
+				}
 			}
 
 			ImGui::EndDragDropTarget();
 		}
 
 		ImGui::PopID();
+
+		return wasChanged;
 	};
 }
