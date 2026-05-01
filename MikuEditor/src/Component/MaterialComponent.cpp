@@ -1,5 +1,6 @@
 #include "Component/MaterialComponent.h"
 
+#include "Application.h"
 #include "Layers/EditorLayer.h"
 #include "MikuEngine/Application.h"
 #include "MikuEngine/Helpers/ImGuiHelper.h"
@@ -56,7 +57,9 @@ namespace MikuEditor
 
 				std::function<void()> textureEditBtnCallback = [ &editorLayer, &onTextureSelection ]() { editorLayer.m_TextureSelectionWindow.emplace_back( onTextureSelection ); };
 
-				MikuEngine::ImGuiHelper::RenderDragableTextureInput( uniformName, texture, textureEditBtnCallback );
+				bool wasChanged = MikuEngine::ImGuiHelper::RenderDragableTextureInput( uniformName, texture, textureEditBtnCallback );
+
+				if ( wasChanged ) materialContainer.material.SetTexture( uniformName, texture.value() );
 			}
 
 			// Render Floats
