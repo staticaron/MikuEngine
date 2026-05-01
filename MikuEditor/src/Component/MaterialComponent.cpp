@@ -30,7 +30,7 @@ namespace MikuEditor
 
 		std::function<void()> shaderEditBtnCallback = [ &editorLayer, &shaderUUID, onShaderSelection ]() { editorLayer.m_ShaderSelectionWindow.emplace_back( onShaderSelection ); };
 
-		MikuEngine::ImGuiHelper::RenderDragableShaderInput( shaderUUID, shaderEditBtnCallback );
+		MikuEngine::ImGuiHelper::RenderDragableShaderInput( "Shader", shaderUUID, shaderEditBtnCallback );
 
 		// If no shader is attached then no need to render the shader properties
 		if ( shaderUUID.has_value() )
@@ -55,7 +55,8 @@ namespace MikuEditor
 				};
 
 				std::function<void()> textureEditBtnCallback = [ &editorLayer, &onTextureSelection ]() { editorLayer.m_TextureSelectionWindow.emplace_back( onTextureSelection ); };
-				MikuEngine::ImGuiHelper::RenderDragableTextureInput( texture, textureEditBtnCallback );
+
+				MikuEngine::ImGuiHelper::RenderDragableTextureInput( uniformName, texture, textureEditBtnCallback );
 			}
 
 			// Render Floats

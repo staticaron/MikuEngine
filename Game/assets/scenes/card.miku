@@ -1,18 +1,32 @@
 scene: Untitled
 entities:
   - name: Texture
-    id: 14047804604191281224
+    id: 2008910683421155936
     components:
       - type: TransformComponent
         values:
-          position: [4.1, -2.73, -7]
+          position: [-4, -1, 0]
           rotation: [0, 0, 0]
-          scale: [5, 5, 1]
+          scale: [1, 1, 1]
       - type: SpriteRendererComponent
         values:
-          texture: 12047856255820212010
+          texture: 10946832608286098051
           material: 9245994286765956720
           tint: [1, 1, 1, 1]
+  - name: Directional Light
+    id: 11212606969459364440
+    components:
+      - type: TransformComponent
+        values:
+          position: [2.368357, 0.13016962, 1.3710387]
+          rotation: [0, 0, 0]
+          scale: [0.7499985, 0.75000507, 0.74996585]
+      - type: DirectionalLightComponent
+        values:
+          color: [1, 1, 1]
+          intensity: 0.5
+          ambient_intensity: 0.5
+          specular_strength: 198
   - name: Super High Res Miku
     id: 201022912326916973
     components:
@@ -57,17 +71,3 @@ entities:
       - type: NativeScriptComponent
         values:
           scriptName: CardController
-  - name: Directional Light
-    id: 11212606969459364440
-    components:
-      - type: TransformComponent
-        values:
-          position: [2.368357, 0.13016962, 1.3710387]
-          rotation: [0, 0, 0]
-          scale: [0.7499985, 0.75000507, 0.74996585]
-      - type: DirectionalLightComponent
-        values:
-          color: [1, 1, 1]
-          intensity: 0.5
-          ambient_intensity: 0.5
-          specular_strength: 256

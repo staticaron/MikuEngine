@@ -4,7 +4,7 @@
 
 namespace MikuEngine
 {
-	void ImGuiHelper::RenderDragableTextureInput( std::optional<UUID>& textureUUID, std::function<void()> textureEditBtnCallback )
+	void ImGuiHelper::RenderDragableTextureInput( const std::string& identifier, std::optional<UUID>& textureUUID, std::function<void()> textureEditBtnCallback )
 	{
 		const auto& textureManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager();
 
@@ -16,7 +16,7 @@ namespace MikuEngine
 			if ( texture.has_value() ) textureName = texture.value()->GetName();
 		}
 
-		ImGui::PushID( textureUUID->ToString().c_str() );
+		ImGui::PushID( identifier.c_str() );
 
 		ImGui::Text( "Texture" );
 		ImGui::SameLine();
@@ -42,7 +42,7 @@ namespace MikuEngine
 		ImGui::PopID();
 	}
 
-	void ImGuiHelper::RenderDragableModelInput( std::optional<UUID>& modelUUID, std::function<void()> modelEditBtnCallback )
+	void ImGuiHelper::RenderDragableModelInput( const std::string& identifier, std::optional<UUID>& modelUUID, std::function<void()> modelEditBtnCallback )
 	{
 		const auto& modelManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetModelManager();
 
@@ -54,7 +54,7 @@ namespace MikuEngine
 			modelName = model.index.Name;
 		}
 
-		ImGui::PushID( modelUUID->ToString().c_str() );
+		ImGui::PushID( identifier.c_str() );
 
 		ImGui::Text( "Model" );
 		ImGui::SameLine();
@@ -82,7 +82,7 @@ namespace MikuEngine
 
 	// Renders a Property where the shader can be changed by either selecting from the shader selection window or dropping the shader itself.
 	// This only modifies the shaderUUID container provided as parameter.
-	void ImGuiHelper::RenderDragableShaderInput( std::optional<UUID>& shaderUUID, std::function<void()> shaderEditBtnCallback )
+	void ImGuiHelper::RenderDragableShaderInput( const std::string& identifier, std::optional<UUID>& shaderUUID, std::function<void()> shaderEditBtnCallback )
 	{
 		auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
@@ -94,7 +94,7 @@ namespace MikuEngine
 			if ( shader.has_value() ) shaderName = shader.value()->GetName();
 		}
 
-		ImGui::PushID( shaderUUID->ToString().c_str() );
+		ImGui::PushID( identifier.c_str() );
 
 		ImGui::Text( "Shader" );
 		ImGui::SameLine();
@@ -121,7 +121,7 @@ namespace MikuEngine
 		ImGui::PopID();
 	};
 
-	void ImGuiHelper::RenderDragableMaterialInput( std::optional<UUID>& materialUUID, std::function<void()> materialEditBtnCallback )
+	void ImGuiHelper::RenderDragableMaterialInput( const std::string& identifier, std::optional<UUID>& materialUUID, std::function<void()> materialEditBtnCallback )
 	{
 		auto& materialManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager();
 
@@ -133,7 +133,7 @@ namespace MikuEngine
 			if ( material.has_value() ) materialName = material.value()->GetName();
 		}
 
-		ImGui::PushID( materialUUID->ToString().c_str() );
+		ImGui::PushID( identifier.c_str() );
 
 		ImGui::Text( "Material" );
 		ImGui::SameLine();
