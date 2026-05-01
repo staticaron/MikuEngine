@@ -18,9 +18,10 @@ namespace MikuEditor
 	public:
 		TextureSelectionWindow( std::function<void( MikuEngine::UUID selectedTextureItem )> onTextureSelection );
 
-		WindowResponse RenderTextureSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
+		WindowResponse RenderTextureSelectionWindow( const std::string& identifier, const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
 
 	private:
+		std::string m_WindowIdentifier;
 		std::function<void( MikuEngine::UUID selectedTextureItem )> m_OnTextureSelection;
 
 		bool m_IsOpen = true;

@@ -17,7 +17,7 @@ namespace MikuEditor
 	{
 	public:
 		ModelSelectionWindow( std::function<void( MikuEngine::UUID )> onModelSelection );
-		WindowResponse RenderModelSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
+		WindowResponse RenderModelSelectionWindow( const std::string& identifier, const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
 
 	private:
 		std::function<void( MikuEngine::UUID )> m_OnModelSelection;

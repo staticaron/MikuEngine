@@ -16,7 +16,7 @@ namespace MikuEditor
 	{
 	public:
 		MaterialSelectionWindow( std::function<void( MikuEngine::UUID itemUUID )> onMaterialSelection );
-		WindowResponse RenderMaterialSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
+		WindowResponse RenderMaterialSelectionWindow( const std::string& identifier, const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
 
 	private:
 		std::function<void( MikuEngine::UUID itemUUID )> onItemSelected;

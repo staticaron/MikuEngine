@@ -9,11 +9,13 @@ namespace MikuEditor
 {
 	ModelSelectionWindow::ModelSelectionWindow( std::function<void( MikuEngine::UUID )> onModelSelection ) : m_OnModelSelection( onModelSelection ) {}
 
-	WindowResponse ModelSelectionWindow::RenderModelSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene )
+	WindowResponse ModelSelectionWindow::RenderModelSelectionWindow( const std::string& identifier, const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene )
 	{
 		WindowResponse response;
 
-		ImGui::Begin( "Select Model", &m_IsOpen );
+		ImGui::SetWindowSize( { 500, 500 }, ImGuiCond_FirstUseEver );
+
+		ImGui::Begin( ( "Select Model##" + identifier ).c_str(), &m_IsOpen );
 
 		if ( ImGui::BeginTabBar( "Select Model" ) )
 		{

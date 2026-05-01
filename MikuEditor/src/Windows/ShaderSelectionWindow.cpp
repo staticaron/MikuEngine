@@ -9,11 +9,13 @@ namespace MikuEditor
 {
 	ShaderSelectionWindow::ShaderSelectionWindow( std::function<void( MikuEngine::UUID itemUUID )> onShaderSelection ) : onShaderSelection( onShaderSelection ) {}
 
-	WindowResponse ShaderSelectionWindow::RenderShaderSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene )
+	WindowResponse ShaderSelectionWindow::RenderShaderSelectionWindow( const std::string& identifier, const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene )
 	{
 		WindowResponse response;
 
-		ImGui::Begin( "Select Shader", &m_IsOpen );
+		ImGui::SetWindowSize( { 500, 500 }, ImGuiCond_FirstUseEver );
+
+		ImGui::Begin( ( "Select Shader##" + identifier ).c_str(), &m_IsOpen );
 
 		if ( ImGui::BeginTabBar( "Shader Selection Tabs" ) )
 		{

@@ -17,7 +17,7 @@ namespace MikuEditor
 	{
 	public:
 		ShaderSelectionWindow( std::function<void( MikuEngine::UUID itemUUID )> onShaderSelection );
-		WindowResponse RenderShaderSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
+		WindowResponse RenderShaderSelectionWindow( const std::string& identifier, const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene );
 
 	private:
 		std::function<void( MikuEngine::UUID shaderUUID )> onShaderSelection;

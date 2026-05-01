@@ -9,11 +9,13 @@ namespace MikuEditor
 {
 	MaterialSelectionWindow::MaterialSelectionWindow( std::function<void( MikuEngine::UUID itemUUId )> onItemSelected ) : onItemSelected( onItemSelected ) {}
 
-	WindowResponse MaterialSelectionWindow::RenderMaterialSelectionWindow( const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene )
+	WindowResponse MaterialSelectionWindow::RenderMaterialSelectionWindow( const std::string& identifier, const MikuEngine::AppLevelStuff& appLevelstuff, MikuEngine::Scene& scene )
 	{
 		WindowResponse response;
 
-		ImGui::Begin( "Select Material", &m_IsOpen );
+		ImGui::SetWindowSize( { 500, 500 }, ImGuiCond_FirstUseEver );
+
+		ImGui::Begin( ( "Select Material" + identifier ).c_str(), &m_IsOpen );
 
 		auto materials = appLevelstuff.GetAssetPoolManager().GetMaterialManager().GetAllLoadedMaterials();
 

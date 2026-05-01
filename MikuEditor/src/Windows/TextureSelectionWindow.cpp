@@ -6,11 +6,13 @@ namespace MikuEditor
 {
 	TextureSelectionWindow::TextureSelectionWindow( std::function<void( MikuEngine::UUID selectedTextureItem )> onTextureSelection ) : m_OnTextureSelection( onTextureSelection ) {}
 
-	WindowResponse TextureSelectionWindow::RenderTextureSelectionWindow( const MikuEngine::AppLevelStuff& appLevelStuff, MikuEngine::Scene& scene )
+	WindowResponse TextureSelectionWindow::RenderTextureSelectionWindow( const std::string& identifier, const MikuEngine::AppLevelStuff& appLevelStuff, MikuEngine::Scene& scene )
 	{
 		WindowResponse response;
 
-		ImGui::Begin( "Select Texture", &m_IsOpen );
+		ImGui::SetWindowSize( { 500, 500 }, ImGuiCond_FirstUseEver );
+
+		ImGui::Begin( ( "Select Texture##" + identifier ).c_str(), &m_IsOpen );
 
 		if ( ImGui::BeginTabBar( "Textures" ) )
 		{
