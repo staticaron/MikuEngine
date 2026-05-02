@@ -30,14 +30,17 @@ namespace MikuEditor
 		if ( XPressed && m_CurrentOperation != ImGuizmo::SCALE ) m_CurrentOperation = ImGuizmo::SCALE;
 		if ( GPressed && m_CurrentOperation != ImGuizmo::UNIVERSAL ) m_CurrentOperation = ImGuizmo::UNIVERSAL;
 
-		if ( CtrlPressed && m_IsSnapping == false ) m_IsSnapping = true;
-		if ( !CtrlPressed && m_IsSnapping == true ) m_IsSnapping = false;
+		if ( CtrlPressed )
+			m_IsSnapping = true;
+		else
+			m_IsSnapping = false;
 	}
 
 	bool ViewportPanel::RenderViewportPanel( EditorLayer& editorLayer, MikuEngine::Scene& scene )
 	{
 		bool isFocused = false;
 
+		// RENDER THE VIEWPORT WINDOW
 		if ( ImGui::Begin( "Viewport" ) )
 		{
 			if ( ImGui::IsWindowFocused() ) isFocused = true;

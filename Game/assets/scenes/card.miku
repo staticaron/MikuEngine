@@ -1,32 +1,34 @@
 scene: Untitled
 entities:
-  - name: Texture
-    id: 2008910683421155936
+  - name: Card
+    id: 5030660346100341033
     components:
       - type: TransformComponent
         values:
-          position: [-4, -1, 0]
+          position: [-5.67, -0.23, -10]
+          rotation: [0, 0, 0]
+          scale: [5.635, 7.84, 0.49]
+      - type: MeshRendererComponent
+        values:
+          model: 8300491686496128949
+          material: 14325327348685277738
+      - type: NativeScriptComponent
+        values:
+          scriptName: CardController
+  - name: Main Camera
+    id: 471711908562867175
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 10]
           rotation: [0, 0, 0]
           scale: [1, 1, 1]
-      - type: SpriteRendererComponent
+      - type: CameraComponent
         values:
-          texture: 10946832608286098051
-          material: 9245994286765956720
-          tint: [1, 1, 1, 1]
-  - name: Directional Light
-    id: 11212606969459364440
-    components:
-      - type: TransformComponent
-        values:
-          position: [2.368357, 0.13016962, 1.3710387]
-          rotation: [0, 0, 0]
-          scale: [0.7499985, 0.75000507, 0.74996585]
-      - type: DirectionalLightComponent
-        values:
-          color: [1, 1, 1]
-          intensity: 0.5
-          ambient_intensity: 0.5
-          specular_strength: 198
+          perspective: true
+          zoom: 1
+          maincamera: true
+          width: 32
   - name: Super High Res Miku
     id: 201022912326916973
     components:
@@ -42,32 +44,30 @@ entities:
       - type: NativeScriptComponent
         values:
           scriptName: Rotator
-  - name: Main Camera
-    id: 471711908562867175
+  - name: Directional Light
+    id: 11212606969459364440
     components:
       - type: TransformComponent
         values:
-          position: [0, 0, 10]
+          position: [2.368357, 0.13016962, 1.3710387]
           rotation: [0, 0, 0]
-          scale: [1, 1, 1]
-      - type: CameraComponent
+          scale: [0.7499985, 0.75000507, 0.74996585]
+      - type: DirectionalLightComponent
         values:
-          perspective: true
-          zoom: 1
-          maincamera: true
-          width: 32
-  - name: Card
-    id: 5030660346100341033
+          color: [1, 1, 1]
+          intensity: 0.5
+          ambient_intensity: 0.5
+          specular_strength: 198
+  - name: Texture
+    id: 2008910683421155936
     components:
       - type: TransformComponent
         values:
-          position: [-5.67, -0.23, -10]
-          rotation: [-0.009029641, -0.0049848882, 0]
-          scale: [5.635, 7.84, 0.49]
-      - type: MeshRendererComponent
+          position: [-15, -1, -10]
+          rotation: [0, 0, 0]
+          scale: [6, 6, 6]
+      - type: SpriteRendererComponent
         values:
-          model: 8300491686496128949
-          material: 14325327348685277738
-      - type: NativeScriptComponent
-        values:
-          scriptName: CardController
+          texture: 10946832608286098051
+          material: 9245994286765956720
+          tint: [1, 1, 1, 1]
