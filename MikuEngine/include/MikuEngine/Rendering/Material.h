@@ -30,8 +30,6 @@ namespace MikuEngine
 		void LoadFromFile( const std::filesystem::path& materialPath );
 		void SaveToFile( const std::filesystem::path& filePath );
 
-		static void CreateAssetAtPath( const std::string& name, const std::filesystem::path& path );
-
 		void DeleteAsset() override;
 
 		void Bind();

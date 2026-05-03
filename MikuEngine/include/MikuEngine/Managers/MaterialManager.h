@@ -36,7 +36,8 @@ namespace MikuEngine
 	{
 	public:
 		void LoadAllMaterials();
-		void LoadMaterial( Material mat );
+
+		static void CreateAssetAtPath( const std::string& name, const std::filesystem::path& path );
 
 		void PrepareMaterialIndex();
 

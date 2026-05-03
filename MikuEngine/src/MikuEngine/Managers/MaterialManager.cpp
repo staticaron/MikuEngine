@@ -1,7 +1,11 @@
 #include "Managers/MaterialManager.h"
 
 #include <filesystem>
+#include <fstream>
 
+#include "yaml-cpp/emitter.h"
+
+#include "Application.h"
 #include "Error.h"
 #include "Managers/MetaFileManager.h"
 
@@ -16,6 +20,30 @@ namespace MikuEngine
 			Material material( uuid, index.path );
 			m_Materials[ uuid ] = { index, material };
 		}
+	}
+
+	void MaterialManager::CreateAssetAtPath( const std::string& name, const std::filesystem::path& path )
+	{
+		YAML::Emitter emitter;
+
+		emitter << YAML::BeginMap;
+		emitter << YAML::Key << "shader" << YAML::Value << "<NONE>";
+		emitter << YAML::EndMap;
+
+		unsigned int count = 0;
+		std::filesystem::path pathToSave = path / ( name + ".mat" );
+
+		while ( std::filesystem::exists( pathToSave ) )
+		{
+			count++;
+			pathToSave = path / ( name + "_" + std::to_string( count ) + ".mat" );
+		}
+
+		std::ofstream fout( pathToSave );
+		fout << emitter.c_str();
+		fout.close();
+
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().Refresh();
 	}
 
 	void MaterialManager::PrepareMaterialIndex()

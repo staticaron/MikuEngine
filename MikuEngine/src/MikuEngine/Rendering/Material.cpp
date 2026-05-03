@@ -127,30 +127,6 @@ namespace MikuEngine
 		fout << emitter.c_str();
 	}
 
-	void Material::CreateAssetAtPath( const std::string& name, const std::filesystem::path& path )
-	{
-		YAML::Emitter emitter;
-
-		emitter << YAML::BeginMap;
-		emitter << YAML::Key << "shader" << YAML::Value << "<NONE>";
-		emitter << YAML::EndMap;
-
-		unsigned int count = 0;
-		std::filesystem::path pathToSave = path / ( name + ".mat" );
-
-		while ( std::filesystem::exists( pathToSave ) )
-		{
-			count++;
-			pathToSave = path / ( name + "_" + std::to_string( count ) + ".mat" );
-		}
-
-		std::ofstream fout( pathToSave );
-		fout << emitter.c_str();
-		fout.close();
-
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().Refresh();
-	}
-
 	void Material::Bind()
 	{
 		const auto& textureManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager();
@@ -172,11 +148,9 @@ namespace MikuEngine
 		{
 			// Ignore the textures uniforms with no Bound Values
 			if ( uuid == 0 ) continue;
-			const auto& textureContainer = textureManager.GetTexture( uuid );
+			const auto& textureContainer = textureManager.GetTextureOrDefault( uuid );
 
-			if ( textureContainer.has_value() == false ) continue;
-
-			textureContainer.value()->texture.Bind( textureID );
+			textureContainer->texture.Bind( textureID );
 			shader.value()->shader.SetUniform<unsigned int>( name, textureID );
 
 			textureID++;

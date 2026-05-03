@@ -97,7 +97,7 @@ namespace MikuEditor
 
 		if ( ImGui::BeginPopupContextWindow() )
 		{
-			if ( ImGui::MenuItem( "Create Material" ) ) MikuEngine::Material::CreateAssetAtPath( "gigaNewMat", m_ContentBrowserLocation );
+			if ( ImGui::MenuItem( "Create Material" ) ) MikuEngine::MaterialManager::CreateAssetAtPath( "gigaNewMat", m_ContentBrowserLocation );
 			if ( ImGui::MenuItem( "Create Shader" ) ) MikuEngine::Shader::CreateAssetAtPath( "gigaNewShader", m_ContentBrowserLocation );
 
 			ImGui::EndPopup();
