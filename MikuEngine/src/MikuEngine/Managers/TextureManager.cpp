@@ -109,26 +109,36 @@ namespace MikuEngine
 		return m_TextureIndex;
 	}
 
-	std::optional<TextureContainer*> TextureManager::GetTexture( UUID textureUUID )
+	TextureContainer* TextureManager::GetTextureOrDefault( UUID textureUUID )
 	{
-		if ( auto existing = m_Textures.find( textureUUID ); existing != m_Textures.end() )
-			return &existing->second;
-		else
-		{
-			if ( auto existing = m_DefaultTextures.find( textureUUID ); existing != m_DefaultTextures.end() ) return &existing->second;
-			return {};
-		}
+		if ( auto existing = m_Textures.find( textureUUID ); existing != m_Textures.end() ) return &existing->second;
+		if ( auto existing = m_DefaultTextures.find( textureUUID ); existing != m_DefaultTextures.end() ) return &existing->second;
+
+		return GetDefaultTextureByName( "default_tex" );
 	}
 
-	std::optional<const TextureContainer*> TextureManager::GetTexture( UUID uuid ) const
+	const TextureContainer* TextureManager::GetTextureOrDefault( UUID uuid ) const
 	{
-		if ( auto existing = m_Textures.find( uuid ); existing != m_Textures.end() )
-			return &existing->second;
-		else
-		{
-			if ( auto existing = m_DefaultTextures.find( uuid ); existing != m_DefaultTextures.end() ) return &existing->second;
-			return {};
-		}
+		if ( auto existing = m_Textures.find( uuid ); existing != m_Textures.end() ) return &existing->second;
+		if ( auto existing = m_DefaultTextures.find( uuid ); existing != m_DefaultTextures.end() ) return &existing->second;
+
+		return GetDefaultTextureByName( "default_tex" );
+	}
+
+	std::optional<TextureContainer*> TextureManager::GetTexture( UUID textureUUID )
+	{
+		if ( auto existing = m_Textures.find( textureUUID ); existing != m_Textures.end() ) return &existing->second;
+		if ( auto existing = m_DefaultTextures.find( textureUUID ); existing != m_DefaultTextures.end() ) return &existing->second;
+
+		return {};
+	}
+
+	std::optional<const TextureContainer*> TextureManager::GetTexture( UUID textureUUID ) const
+	{
+		if ( auto existing = m_Textures.find( textureUUID ); existing != m_Textures.end() ) return &existing->second;
+		if ( auto existing = m_DefaultTextures.find( textureUUID ); existing != m_DefaultTextures.end() ) return &existing->second;
+
+		return {};
 	}
 
 	std::optional<const TextureContainer*> TextureManager::GetTextureByName( const std::string& filename ) const
@@ -141,10 +151,30 @@ namespace MikuEngine
 		return {};
 	}
 
+	TextureContainer* TextureManager::GetDefaultTextureByName( const std::string& name )
+	{
+		for ( auto& defaultTexture : m_DefaultTextures )
+		{
+			if ( defaultTexture.second.GetName() == name ) return &defaultTexture.second;
+		}
+
+		MIKU_ASSERT( false, "The requested default texture by name" );
+	}
+
+	const TextureContainer* TextureManager::GetDefaultTextureByName( const std::string& name ) const
+	{
+		for ( const auto& defaultTexture : m_DefaultTextures )
+		{
+			if ( defaultTexture.second.GetName() == name ) return &defaultTexture.second;
+		}
+
+		MIKU_ASSERT( false, "The requested default texture by name" );
+	}
+
 	std::optional<const TextureContainer*> TextureManager::GetTextureByFilePath( const std::string& path ) const
 	{
 		for ( const auto [ uuid, textureIndex ] : m_TextureIndex )
-			if ( textureIndex.path == path ) return { GetTexture( uuid ) };
+			if ( textureIndex.path == path ) return { GetTextureOrDefault( uuid ) };
 
 		return {};
 	}

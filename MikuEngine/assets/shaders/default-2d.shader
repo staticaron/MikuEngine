@@ -24,10 +24,10 @@ layout(location = 0) out vec4 color;
 
 in vec2 v_UV;
 
-uniform sampler2D u_Tex;
+uniform sampler2D u_MainTex;
 
 void main()
 {
-    vec4 rgb = texture(u_Tex, v_UV);
+    vec4 rgb = texture(u_MainTex, v_UV);
     color = rgb;
 }

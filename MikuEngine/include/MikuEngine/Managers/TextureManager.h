@@ -40,9 +40,17 @@ namespace MikuEngine
 		const std::unordered_map<UUID, TextureContainer>& GetAllLoadedTextures() const;
 		const std::unordered_map<UUID, TextureContainer>& GetAllDefaultTextures() const;
 
+		TextureContainer* GetTextureOrDefault( UUID textureUUID );
+		const TextureContainer* GetTextureOrDefault( UUID textureUUID ) const;
+
 		std::optional<TextureContainer*> GetTexture( UUID textureUUID );
 		std::optional<const TextureContainer*> GetTexture( UUID textureUUID ) const;
+
 		std::optional<const TextureContainer*> GetTextureByName( const std::string& name ) const;
+
+		const TextureContainer* GetDefaultTextureByName( const std::string& name ) const;
+		TextureContainer* GetDefaultTextureByName( const std::string& name );
+
 		std::optional<const TextureContainer*> GetTextureByFilePath( const std::string& path ) const;
 
 		bool TextureExists( const UUID& uuid ) const;

@@ -24,7 +24,6 @@ namespace MikuEngine
 		const auto& renderer = appLevelStuff.GetRenderer();
 		const auto& quad = renderer.GetQuad();
 		const TextureManager& textureManager = appLevelStuff.GetAssetPoolManager().GetTextureManager();
-		const ShaderManager& shaderManager = appLevelStuff.GetAssetPoolManager().GetShaderManager();
 		MaterialManager& materialManager = appLevelStuff.GetAssetPoolManager().GetMaterialManager();
 
 		for ( const auto& [ entity, data, spriteRenderer ] : entities.each() )
@@ -57,6 +56,14 @@ namespace MikuEngine
 			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
 			glm::mat4 modelMatrix = transform.GetModelMatrix();
 			shader.value()->shader.SetUniform<glm::mat4>( "u_Model", modelMatrix );
+
+			if ( spriteRenderer.TextureIdentifier.has_value() )
+			{
+				auto mainTex = textureManager.GetTextureOrDefault( spriteRenderer.TextureIdentifier.value() );
+
+				mainTex->texture.Bind( 0 );
+				shader.value()->shader.SetUniform<unsigned int>( "u_MainTex", 0 );
+			}
 
 			renderer.Draw( quad.GetVA(), quad.GetIB(), shader.value()->shader );
 		}
