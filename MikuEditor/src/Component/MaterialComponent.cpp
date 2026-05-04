@@ -62,6 +62,31 @@ namespace MikuEditor
 				if ( wasChanged ) materialContainer.material.SetTexture( uniformName, texture.value() );
 			}
 
+			// Render Cubemap
+			//
+			//
+			auto cubemaps = materialContainer.material.GetCubemaps();
+			for ( auto& [ uniformName, uuid ] : cubemaps )
+			{
+				std::optional<MikuEngine::UUID> cubemap = uuid;
+
+				std::function<void( MikuEngine::UUID )> onCubemapSelection = [ materialUUID, uniformName ]( MikuEngine::UUID selectedCubemapUUID ) {
+					auto materialSearch = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().GetMaterial( materialUUID );
+					if ( materialSearch.has_value() == false )
+					{
+						MIKU_CLIENT_WARN( "The item for which this window was opened no longer exists!" );
+						return;
+					}
+					materialSearch.value()->material.SetCubemap( uniformName, selectedCubemapUUID );
+				};
+
+				std::function<void()> cubemapEditBtnCallback = [ &editorLayer, &onCubemapSelection ]() { editorLayer.m_TextureSelectionWindow.emplace_back( onCubemapSelection ); };
+
+				bool wasChanged = MikuEngine::ImGuiHelper::RenderDragableTextureInput( uniformName, cubemap, cubemapEditBtnCallback );
+
+				if ( wasChanged ) materialContainer.material.SetCubemap( uniformName, cubemap.value() );
+			}
+
 			// Render Floats
 			//
 			//
