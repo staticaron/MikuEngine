@@ -164,10 +164,10 @@ namespace MikuEngine
 		if ( shaderUUID == UUID( 0 ) ) return GetDefaultShader();
 
 		// Return the loaded shader otherwise the deafult shader
-		if ( auto existing = m_Shaders.find( shaderUUID ); existing != m_Shaders.end() )
-			return existing->second;
-		else
-			return GetDefaultShader();
+		if ( auto existing = m_Shaders.find( shaderUUID ); existing != m_Shaders.end() ) return existing->second;
+		if ( auto existing = m_DefaultShaders.find( shaderUUID ); existing != m_Shaders.end() ) return existing->second;
+
+		return GetDefaultShader();
 	}
 
 	ShaderContainer& ShaderManager::GetShaderByName( const std::string& name )
