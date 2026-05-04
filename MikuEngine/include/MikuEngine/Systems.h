@@ -6,6 +6,7 @@
 #include "Systems/MeshRendererSystem.h"
 #include "Systems/RenderImGuiSystem.h"
 #include "Systems/ScriptExecutionSystem.h"
+#include "Systems/SkyboxRendererSystem.h"
 #include "Systems/SpriteRendererSystem.h"
 #include "Systems/TransformSystems.h"
 // IWYU pragma: begin_exports
