@@ -20,7 +20,7 @@ entities:
     components:
       - type: TransformComponent
         values:
-          position: [0, 0, 10]
+          position: [-4, 0, 10]
           rotation: [0, 0, 0]
           scale: [1, 1, 1]
       - type: CameraComponent
@@ -56,18 +56,18 @@ entities:
         values:
           color: [1, 1, 1]
           intensity: 0.5
-          ambient_intensity: 0.5
+          ambient_intensity: 0.53
           specular_strength: 198
   - name: Texture
     id: 2008910683421155936
     components:
       - type: TransformComponent
         values:
-          position: [-15, -1, -10]
+          position: [-15.07, -1, -10]
           rotation: [0, 0, 0]
           scale: [6, 6, 6]
       - type: SpriteRendererComponent
         values:
-          texture: 10946832608286098051
+          texture: 4609497520864472991
           material: 9245994286765956720
           tint: [1, 1, 1, 1]

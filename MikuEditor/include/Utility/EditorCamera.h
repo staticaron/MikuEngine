@@ -55,7 +55,7 @@ namespace MikuEditor
 
 		bool m_MovementLocked = true;
 
-		float m_CameraSpeed = 10.0f;
+		float m_CameraSpeed = 20.0f;
 
 		float m_Zoom;
 
