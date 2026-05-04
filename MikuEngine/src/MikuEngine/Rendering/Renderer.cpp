@@ -7,6 +7,8 @@ namespace MikuEngine
 	void Renderer::Init()
 	{
 		m_QuadPrimitive.Init();
+		m_CubePrimitive.Init();
+
 		m_UniformBufferManager.Init();
 	}
 
