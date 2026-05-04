@@ -176,7 +176,9 @@ namespace MikuEngine
 		// Enable Depth Testing
 		glEnable( GL_DEPTH_TEST );
 
+		// Enable Face culling of back faces
 		glEnable( GL_CULL_FACE );
+		glCullFace( GL_BACK );
 
 		// Initializing of member vars
 		LAST = NOW = m_LastRecordTimePoint = std::chrono::high_resolution_clock::now();
