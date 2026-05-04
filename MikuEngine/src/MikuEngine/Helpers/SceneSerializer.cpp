@@ -40,6 +40,7 @@ namespace MikuEngine
 		if ( entity.HasComponent<CameraComponent>() ) CameraSystem::SerializeCameraComponent( entity, emitter );
 		if ( entity.HasComponent<NativeScriptComponent>() ) ScriptExecutionSystem::SerializeNativeScriptComponent( entity, emitter );
 		if ( entity.HasComponent<DirectionalLightComponent>() ) LightingSystem::SerializeDirectionalLightComponent( entity, emitter );
+		if ( entity.HasComponent<SkyboxComponent>() ) SkyboxRendererSystem::SerializeSkyboxComponent( entity, emitter );
 
 		emitter << YAML::EndSeq;
 
@@ -162,6 +163,14 @@ namespace MikuEngine
 					auto& directionalLightC = entt.GetComponent<DirectionalLightComponent>();
 
 					LightingSystem::DeSerializeDirectionalLightComponent( directionalLightC, values );
+				}
+
+				if ( type == "SkyboxComponent" )
+				{
+					entt.AddComponent<SkyboxComponent>();
+					auto& skyboxC = entt.GetComponent<SkyboxComponent>();
+
+					SkyboxRendererSystem::DeSerializeSkyboxComponent( skyboxC, values );
 				}
 			}
 		}
