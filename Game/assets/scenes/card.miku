@@ -1,73 +1,17 @@
 scene: Untitled
 entities:
-  - name: Texture
-    id: 6274097598743368914
+  - name: Skybox
+    id: 17968113364774119480
     components:
       - type: TransformComponent
         values:
-          position: [-17.02, 1, -10.129999]
+          position: [1, 1, 1]
           rotation: [0, 0, 0]
-          scale: [10, 10, 1]
-      - type: SpriteRendererComponent
-        values:
-          texture: 14022597991490494003
-          material: 9245994286765956720
-          tint: [1, 1, 1, 1]
-  - name: Box
-    id: 2008910683421155936
-    components:
-      - type: TransformComponent
-        values:
-          position: [-8.09, 3.81, 2.9199998]
-          rotation: [0, 0, 0]
-          scale: [100, 100, 100]
+          scale: [1, 1, 1]
       - type: SkyboxComponent
         values:
           model: 14659183241214482176
           material: 12810041214926128130
-  - name: Directional Light
-    id: 11212606969459364440
-    components:
-      - type: TransformComponent
-        values:
-          position: [2.368357, 0.13016962, 1.3710387]
-          rotation: [0, 0, 0]
-          scale: [0.7499985, 0.75000507, 0.74996585]
-      - type: DirectionalLightComponent
-        values:
-          color: [1, 1, 1]
-          intensity: 0.5
-          ambient_intensity: 0.53
-          specular_strength: 198
-  - name: Miku
-    id: 201022912326916973
-    components:
-      - type: TransformComponent
-        values:
-          position: [-11.49, 0.92000043, -4.309658]
-          rotation: [1.5707963, 2.584209e-18, 127.2722]
-          scale: [0.99999875, 0.99999875, 0.9998851]
-      - type: MeshRendererComponent
-        values:
-          model: 2717482290592677701
-          material: 12640939573752356792
-      - type: NativeScriptComponent
-        values:
-          scriptName: Rotator
-  - name: Main Camera
-    id: 471711908562867175
-    components:
-      - type: TransformComponent
-        values:
-          position: [-4, 0, 10]
-          rotation: [0, 0, 0]
-          scale: [1, 1, 1]
-      - type: CameraComponent
-        values:
-          perspective: true
-          zoom: 1
-          maincamera: true
-          width: 32
   - name: Card
     id: 5030660346100341033
     components:
@@ -83,6 +27,49 @@ entities:
       - type: NativeScriptComponent
         values:
           scriptName: CardController
+  - name: Main Camera
+    id: 471711908562867175
+    components:
+      - type: TransformComponent
+        values:
+          position: [-4, 0, 10]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+      - type: CameraComponent
+        values:
+          perspective: true
+          zoom: 1
+          maincamera: true
+          width: 32
+  - name: Miku
+    id: 201022912326916973
+    components:
+      - type: TransformComponent
+        values:
+          position: [-11.49, 0.92000043, -4.309658]
+          rotation: [1.5707963, 2.584209e-18, 127.2722]
+          scale: [0.99999875, 0.99999875, 0.9998851]
+      - type: MeshRendererComponent
+        values:
+          model: 2717482290592677701
+          material: 12640939573752356792
+      - type: NativeScriptComponent
+        values:
+          scriptName: Rotator
+  - name: Directional Light
+    id: 11212606969459364440
+    components:
+      - type: TransformComponent
+        values:
+          position: [2.368357, 0.13016962, 1.3710387]
+          rotation: [0, 0, 0]
+          scale: [0.7499985, 0.75000507, 0.74996585]
+      - type: DirectionalLightComponent
+        values:
+          color: [1, 1, 1]
+          intensity: 0.5
+          ambient_intensity: 0.53
+          specular_strength: 198
   - name: sample-box
     id: 16086958484874689805
     components:
@@ -95,3 +82,16 @@ entities:
         values:
           model: 14659183241214482176
           material: 12810041214926128130
+  - name: Texture
+    id: 6274097598743368914
+    components:
+      - type: TransformComponent
+        values:
+          position: [-17.02, 1, -10.129999]
+          rotation: [0, 0, 0]
+          scale: [10, 10, 1]
+      - type: SpriteRendererComponent
+        values:
+          texture: 14022597991490494003
+          material: 9245994286765956720
+          tint: [1, 1, 1, 1]
