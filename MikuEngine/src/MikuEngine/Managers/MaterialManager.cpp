@@ -164,9 +164,14 @@ namespace MikuEngine
 
 	void MaterialManager::DeleteAssetCleanup( const UUID& uuid )
 	{
+		int count = 0;
+
 		if ( auto existing = m_Materials.find( uuid ); existing != m_Materials.end() )
 		{
 			m_Materials.erase( existing );
+			count++;
 		}
+
+		if ( count > 0 ) MIKU_CORE_DEBUG( "Material Cleanup Successful! {} Materials Deleted!", count );
 	}
 }
