@@ -3,6 +3,7 @@
 #include "Components.h"
 #include "Data/CameraData.h"
 #include "Helpers/ImGuiHelper.h"
+#include "Logger.h"
 #include "Scene/Scene.h"
 
 namespace MikuEngine
@@ -25,13 +26,12 @@ namespace MikuEngine
 
 			Material* material = nullptr;
 
-			if ( meshRendererC.MaterialIdentifier.has_value() )
-			{
-				auto materialContainer = materialManager.GetMaterial( meshRendererC.MaterialIdentifier.value() );
-				material = &materialContainer.value()->material;
-			}
-			else
-				continue;
+			if ( meshRendererC.MaterialIdentifier.has_value() == false ) continue;
+
+			auto materialContainer = materialManager.GetMaterial( meshRendererC.MaterialIdentifier.value() );
+			if ( materialContainer.has_value() == false ) continue;
+
+			material = &materialContainer.value()->material;
 
 			material->Bind();
 
