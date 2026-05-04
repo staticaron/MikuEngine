@@ -24,6 +24,7 @@ namespace MikuEngine
 	{
 		LoadAllDefaultTextures();
 
+		// LOAD TEXTURES
 		for ( auto [ identifier, textureIndexEntry ] : m_TextureIndex )
 		{
 			if ( TextureAlreadyPresent( identifier ) )
@@ -38,6 +39,16 @@ namespace MikuEngine
 			    identifier, { textureIndexEntry, newTexture }
 			  } );
 		}
+
+		// LOAD CUBE MAPS
+
+		Cubemap cubemap;
+		cubemap.LoadFromFile( PROJECT_DIR "/textures/skybox/cubemap.jpg" );
+
+		UUID uuid( "383580535966673394" );
+		m_Cubemaps[ uuid ] = CubemapContainer{ uuid, cubemap };
+
+		MIKU_CORE_INFO( "Loaded Cubemap @ {}", m_Cubemaps[ uuid ].uuid.ToString() );
 
 		MIKU_CORE_DEBUG( "PROJECT {} Textures Loaded!", m_Textures.size() );
 	}
@@ -138,6 +149,18 @@ namespace MikuEngine
 		if ( auto existing = m_Textures.find( textureUUID ); existing != m_Textures.end() ) return &existing->second;
 		if ( auto existing = m_DefaultTextures.find( textureUUID ); existing != m_DefaultTextures.end() ) return &existing->second;
 
+		return {};
+	}
+
+	std::optional<CubemapContainer*> TextureManager::GetCubemap( UUID cubemapUUID )
+	{
+		if ( auto existing = m_Cubemaps.find( cubemapUUID ); existing != m_Cubemaps.end() ) return &existing->second;
+		return {};
+	}
+
+	std::optional<const CubemapContainer*> TextureManager::GetCubemap( UUID cubemapUUID ) const
+	{
+		if ( auto existing = m_Cubemaps.find( cubemapUUID ); existing != m_Cubemaps.end() ) return &existing->second;
 		return {};
 	}
 

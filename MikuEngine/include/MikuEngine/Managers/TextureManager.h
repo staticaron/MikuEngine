@@ -6,6 +6,7 @@
 
 #include "AssetManagerBase.h"
 #include "Core.h"
+#include "Rendering/Cubemap.h"
 #include "Rendering/Texture.h"
 
 namespace MikuEngine
@@ -23,6 +24,12 @@ namespace MikuEngine
 
 		std::string GetName() const { return index.path.stem().string(); }
 		void SetName( const std::string& newName ) {}
+	};
+
+	struct CubemapContainer
+	{
+		UUID uuid;
+		Cubemap cubemap;
 	};
 
 	class MIKU_API TextureManager : public AssetManagerBase
@@ -45,6 +52,9 @@ namespace MikuEngine
 
 		std::optional<TextureContainer*> GetTexture( UUID textureUUID );
 		std::optional<const TextureContainer*> GetTexture( UUID textureUUID ) const;
+
+		std::optional<CubemapContainer*> GetCubemap( UUID cubemapUUID );
+		std::optional<const CubemapContainer*> GetCubemap( UUID cubemapUUID ) const;
 
 		std::optional<const TextureContainer*> GetTextureByName( const std::string& name ) const;
 
@@ -72,5 +82,7 @@ namespace MikuEngine
 
 		std::unordered_map<UUID, TextureContainer> m_DefaultTextures;
 		std::unordered_map<UUID, TextureContainer> m_Textures;
+
+		std::unordered_map<UUID, CubemapContainer> m_Cubemaps;
 	};
 }
