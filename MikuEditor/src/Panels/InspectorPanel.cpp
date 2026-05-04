@@ -13,6 +13,7 @@
 #include "MikuEngine/Systems/LightingSystem.h"
 #include "MikuEngine/Systems/MeshRendererSystem.h"
 #include "MikuEngine/Systems/ScriptExecutionSystem.h"
+#include "MikuEngine/Systems/SkyboxRendererSystem.h"
 #include "MikuEngine/Systems/SpriteRendererSystem.h"
 #include "MikuEngine/Systems/TransformSystems.h"
 
@@ -131,6 +132,20 @@ namespace MikuEditor
 				auto& directionalLightC = selectedEntity.value().GetComponent<MikuEngine::DirectionalLightComponent>();
 				MikuEngine::LightingSystem::DirectionalLightComponentRenderImGui( selectedEntity.value(), directionalLightC );
 			}
+
+			// SKYBOX RENDERER
+			if ( selectedEntity.value().HasComponent<MikuEngine::SkyboxComponent>() )
+			{
+				auto& skyboxC = selectedEntity.value().GetComponent<MikuEngine::SkyboxComponent>();
+
+				std::function<void( MikuEngine::UUID itemUUID )> onModelItemSelected = [ &scene, selectedEntityUUID ]( MikuEngine::UUID itemUUID ) { scene.GetEntityByID( selectedEntityUUID ).value().GetComponent<MikuEngine::SkyboxComponent>().ModelIdentifier = itemUUID; };
+				std::function<void()> modelEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID, onModelItemSelected ]() { editorLayer.m_ModelSelectionWindow.emplace_back( onModelItemSelected ); };
+
+				std::function<void( MikuEngine::UUID itemUUID )> onMaterialItemSelected = [ &scene, selectedEntityUUID ]( MikuEngine::UUID itemUUID ) { scene.GetEntityByID( selectedEntityUUID ).value().GetComponent<MikuEngine::SkyboxComponent>().MaterialIdentifier = itemUUID; };
+				std::function<void()> materialEditBtnCallback = [ &editorLayer, &scene, selectedEntityUUID, onMaterialItemSelected ]() { editorLayer.m_MaterialSelectionWindow.emplace_back( onMaterialItemSelected ); };
+
+				MikuEngine::SkyboxRendererSystem::SkyboxComponentRenderImGui( selectedEntity.value(), skyboxC, modelEditBtnCallback, materialEditBtnCallback );
+			}
 		}
 
 		if ( scene.GetSelectedItem().has_value() )
@@ -144,6 +159,7 @@ namespace MikuEditor
 				if ( ImGui::Selectable( "MeshRendererComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::MeshRendererComponent>();
 				if ( ImGui::Selectable( "NativeScriptComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::NativeScriptComponent>();
 				if ( ImGui::Selectable( "DirectionalLightComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::DirectionalLightComponent>();
+				if ( ImGui::Selectable( "SkyboxComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::SkyboxComponent>();
 
 				ImGui::EndPopup();
 			}
