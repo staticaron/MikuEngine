@@ -36,6 +36,10 @@ namespace MikuEngine
 				m_Textures[ y.Name ] = 0;
 				break;
 			}
+			case GL_SAMPLER_CUBE: {
+				m_Cubemaps[ y.Name ] = 0;
+				break;
+			}
 			case GL_FLOAT: {
 				m_Floats[ y.Name ] = 0.0f;
 				break;
@@ -91,6 +95,12 @@ namespace MikuEngine
 				UUID uuid( it->second.as<std::string>() );
 				m_Textures[ name ] = uuid;
 			}
+			if ( tag == "!cube" )
+			{
+				auto uuidStr = it->second.as<std::string>();
+				UUID uuid( uuidStr );
+				m_Cubemaps[ name ] = uuid;
+			}
 			else if ( tag == "!float" )
 			{
 				float value = it->second.as<float>();
@@ -113,6 +123,9 @@ namespace MikuEngine
 
 		for ( const auto& [ name, value ] : m_Textures )
 			emitter << YAML::Key << name << YAML::LocalTag( "tex" ) << YAML::Value << value.ToString();
+
+		for ( const auto& [ name, value ] : m_Cubemaps )
+			emitter << YAML::Key << name << YAML::LocalTag( "cube" ) << YAML::Value << value.ToString();
 
 		for ( const auto& [ name, value ] : m_Floats )
 			emitter << YAML::Key << name << YAML::LocalTag( "float" ) << YAML::Value << value;
@@ -142,7 +155,7 @@ namespace MikuEngine
 			shader.value()->shader.SetUniform<float>( name, value );
 
 		// Handle Textures
-		unsigned int textureID = 0;
+		unsigned int textureID = 1;
 
 		for ( const auto& [ name, uuid ] : m_Textures )
 		{
@@ -151,6 +164,19 @@ namespace MikuEngine
 			const auto& textureContainer = textureManager.GetTextureOrDefault( uuid );
 
 			textureContainer->texture.Bind( textureID );
+			shader.value()->shader.SetUniform<unsigned int>( name, textureID );
+
+			textureID++;
+		}
+
+		for ( const auto& [ name, uuid ] : m_Cubemaps )
+		{
+			// Ignore the textures uniforms with no Bound Values
+			if ( uuid == 0 ) continue;
+
+			const auto& cubemapContainer = textureManager.GetCubemap( uuid );
+
+			cubemapContainer.value()->cubemap.Bind( textureID );
 			shader.value()->shader.SetUniform<unsigned int>( name, textureID );
 
 			textureID++;

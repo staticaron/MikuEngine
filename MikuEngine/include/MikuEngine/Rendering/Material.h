@@ -45,9 +45,11 @@ namespace MikuEngine
 		void SetShader( const UUID& uuid );
 
 		const std::unordered_map<std::string, UUID>& GetTextures() const { return m_Textures; }
+		const std::unordered_map<std::string, UUID>& GetCubemaps() const { return m_Cubemaps; }
 		const std::unordered_map<std::string, float>& GetFloats() const { return m_Floats; }
 
 		void SetTexture( std::string identifier, UUID uuid ) { m_Textures[ identifier ] = uuid; }
+		void SetCubemap( std::string identifier, UUID uuid ) { m_Cubemaps[ identifier ] = uuid; }
 		void SetFloat( std::string identifier, float value ) { m_Floats[ identifier ] = value; }
 
 	private:
@@ -62,6 +64,7 @@ namespace MikuEngine
 		std::vector<std::string> m_UniformOrder;
 
 		std::unordered_map<std::string, UUID> m_Textures;
+		std::unordered_map<std::string, UUID> m_Cubemaps;
 		std::unordered_map<std::string, float> m_Floats;
 		std::unordered_map<std::string, glm::vec4> m_Vec4s;
 		std::unordered_map<std::string, glm::mat4> m_Mat4s;
