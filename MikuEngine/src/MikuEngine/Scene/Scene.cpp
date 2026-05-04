@@ -11,6 +11,7 @@
 #include "Systems/CameraSystem.h"
 #include "Systems/MeshRendererSystem.h"
 #include "Systems/ScriptExecutionSystem.h"
+#include "Systems/SkyboxRendererSystem.h"
 #include "Systems/SpriteRendererSystem.h"
 
 namespace MikuEngine
@@ -42,10 +43,12 @@ namespace MikuEngine
 
 		auto mainCameraEntity = mainCamera->first;
 		auto mainCameraComponent = mainCamera->second;
+		auto cameraData = CameraData{ CameraSystem::GetViewMatrix( mainCameraEntity ), CameraSystem::GetProjMatrix( mainCameraComponent ) };
 
-		// Render the sprites
-		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, CameraData{ CameraSystem::GetViewMatrix( mainCameraEntity ), CameraSystem::GetProjMatrix( mainCameraComponent ) } );
-		MeshRendererSystem::RenderMesh( *this, appLevelStuff, CameraData{ CameraSystem::GetViewMatrix( mainCameraEntity ), CameraSystem::GetProjMatrix( mainCameraComponent ) } );
+		// SYSTEMS
+		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, cameraData );
+		MeshRendererSystem::RenderMesh( *this, appLevelStuff, cameraData );
+		SkyboxRendererSystem::RenderSkybox( *this, appLevelStuff, cameraData );
 
 		gameFBO.UnBind();
 	}
@@ -63,6 +66,7 @@ namespace MikuEngine
 
 		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, cameraData );
 		MeshRendererSystem::RenderMesh( *this, appLevelStuff, cameraData );
+		SkyboxRendererSystem::RenderSkybox( *this, appLevelStuff, cameraData );
 
 		sceneFBO.UnBind();
 	}
