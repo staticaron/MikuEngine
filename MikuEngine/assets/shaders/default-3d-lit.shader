@@ -40,8 +40,8 @@ uniform sampler2D u_Tex;
 
 void main()
 {
-    vec4 texColor = texture(u_Tex, v_UV);
-    vec4 lightColor = GetLightColor(v_WorldPos, v_Normal);
+    vec4 tex = texture(u_Tex, v_UV);
+    vec4 lightRGB = GetLightColor(v_WorldPos, v_Normal);
 
-    color = vec4(texColor.x * lightColor.x, texColor.y * lightColor.y, texColor.z * lightColor.z, texColor.w * lightColor.w);
+    color = vec4(tex.x * lightRGB.x, tex.y * lightRGB.y, tex.z * lightRGB.z, tex.w);
 }
