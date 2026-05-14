@@ -19,19 +19,19 @@ namespace MikuEngine
 		auto& materialManager = appLevelStuff.GetAssetPoolManager().GetMaterialManager();
 		auto& modelManager = appLevelStuff.GetAssetPoolManager().GetModelManager();
 
-		for ( const auto& [ entity, dataC, meshRendererC ] : entities.each() )
+		for ( const auto& [ entity, dataC, skyboxC ] : entities.each() )
 		{
-			const auto& modelUUID = meshRendererC.ModelIdentifier;
+			const auto& modelUUID = skyboxC.ModelIdentifier;
 
 			if ( modelUUID.has_value() == false ) continue;
 
-			const auto& model = modelManager.GetModel( meshRendererC.ModelIdentifier.value() );
+			const auto& model = modelManager.GetModel( skyboxC.ModelIdentifier.value() );
 
 			Material* material = nullptr;
 
-			if ( meshRendererC.MaterialIdentifier.has_value() == false ) continue;
+			if ( skyboxC.MaterialIdentifier.has_value() == false ) continue;
 
-			auto materialContainer = materialManager.GetMaterial( meshRendererC.MaterialIdentifier.value() );
+			auto materialContainer = materialManager.GetMaterial( skyboxC.MaterialIdentifier.value() );
 			if ( materialContainer.has_value() == false ) continue;
 
 			material = &materialContainer.value()->material;

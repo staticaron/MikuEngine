@@ -52,7 +52,7 @@ target_link_libraries("MikuEngine" PUBLIC
 	nfd
 	dylib
 	assimp
-	ImGuizmo
+	imguizmo
 )
 
 target_link_libraries("MikuEngine" PRIVATE 

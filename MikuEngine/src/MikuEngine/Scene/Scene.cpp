@@ -231,5 +231,6 @@ namespace MikuEngine
 		srcRegistry.view<CameraComponent>().each( [ & ]( auto entity, const CameraComponent& tranformC ) { m_Registry.emplace_or_replace<CameraComponent>( entity, tranformC ); } );
 		srcRegistry.view<DirectionalLightComponent>().each( [ & ]( auto entity, const DirectionalLightComponent& tranformC ) { m_Registry.emplace_or_replace<DirectionalLightComponent>( entity, tranformC ); } );
 		srcRegistry.view<NativeScriptComponent>().each( [ & ]( auto entity, const NativeScriptComponent& tranformC ) { m_Registry.emplace_or_replace<NativeScriptComponent>( entity, tranformC ); } );
+		srcRegistry.view<SkyboxComponent>().each( [ & ]( auto entity, const SkyboxComponent& tranformC ) { m_Registry.emplace_or_replace<SkyboxComponent>( entity, tranformC ); } );
 	}
 }
