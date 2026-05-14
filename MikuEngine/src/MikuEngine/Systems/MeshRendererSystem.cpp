@@ -3,7 +3,6 @@
 #include "Components.h"
 #include "Data/CameraData.h"
 #include "Helpers/ImGuiHelper.h"
-#include "Logger.h"
 #include "Scene/Scene.h"
 
 namespace MikuEngine
@@ -16,6 +15,7 @@ namespace MikuEngine
 		auto& materialManager = appLevelStuff.GetAssetPoolManager().GetMaterialManager();
 		auto& modelManager = appLevelStuff.GetAssetPoolManager().GetModelManager();
 
+		// RENDER OPAQUE MESHES
 		for ( const auto& [ entity, dataC, meshRendererC ] : entities.each() )
 		{
 			const auto& modelUUID = meshRendererC.ModelIdentifier;
@@ -33,6 +33,8 @@ namespace MikuEngine
 
 			material = &materialContainer.value()->material;
 
+			if ( material->GetBlendMode() != MaterialBlendMode::OPAQUE ) continue;
+
 			material->Bind();
 
 			auto shader = material->GetShader();
@@ -48,6 +50,48 @@ namespace MikuEngine
 			{
 				renderer.Draw( mesh.GetVA(), mesh.GetIB(), shader.value()->shader );
 			}
+		}
+
+		// RENDER TRANSPARENT MESHES
+		for ( const auto& [ entity, dataC, meshRendererC ] : entities.each() )
+		{
+			const auto& modelUUID = meshRendererC.ModelIdentifier;
+
+			if ( modelUUID.has_value() == false ) continue;
+
+			const auto& model = modelManager.GetModel( meshRendererC.ModelIdentifier.value() );
+
+			Material* material = nullptr;
+
+			if ( meshRendererC.MaterialIdentifier.has_value() == false ) continue;
+
+			auto materialContainer = materialManager.GetMaterial( meshRendererC.MaterialIdentifier.value() );
+			if ( materialContainer.has_value() == false ) continue;
+
+			material = &materialContainer.value()->material;
+
+			if ( material->GetBlendMode() != MaterialBlendMode::TRANSPARENT ) continue;
+
+			material->Bind();
+
+			auto shader = material->GetShader();
+
+			if ( shader.has_value() == false ) return;
+
+			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
+			glm::mat4 modelMatrix = transform.GetModelMatrix();
+			shader.value()->shader.SetUniform<glm::mat4>( "u_Model", modelMatrix );
+
+			// Render all the meshes in the model
+
+			renderer.DisableWriteToDepthBuffer();
+
+			for ( const auto& mesh : model.model.GetMeshes() )
+			{
+				renderer.Draw( mesh.GetVA(), mesh.GetIB(), shader.value()->shader );
+			}
+
+			renderer.EnableWriteToDepthBuffer();
 		}
 	}
 

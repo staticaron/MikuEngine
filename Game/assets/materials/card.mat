@@ -1,5 +1,6 @@
 shader: 5935769401582435130
 properties:
+  blend_mode: Opaque
   u_Bg: !tex 12355015104142022568
   u_CardBg: !tex 16755288621014108172
   u_CardFg: !tex 15005922946686537122

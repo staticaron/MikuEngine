@@ -1,51 +1,23 @@
 scene: Untitled
 entities:
-  - name: Texture
-    id: 7782942563474059140
+  - name: Miku
+    id: 15898972143352414784
     components:
       - type: TransformComponent
         values:
-          position: [-8.41, -0.54999995, -18.13]
+          position: [0, 0, 1]
           rotation: [0, 0, 0]
-          scale: [4.75, 4.75, 4.75]
-      - type: SpriteRendererComponent
-        values:
-          texture: 14022597991490494003
-          material: 9245994286765956720
-          tint: [1, 1, 1, 1]
-  - name: Skybox
-    id: 17968113364774119480
-    components:
-      - type: TransformComponent
-        values:
-          position: [1, 1, 1]
-          rotation: [0, 0, 0]
-          scale: [1, 1, 1]
-      - type: SkyboxComponent
-        values:
-          model: 14659183241214482176
-          material: 12810041214926128130
-  - name: Card
-    id: 5030660346100341033
-    components:
-      - type: TransformComponent
-        values:
-          position: [-5.67, -0.23, -10]
-          rotation: [0, 0, 0]
-          scale: [5.635, 7.84, 0.49]
+          scale: [3.268, 4.547, 1]
       - type: MeshRendererComponent
         values:
           model: 8300491686496128949
-          material: 14325327348685277738
-      - type: NativeScriptComponent
-        values:
-          scriptName: CardController
+          material: 11395528806492145756
   - name: Main Camera
     id: 471711908562867175
     components:
       - type: TransformComponent
         values:
-          position: [-4, 0, 10]
+          position: [0, 0, 10]
           rotation: [0, 0, 0]
           scale: [1, 1, 1]
       - type: CameraComponent
@@ -54,29 +26,44 @@ entities:
           zoom: 1
           maincamera: true
           width: 32
-  - name: sample-box
-    id: 16086958484874689805
+  - name: Card
+    id: 5030660346100341033
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0]
+          rotation: [0, 0, 0]
+          scale: [3.2683, 4.5471997, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 8300491686496128949
+          material: 14325327348685277738
+      - type: NativeScriptComponent
+        values:
+          scriptName: CardController
+  - name: Sun
+    id: 1034160391131889998
     components:
       - type: TransformComponent
         values:
           position: [1, 1, 1]
           rotation: [0, 0, 0]
           scale: [1, 1, 1]
-      - type: MeshRendererComponent
-        values:
-          model: 14659183241214482176
-          material: 12810041214926128130
-  - name: Directional Light
-    id: 11212606969459364440
-    components:
-      - type: TransformComponent
-        values:
-          position: [2.368357, 0.13016962, 1.3710387]
-          rotation: [0, 0, 0]
-          scale: [0.7499985, 0.75000507, 0.74996585]
       - type: DirectionalLightComponent
         values:
           color: [1, 1, 1]
           intensity: 0.5
-          ambient_intensity: 0.53
-          specular_strength: 198
+          ambient_intensity: 0.5
+          specular_strength: 100
+  - name: Skybox
+    id: 3060057868339434160
+    components:
+      - type: TransformComponent
+        values:
+          position: [-11.55, 2.21, 0.88]
+          rotation: [0, 0, 0]
+          scale: [8.0000005e-05, 9.44e-05, 8.0000005e-05]
+      - type: SkyboxComponent
+        values:
+          model: 14659183241214482176
+          material: 12810041214926128130
