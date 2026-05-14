@@ -11,6 +11,22 @@ namespace MikuEditor
 	{
 		ComponentHeader( [ materialContainer ]() { return materialContainer.GetName(); }, [ materialContainer ]( std::string newName ) { MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().RenameAsset( materialContainer.index.uuid, newName ); } );
 
+		auto currentlySelected = materialContainer.material.GetBlendModeString();
+		const char* blendModes[]{ "Transparent", "Opaque" };
+
+		if ( ImGui::BeginCombo( "Blend Mode", currentlySelected.c_str() ) )
+		{
+			if ( ImGui::Selectable( "Transparent" ) )
+			{
+				materialContainer.material.SetBlendMode( MikuEngine::MaterialBlendMode::TRANSPARENT );
+			}
+			if ( ImGui::Selectable( "Opaque" ) )
+			{
+				materialContainer.material.SetBlendMode( MikuEngine::MaterialBlendMode::OPAQUE );
+			}
+			ImGui::EndCombo();
+		}
+
 		auto& shaderManager = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
 		auto shader = materialContainer.material.GetShader();
