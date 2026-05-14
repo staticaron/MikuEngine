@@ -18,6 +18,9 @@ namespace MikuEngine
 
 		static void ClearColor( glm::vec4 color = { 0.1f, 0.1f, 0.1f, 1.0f } );
 
+		static void DisableWriteToDepthBuffer();
+		static void EnableWriteToDepthBuffer();
+
 		const Quad& GetQuad() const { return m_QuadPrimitive; }
 		const Cube& GetCube() const { return m_CubePrimitive; }
 		UniformBufferManager& GetUniformBufferManager() { return m_UniformBufferManager; }
