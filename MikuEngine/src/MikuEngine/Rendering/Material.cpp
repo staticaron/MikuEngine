@@ -67,14 +67,12 @@ namespace MikuEngine
 
 	void Material::LoadFromFile( const std::filesystem::path& materialPath )
 	{
-		YAML::Node rootNode = YAML::LoadFile( materialPath );
-
 		const ShaderManager& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
+		YAML::Node rootNode = YAML::LoadFile( materialPath );
+
 		auto shaderUUID = rootNode[ "shader" ].as<std::string>();
-
 		if ( shaderUUID == "<NONE>" ) return;
-
 		SetShader( shaderManager.GetShader( shaderUUID ).index.uuid );
 
 		YAML::Node paramterNodes = rootNode[ "properties" ];
@@ -90,12 +88,21 @@ namespace MikuEngine
 			auto name = it->first.as<std::string>();
 			auto tag = it->second.Tag();
 
+			// If this is a blend mode property, set the blend mode and continue with next properties
+			if ( name == "blend_mode" )
+			{
+				auto blendMode = it->second.as<std::string>();
+				if ( blendMode == "Transparent" ) SetBlendMode( MaterialBlendMode::TRANSPARENT );
+				if ( blendMode == "Opaque" ) SetBlendMode( MaterialBlendMode::OPAQUE );
+				continue;
+			}
+
 			if ( tag == "!tex" )
 			{
 				UUID uuid( it->second.as<std::string>() );
 				m_Textures[ name ] = uuid;
 			}
-			if ( tag == "!cube" )
+			else if ( tag == "!cube" )
 			{
 				auto uuidStr = it->second.as<std::string>();
 				UUID uuid( uuidStr );
@@ -120,6 +127,8 @@ namespace MikuEngine
 		emitter << YAML::BeginMap;
 		emitter << YAML::Key << "shader" << YAML::Value << ( shader.has_value() ? shader.value()->shader.GetUUID().ToString() : "<NONE>" );
 		emitter << YAML::Key << "properties" << YAML::Value << YAML::BeginMap;
+
+		emitter << YAML::Key << "blend_mode" << YAML::Value << GetBlendModeString();
 
 		for ( const auto& [ name, value ] : m_Textures )
 			emitter << YAML::Key << name << YAML::LocalTag( "tex" ) << YAML::Value << value.ToString();
