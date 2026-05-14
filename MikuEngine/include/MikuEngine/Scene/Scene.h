@@ -29,8 +29,10 @@ namespace MikuEngine
 
 		void Update( double dt );
 		void Render( AppLevelStuff& appLevelStuff ) const;
-		void RenderInEditor( AppLevelStuff& appLevelStuff, const CameraData& cameraData ) const;
+		void RenderInEditor( AppLevelStuff& appLevelStuff, const CameraData& editorCameraData ) const;
 		void RenderImGui( const AppLevelStuff& appLevelStuff );
+
+		void RunSystems( AppLevelStuff& appLevelStuff, const CameraData& cameraData ) const;
 
 		Entity CreateEntity( const std::string& name, Scene* parentScene );
 		Entity LoadEntity( const std::string& name, UUID uuid, Scene* parentScene );

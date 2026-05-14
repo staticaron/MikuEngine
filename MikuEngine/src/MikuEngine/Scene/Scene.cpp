@@ -25,35 +25,27 @@ namespace MikuEngine
 
 	void Scene::Render( AppLevelStuff& appLevelStuff ) const
 	{
-		// Bind the game frame buffer object; this will be used to render into the game view
 		auto& gameFBO = MikuEngine::Application::GetApplication()->GetGameFBO();
 		gameFBO.Bind();
 
 		auto& renderer = MikuEngine::Application::GetAppLevelStuff().GetRenderer();
-
 		renderer.GetUniformBufferManager().GetGameUniformBuffer().Bind();     // Bind Matrix Data at 0
 		renderer.GetUniformBufferManager().GetLightingUniformBuffer().Bind(); // Bind Lighting Data at 1
 
 		renderer.ClearColor();
 
-		// Camera details for camera creating proj view matrices
 		auto mainCamera = GetMainCamera();
-
 		if ( GetMainCamera().has_value() == false ) return;
-
 		auto mainCameraEntity = mainCamera->first;
 		auto mainCameraComponent = mainCamera->second;
 		auto cameraData = CameraData{ CameraSystem::GetViewMatrix( mainCameraEntity ), CameraSystem::GetProjMatrix( mainCameraComponent ) };
 
-		// SYSTEMS
-		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, cameraData );
-		MeshRendererSystem::RenderMesh( *this, appLevelStuff, cameraData );
-		SkyboxRendererSystem::RenderSkybox( *this, appLevelStuff, cameraData );
+		RunSystems( appLevelStuff, cameraData );
 
 		gameFBO.UnBind();
 	}
 
-	void Scene::RenderInEditor( AppLevelStuff& appLevelStuff, const CameraData& cameraData ) const
+	void Scene::RenderInEditor( AppLevelStuff& appLevelStuff, const CameraData& editorCameraData ) const
 	{
 		auto& sceneFBO = MikuEngine::Application::GetApplication()->GetSceneFBO();
 		sceneFBO.Bind();
@@ -64,11 +56,16 @@ namespace MikuEngine
 		renderer.GetUniformBufferManager().GetLightingUniformBuffer().Bind(); // Bind Lighting Data at 1
 		renderer.ClearColor();
 
+		RunSystems( appLevelStuff, editorCameraData );
+
+		sceneFBO.UnBind();
+	}
+
+	void Scene::RunSystems( AppLevelStuff& appLevelStuff, const CameraData& cameraData ) const
+	{
 		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, cameraData );
 		MeshRendererSystem::RenderMesh( *this, appLevelStuff, cameraData );
 		SkyboxRendererSystem::RenderSkybox( *this, appLevelStuff, cameraData );
-
-		sceneFBO.UnBind();
 	}
 
 	void Scene::RenderImGui( const AppLevelStuff& appLevelStuff ) {}
