@@ -49,7 +49,6 @@ namespace MikuEngine
 			glCullFace( GL_FRONT );
 			glDepthFunc( GL_LEQUAL );
 
-			// Render all the meshes in the model
 			for ( const auto& mesh : model.model.GetMeshes() )
 			{
 				renderer.Draw( mesh.GetVA(), mesh.GetIB(), shader.value()->shader );

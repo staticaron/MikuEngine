@@ -1,5 +1,18 @@
 scene: Untitled
 entities:
+  - name: Texture
+    id: 7782942563474059140
+    components:
+      - type: TransformComponent
+        values:
+          position: [-8.41, -0.54999995, -18.13]
+          rotation: [0, 0, 0]
+          scale: [4.75, 4.75, 4.75]
+      - type: SpriteRendererComponent
+        values:
+          texture: 14022597991490494003
+          material: 9245994286765956720
+          tint: [1, 1, 1, 1]
   - name: Skybox
     id: 17968113364774119480
     components:
@@ -41,21 +54,18 @@ entities:
           zoom: 1
           maincamera: true
           width: 32
-  - name: Miku
-    id: 201022912326916973
+  - name: sample-box
+    id: 16086958484874689805
     components:
       - type: TransformComponent
         values:
-          position: [-11.49, 0.92000043, -4.309658]
-          rotation: [1.5707963, 2.584209e-18, 127.2722]
-          scale: [0.99999875, 0.99999875, 0.9998851]
+          position: [1, 1, 1]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
       - type: MeshRendererComponent
         values:
-          model: 2717482290592677701
-          material: 12640939573752356792
-      - type: NativeScriptComponent
-        values:
-          scriptName: Rotator
+          model: 14659183241214482176
+          material: 12810041214926128130
   - name: Directional Light
     id: 11212606969459364440
     components:
@@ -70,28 +80,3 @@ entities:
           intensity: 0.5
           ambient_intensity: 0.53
           specular_strength: 198
-  - name: sample-box
-    id: 16086958484874689805
-    components:
-      - type: TransformComponent
-        values:
-          position: [1, 1, 1]
-          rotation: [0, 0, 0]
-          scale: [1, 1, 1]
-      - type: MeshRendererComponent
-        values:
-          model: 14659183241214482176
-          material: 12810041214926128130
-  - name: Texture
-    id: 6274097598743368914
-    components:
-      - type: TransformComponent
-        values:
-          position: [-17.02, 1, -10.129999]
-          rotation: [0, 0, 0]
-          scale: [10, 10, 1]
-      - type: SpriteRendererComponent
-        values:
-          texture: 14022597991490494003
-          material: 9245994286765956720
-          tint: [1, 1, 1, 1]

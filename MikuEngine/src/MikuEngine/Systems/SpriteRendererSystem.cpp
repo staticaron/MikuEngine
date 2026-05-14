@@ -42,10 +42,7 @@ namespace MikuEngine
 				material = &materialContainer.value()->material;
 			}
 			else
-			{
-				MIKU_CORE_ERROR( "Material for this Sprite Renderer Not Found!" );
 				return;
-			}
 
 			material->Bind();
 
@@ -65,7 +62,10 @@ namespace MikuEngine
 				shader.value()->shader.SetUniform<unsigned int>( "u_MainTex", 0 );
 			}
 
+			// Disable Depth Test for Sprites to enable transparency
+			renderer.DisableWriteToDepthBuffer();
 			renderer.Draw( quad.GetVA(), quad.GetIB(), shader.value()->shader );
+			renderer.EnableWriteToDepthBuffer();
 		}
 	};
 
