@@ -14,6 +14,7 @@ namespace MikuEngine
 	class Entity;
 	class MeshRendererComponent;
 	class AppLevelStuff;
+	enum class MaterialBlendMode;
 }
 
 namespace MikuEngine
@@ -26,5 +27,8 @@ namespace MikuEngine
 		static void MeshRendererComponentRenderImGui( Entity entity, MeshRendererComponent& meshRendererC, std::function<void()> modelEditBtnCallback, std::function<void()> materialEditBtnCallback );
 		static void SerializeMeshRendererComponent( const Entity& entity, YAML::Emitter& emitter );
 		static void DeSerializeMeshRendererComponent( MeshRendererComponent& meshRendererC, const YAML::Node& node );
+
+	private:
+		static void RenderMeshByBlendMode( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData, const MaterialBlendMode& blendMode );
 	};
 }
