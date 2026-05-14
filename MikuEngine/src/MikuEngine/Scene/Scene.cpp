@@ -63,9 +63,9 @@ namespace MikuEngine
 
 	void Scene::RunSystems( AppLevelStuff& appLevelStuff, const CameraData& cameraData ) const
 	{
-		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, cameraData );
-		MeshRendererSystem::RenderMesh( *this, appLevelStuff, cameraData );
 		SkyboxRendererSystem::RenderSkybox( *this, appLevelStuff, cameraData );
+		MeshRendererSystem::RenderMesh( *this, appLevelStuff, cameraData );
+		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, cameraData );
 	}
 
 	void Scene::RenderImGui( const AppLevelStuff& appLevelStuff ) {}
