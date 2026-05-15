@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Core.h"
+#include "glm/ext/vector_float2.hpp"
 
-#include "glm/glm.hpp"
+#include "Core.h"
 
 namespace MikuEngine
 {
@@ -19,11 +19,11 @@ namespace MikuEngine
 		void ResizeBufferTexture( glm::vec2 viewPortSize );
 
 		unsigned int GetTextureID() const { return m_ColorTextureID; }
-		unsigned int GetDepthTextureID() const { return m_DepthTextureID; }
 
 	private:
 		unsigned int m_RendererID = 0;
+
 		unsigned int m_ColorTextureID = 0;
-		unsigned int m_DepthTextureID = 0;
+		unsigned int m_DepthStencilRenderBufferID = 0;
 	};
 }

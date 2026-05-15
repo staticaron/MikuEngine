@@ -1,7 +1,8 @@
 #pragma once
 
+#include "glm/ext/vector_float2.hpp"
+
 #include "Core.h"
-#include "glm/glm.hpp"
 
 namespace MikuEngine
 {
@@ -16,7 +17,6 @@ namespace MikuEngine
 		void Destroy();
 
 		unsigned int GetTextureID() const { return m_ColorTextureID; }
-		unsigned int GetDepthTextureID() const { return m_DepthTextureID; }
 
 		float GetAspectRatio() const { return m_AspectRatio; }
 
@@ -24,8 +24,9 @@ namespace MikuEngine
 
 	private:
 		unsigned int m_RendererID = 0;
+
 		unsigned int m_ColorTextureID = 0;
-		unsigned int m_DepthTextureID = 0;
+		unsigned int m_DepthStencilRenderBufferID = 0;
 
 		float m_AspectRatio = 1.0f;
 	};

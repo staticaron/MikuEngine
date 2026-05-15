@@ -15,7 +15,7 @@ namespace MikuEngine
 		glBindTexture( GL_TEXTURE_2D, m_ColorTextureID );
 
 		auto viewPortSize = Application::GetDataContainer().GetViewportSize();
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, viewPortSize.x, viewPortSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr );
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, viewPortSize.x, viewPortSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr );
 
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
@@ -26,20 +26,13 @@ namespace MikuEngine
 
 		glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColorTextureID, 0 );
 
-		// Depth Texture
-		glGenTextures( 1, &m_DepthTextureID );
-		glBindTexture( GL_TEXTURE_2D, m_DepthTextureID );
+		// DEPTH AND STENCIL TEXTURE
+		glGenRenderbuffers( 1, &m_DepthStencilRenderBufferID );
+		glBindRenderbuffer( GL_RENDERBUFFER, m_DepthStencilRenderBufferID );
 
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, viewPortSize.x, viewPortSize.y, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr );
+		glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, viewPortSize.x, viewPortSize.y );
 
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-
-		glBindTexture( GL_TEXTURE_2D, 0 );
-
-		glFramebufferTexture2D( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTextureID, 0 );
+		glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_DepthStencilRenderBufferID );
 
 		if ( glCheckFramebufferStatus( GL_FRAMEBUFFER ) != GL_FRAMEBUFFER_COMPLETE ) MIKU_CORE_WARN( "FrameBuffer is not ready!" );
 
@@ -61,14 +54,19 @@ namespace MikuEngine
 	{
 		glDeleteFramebuffers( 1, &m_RendererID );
 		glDeleteTextures( 1, &m_ColorTextureID );
-		glDeleteTextures( 1, &m_DepthTextureID );
+		glDeleteRenderbuffers( 1, &m_DepthStencilRenderBufferID );
 	}
 
 	void SceneFBO::ResizeBufferTexture( glm::vec2 viewportSize )
 	{
 		Application::GetDataContainer().SetViewportSize( viewportSize );
 
-		Destroy();
-		Init();
+		// Resize the color texture
+		glBindTexture( GL_TEXTURE_2D, m_ColorTextureID );
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, viewportSize.x, viewportSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr );
+
+		// Resize the depth and stencil buffers
+		glBindRenderbuffer( GL_RENDERBUFFER, m_DepthStencilRenderBufferID );
+		glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, viewportSize.x, viewportSize.y );
 	}
 }
