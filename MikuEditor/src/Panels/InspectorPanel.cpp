@@ -4,18 +4,13 @@
 
 #include "Component/MaterialComponent.h"
 #include "Component/ShaderComponent.h"
-#include "Components.h"
+
 #include "MikuEngine/AppLevelStuff.h"
+#include "MikuEngine/Components.h"
 #include "MikuEngine/Data/SelectableItem.h"
 #include "MikuEngine/Entity.h"
 #include "MikuEngine/Scene/Scene.h"
-#include "MikuEngine/Systems/CameraSystem.h"
-#include "MikuEngine/Systems/LightingSystem.h"
-#include "MikuEngine/Systems/MeshRendererSystem.h"
-#include "MikuEngine/Systems/ScriptExecutionSystem.h"
-#include "MikuEngine/Systems/SkyboxRendererSystem.h"
-#include "MikuEngine/Systems/SpriteRendererSystem.h"
-#include "MikuEngine/Systems/TransformSystems.h"
+#include "MikuEngine/Systems.h"
 
 #include "Layers/EditorLayer.h"
 #include "Panels/Panels.h"
@@ -146,6 +141,20 @@ namespace MikuEditor
 
 				MikuEngine::SkyboxRendererSystem::SkyboxComponentRenderImGui( selectedEntity.value(), skyboxC, modelEditBtnCallback, materialEditBtnCallback );
 			}
+
+			// STENCIL READER
+			if ( selectedEntity.value().HasComponent<MikuEngine::StencilReaderComponent>() )
+			{
+				auto& stencilReaderC = selectedEntity.value().GetComponent<MikuEngine::StencilReaderComponent>();
+				MikuEngine::StencilSystem::StencilReaderRenderImGui( selectedEntity.value(), stencilReaderC );
+			}
+
+			// STENCIL WRITER
+			if ( selectedEntity.value().HasComponent<MikuEngine::StencilWriterComponent>() )
+			{
+				auto& stencilWriterC = selectedEntity.value().GetComponent<MikuEngine::StencilWriterComponent>();
+				MikuEngine::StencilSystem::StencilWriterRenderImGui( selectedEntity.value(), stencilWriterC );
+			}
 		}
 
 		if ( scene.GetSelectedItem().has_value() )
@@ -160,6 +169,8 @@ namespace MikuEditor
 				if ( ImGui::Selectable( "NativeScriptComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::NativeScriptComponent>();
 				if ( ImGui::Selectable( "DirectionalLightComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::DirectionalLightComponent>();
 				if ( ImGui::Selectable( "SkyboxComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::SkyboxComponent>();
+				if ( ImGui::Selectable( "StencilReaderComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::StencilReaderComponent>();
+				if ( ImGui::Selectable( "StencilWriterComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::StencilWriterComponent>();
 
 				ImGui::EndPopup();
 			}
