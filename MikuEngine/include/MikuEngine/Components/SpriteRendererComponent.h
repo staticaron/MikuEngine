@@ -2,12 +2,11 @@
 
 #include <optional>
 
-#include "glm/glm.hpp"
-
 #include "Core.h"
 #include "UUID.h"
 
 #include "Components/BaseComponent.h"
+#include "glm/ext/vector_float4.hpp"
 
 namespace MikuEngine
 {
