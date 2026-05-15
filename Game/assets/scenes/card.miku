@@ -1,31 +1,31 @@
 scene: Untitled
 entities:
-  - name: Miku
-    id: 15898972143352414784
+  - name: Skybox
+    id: 3060057868339434160
     components:
       - type: TransformComponent
         values:
-          position: [0, 0, 1]
+          position: [-11.55, 2.21, 0.88]
           rotation: [0, 0, 0]
-          scale: [3.268, 4.547, 1]
-      - type: MeshRendererComponent
+          scale: [8.0000005e-05, 9.44e-05, 8.0000005e-05]
+      - type: SkyboxComponent
         values:
-          model: 8300491686496128949
-          material: 11395528806492145756
-  - name: Main Camera
-    id: 471711908562867175
+          model: 14659183241214482176
+          material: 12810041214926128130
+  - name: Sun
+    id: 1034160391131889998
     components:
       - type: TransformComponent
         values:
-          position: [0, 0, 10]
+          position: [1, 1, 1]
           rotation: [0, 0, 0]
           scale: [1, 1, 1]
-      - type: CameraComponent
+      - type: DirectionalLightComponent
         values:
-          perspective: true
-          zoom: 1
-          maincamera: true
-          width: 32
+          color: [1, 1, 1]
+          intensity: 0.5
+          ambient_intensity: 0.5
+          specular_strength: 100
   - name: Card
     id: 5030660346100341033
     components:
@@ -41,29 +41,32 @@ entities:
       - type: NativeScriptComponent
         values:
           scriptName: CardController
-  - name: Sun
-    id: 1034160391131889998
+  - name: Main Camera
+    id: 471711908562867175
     components:
       - type: TransformComponent
         values:
-          position: [1, 1, 1]
+          position: [0, 0, 10]
           rotation: [0, 0, 0]
           scale: [1, 1, 1]
-      - type: DirectionalLightComponent
+      - type: CameraComponent
         values:
-          color: [1, 1, 1]
-          intensity: 0.5
-          ambient_intensity: 0.5
-          specular_strength: 100
-  - name: Skybox
-    id: 3060057868339434160
+          perspective: true
+          zoom: 1
+          maincamera: true
+          width: 32
+  - name: Miku
+    id: 15898972143352414784
     components:
       - type: TransformComponent
         values:
-          position: [-11.55, 2.21, 0.88]
+          position: [0.14999962, 0, 1]
           rotation: [0, 0, 0]
-          scale: [8.0000005e-05, 9.44e-05, 8.0000005e-05]
-      - type: SkyboxComponent
+          scale: [3.3072157, 4.601564, 1.012]
+      - type: MeshRendererComponent
         values:
-          model: 14659183241214482176
-          material: 12810041214926128130
+          model: 8300491686496128949
+          material: 11395528806492145756
+      - type: NativeScriptComponent
+        values:
+          scriptName: CardController
