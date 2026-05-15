@@ -11,5 +11,7 @@
 #include "Components/NativeScriptComponent.h"
 #include "Components/SkyboxComponent.h"
 #include "Components/SpriteRendererComponent.h"
+#include "Components/StencilReaderComponent.h"
+#include "Components/StencilWriterComponent.h"
 #include "Components/TransformComponent.h"
 // IWYU pragma: begin_exports

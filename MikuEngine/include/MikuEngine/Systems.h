@@ -8,5 +8,6 @@
 #include "Systems/ScriptExecutionSystem.h"
 #include "Systems/SkyboxRendererSystem.h"
 #include "Systems/SpriteRendererSystem.h"
+#include "Systems/StencilSystem.h"
 #include "Systems/TransformSystems.h"
 // IWYU pragma: begin_exports
