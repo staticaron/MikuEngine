@@ -15,7 +15,7 @@ namespace MikuEngine
 
 	void MeshRendererSystem::RenderMeshByBlendMode( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData, const MaterialBlendMode& blendMode )
 	{
-		const auto& entities = scene.GetRegistry().view<DataComponent, MeshRendererComponent>();
+		const auto& entities = scene.GetRegistry().view<IDComponent, MeshRendererComponent>();
 
 		const auto& renderer = appLevelStuff.GetRenderer();
 		auto& materialManager = appLevelStuff.GetAssetPoolManager().GetMaterialManager();
@@ -24,7 +24,7 @@ namespace MikuEngine
 		// DISABLE WRITING TO DEPTH BUFFER WHEN RENDERING TRANSPARENT MESHES
 		if ( blendMode == MaterialBlendMode::TRANSPARENT ) renderer.DisableWriteToDepthBuffer();
 
-		for ( const auto& [ entity, dataC, meshRendererC ] : entities.each() )
+		for ( const auto& [ entity, idC, meshRendererC ] : entities.each() )
 		{
 			const auto& modelUUID = meshRendererC.ModelIdentifier;
 
@@ -53,11 +53,43 @@ namespace MikuEngine
 			glm::mat4 modelMatrix = transform.GetModelMatrix();
 			shader.value()->shader.SetUniform<glm::mat4>( "u_Model", modelMatrix );
 
+			auto* stencilReaderC = scene.GetRegistry().try_get<StencilReaderComponent>( entity );
+			auto* stencilWriterC = scene.GetRegistry().try_get<StencilWriterComponent>( entity );
+
+			if ( stencilReaderC )
+			{
+				// enable stencil testing
+				glEnable( GL_STENCIL_TEST );
+
+				// read from stencil and pass the test to render
+				glStencilFunc( GL_EQUAL, stencilReaderC->ReadValue, 0xFF );
+
+				glStencilOp( GL_KEEP, GL_KEEP, GL_KEEP );
+			}
+
+			if ( stencilWriterC )
+			{
+				// enable stencil testing
+				glEnable( GL_STENCIL_TEST );
+
+				// write to the values
+				glStencilMask( 0xFF );
+
+				// Always pass the stencil test, all pixels for the upcoming renders will lead to write values
+				glStencilFunc( GL_ALWAYS, stencilWriterC->WriteValue, 0xFF );
+
+				// If the pixel is hidden behind some other object we dont write to stencil buffer
+				glStencilOp( GL_KEEP, GL_KEEP, GL_REPLACE );
+			}
+
 			// Render all the meshes in the model
 			for ( const auto& mesh : model.model.GetMeshes() )
 			{
 				renderer.Draw( mesh.GetVA(), mesh.GetIB(), shader.value()->shader );
 			}
+
+			// Disable the stencil testing if it was opened by stencil reader / writers before
+			if ( stencilWriterC || stencilReaderC ) glDisable( GL_STENCIL_TEST );
 		}
 
 		if ( blendMode == MaterialBlendMode::TRANSPARENT ) renderer.EnableWriteToDepthBuffer();
