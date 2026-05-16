@@ -41,6 +41,9 @@ entities:
       - type: NativeScriptComponent
         values:
           scriptName: CardController
+      - type: StencilWriterComponent
+        values:
+          write-value: 3
   - name: Main Camera
     id: 471711908562867175
     components:
@@ -70,3 +73,6 @@ entities:
       - type: NativeScriptComponent
         values:
           scriptName: CardController
+      - type: StencilReaderComponent
+        values:
+          read-value: 3

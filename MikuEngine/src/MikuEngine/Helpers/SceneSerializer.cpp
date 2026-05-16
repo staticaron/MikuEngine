@@ -41,6 +41,8 @@ namespace MikuEngine
 		if ( entity.HasComponent<NativeScriptComponent>() ) ScriptExecutionSystem::SerializeNativeScriptComponent( entity, emitter );
 		if ( entity.HasComponent<DirectionalLightComponent>() ) LightingSystem::SerializeDirectionalLightComponent( entity, emitter );
 		if ( entity.HasComponent<SkyboxComponent>() ) SkyboxRendererSystem::SerializeSkyboxComponent( entity, emitter );
+		if ( entity.HasComponent<StencilReaderComponent>() ) StencilSystem::SerializeStencilReader( entity, emitter );
+		if ( entity.HasComponent<StencilWriterComponent>() ) StencilSystem::SerializeStencilWriter( entity, emitter );
 
 		emitter << YAML::EndSeq;
 
@@ -171,6 +173,22 @@ namespace MikuEngine
 					auto& skyboxC = entt.GetComponent<SkyboxComponent>();
 
 					SkyboxRendererSystem::DeSerializeSkyboxComponent( skyboxC, values );
+				}
+
+				if ( type == "StencilReaderComponent" )
+				{
+					entt.AddComponent<StencilReaderComponent>();
+					auto& stencilReaderC = entt.GetComponent<StencilReaderComponent>();
+
+					StencilSystem::DeSerializeStencilReader( stencilReaderC, values );
+				}
+
+				if ( type == "StencilWriterComponent" )
+				{
+					entt.AddComponent<StencilWriterComponent>();
+					auto& stencilWriterC = entt.GetComponent<StencilWriterComponent>();
+
+					StencilSystem::DeSerializeStencilWriter( stencilWriterC, values );
 				}
 			}
 		}
