@@ -1,10 +1,13 @@
 #pragma once
 
 #include "MikuEngine/Core.h"
+#include "UUID.h"
 
 namespace MikuEngine
 {
 	class Scene;
+	class Entity;
+	class UUID;
 }
 
 namespace MikuEditor
@@ -13,5 +16,8 @@ namespace MikuEditor
 	{
 	public:
 		static void RenderHierarchy( MikuEngine::Scene& scene );
+
+	private:
+		static void RenderNode( MikuEngine::Scene& scene, const MikuEngine::Entity& entity );
 	};
 }
