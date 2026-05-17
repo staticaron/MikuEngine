@@ -5,9 +5,9 @@
 #include "AppLevelStuff.h"
 #include "Components/DataComponent.h"
 #include "Components/SkyboxComponent.h"
+#include "Components/TransformComponent.h"
 #include "Entity.h"
 #include "Helpers/ImGuiHelper.h"
-#include "Logger.h"
 
 namespace MikuEngine
 {
