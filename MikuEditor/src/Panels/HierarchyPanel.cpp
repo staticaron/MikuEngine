@@ -8,7 +8,7 @@ namespace MikuEditor
 {
 	void HierarchyPanel::RenderNode( MikuEngine::Scene& scene, std::unordered_map<MikuEngine::UUID, std::vector<MikuEngine::UUID>> parentChildren, MikuEngine::UUID currentUUID )
 	{
-		ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_OpenOnArrow;
+		ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanFullWidth;
 
 		auto entityUUID = currentUUID;
 		auto entity = scene.GetEntityByID( currentUUID );
