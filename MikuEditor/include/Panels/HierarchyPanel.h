@@ -18,6 +18,6 @@ namespace MikuEditor
 		static void RenderHierarchy( MikuEngine::Scene& scene );
 
 	private:
-		static void RenderNode( MikuEngine::Scene& scene, const MikuEngine::Entity& entity );
+		static void RenderNode( MikuEngine::Scene& scene, std::unordered_map<MikuEngine::UUID, std::vector<MikuEngine::UUID>> parentChildren, MikuEngine::UUID currentUUID );
 	};
 }
