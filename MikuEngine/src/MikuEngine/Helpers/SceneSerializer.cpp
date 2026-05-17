@@ -20,16 +20,18 @@ namespace MikuEngine
 	{
 		emitter << YAML::BeginMap;
 
-		if ( entity.HasComponent<DataComponent>() )
-		{
-			auto data = entity.GetComponent<DataComponent>();
-			emitter << YAML::Key << "name" << YAML::Value << data.EntityName;
-		}
-
 		if ( entity.HasComponent<IDComponent>() )
 		{
 			auto id = entity.GetComponent<IDComponent>();
 			emitter << YAML::Key << "id" << YAML::Value << id.ID;
+		}
+
+		if ( entity.HasComponent<DataComponent>() )
+		{
+			auto data = entity.GetComponent<DataComponent>();
+			emitter << YAML::Key << "name" << YAML::Value << data.EntityName;
+			auto parentUUID = data.ParentUUID;
+			emitter << YAML::Key << "parent" << YAML::Value << ( parentUUID.has_value() ? parentUUID->ToString() : "0" );
 		}
 
 		emitter << YAML::Key << "components" << YAML::Value << YAML::BeginSeq;
@@ -57,9 +59,9 @@ namespace MikuEngine
 		emitter << YAML::Key << "scene" << YAML::Value << "Untitled";
 		emitter << YAML::Key << "entities" << YAML::Value << YAML::BeginSeq;
 
-		for ( const auto& [ entity, idC ] : scene.m_Registry.view<IDComponent>().each() )
+		for ( const auto& [ entity, idC, dataC ] : scene.m_Registry.view<IDComponent, DataComponent>().each() )
 		{
-			Entity entt( idC.ID, entity, &scene );
+			Entity entt( idC.ID, entity, &scene, dataC.EntityName, dataC.ParentUUID );
 			SerializeEntity( emitter, entt );
 		}
 
@@ -109,7 +111,12 @@ namespace MikuEngine
 			std::string name = entity[ "name" ].as<std::string>();
 			UUID uuid = entity[ "id" ].as<uint64_t>();
 
-			auto entt = scene.LoadEntity( name, uuid, &scene );
+			std::optional<UUID> parentUUID;
+			parentUUID = entity[ "parent" ].as<uint64_t>();
+
+			if ( parentUUID == 0 ) parentUUID = std::nullopt;
+
+			auto entt = scene.LoadEntity( name, uuid, &scene, parentUUID );
 
 			MIKU_CORE_DEBUG( "Created Entity named : {} with ID : {}", name, std::to_string( uuid ) );
 
