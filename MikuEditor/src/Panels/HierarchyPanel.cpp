@@ -21,13 +21,36 @@ namespace MikuEditor
 
 		auto children = parentChildren[ currentUUID ];
 
-		if ( children.size() == 0 ) treeNodeFlags |= ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_Leaf;
+		if ( children.size() == 0 ) treeNodeFlags |= ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_DrawLinesFull | ImGuiTreeNodeFlags_Leaf;
 
 		bool nodeOpen = ImGui::TreeNodeEx( entity.value().GetNamedIdentifier().c_str(), treeNodeFlags );
 
 		if ( ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen() )
 		{
 			scene.SetSelectedItem( entityUUID, MikuEngine::SelectableType::ENTITY );
+		}
+
+		if ( ImGui::BeginDragDropSource() )
+		{
+			ImGui::SetDragDropPayload( "ENTITY_DRAG_DROP_PAYLOAD", &entityUUID, sizeof( uint64_t ) );
+			ImGui::SetTooltip( "%s", entity->GetNamedIdentifier().c_str() );
+			ImGui::EndDragDropSource();
+		}
+
+		if ( ImGui::BeginDragDropTarget() )
+		{
+			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload( "ENTITY_DRAG_DROP_PAYLOAD" );
+			if ( payload != nullptr )
+			{
+				const MikuEngine::UUID uuid = *( MikuEngine::UUID* )( payload->Data );
+				if ( uuid != entityUUID )
+				{
+					auto draggedEntity = scene.GetEntityByID( uuid );
+					if ( draggedEntity.has_value() == true ) draggedEntity.value().SetParent( entityUUID );
+				};
+			}
+
+			ImGui::EndDragDropTarget();
 		}
 
 		if ( nodeOpen )
@@ -48,6 +71,8 @@ namespace MikuEditor
 		auto entities = scene.GetAllEntities();
 
 		std::unordered_map<MikuEngine::UUID, std::vector<MikuEngine::UUID>> entityList;
+		std::vector<MikuEngine::UUID> rootNodes;
+
 		entityList.reserve( entities.size() );
 
 		for ( int x = 0; x < entities.size(); x++ )
@@ -61,16 +86,29 @@ namespace MikuEditor
 			}
 			else
 			{
-				entityList[ entity.GetUUID() ] = {};
+				rootNodes.push_back( entity.GetUUID() );
 			}
 		}
 
-		for ( auto& [ parentUUID, parentChildren ] : entityList )
+		for ( auto rootNode : rootNodes )
 		{
-			RenderNode( scene, entityList, parentUUID );
+			RenderNode( scene, entityList, rootNode );
 		}
 
 		if ( MikuEngine::ImguiManager::FullWidthButton( "ADD" ) ) scene.CreateEntity( "New GameObject", &scene, std::nullopt );
+
+		if ( ImGui::BeginDragDropTarget() )
+		{
+			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload( "ENTITY_DRAG_DROP_PAYLOAD" );
+			if ( payload != nullptr )
+			{
+				const MikuEngine::UUID uuid = *( MikuEngine::UUID* )( payload->Data );
+				auto draggedEntity = scene.GetEntityByID( uuid );
+				if ( draggedEntity.has_value() == true ) draggedEntity.value().SetParent( std::nullopt );
+			}
+
+			ImGui::EndDragDropTarget();
+		}
 
 		ImGui::End();
 	}
