@@ -31,7 +31,7 @@ namespace MikuEngine
 		const entt::entity& GetEntt() const { return m_Entity; }
 
 		void SetUUID( UUID uuid ) { GetOrAddComponent<IDComponent>().ID = uuid; }
-		void SetParent( UUID uuid ) { GetOrAddComponent<DataComponent>().ParentUUID = uuid; }
+		void SetParent( std::optional<UUID> uuid ) { GetOrAddComponent<DataComponent>().ParentUUID = uuid; }
 
 		template <typename T>
 			requires( std::is_base_of_v<BaseComponent, T> )
