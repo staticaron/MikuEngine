@@ -75,7 +75,6 @@ namespace MikuEngine
 		auto entity = m_Registry.create();
 		Entity entt( ( UUID() ), entity, parentScene, name, parentUUID );
 
-		auto& dataC = m_Registry.emplace<DataComponent>( entity, name, parentUUID );
 		m_Registry.emplace<TransformComponent>( entity );
 
 		return entt;
