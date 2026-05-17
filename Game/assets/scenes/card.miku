@@ -2,6 +2,7 @@ scene: Untitled
 entities:
   - name: Skybox
     id: 3060057868339434160
+    parent: 0
     components:
       - type: TransformComponent
         values:
@@ -14,6 +15,7 @@ entities:
           material: 12810041214926128130
   - name: Sun
     id: 1034160391131889998
+    parent: 0
     components:
       - type: TransformComponent
         values:
@@ -28,6 +30,7 @@ entities:
           specular_strength: 100
   - name: Card
     id: 5030660346100341033
+    parent: 0
     components:
       - type: TransformComponent
         values:
@@ -46,6 +49,7 @@ entities:
           write-value: 3
   - name: Main Camera
     id: 471711908562867175
+    parent: 0
     components:
       - type: TransformComponent
         values:
@@ -60,6 +64,7 @@ entities:
           width: 32
   - name: Miku
     id: 15898972143352414784
+    parent: 5030660346100341033
     components:
       - type: TransformComponent
         values:
