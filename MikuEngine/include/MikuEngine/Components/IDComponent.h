@@ -5,7 +5,7 @@
 
 namespace MikuEngine
 {
-	struct IDComponent : BaseComponent
+	struct IDComponent : public BaseComponent
 	{
 		IDComponent() = default;
 		IDComponent( const IDComponent& ) = default;

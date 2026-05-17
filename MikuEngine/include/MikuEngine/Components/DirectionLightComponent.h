@@ -7,7 +7,7 @@
 
 namespace MikuEngine
 {
-	struct MIKU_API DirectionalLightComponent : BaseComponent
+	struct MIKU_API DirectionalLightComponent : public BaseComponent
 	{
 		glm::vec3 Color;
 

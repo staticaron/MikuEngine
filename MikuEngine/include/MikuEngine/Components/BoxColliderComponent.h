@@ -7,7 +7,7 @@
 
 namespace MikuEngine
 {
-	struct MIKU_API BoxColliderComponent : BaseComponent
+	struct MIKU_API BoxColliderComponent : public BaseComponent
 	{
 		BoxColliderComponent() = default;
 		BoxColliderComponent( const BoxColliderComponent& ) = default;

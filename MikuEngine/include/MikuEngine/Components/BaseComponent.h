@@ -6,5 +6,7 @@ namespace MikuEngine
 {
 	class MIKU_API BaseComponent
 	{
+	public:
+		virtual ~BaseComponent() = default;
 	};
 }

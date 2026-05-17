@@ -8,7 +8,7 @@
 
 namespace MikuEngine
 {
-	struct MIKU_API DataComponent : BaseComponent
+	struct MIKU_API DataComponent : public BaseComponent
 	{
 		DataComponent() = default;
 		DataComponent( const DataComponent& ) = default;
