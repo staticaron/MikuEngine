@@ -70,24 +70,23 @@ namespace MikuEngine
 
 	void Scene::RenderImGui( const AppLevelStuff& appLevelStuff ) {}
 
-	Entity Scene::CreateEntity( const std::string& name, Scene* parentScene )
+	Entity Scene::CreateEntity( const std::string& name, Scene* parentScene, std::optional<UUID> parentUUID )
 	{
 		auto entity = m_Registry.create();
-		Entity entt( ( UUID() ), entity, parentScene );
+		Entity entt( ( UUID() ), entity, parentScene, name, parentUUID );
 
-		m_Registry.emplace<DataComponent>( entity, name );
+		auto& dataC = m_Registry.emplace<DataComponent>( entity, name, parentUUID );
 		m_Registry.emplace<TransformComponent>( entity );
 
 		return entt;
 	}
 
-	Entity Scene::LoadEntity( const std::string& name, UUID uuid, Scene* parentScene )
+	Entity Scene::LoadEntity( const std::string& name, UUID uuid, Scene* parentScene, std::optional<UUID> parentUUID )
 	{
 		auto entity = m_Registry.create();
 
-		Entity entt( uuid, entity, parentScene );
+		Entity entt( uuid, entity, parentScene, name, parentUUID );
 
-		auto& dataC = m_Registry.emplace<DataComponent>( entity, name );
 		auto& transformC = m_Registry.emplace<TransformComponent>( entity );
 
 		return entt;
@@ -135,21 +134,21 @@ namespace MikuEngine
 	{
 		std::vector<Entity> entities;
 
-		auto entities_raw = m_Registry.view<IDComponent>();
+		auto entities_raw = m_Registry.view<IDComponent, DataComponent>();
 
-		for ( const auto [ entitiy_raw, idC ] : entities_raw.each() )
-			entities.emplace_back( Entity{ idC.ID, entitiy_raw, this } );
+		for ( const auto [ entitiy_raw, idC, dataC ] : entities_raw.each() )
+			entities.emplace_back( Entity{ idC.ID, entitiy_raw, this, dataC.EntityName, dataC.ParentUUID } );
 
 		return entities;
 	}
 
 	std::optional<Entity> Scene::GetEntityByID( UUID id )
 	{
-		auto idView = m_Registry.view<IDComponent>();
+		auto entityView = m_Registry.view<IDComponent, DataComponent>();
 
-		for ( const auto& [ entity, idC ] : idView.each() )
+		for ( const auto& [ entity, idC, dataC ] : entityView.each() )
 		{
-			if ( idC.ID == id ) return Entity{ idC.ID, entity, this };
+			if ( idC.ID == id ) return Entity{ idC.ID, entity, this, dataC.EntityName, dataC.ParentUUID };
 		}
 
 		return {};
@@ -158,23 +157,24 @@ namespace MikuEngine
 	std::optional<Entity> Scene::GetEntityFromEntt( entt::entity entity )
 	{
 		auto& idC = m_Registry.get<IDComponent>( entity );
+		auto& dataC = m_Registry.get<DataComponent>( entity );
 
 		return {
-		    { idC.ID, entity, this }
-		     };
+		    { idC.ID, entity, this, dataC.EntityName, dataC.ParentUUID }
+		 };
 	}
 
 	std::optional<std::pair<const Entity, const CameraComponent&>> Scene::GetMainCamera() const
 	{
-		auto cameraComponentView = m_Registry.view<IDComponent, CameraComponent>();
+		auto cameraComponentView = m_Registry.view<IDComponent, DataComponent, CameraComponent>();
 
-		for ( auto [ entity, idComponent, cameraComponent ] : cameraComponentView.each() )
+		for ( auto [ entity, idComponent, dataC, cameraComponent ] : cameraComponentView.each() )
 		{
 			if ( cameraComponent.IsMainCamera() == false ) continue;
 
 			return {
-			    { { idComponent.ID, entity, const_cast<Scene*>( this ) }, cameraComponent }
-			};
+			    { { idComponent.ID, entity, const_cast<Scene*>( this ), dataC.EntityName, dataC.ParentUUID }, cameraComponent }
+			    };
 		}
 
 		return {};
@@ -182,13 +182,13 @@ namespace MikuEngine
 
 	std::optional<std::pair<const Entity, const DirectionalLightComponent&>> Scene::GetMainLight() const
 	{
-		auto directionalLightView = m_Registry.view<IDComponent, DirectionalLightComponent>();
+		auto directionalLightView = m_Registry.view<IDComponent, DataComponent, DirectionalLightComponent>();
 
-		for ( auto [ entity, idComponent, directionalLightC ] : directionalLightView.each() )
+		for ( auto [ entity, idComponent, dataC, directionalLightC ] : directionalLightView.each() )
 		{
 			return {
-			    { { idComponent.ID, entity, const_cast<Scene*>( this ) }, directionalLightC }
-			  };
+			    { { idComponent.ID, entity, const_cast<Scene*>( this ), dataC.EntityName, dataC.ParentUUID }, directionalLightC }
+			      };
 		}
 
 		return {};

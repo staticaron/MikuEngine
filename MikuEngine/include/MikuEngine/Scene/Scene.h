@@ -34,8 +34,8 @@ namespace MikuEngine
 
 		void RunSystems( AppLevelStuff& appLevelStuff, const CameraData& cameraData ) const;
 
-		Entity CreateEntity( const std::string& name, Scene* parentScene );
-		Entity LoadEntity( const std::string& name, UUID uuid, Scene* parentScene );
+		Entity CreateEntity( const std::string& name, Scene* parentScene, std::optional<UUID> parentUUID );
+		Entity LoadEntity( const std::string& name, UUID uuid, Scene* parentScene, std::optional<UUID> parentUUID );
 		void AddEntityToDeleteQueue( const UUID& uuid ) { m_DeleteQueue.push_back( uuid ); }
 
 		void PerformDeletions();

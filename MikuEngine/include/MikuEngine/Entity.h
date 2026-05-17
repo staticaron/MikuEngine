@@ -5,6 +5,7 @@
 #include "Core.h"
 
 #include "Components/BaseComponent.h"
+#include "Components/DataComponent.h"
 #include "Components/IDComponent.h"
 #include "Scene/Scene.h"
 
@@ -13,7 +14,7 @@ namespace MikuEngine
 	class MIKU_API Entity
 	{
 	public:
-		Entity( UUID uuid, entt::entity entity, Scene* parentScene );
+		Entity( UUID uuid, entt::entity entity, Scene* parentScene, const std::string& name, std::optional<UUID> parentUUID );
 
 		UUID GetUUID() const
 		{
@@ -21,9 +22,16 @@ namespace MikuEngine
 			return idC.ID;
 		}
 
+		std::optional<UUID> GetParent() const
+		{
+			auto dataC = GetReadOnlyComponent<DataComponent>();
+			return dataC.ParentUUID;
+		}
+
 		const entt::entity& GetEntt() const { return m_Entity; }
 
 		void SetUUID( UUID uuid ) { GetOrAddComponent<IDComponent>().ID = uuid; }
+		void SetParent( UUID uuid ) { GetOrAddComponent<DataComponent>().ParentUUID = uuid; }
 
 		template <typename T>
 			requires( std::is_base_of_v<BaseComponent, T> )
