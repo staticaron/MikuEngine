@@ -45,6 +45,7 @@ namespace MikuEngine
 
 		std::vector<Entity> GetAllEntities();
 		std::optional<Entity> GetEntityByID( UUID id );
+		std::optional<entt::entity> GetEntityByID( UUID id ) const;
 		std::optional<Entity> GetEntityFromEntt( entt::entity entity );
 
 		std::optional<std::pair<const Entity, const CameraComponent&>> GetMainCamera() const;

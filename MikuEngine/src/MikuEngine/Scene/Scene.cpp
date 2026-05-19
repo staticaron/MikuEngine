@@ -153,6 +153,18 @@ namespace MikuEngine
 		return {};
 	}
 
+	std::optional<entt::entity> Scene::GetEntityByID( UUID id ) const
+	{
+		auto entityView = m_Registry.view<IDComponent, DataComponent>();
+
+		for ( const auto& [ entity, idC, dataC ] : entityView.each() )
+		{
+			if ( idC.ID == id ) return entity;
+		}
+
+		return {};
+	}
+
 	std::optional<Entity> Scene::GetEntityFromEntt( entt::entity entity )
 	{
 		auto& idC = m_Registry.get<IDComponent>( entity );

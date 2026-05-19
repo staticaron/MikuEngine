@@ -5,6 +5,7 @@
 #include "Components.h"
 #include "Entity.h"
 #include "Helpers/SerializationHelper.h"
+#include "Logger.h"
 
 namespace MikuEngine
 {
@@ -46,5 +47,20 @@ namespace MikuEngine
 		transformC.Position = position;
 		transformC.Rotation = rotation;
 		transformC.Scale = scale;
+	}
+
+	glm::mat4 TransformSystem::GetTransformMatrix( const Scene& scene, const entt::entity& entt )
+	{
+		const auto& transformC = scene.GetRegistry().get<TransformComponent>( entt );
+		const auto& dataC = scene.GetRegistry().get<DataComponent>( entt );
+
+		if ( dataC.ParentUUID.has_value() )
+		{
+			const auto& parentEntt = scene.GetEntityByID( dataC.ParentUUID.value() );
+			MIKU_ASSERT( parentEntt.has_value(), "This Entity has a parentUUID but that parentEntity is not loaded in the scene!" );
+			return GetTransformMatrix( scene, parentEntt.value() ) * transformC.GetModelMatrix();
+		}
+		else
+			return transformC.GetModelMatrix();
 	}
 }
