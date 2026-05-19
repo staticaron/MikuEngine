@@ -3,20 +3,54 @@
 #include "Components.h"
 #include "Data/CameraData.h"
 #include "Helpers/ImGuiHelper.h"
+#include "Logger.h"
 #include "Scene/Scene.h"
+#include "Systems/TransformSystems.h"
 
 namespace MikuEngine
 {
 	void MeshRendererSystem::RenderMesh( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData )
 	{
-		RenderMeshByBlendMode( scene, appLevelStuff, cameraData, MaterialBlendMode::OPAQUE );
-		RenderMeshByBlendMode( scene, appLevelStuff, cameraData, MaterialBlendMode::TRANSPARENT );
+		auto cameraTransform = cameraData.GetProjViewMatrix();
+		glm::vec3 cameraPosition = cameraTransform[ 3 ];
+
+		std::vector<DistancedEntity> distancedTransparentEntities;
+		std::vector<DistancedEntity> distancedOpaqueEntities;
+
+		const auto& entities = scene.GetRegistry().view<MeshRendererComponent>();
+
+		// Loop through each and every mesh rendering component to get opaque and transparent object lists
+		// Create opaque and transparent object lists along with their distance from the camera
+		for ( const auto& [ entt, meshRendererC ] : entities.each() )
+		{
+			auto& materialUUID = meshRendererC.MaterialIdentifier;
+			if ( materialUUID.has_value() == false ) return;
+
+			auto material = appLevelStuff.GetAssetPoolManager().GetMaterialManager().GetMaterial( materialUUID.value() );
+			if ( material.has_value() == false ) return;
+
+			auto transformMtx = TransformSystem::GetTransformMatrix( scene, entt );
+
+			float distanceFromCamera = glm::length( cameraPosition - glm::vec3( transformMtx[ 3 ] ) );
+
+			if ( material.value()->material.GetBlendMode() == MaterialBlendMode::TRANSPARENT )
+			{
+				distancedTransparentEntities.push_back( { entt, &meshRendererC, transformMtx, distanceFromCamera } );
+			}
+			else
+				distancedOpaqueEntities.push_back( { entt, &meshRendererC, transformMtx, distanceFromCamera } );
+		}
+
+		// sort the transparent objects based on the distance from the camera
+		std::sort( distancedTransparentEntities.begin(), distancedTransparentEntities.end(), []( const DistancedEntity& a, const DistancedEntity& b ) { return a.distanceFromCamera >= b.distanceFromCamera; } );
+
+		// Render Opaque first then transparent objects
+		RenderMeshByBlendMode( scene, appLevelStuff, distancedOpaqueEntities, cameraData, MaterialBlendMode::OPAQUE );
+		RenderMeshByBlendMode( scene, appLevelStuff, distancedTransparentEntities, cameraData, MaterialBlendMode::TRANSPARENT );
 	}
 
-	void MeshRendererSystem::RenderMeshByBlendMode( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData, const MaterialBlendMode& blendMode )
+	void MeshRendererSystem::RenderMeshByBlendMode( const Scene& scene, AppLevelStuff& appLevelStuff, const std::vector<DistancedEntity>& distancedEntities, const CameraData& cameraData, const MaterialBlendMode& blendMode )
 	{
-		const auto& entities = scene.GetRegistry().view<IDComponent, MeshRendererComponent>();
-
 		const auto& renderer = appLevelStuff.GetRenderer();
 		auto& materialManager = appLevelStuff.GetAssetPoolManager().GetMaterialManager();
 		auto& modelManager = appLevelStuff.GetAssetPoolManager().GetModelManager();
@@ -24,19 +58,19 @@ namespace MikuEngine
 		// DISABLE WRITING TO DEPTH BUFFER WHEN RENDERING TRANSPARENT MESHES
 		if ( blendMode == MaterialBlendMode::TRANSPARENT ) renderer.DisableWriteToDepthBuffer();
 
-		for ( const auto& [ entity, idC, meshRendererC ] : entities.each() )
+		for ( const auto& distancedEntity : distancedEntities )
 		{
-			const auto& modelUUID = meshRendererC.ModelIdentifier;
+			const auto& modelUUID = distancedEntity.meshRendererC->ModelIdentifier;
 
 			if ( modelUUID.has_value() == false ) continue;
 
-			const auto& model = modelManager.GetModel( meshRendererC.ModelIdentifier.value() );
+			const auto& model = modelManager.GetModel( distancedEntity.meshRendererC->ModelIdentifier.value() );
 
 			Material* material = nullptr;
 
-			if ( meshRendererC.MaterialIdentifier.has_value() == false ) continue;
+			if ( distancedEntity.meshRendererC->MaterialIdentifier.has_value() == false ) continue;
 
-			auto materialContainer = materialManager.GetMaterial( meshRendererC.MaterialIdentifier.value() );
+			auto materialContainer = materialManager.GetMaterial( distancedEntity.meshRendererC->MaterialIdentifier.value() );
 			if ( materialContainer.has_value() == false ) continue;
 
 			material = &materialContainer.value()->material;
@@ -49,27 +83,26 @@ namespace MikuEngine
 
 			if ( shader.has_value() == false ) return;
 
-			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
-			glm::mat4 modelMatrix = transform.GetModelMatrix();
-			shader.value()->shader.SetUniform<glm::mat4>( "u_Model", modelMatrix );
+			shader.value()->shader.SetUniform<glm::mat4>( "u_Model", distancedEntity.transformMatrix );
 
-			auto* stencilReaderC = scene.GetRegistry().try_get<StencilReaderComponent>( entity );
-			auto* stencilWriterC = scene.GetRegistry().try_get<StencilWriterComponent>( entity );
+			auto* stencilReaderC = scene.GetRegistry().try_get<StencilReaderComponent>( distancedEntity.entt );
+			auto* stencilWriterC = scene.GetRegistry().try_get<StencilWriterComponent>( distancedEntity.entt );
 
 			if ( stencilReaderC )
 			{
-				// enable stencil testing
 				glEnable( GL_STENCIL_TEST );
+				glDisable( GL_DEPTH_TEST );
 
 				// read from stencil and pass the test to render
 				glStencilFunc( GL_EQUAL, stencilReaderC->ReadValue, 0xFF );
 
 				glStencilOp( GL_KEEP, GL_KEEP, GL_KEEP );
+
+				glEnable( GL_DEPTH_TEST );
 			}
 
 			if ( stencilWriterC )
 			{
-				// enable stencil testing
 				glEnable( GL_STENCIL_TEST );
 
 				// write to the values
@@ -89,7 +122,11 @@ namespace MikuEngine
 			}
 
 			// Disable the stencil testing if it was opened by stencil reader / writers before
-			if ( stencilWriterC || stencilReaderC ) glDisable( GL_STENCIL_TEST );
+			if ( stencilWriterC || stencilReaderC )
+			{
+				glDisable( GL_STENCIL_TEST );
+				glEnable( GL_DEPTH_TEST );
+			};
 		}
 
 		if ( blendMode == MaterialBlendMode::TRANSPARENT ) renderer.EnableWriteToDepthBuffer();

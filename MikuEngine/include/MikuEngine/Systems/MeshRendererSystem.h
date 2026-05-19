@@ -2,6 +2,8 @@
 
 #include <functional>
 
+#include "entt/entity/fwd.hpp"
+#include "glm/ext/matrix_float4x4.hpp"
 #include "yaml-cpp/emitter.h"
 #include "yaml-cpp/node/node.h"
 
@@ -19,6 +21,14 @@ namespace MikuEngine
 
 namespace MikuEngine
 {
+	struct MIKU_API DistancedEntity
+	{
+		entt::entity entt;
+		const MeshRendererComponent* meshRendererC;
+		glm::mat4 transformMatrix;
+		float distanceFromCamera;
+	};
+
 	class MIKU_API MeshRendererSystem
 	{
 	public:
@@ -29,6 +39,6 @@ namespace MikuEngine
 		static void DeSerializeMeshRendererComponent( MeshRendererComponent& meshRendererC, const YAML::Node& node );
 
 	private:
-		static void RenderMeshByBlendMode( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData, const MaterialBlendMode& blendMode );
+		static void RenderMeshByBlendMode( const Scene& scene, AppLevelStuff& appLevelStuff, const std::vector<DistancedEntity>& distancedEntities, const CameraData& cameraData, const MaterialBlendMode& blendMode );
 	};
 }
