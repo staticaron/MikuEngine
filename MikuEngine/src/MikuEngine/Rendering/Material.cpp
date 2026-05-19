@@ -25,6 +25,7 @@ namespace MikuEngine
 		m_Floats.clear();
 		m_Vec4s.clear();
 		m_Mat4s.clear();
+		m_Cubemaps.clear();
 
 		const auto& shader = GetShader();
 
