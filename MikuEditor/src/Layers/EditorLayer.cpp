@@ -72,6 +72,8 @@ namespace MikuEditor
 
 	void EditorLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
 	{
+		if ( m_ViewportPanel.GetWindowVisible() == false ) return;
+
 		// Editor Camera Data to be sent for rendering
 		MikuEngine::CameraData cameraData = { m_EditorCamera.GetViewMatrix(), m_EditorCamera.GetProjMatrix() };
 

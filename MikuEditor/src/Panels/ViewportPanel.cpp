@@ -40,8 +40,10 @@ namespace MikuEditor
 	{
 		bool isFocused = false;
 
+		m_IsViewportWindowVisible = ImGui::Begin( "Viewport" );
+
 		// RENDER THE VIEWPORT WINDOW
-		if ( ImGui::Begin( "Viewport" ) )
+		if ( m_IsViewportWindowVisible )
 		{
 			if ( ImGui::IsWindowFocused() ) isFocused = true;
 

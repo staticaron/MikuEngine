@@ -61,6 +61,9 @@ namespace MikuEditor
 
 	void RendererLayer::Render( MikuEngine::AppLevelStuff& appLevelStuff ) const
 	{
+		// Skip rendering to the game buffer if the game window is not even visible
+		if ( m_IsGameWindowVisible == false ) return;
+
 		auto& activeScene = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().GetScene();
 		activeScene.Render( appLevelStuff );
 	}
@@ -72,7 +75,9 @@ namespace MikuEditor
 
 	void RendererLayer::RenderFrameBuffer( const MikuEngine::AppLevelStuff& appLevelStuff )
 	{
-		if ( ImGui::Begin( "Game" ) )
+		m_IsGameWindowVisible = ImGui::Begin( "Game" );
+
+		if ( m_IsGameWindowVisible )
 		{
 			ImVec2 windowSize = ImGui::GetContentRegionAvail();
 

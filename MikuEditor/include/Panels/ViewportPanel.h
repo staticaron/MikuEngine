@@ -23,8 +23,12 @@ namespace MikuEditor
 
 		bool RenderViewportPanel( EditorLayer& editorLayer, MikuEngine::Scene& scene );
 
+		bool GetWindowVisible() const { return m_IsViewportWindowVisible; }
+
 	private:
 		ImGuizmo::OPERATION m_CurrentOperation = ImGuizmo::OPERATION::TRANSLATE;
+
 		bool m_IsSnapping;
+		bool m_IsViewportWindowVisible = false;
 	};
 }

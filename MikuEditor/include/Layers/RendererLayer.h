@@ -29,5 +29,6 @@ namespace MikuEditor
 		void RenderFrameBuffer( const MikuEngine::AppLevelStuff& appLevelStuff );
 
 	private:
+		bool m_IsGameWindowVisible = false;
 	};
 }
