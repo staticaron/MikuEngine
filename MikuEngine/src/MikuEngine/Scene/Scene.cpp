@@ -93,16 +93,103 @@ namespace MikuEngine
 
 	void Scene::DeleteEntity( const UUID& uuid )
 	{
-		auto entity = GetEntityByID( uuid );
+		MIKU_CORE_INFO( "Request To delete Entity with id : {}", uuid.ToString() );
 
-		if ( entity.has_value() == false )
+		auto entities = GetAllEntities();
+
+		std::unordered_set<UUID> entitiesToBeDeleted;
+		std::unordered_set<UUID> safeEntities;
+
+		for ( auto& entity : entities )
 		{
-			MIKU_CORE_WARN( "Entity you are trying to delete doesn't exists!" );
-			return;
+			bool reachedParentOrEnd = false;
+
+			// if this entity is the main then add it to the delete queue and skip history checking
+			if ( entity.GetUUID() == uuid )
+			{
+				entitiesToBeDeleted.insert( entity.GetUUID() );
+				continue;
+			}
+
+			Entity entityInLine = entity;
+			std::vector<Entity> entitiesFoundThisLine;
+
+			while ( reachedParentOrEnd == false )
+			{
+				// if this entity is already safe then that means path from this entity to end is safe; mark the entire line as safe
+				if ( safeEntities.contains( entityInLine.GetUUID() ) )
+				{
+					// mark the entities found in this line as safe
+					for ( auto& entityFoundThisLine : entitiesFoundThisLine )
+						safeEntities.insert( entityFoundThisLine.GetUUID() );
+
+					entitiesFoundThisLine.clear();
+					reachedParentOrEnd = true;
+					continue;
+				}
+
+				if ( entitiesToBeDeleted.contains( entityInLine.GetUUID() ) )
+				{
+					// if the current entity is marked for deletion then put the whole line for deletion
+					for ( auto& entityFoundThisLine : entitiesFoundThisLine )
+						entitiesToBeDeleted.insert( entityFoundThisLine.GetUUID() );
+
+					entitiesFoundThisLine.clear();
+					reachedParentOrEnd = true;
+					continue;
+				}
+
+				entitiesFoundThisLine.push_back( entityInLine );
+
+				auto parentUUID = entityInLine.GetParent();
+
+				// if the parent is same as the entity we want to delete
+				if ( parentUUID.has_value() && parentUUID == uuid )
+				{
+					// if the parent is the main entity, put the whole chain for deletion
+					for ( auto& entityFoundThisLine : entitiesFoundThisLine )
+						entitiesToBeDeleted.insert( entityFoundThisLine.GetUUID() );
+
+					entitiesFoundThisLine.clear();
+					reachedParentOrEnd = true;
+					continue;
+				}
+				// if the parent is not same as the required entity
+				else if ( parentUUID.has_value() && parentUUID != uuid )
+				{
+					auto parentEntity = GetEntityByID( parentUUID.value() );
+					if ( parentEntity.has_value() == false )
+					{
+						// mark the entities found in this line as safe
+						for ( auto& entityFoundThisLine : entitiesFoundThisLine )
+							safeEntities.insert( entityFoundThisLine.GetUUID() );
+
+						entitiesFoundThisLine.clear();
+						reachedParentOrEnd = true; // REACHED END
+					}
+
+					entityInLine = parentEntity.value();
+				}
+				// if the parent has no value END
+				else
+				{
+					// mark the entities found in this line as safe
+					for ( auto& entityFoundThisLine : entitiesFoundThisLine )
+						safeEntities.insert( entityFoundThisLine.GetUUID() );
+
+					entitiesFoundThisLine.clear();
+					reachedParentOrEnd = true; // REACHED END
+				}
+			}
 		}
 
-		m_Registry.destroy( entity.value().GetEntt() );
-		MIKU_CORE_WARN( "Entity Deleted" );
+		for ( auto& entityForDeletion : entitiesToBeDeleted )
+		{
+			auto entity = GetEntityByID( entityForDeletion );
+			MIKU_CORE_INFO( "Entity Deleted with Name : {}", entity->GetNamedIdentifier() );
+
+			m_Registry.destroy( entity.value().GetEntt() );
+		}
 	}
 
 	void Scene::PerformDeletions()
