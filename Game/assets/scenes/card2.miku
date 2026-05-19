@@ -1,38 +1,17 @@
 scene: Untitled
 entities:
-  - name: Mesh
-    id: 7668711299297732014
+  - id: 14945765670410513562
+    name: world
+    parent: 0
     components:
       - type: TransformComponent
         values:
-          position: [6.14, 1.39, -8]
-          rotation: [1.76, 0, 133.88136]
-          scale: [3, 3, 3]
-      - type: MeshRendererComponent
-        values:
-          model: 12103165659442951605
-          material: 2543867387895967176
-      - type: NativeScriptComponent
-        values:
-          scriptName: Rotator
-  - name: Card
-    id: 5030660346100341033
-    components:
-      - type: TransformComponent
-        values:
-          position: [-5.67, -0.23, -10]
-          rotation: [0.0026706073, -0.0049998336, 0]
-          scale: [11.5, 16, 1]
-      - type: SpriteRendererComponent
-        values:
-          texture: 14934649494355436187
-          material: 13663613359817826887
-          tint: [0, 0, 0, 0]
-      - type: NativeScriptComponent
-        values:
-          scriptName: CardController
-  - name: Camera
-    id: 471711908562867175
+          position: [0, 0, 0]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+  - id: 471711908562867175
+    name: Main Camera
+    parent: 0
     components:
       - type: TransformComponent
         values:
@@ -45,26 +24,50 @@ entities:
           zoom: 1
           maincamera: true
           width: 32
-  - name: Miku
-    id: 4186582529910479368
+  - id: 5030660346100341033
+    name: Card
+    parent: 0
     components:
       - type: TransformComponent
         values:
-          position: [10, 0, -10]
+          position: [0, 0, 0]
           rotation: [0, 0, 0]
-          scale: [5, 5, 1]
-  - name: LowRes
-    id: 6933560136604711389
-    components:
-      - type: TransformComponent
-        values:
-          position: [3.04, -4.47, -7.22]
-          rotation: [1.59, 0, 17.740433]
-          scale: [1, 1, 1]
+          scale: [3.2683, 4.5471997, 1]
       - type: MeshRendererComponent
         values:
-          model: 6321326824597677874
-          material: 259975975496740564
+          model: 8300491686496128949
+          material: 14325327348685277738
       - type: NativeScriptComponent
         values:
-          scriptName: Rotator
+          scriptName: CardController
+      - type: StencilWriterComponent
+        values:
+          write-value: 3
+  - id: 1034160391131889998
+    name: Sun
+    parent: 14945765670410513562
+    components:
+      - type: TransformComponent
+        values:
+          position: [1, 1, 1]
+          rotation: [0, 0.37018454, 0]
+          scale: [0.99999976, 1, 0.99999976]
+      - type: DirectionalLightComponent
+        values:
+          color: [1, 1, 1]
+          intensity: 0.5
+          ambient_intensity: 0.5
+          specular_strength: 61
+  - id: 3060057868339434160
+    name: Skybox
+    parent: 14945765670410513562
+    components:
+      - type: TransformComponent
+        values:
+          position: [-11.55, 2.21, 0.88]
+          rotation: [0, 0, 0]
+          scale: [8.0000005e-05, 9.44e-05, 8.0000005e-05]
+      - type: SkyboxComponent
+        values:
+          model: 14659183241214482176
+          material: 12810041214926128130

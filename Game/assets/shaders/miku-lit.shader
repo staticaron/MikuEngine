@@ -41,6 +41,10 @@ uniform sampler2D u_Tex;
 void main()
 {
     vec4 tex = texture(u_Tex, v_UV);
+
+    if (tex.w < 0.3)
+        discard;
+
     vec4 lightRGB = GetLightColor(v_WorldPos, v_Normal);
 
     color = vec4(tex.x * lightRGB.x, tex.y * lightRGB.y, tex.z * lightRGB.z, tex.w);
