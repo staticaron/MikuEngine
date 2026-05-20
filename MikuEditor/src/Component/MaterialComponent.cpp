@@ -18,14 +18,16 @@ namespace MikuEditor
 		{
 			if ( ImGui::Selectable( "Transparent" ) )
 			{
-				materialContainer.material.SetBlendMode( MikuEngine::MaterialBlendMode::TRANSPARENT );
+				materialContainer.material.SetRenderOrderMode( MikuEngine::MaterialBlendMode::TRANSPARENT );
 			}
 			if ( ImGui::Selectable( "Opaque" ) )
 			{
-				materialContainer.material.SetBlendMode( MikuEngine::MaterialBlendMode::OPAQUE );
+				materialContainer.material.SetRenderOrderMode( MikuEngine::MaterialBlendMode::OPAQUE );
 			}
 			ImGui::EndCombo();
 		}
+
+		ImGui::DragScalar( "Render Order", ImGuiDataType_U32, &materialContainer.material.GetRenderOrder().order, 1 );
 
 		auto& shaderManager = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
