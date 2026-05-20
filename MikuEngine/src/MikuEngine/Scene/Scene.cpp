@@ -63,8 +63,9 @@ namespace MikuEngine
 
 	void Scene::RunSystems( AppLevelStuff& appLevelStuff, const CameraData& cameraData ) const
 	{
+		MeshRendererSystem::RenderMeshByType( *this, appLevelStuff, cameraData, MaterialBlendMode::OPAQUE );
 		SkyboxRendererSystem::RenderSkybox( *this, appLevelStuff, cameraData );
-		MeshRendererSystem::RenderMesh( *this, appLevelStuff, cameraData );
+		MeshRendererSystem::RenderMeshByType( *this, appLevelStuff, cameraData, MaterialBlendMode::TRANSPARENT );
 		SpriteRendererSystem::RenderSprite( *this, appLevelStuff, cameraData );
 	}
 

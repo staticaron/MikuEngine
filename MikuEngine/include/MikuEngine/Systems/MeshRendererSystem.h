@@ -17,6 +17,7 @@ namespace MikuEngine
 	class MeshRendererComponent;
 	class AppLevelStuff;
 	enum class MaterialBlendMode;
+	class MaterialContainer;
 }
 
 namespace MikuEngine
@@ -25,6 +26,7 @@ namespace MikuEngine
 	{
 		entt::entity entt;
 		const MeshRendererComponent* meshRendererC;
+		const MaterialContainer* materialContainer;
 		glm::mat4 transformMatrix;
 		float distanceFromCamera;
 	};
@@ -32,7 +34,7 @@ namespace MikuEngine
 	class MIKU_API MeshRendererSystem
 	{
 	public:
-		static void RenderMesh( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData );
+		static void RenderMeshByType( const Scene& scene, AppLevelStuff& appLevelStuff, const CameraData& cameraData, MaterialBlendMode mode );
 
 		static void MeshRendererComponentRenderImGui( Entity entity, MeshRendererComponent& meshRendererC, std::function<void()> modelEditBtnCallback, std::function<void()> materialEditBtnCallback );
 		static void SerializeMeshRendererComponent( const Entity& entity, YAML::Emitter& emitter );
