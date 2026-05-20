@@ -93,8 +93,15 @@ namespace MikuEngine
 			if ( name == "blend_mode" )
 			{
 				auto blendMode = it->second.as<std::string>();
-				if ( blendMode == "Transparent" ) SetBlendMode( MaterialBlendMode::TRANSPARENT );
-				if ( blendMode == "Opaque" ) SetBlendMode( MaterialBlendMode::OPAQUE );
+				if ( blendMode == "Transparent" ) m_RenderOrder.mode = MaterialBlendMode::TRANSPARENT;
+				if ( blendMode == "Opaque" ) m_RenderOrder.mode = MaterialBlendMode::OPAQUE;
+				continue;
+			}
+
+			if ( name == "render_order" )
+			{
+				auto renderOrder = it->second.as<uint32_t>();
+				m_RenderOrder.order = renderOrder;
 				continue;
 			}
 
@@ -130,6 +137,7 @@ namespace MikuEngine
 		emitter << YAML::Key << "properties" << YAML::Value << YAML::BeginMap;
 
 		emitter << YAML::Key << "blend_mode" << YAML::Value << GetBlendModeString();
+		emitter << YAML::Key << "render_order" << YAML::Value << GetRenderOrder().order;
 
 		for ( const auto& [ name, value ] : m_Textures )
 			emitter << YAML::Key << name << YAML::LocalTag( "tex" ) << YAML::Value << value.ToString();

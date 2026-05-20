@@ -24,6 +24,12 @@ namespace MikuEngine
 		OPAQUE
 	};
 
+	struct MIKU_API RenderOrder
+	{
+		MaterialBlendMode mode;
+		unsigned int order;
+	};
+
 	class MIKU_API Material : public Asset
 	{
 	public:
@@ -54,9 +60,20 @@ namespace MikuEngine
 		const std::unordered_map<std::string, UUID>& GetCubemaps() const { return m_Cubemaps; }
 		const std::unordered_map<std::string, float>& GetFloats() const { return m_Floats; }
 
-		void SetBlendMode( MaterialBlendMode newMode ) { m_BlendMode = newMode; }
-		MaterialBlendMode GetBlendMode() const { return m_BlendMode; }
-		std::string GetBlendModeString() const { return m_BlendMode == MaterialBlendMode::TRANSPARENT ? "Transparent" : "Opaque"; }
+		RenderOrder& GetRenderOrder() { return m_RenderOrder; }
+		const RenderOrder& GetRenderOrder() const { return m_RenderOrder; }
+		std::string GetBlendModeString() const
+		{
+			switch ( m_RenderOrder.mode )
+			{
+			case MaterialBlendMode::TRANSPARENT:
+				return "TRANSPARENT";
+			default:
+				return "OPAQUE";
+			}
+		}
+
+		void SetRenderOrderMode( MaterialBlendMode mode ) { m_RenderOrder.mode = mode; }
 
 		void SetTexture( std::string identifier, UUID uuid ) { m_Textures[ identifier ] = uuid; }
 		void SetCubemap( std::string identifier, UUID uuid ) { m_Cubemaps[ identifier ] = uuid; }
@@ -73,7 +90,7 @@ namespace MikuEngine
 
 		std::vector<std::string> m_UniformOrder;
 
-		MaterialBlendMode m_BlendMode = MaterialBlendMode::OPAQUE;
+		RenderOrder m_RenderOrder;
 
 		std::unordered_map<std::string, UUID> m_Textures;
 		std::unordered_map<std::string, UUID> m_Cubemaps;
