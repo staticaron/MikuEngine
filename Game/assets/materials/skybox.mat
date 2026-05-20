@@ -1,3 +1,5 @@
 shader: 1555037700461531915
 properties:
+  blend_mode: Opaque
+  render_order: 1
   u_Cubemap: !cube 383580535966673394
