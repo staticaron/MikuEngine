@@ -93,8 +93,8 @@ namespace MikuEngine
 			if ( name == "blend_mode" )
 			{
 				auto blendMode = it->second.as<std::string>();
-				if ( blendMode == "Transparent" ) m_RenderOrder.mode = MaterialBlendMode::TRANSPARENT;
-				if ( blendMode == "Opaque" ) m_RenderOrder.mode = MaterialBlendMode::OPAQUE;
+				if ( blendMode == "TRANSPARENT" ) m_RenderOrder.mode = MaterialBlendMode::TRANSPARENT;
+				if ( blendMode == "OPAQUE" ) m_RenderOrder.mode = MaterialBlendMode::OPAQUE;
 				continue;
 			}
 
