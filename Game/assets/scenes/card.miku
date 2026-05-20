@@ -1,33 +1,87 @@
 scene: Untitled
 entities:
-  - id: 3347825604643040374
-    name: card bg
+  - id: 1200850226451485081
+    name: card_base
     parent: 5030660346100341033
     components:
       - type: TransformComponent
         values:
-          position: [0, 0, -1]
-          rotation: [-0.033684853, 0, 0]
-          scale: [2, 2, 1]
+          position: [0, 0, 0]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
       - type: MeshRendererComponent
         values:
           model: 8300491686496128949
-          material: 14001910126990979566
-  - id: 1034160391131889998
-    name: Sun
+          material: 9612192718902399396
+  - id: 3060057868339434160
+    name: Skybox
     parent: 14945765670410513562
     components:
       - type: TransformComponent
         values:
-          position: [1, 1, 1]
-          rotation: [0, 0.37018454, 0]
-          scale: [0.99999976, 1, 0.99999976]
-      - type: DirectionalLightComponent
+          position: [-11.55, 2.21, 0.88]
+          rotation: [0, 0, 0]
+          scale: [8.0000005e-05, 9.44e-05, 8.0000005e-05]
+      - type: SkyboxComponent
         values:
-          color: [1, 1, 1]
-          intensity: 0.5
-          ambient_intensity: 0.5
-          specular_strength: 61
+          model: 14659183241214482176
+          material: 12810041214926128130
+  - id: 14945765670410513562
+    name: world
+    parent: 0
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+  - id: 17857641975086840241
+    name: CardFront
+    parent: 5030660346100341033
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0.001]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 8300491686496128949
+          material: 6629561886337955272
+      - type: StencilWriterComponent
+        values:
+          write-value: 5
+  - id: 15898972143352414784
+    name: Miku
+    parent: 5030660346100341033
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0.5]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 8300491686496128949
+          material: 11395528806492145756
+      - type: StencilReaderComponent
+        values:
+          read-value: 1
+  - id: 471711908562867175
+    name: Main Camera
+    parent: 0
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 10]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+      - type: CameraComponent
+        values:
+          perspective: true
+          zoom: 1
+          maincamera: true
+          width: 32
   - id: 5030660346100341033
     name: Card
     parent: 0
@@ -46,74 +100,35 @@ entities:
           scriptName: CardController
       - type: StencilWriterComponent
         values:
-          write-value: 3
-  - id: 471711908562867175
-    name: Main Camera
-    parent: 0
-    components:
-      - type: TransformComponent
-        values:
-          position: [0, 0, 10]
-          rotation: [0, 0, 0]
-          scale: [1, 1, 1]
-      - type: CameraComponent
-        values:
-          perspective: true
-          zoom: 1
-          maincamera: true
-          width: 32
-  - id: 15898972143352414784
-    name: Miku
-    parent: 5030660346100341033
-    components:
-      - type: TransformComponent
-        values:
-          position: [0, 0, 0.5]
-          rotation: [0, 0, 0]
-          scale: [1, 1, 1]
-      - type: MeshRendererComponent
-        values:
-          model: 8300491686496128949
-          material: 11395528806492145756
-      - type: StencilReaderComponent
-        values:
-          read-value: 3
-          avoid-value: 5
-  - id: 17857641975086840241
-    name: CardFront
-    parent: 5030660346100341033
-    components:
-      - type: TransformComponent
-        values:
-          position: [0, 0, 0.001]
-          rotation: [0, 0, 0]
-          scale: [1, 1, 1]
-      - type: MeshRendererComponent
-        values:
-          model: 8300491686496128949
-          material: 6629561886337955272
-      - type: StencilWriterComponent
-        values:
-          write-value: 5
-  - id: 14945765670410513562
-    name: world
-    parent: 0
-    components:
-      - type: TransformComponent
-        values:
-          position: [0, 0, 0]
-          rotation: [0, 0, 0]
-          scale: [1, 1, 1]
-  - id: 3060057868339434160
-    name: Skybox
+          write-value: 1
+  - id: 1034160391131889998
+    name: Sun
     parent: 14945765670410513562
     components:
       - type: TransformComponent
         values:
-          position: [-11.55, 2.21, 0.88]
-          rotation: [0, 0, 0]
-          scale: [8.0000005e-05, 9.44e-05, 8.0000005e-05]
-      - type: SkyboxComponent
+          position: [1, 1, 1]
+          rotation: [0, 0.37018454, 0]
+          scale: [0.99999976, 1, 0.99999976]
+      - type: DirectionalLightComponent
         values:
-          model: 14659183241214482176
-          material: 12810041214926128130
+          color: [1, 1, 1]
+          intensity: 0.5
+          ambient_intensity: 0.5
+          specular_strength: 61
+  - id: 3347825604643040374
+    name: card bg
+    parent: 5030660346100341033
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, -1.0003368]
+          rotation: [-0.033684853, 0, 0]
+          scale: [2, 2, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 8300491686496128949
+          material: 14001910126990979566
+      - type: StencilReaderComponent
+        values:
+          read-value: 1
