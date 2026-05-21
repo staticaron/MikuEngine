@@ -74,11 +74,19 @@ namespace MikuEngine
 	Entity Scene::CreateEntity( const std::string& name, Scene* parentScene, std::optional<UUID> parentUUID )
 	{
 		auto entity = m_Registry.create();
-		Entity entt( ( UUID() ), entity, parentScene, name, parentUUID );
 
-		m_Registry.emplace<TransformComponent>( entity );
-
-		return entt;
+		if ( m_SelectedItem.has_value() )
+		{
+			Entity entt( ( UUID() ), entity, parentScene, name, m_SelectedItem.value().uuid );
+			m_Registry.emplace<TransformComponent>( entity );
+			return entt;
+		}
+		else
+		{
+			Entity entt( ( UUID() ), entity, parentScene, name );
+			m_Registry.emplace<TransformComponent>( entity );
+			return entt;
+		}
 	}
 
 	Entity Scene::LoadEntity( const std::string& name, UUID uuid, Scene* parentScene, std::optional<UUID> parentUUID )
