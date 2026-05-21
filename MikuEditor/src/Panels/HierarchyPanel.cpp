@@ -75,27 +75,33 @@ namespace MikuEditor
 
 		entityList.reserve( entities.size() );
 
-		for ( int x = 0; x < entities.size(); x++ )
+		float buttonSizeToReserve = ImGui::GetFrameHeightWithSpacing();
+		ImVec2 childWindowSize = { 0, -buttonSizeToReserve };
+
+		if ( ImGui::BeginChild( "##Entities", childWindowSize ) )
 		{
-			auto& entity = entities[ x ];
-			auto entityParent = entity.GetParent();
-
-			if ( entityParent.has_value() )
+			for ( int x = 0; x < entities.size(); x++ )
 			{
-				entityList[ entityParent.value() ].push_back( entity.GetUUID() );
+				auto& entity = entities[ x ];
+				auto entityParent = entity.GetParent();
+
+				if ( entityParent.has_value() )
+				{
+					entityList[ entityParent.value() ].push_back( entity.GetUUID() );
+				}
+				else
+				{
+					rootNodes.push_back( entity.GetUUID() );
+				}
 			}
-			else
+
+			for ( auto rootNode : rootNodes )
 			{
-				rootNodes.push_back( entity.GetUUID() );
+				RenderNode( scene, entityList, rootNode );
 			}
-		}
 
-		for ( auto rootNode : rootNodes )
-		{
-			RenderNode( scene, entityList, rootNode );
+			ImGui::EndChild();
 		}
-
-		if ( MikuEngine::ImguiManager::FullWidthButton( "ADD" ) ) scene.CreateEntity( "New GameObject", &scene, std::nullopt );
 
 		if ( ImGui::BeginDragDropTarget() )
 		{
@@ -109,6 +115,10 @@ namespace MikuEditor
 
 			ImGui::EndDragDropTarget();
 		}
+
+		if ( ImGui::IsItemClicked( ImGuiMouseButton_Left ) ) scene.RemoveSelectedItem();
+
+		if ( MikuEngine::ImguiManager::FullWidthButton( "ADD" ) ) scene.CreateEntity( "New GameObject", &scene, std::nullopt );
 
 		ImGui::End();
 	}
