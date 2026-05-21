@@ -21,10 +21,10 @@ namespace MikuEngine
 		for ( const auto& [ entt, meshRendererC ] : entities.each() )
 		{
 			auto& materialUUID = meshRendererC.MaterialIdentifier;
-			if ( materialUUID.has_value() == false ) return;
+			if ( materialUUID.has_value() == false ) continue;
 
 			auto material = appLevelStuff.GetAssetPoolManager().GetMaterialManager().GetMaterial( materialUUID.value() );
-			if ( material.has_value() == false ) return;
+			if ( material.has_value() == false ) continue;
 
 			if ( material.value()->material.GetRenderOrder().mode != mode ) continue;
 
