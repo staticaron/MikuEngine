@@ -42,6 +42,7 @@ namespace MikuEngine
 
 		std::optional<SelectableItem> GetSelectedItem();
 		void SetSelectedItem( UUID uuid, SelectableType type, AssetType assetType = AssetType::NONE );
+		void RemoveSelectedItem() { m_SelectedItem = std::nullopt; }
 
 		std::vector<Entity> GetAllEntities();
 		std::optional<Entity> GetEntityByID( UUID id );
