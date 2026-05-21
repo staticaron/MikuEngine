@@ -14,7 +14,7 @@ namespace MikuEngine
 	class MIKU_API Entity
 	{
 	public:
-		Entity( UUID uuid, entt::entity entity, Scene* parentScene, const std::string& name, std::optional<UUID> parentUUID );
+		Entity( UUID uuid, entt::entity entity, Scene* parentScene, const std::string& name, std::optional<UUID> parentUUID = std::nullopt );
 
 		UUID GetUUID() const
 		{
