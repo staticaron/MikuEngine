@@ -43,7 +43,7 @@ namespace MikuEditor
 		void RenderImGui( EditorLevelStuff& editorLevelStuff );
 
 	private:
-		glm::vec3 Position{ 0.0f };
+		glm::vec3 Position{ 0.0f, 0.0f, 10.0f };
 
 		glm::mat4 m_ViewMatrix = {};
 		glm::mat4 m_ProjectionMatrix = {};
