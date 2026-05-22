@@ -198,6 +198,8 @@ namespace MikuEngine
 			auto entity = GetEntityByID( entityForDeletion );
 			MIKU_CORE_INFO( "Entity Deleted with Name : {}", entity->GetNamedIdentifier() );
 
+			if ( m_SelectedItem.has_value() && m_SelectedItem.value().uuid == entityForDeletion ) m_SelectedItem = std::nullopt;
+
 			m_Registry.destroy( entity.value().GetEntt() );
 		}
 	}
