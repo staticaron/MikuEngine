@@ -108,11 +108,15 @@ namespace MikuEditor
 			// Render Floats
 			//
 			//
-			auto floats = materialContainer.material.GetFloats();
+			auto& floats = materialContainer.material.GetFloats();
 
 			for ( auto& [ uniformName, value ] : floats )
 			{
-				ImGui::DragFloat( uniformName.c_str(), &floats[ uniformName ] );
+				float newValue = value;
+				if ( ImGui::DragFloat( uniformName.c_str(), &newValue ) )
+				{
+					materialContainer.material.SetFloat( uniformName, newValue );
+				}
 			}
 		}
 
