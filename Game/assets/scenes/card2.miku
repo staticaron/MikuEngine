@@ -1,12 +1,78 @@
 scene: Untitled
 entities:
-  - id: 14945765670410513562
-    name: world
-    parent: 0
+  - id: 11405729650402989131
+    name: card_stencil
+    parent: 7019615416172745999
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0.089999996, 0]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 8300491686496128949
+          material: 14325327348685277738
+      - type: StencilWriterComponent
+        values:
+          write-value: 1
+  - id: 7190606714037999910
+    name: card-front
+    parent: 7019615416172745999
     components:
       - type: TransformComponent
         values:
           position: [0, 0, 0]
+          rotation: [0, 0, 0]
+          scale: [1.1, 1.1, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 8300491686496128949
+          material: 6629561886337955272
+  - id: 5341610921650398972
+    name: bg
+    parent: 7019615416172745999
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, -0.07, -2.5800004]
+          rotation: [0, 0, 0]
+          scale: [5, 5, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 8300491686496128949
+          material: 3973412335096806480
+      - type: StencilReaderComponent
+        values:
+          read-value: 1
+  - id: 10249504737971058335
+    name: New GameObject
+    parent: 14047501792614800789
+    components:
+      - type: TransformComponent
+        values:
+          position: [1, 1, 1]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+  - id: 7019615416172745999
+    name: card
+    parent: 0
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0.01, 0]
+          rotation: [0, 0, 0]
+          scale: [3, 4.5, 1]
+      - type: NativeScriptComponent
+        values:
+          scriptName: CardController
+  - id: 2539574611562404405
+    name: New GameObject
+    parent: 5030660346100341033
+    components:
+      - type: TransformComponent
+        values:
+          position: [1, 1, 1]
           rotation: [0, 0, 0]
           scale: [1, 1, 1]
   - id: 471711908562867175
@@ -24,25 +90,15 @@ entities:
           zoom: 1
           maincamera: true
           width: 32
-  - id: 5030660346100341033
-    name: Card
+  - id: 14945765670410513562
+    name: world
     parent: 0
     components:
       - type: TransformComponent
         values:
           position: [0, 0, 0]
           rotation: [0, 0, 0]
-          scale: [3.2683, 4.5471997, 1]
-      - type: MeshRendererComponent
-        values:
-          model: 8300491686496128949
-          material: 14325327348685277738
-      - type: NativeScriptComponent
-        values:
-          scriptName: CardController
-      - type: StencilWriterComponent
-        values:
-          write-value: 3
+          scale: [1, 1, 1]
   - id: 1034160391131889998
     name: Sun
     parent: 14945765670410513562
@@ -71,3 +127,35 @@ entities:
         values:
           model: 14659183241214482176
           material: 12810041214926128130
+  - id: 7836320548132550385
+    name: card_frame
+    parent: 7019615416172745999
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0]
+          rotation: [0, 0, 0]
+          scale: [1.1, 1.1, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 8300491686496128949
+          material: 5143508532037467590
+      - type: StencilWriterComponent
+        values:
+          write-value: 2
+  - id: 17591326540657767012
+    name: miku
+    parent: 7019615416172745999
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0.5]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 8300491686496128949
+          material: 4675506282765626259
+      - type: StencilReaderComponent
+        values:
+          read-value: 2
