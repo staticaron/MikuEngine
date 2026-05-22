@@ -97,6 +97,8 @@ namespace MikuEditor
 
 		if ( ImGui::BeginPopupContextWindow() )
 		{
+			if ( ImGui::MenuItem( "Create Folder" ) ) std::filesystem::create_directory( m_ContentBrowserLocation / std::filesystem::path( "NewFolder" ) );
+			ImGui::Separator();
 			if ( ImGui::MenuItem( "Create Material" ) ) MikuEngine::MaterialManager::CreateAssetAtPath( "gigaNewMat", m_ContentBrowserLocation );
 			if ( ImGui::MenuItem( "Create Shader" ) ) MikuEngine::Shader::CreateAssetAtPath( "gigaNewShader", m_ContentBrowserLocation );
 
@@ -109,8 +111,13 @@ namespace MikuEditor
 	void AssetBrowserPanel::RenderFolderIcon( const std::filesystem::path& folderPath )
 	{
 		auto relativePath = std::filesystem::relative( folderPath, m_RootAssetLocation );
+		if ( ImGui::ImageButton( folderPath.c_str(), m_IconTextures.at( MikuEngine::AssetType::NONE ).GetRendererID(), { static_cast<float>( m_IconSize ), static_cast<float>( m_IconSize ) }, { 0, 1 }, { 1, 0 } ) )
+		{
+			m_ContentBrowserLocation = folderPath;
+		}
 
-		if ( ImGui::ImageButton( folderPath.c_str(), m_IconTextures.at( MikuEngine::AssetType::NONE ).GetRendererID(), { static_cast<float>( m_IconSize ), static_cast<float>( m_IconSize ) }, { 0, 1 }, { 1, 0 } ) ) m_ContentBrowserLocation = folderPath;
+		// TODO: SELECT FOLDERS WITH ONE CLICK AND OPEN WITH DOUBLE CLICK
+
 		ImGui::Text( "%s", relativePath.c_str() );
 	}
 
