@@ -175,6 +175,7 @@ namespace MikuEngine
 
 						entitiesFoundThisLine.clear();
 						reachedParentOrEnd = true; // REACHED END
+						continue;
 					}
 
 					entityInLine = parentEntity.value();
