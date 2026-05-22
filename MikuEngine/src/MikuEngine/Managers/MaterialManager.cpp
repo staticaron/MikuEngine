@@ -78,6 +78,7 @@ namespace MikuEngine
 
 		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/materials/" ) )
 		{
+			if ( file.is_directory() ) continue;
 			if ( file.path().extension() == ".meta" ) continue;
 			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
 
