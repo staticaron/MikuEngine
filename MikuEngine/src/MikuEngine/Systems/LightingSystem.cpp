@@ -4,6 +4,7 @@
 
 #include "Components/DirectionLightComponent.h"
 #include "Entity.h"
+#include "Helpers/ImGuiHelper.h"
 #include "Helpers/SerializationHelper.h"
 
 namespace MikuEngine
@@ -14,13 +15,16 @@ namespace MikuEngine
 
 		if ( ImGui::CollapsingHeader( "DirectionalLightComponent", &keep ) )
 		{
-			ImGui::ColorEdit3( "Color", &directionalLightC.Color[ 0 ] );
+			ImGuiHelper::StartPropertyTable();
 
-			ImGui::DragFloat( "Light Strength", &directionalLightC.Intensity );
-			ImGui::DragFloat( "Ambient Intensity", &directionalLightC.AmbientIntensity );
+			ImGuiHelper::RenderTableItem( "Color", [ & ]() { ImGui::ColorEdit3( "##Color", &directionalLightC.Color[ 0 ] ); } );
 
-			ImGui::Spacing();
-			ImGui::DragFloat( "Specular Strength", &directionalLightC.SpecularStrength );
+			ImGuiHelper::RenderTableItem( "Light Strength", [ & ]() { ImGui::DragFloat( "##Light Strength", &directionalLightC.Intensity ); } );
+			ImGuiHelper::RenderTableItem( "Ambient Intensity", [ & ]() { ImGui::DragFloat( "##Ambient Intensity", &directionalLightC.AmbientIntensity ); } );
+
+			ImGuiHelper::RenderTableItem( "Specular Strength", [ & ]() { ImGui::DragFloat( "##Specular Strength", &directionalLightC.SpecularStrength ); } );
+
+			ImGuiHelper::EndPropertyTable();
 		}
 
 		if ( !keep ) entity.RemoveComponent<DirectionalLightComponent>();

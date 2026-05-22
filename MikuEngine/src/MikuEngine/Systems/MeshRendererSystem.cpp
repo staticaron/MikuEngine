@@ -131,8 +131,12 @@ namespace MikuEngine
 
 		if ( ImGui::CollapsingHeader( "MeshRendererComponent", &keep ) )
 		{
+			ImGuiHelper::StartPropertyTable();
+
 			ImGuiHelper::RenderDragableModelInput( "Model", meshRendererC.ModelIdentifier, modelEditBtnCallback );
 			ImGuiHelper::RenderDragableMaterialInput( "Material", meshRendererC.MaterialIdentifier, materialEditBtnCallback );
+
+			ImGuiHelper::EndPropertyTable();
 		}
 
 		if ( !keep ) entity.RemoveComponent<MeshRendererComponent>();

@@ -65,8 +65,12 @@ namespace MikuEngine
 
 		if ( ImGui::CollapsingHeader( "SkyboxComponent", &keep ) )
 		{
+			ImGuiHelper::StartPropertyTable();
+
 			ImGuiHelper::RenderDragableModelInput( "Skybox Model", skyboxC.ModelIdentifier, modelEditBtnCallback );
 			ImGuiHelper::RenderDragableMaterialInput( "Skybox Material", skyboxC.MaterialIdentifier, materialEditBtnCallback );
+
+			ImGuiHelper::EndPropertyTable();
 		};
 
 		if ( !keep ) entity.RemoveComponent<SkyboxComponent>();

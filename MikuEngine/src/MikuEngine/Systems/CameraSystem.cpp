@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "Components.h"
 #include "Entity.h"
+#include "Helpers/ImGuiHelper.h"
 
 namespace MikuEngine
 {
@@ -69,12 +70,16 @@ namespace MikuEngine
 
 		if ( ImGui::CollapsingHeader( "CameraComponent", &keep ) )
 		{
-			ImGui::Checkbox( "Is Perspective", &cameraComponent.m_IsPerspective );
-			ImGui::Checkbox( "Is Main Camera", &cameraComponent.m_IsMainCamera );
-			ImGui::DragFloat( "Zoom", &cameraComponent.Zoom );
+			ImGuiHelper::StartPropertyTable();
+
+			ImGuiHelper::RenderTableItem( "Is Perspective", [ & ]() { ImGui::Checkbox( "##Is Perspective", &cameraComponent.m_IsPerspective ); } );
+			ImGuiHelper::RenderTableItem( "Is Main Camera", [ & ]() { ImGui::Checkbox( "##Is Main Camera", &cameraComponent.m_IsMainCamera ); } );
+			ImGuiHelper::RenderTableItem( "Zoom", [ & ]() { ImGui::DragFloat( "##Zoom", &cameraComponent.Zoom ); } );
 
 			// Width has no meaning in perspective camera
 			if ( cameraComponent.m_IsPerspective == false ) ImGui::DragInt( "Width", &cameraComponent.m_CameraWidth );
+
+			ImGuiHelper::EndPropertyTable();
 		}
 
 		if ( !keep ) entity.RemoveComponent<CameraComponent>();

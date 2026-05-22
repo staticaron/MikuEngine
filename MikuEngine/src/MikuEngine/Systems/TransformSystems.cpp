@@ -4,6 +4,7 @@
 
 #include "Components.h"
 #include "Entity.h"
+#include "Helpers/ImGuiHelper.h"
 #include "Helpers/SerializationHelper.h"
 #include "Logger.h"
 
@@ -13,9 +14,13 @@ namespace MikuEngine
 	{
 		if ( ImGui::CollapsingHeader( "TransformComponent" ) )
 		{
-			ImGui::DragFloat3( "Position", &transformC.Position.x );
-			ImGui::DragFloat3( "Rotation", &transformC.Rotation.x );
-			ImGui::DragFloat3( "Scale", &transformC.Scale.x );
+			ImGuiHelper::StartPropertyTable();
+
+			ImGuiHelper::RenderTableItem( "Position", [ & ]() { ImGui::DragFloat3( "##Position", &transformC.Position.x ); } );
+			ImGuiHelper::RenderTableItem( "Rotation", [ & ]() { ImGui::DragFloat3( "##Rotation", &transformC.Rotation.x ); } );
+			ImGuiHelper::RenderTableItem( "Scale", [ & ]() { ImGui::DragFloat3( "##Scale", &transformC.Scale.x ); } );
+
+			ImGuiHelper::EndPropertyTable();
 		}
 	}
 

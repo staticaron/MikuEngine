@@ -9,6 +9,7 @@
 #include "MikuEngine/Components.h"
 #include "MikuEngine/Data/SelectableItem.h"
 #include "MikuEngine/Entity.h"
+#include "MikuEngine/Helpers/ImGuiHelper.h"
 #include "MikuEngine/Scene/Scene.h"
 #include "MikuEngine/Systems.h"
 
@@ -55,20 +56,18 @@ namespace MikuEditor
 			{
 				auto& dataC = selectedEntity.value().GetComponent<MikuEngine::DataComponent>();
 
-				ImGui::TextUnformatted( "Entity" );
-				ImGui::SameLine();
-
+				// create a container to hold the name of the entity
 				char entityName[ 255 ];
-
 				std::copy( dataC.EntityName.begin(), dataC.EntityName.begin() + dataC.EntityName.length(), entityName );
 				entityName[ dataC.EntityName.length() ] = '\0';
 
+				// render the entity name
+				MikuEngine::ImGuiHelper::RenderLabel( "Entity" );
 				ImGui::InputText( "##DataComponent", entityName, 255 );
 
 				if ( ImGui::IsItemDeactivatedAfterEdit() ) dataC.EntityName = std::string( entityName );
 
 				ImGui::SameLine();
-
 				if ( ImGui::Button( "< DEL >" ) ) scene.AddEntityToDeleteQueue( selectedEntityUUID );
 			}
 

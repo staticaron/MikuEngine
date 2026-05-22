@@ -5,6 +5,7 @@
 #include "Components/StencilReaderComponent.h"
 #include "Components/StencilWriterComponent.h"
 #include "Entity.h"
+#include "Helpers/ImGuiHelper.h"
 
 namespace MikuEngine
 {
@@ -14,7 +15,12 @@ namespace MikuEngine
 
 		if ( ImGui::CollapsingHeader( "StencilReaderComponent", &keep ) )
 		{
-			ImGui::DragScalar( "Read Value", ImGuiDataType_U8, &stencilReaderC.ReadValue, 1 );
+			ImGuiHelper::StartPropertyTable();
+
+			ImGuiHelper::RenderTableItem( "Read Value", [ & ]() { ImGui::DragScalar( "##Read Value", ImGuiDataType_U8, &stencilReaderC.ReadValue, 1 ); } );
+			ImGuiHelper::RenderTableItem( "Respect Depth", [ & ]() { ImGui::Checkbox( "##Respect Depth", &stencilReaderC.RespectDepthBuffer ); } );
+
+			ImGuiHelper::EndPropertyTable();
 		};
 
 		if ( !keep ) entity.RemoveComponent<StencilReaderComponent>();
@@ -46,7 +52,11 @@ namespace MikuEngine
 
 		if ( ImGui::CollapsingHeader( "StencilWriterComponent", &keep ) )
 		{
-			ImGui::DragScalar( "Write Value", ImGuiDataType_U8, &stencilWriterC.WriteValue, 1 );
+			ImGuiHelper::StartPropertyTable();
+
+			ImGuiHelper::RenderTableItem( "Respect Depth", [ & ]() { ImGui::DragScalar( "Write Value", ImGuiDataType_U8, &stencilWriterC.WriteValue, 1 ); } );
+
+			ImGuiHelper::EndPropertyTable();
 		};
 
 		if ( !keep ) entity.RemoveComponent<StencilWriterComponent>();

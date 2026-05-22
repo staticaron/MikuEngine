@@ -75,10 +75,13 @@ namespace MikuEngine
 
 		if ( ImGui::CollapsingHeader( "SpriteRendererComponent", &keep ) )
 		{
+			ImGuiHelper::StartPropertyTable();
+
 			ImGuiHelper::RenderDragableTextureInput( "TextureIdentifier", spriteRendererC.TextureIdentifier, textureEditBtnCallback );
 			ImGuiHelper::RenderDragableMaterialInput( "SpriteMaterial", spriteRendererC.MaterialUUID, materialEditBtnCallback );
+			ImGuiHelper::RenderTableItem( "Tint", [ & ]() { ImGui::DragFloat4( "##Tint", &spriteRendererC.Tint.x ); } );
 
-			ImGui::DragFloat4( "Tint", &spriteRendererC.Tint.x );
+			ImGuiHelper::EndPropertyTable();
 		};
 
 		if ( !keep ) entity.RemoveComponent<SpriteRendererComponent>();

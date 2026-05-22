@@ -2,6 +2,7 @@
 
 #include "imgui.h"
 
+#include "Helpers/ImGuiHelper.h"
 #include "MikuEngine.h"
 #include "MikuEngine/Components/IDComponent.h"
 #include "MikuEngine/Components/NativeScriptComponent.h"
@@ -38,14 +39,17 @@ namespace MikuEngine
 
 		if ( ImGui::CollapsingHeader( "NativeScriptComponent", &keep ) )
 		{
-			char buff[ 128 ];
+			ImGuiHelper::StartPropertyTable();
 
+			char buff[ 128 ];
 			std::copy( nativeScriptComponent.ScriptIdentifier.begin(), nativeScriptComponent.ScriptIdentifier.begin() + nativeScriptComponent.ScriptIdentifier.length(), buff );
 			buff[ nativeScriptComponent.ScriptIdentifier.length() ] = '\0';
 
-			ImGui::InputText( "Script", buff, 128 );
+			ImGuiHelper::RenderTableItem( "Script", [ & ]() { ImGui::InputText( "##Script", buff, 128 ); } );
 
 			if ( buff != nativeScriptComponent.ScriptIdentifier.c_str() ) nativeScriptComponent.ScriptIdentifier = buff;
+
+			ImGuiHelper::EndPropertyTable();
 		}
 
 		if ( !keep ) entity.RemoveComponent<NativeScriptComponent>();
