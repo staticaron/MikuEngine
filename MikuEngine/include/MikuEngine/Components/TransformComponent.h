@@ -16,7 +16,7 @@ namespace MikuEngine
 		TransformComponent( const TransformComponent& ) = default;
 		TransformComponent( const glm::vec3& transform, const glm::vec3& rotation, const glm::vec3& scale ) : Position( transform ), Rotation( rotation ), Scale( scale ) {};
 
-		glm::vec3 Position{ 1.0f };
+		glm::vec3 Position{ 0.0f };
 		glm::vec3 Rotation{ 0.0f };
 		glm::vec3 Scale{ 1.0f };
 
