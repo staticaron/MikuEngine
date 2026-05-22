@@ -1,6 +1,7 @@
 #include "Helpers/ImGuiHelper.h"
 
 #include "Application.h"
+#include "imgui_internal.h"
 
 namespace MikuEngine
 {
@@ -21,29 +22,31 @@ namespace MikuEngine
 		ImGui::PushID( identifier.c_str() );
 
 		ImGui::Text( "Texture ( %s )", identifier.c_str() );
-		ImGui::SameLine();
-		DISABLED_IMGUI( ImGui::Button( textureName.c_str() ) );
-		ImGui::SameLine();
 
-		if ( ImGui::Button( "EDIT..." ) ) textureEditBtnCallback();
+		ImGuiHelper::RenderTableItem( "Texture ()", [ & ]() {
+			DISABLED_IMGUI( ImGui::Button( textureName.c_str() ) );
+			ImGui::SameLine();
 
-		if ( ImGui::BeginDragDropTarget() )
-		{
-			auto payload = ImGui::AcceptDragDropPayload( "TEXTURE_DRAG_DROP_PAYLOAD" );
+			if ( ImGui::Button( "EDIT..." ) ) textureEditBtnCallback();
 
-			if ( payload != nullptr )
+			if ( ImGui::BeginDragDropTarget() )
 			{
-				auto texturePath = static_cast<const char*>( payload->Data );
-				auto texture = textureManager.GetTextureByFilePath( texturePath );
-				if ( texture.has_value() )
-				{
-					wasChanged = true;
-					textureUUID = texture.value()->index.uuid;
-				}
-			}
+				auto payload = ImGui::AcceptDragDropPayload( "TEXTURE_DRAG_DROP_PAYLOAD" );
 
-			ImGui::EndDragDropTarget();
-		}
+				if ( payload != nullptr )
+				{
+					auto texturePath = static_cast<const char*>( payload->Data );
+					auto texture = textureManager.GetTextureByFilePath( texturePath );
+					if ( texture.has_value() )
+					{
+						wasChanged = true;
+						textureUUID = texture.value()->index.uuid;
+					}
+				}
+
+				ImGui::EndDragDropTarget();
+			}
+		} );
 
 		ImGui::PopID();
 
@@ -66,27 +69,26 @@ namespace MikuEngine
 
 		ImGui::PushID( identifier.c_str() );
 
-		ImGui::Text( "Model" );
-		ImGui::SameLine();
+		ImGuiHelper::RenderTableItem( "Model", [ & ]() {
+			DISABLED_IMGUI( ImGui::Button( modelName.c_str() ) );
+			ImGui::SameLine();
 
-		DISABLED_IMGUI( ImGui::Button( modelName.c_str() ) );
-		ImGui::SameLine();
+			if ( ImGui::Button( "EDIT..." ) ) modelEditBtnCallback();
 
-		if ( ImGui::Button( "EDIT..." ) ) modelEditBtnCallback();
-
-		if ( ImGui::BeginDragDropTarget() )
-		{
-			auto payload = ImGui::AcceptDragDropPayload( "MODEL_DRAG_DROP_PAYLOAD" );
-
-			if ( payload != nullptr )
+			if ( ImGui::BeginDragDropTarget() )
 			{
-				auto modelPath = static_cast<const char*>( payload->Data );
-				modelUUID = modelManager.GetModelByFilePath( modelPath ).index.uuid;
-				wasChanged = true;
-			}
+				auto payload = ImGui::AcceptDragDropPayload( "MODEL_DRAG_DROP_PAYLOAD" );
 
-			ImGui::EndDragDropTarget();
-		}
+				if ( payload != nullptr )
+				{
+					auto modelPath = static_cast<const char*>( payload->Data );
+					modelUUID = modelManager.GetModelByFilePath( modelPath ).index.uuid;
+					wasChanged = true;
+				}
+
+				ImGui::EndDragDropTarget();
+			}
+		} );
 
 		ImGui::PopID();
 
@@ -142,6 +144,20 @@ namespace MikuEngine
 		return wasChanged;
 	};
 
+	void ImGuiHelper::StartPropertyTable()
+	{
+		ImGui::SetCursorPosX( ImGui::GetCursorPosX() + 8.0f );
+		ImGui::BeginTable( "##Transform", 2 );
+
+		ImGui::TableSetupColumn( "Property Name", ImGuiTableColumnFlags_WidthStretch, 0.3 );
+		ImGui::TableSetupColumn( "Property Value", ImGuiTableColumnFlags_WidthStretch, 0.7 );
+	}
+
+	void ImGuiHelper::EndPropertyTable()
+	{
+		ImGui::EndTable();
+	}
+
 	bool ImGuiHelper::RenderDragableMaterialInput( const std::string& identifier, std::optional<UUID>& materialUUID, std::function<void()> materialEditBtnCallback )
 	{
 		bool wasChanged = false;
@@ -158,34 +174,53 @@ namespace MikuEngine
 
 		ImGui::PushID( identifier.c_str() );
 
-		ImGui::Text( "Material" );
-		ImGui::SameLine();
+		ImGuiHelper::RenderTableItem( "Material", [ & ]() {
+			DISABLED_IMGUI( ImGui::Button( materialName.c_str() ) );
+			ImGui::SameLine();
 
-		DISABLED_IMGUI( ImGui::Button( materialName.c_str() ) );
-		ImGui::SameLine();
+			if ( ImGui::Button( "EDIT..." ) ) materialEditBtnCallback();
 
-		if ( ImGui::Button( "EDIT..." ) ) materialEditBtnCallback();
-
-		if ( ImGui::BeginDragDropTarget() )
-		{
-			auto payload = ImGui::AcceptDragDropPayload( "MATERIAL_DRAG_DROP_PAYLOAD" );
-
-			if ( payload != nullptr )
+			if ( ImGui::BeginDragDropTarget() )
 			{
-				auto materialPath = static_cast<const char*>( payload->Data );
-				auto material = materialManager.GetMaterialByFilePath( materialPath );
-				if ( material.has_value() )
-				{
-					wasChanged = true;
-					materialUUID = material.value()->GetUUID();
-				}
-			}
+				auto payload = ImGui::AcceptDragDropPayload( "MATERIAL_DRAG_DROP_PAYLOAD" );
 
-			ImGui::EndDragDropTarget();
-		}
+				if ( payload != nullptr )
+				{
+					auto materialPath = static_cast<const char*>( payload->Data );
+					auto material = materialManager.GetMaterialByFilePath( materialPath );
+					if ( material.has_value() )
+					{
+						wasChanged = true;
+						materialUUID = material.value()->GetUUID();
+					}
+				}
+
+				ImGui::EndDragDropTarget();
+			}
+		} );
 
 		ImGui::PopID();
 
 		return wasChanged;
 	};
+
+	void ImGuiHelper::RenderLabel( const char* label )
+	{
+		ImGui::AlignTextToFramePadding();
+		ImGui::TextUnformatted( label );
+		ImGui::SameLine();
+	}
+
+	void ImGuiHelper::RenderTableItem( const char* label ) {}
+
+	void ImGuiHelper::RenderTableItem( const char* label, std::function<void()> itemFunc )
+	{
+		ImGui::TableNextRow();
+		ImGui::TableSetColumnIndex( 0 );
+		ImGui::TextUnformatted( label );
+
+		ImGui::TableSetColumnIndex( 1 );
+		ImGui::SetNextItemWidth( ImGui::GetContentRegionAvail().x );
+		itemFunc();
+	}
 }
