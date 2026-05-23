@@ -11,23 +11,27 @@ namespace MikuEditor
 	{
 		ComponentHeader( [ materialContainer ]() { return materialContainer.GetName(); }, [ materialContainer ]( std::string newName ) { MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().RenameAsset( materialContainer.index.uuid, newName ); } );
 
+		MikuEngine::ImGuiHelper::StartPropertyTable();
+
 		auto currentlySelected = materialContainer.material.GetBlendModeString();
 		const char* blendModes[]{ "Transparent", "Opaque" };
 
-		if ( ImGui::BeginCombo( "Blend Mode", currentlySelected.c_str() ) )
-		{
-			if ( ImGui::Selectable( "Transparent" ) )
+		MikuEngine::ImGuiHelper::RenderTableItem( "Blend Mode", [ & ]() {
+			if ( ImGui::BeginCombo( "##Blend Mode", currentlySelected.c_str() ) )
 			{
-				materialContainer.material.SetRenderOrderMode( MikuEngine::MaterialBlendMode::TRANSPARENT );
+				if ( ImGui::Selectable( "Transparent" ) )
+				{
+					materialContainer.material.SetRenderOrderMode( MikuEngine::MaterialBlendMode::TRANSPARENT );
+				}
+				if ( ImGui::Selectable( "Opaque" ) )
+				{
+					materialContainer.material.SetRenderOrderMode( MikuEngine::MaterialBlendMode::OPAQUE );
+				}
+				ImGui::EndCombo();
 			}
-			if ( ImGui::Selectable( "Opaque" ) )
-			{
-				materialContainer.material.SetRenderOrderMode( MikuEngine::MaterialBlendMode::OPAQUE );
-			}
-			ImGui::EndCombo();
-		}
+		} );
 
-		ImGui::DragScalar( "Render Order", ImGuiDataType_U32, &materialContainer.material.GetRenderOrder().order, 1 );
+		MikuEngine::ImGuiHelper::RenderTableItem( "Render Order", [ & ]() { ImGui::DragScalar( "##Render Order", ImGuiDataType_U32, &materialContainer.material.GetRenderOrder().order, 1 ); } );
 
 		auto& shaderManager = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
@@ -119,6 +123,8 @@ namespace MikuEditor
 				}
 			}
 		}
+
+		MikuEngine::ImGuiHelper::EndPropertyTable();
 
 		ImGui::Separator();
 		if ( MikuEngine::ImguiManager::FullWidthButton( "SAVE" ) )
