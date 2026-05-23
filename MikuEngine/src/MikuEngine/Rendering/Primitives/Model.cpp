@@ -10,7 +10,7 @@ namespace MikuEngine
 	void Model::LoadFromFile( const std::filesystem::path& filepath )
 	{
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile( filepath.c_str(), aiProcess_Triangulate );
+		const aiScene* scene = importer.ReadFile( filepath.c_str(), aiProcess_Triangulate | aiProcess_CalcTangentSpace );
 
 		if ( !scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode )
 		{
@@ -49,6 +49,9 @@ namespace MikuEngine
 
 			vertex.Position = { mesh->mVertices[ x ].x, mesh->mVertices[ x ].y, mesh->mVertices[ x ].z };
 			vertex.Normal = { mesh->mNormals[ x ].x, mesh->mNormals[ x ].y, mesh->mNormals[ x ].z };
+
+			vertex.Tangent = { mesh->mTangents[ x ].x, mesh->mTangents[ x ].y, mesh->mTangents[ x ].z };
+			vertex.BiTangent = { mesh->mBitangents[ x ].x, mesh->mBitangents[ x ].y, mesh->mBitangents[ x ].z };
 
 			if ( mesh->mTextureCoords[ 0 ] )
 				vertex.UV = { mesh->mTextureCoords[ 0 ][ x ].x, mesh->mTextureCoords[ 0 ][ x ].y };

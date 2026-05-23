@@ -19,6 +19,8 @@ namespace MikuEngine
 		m_VBL.Add<float>( 3 );
 		m_VBL.Add<float>( 3 );
 		m_VBL.Add<float>( 2 );
+		m_VBL.Add<float>( 3 );
+		m_VBL.Add<float>( 3 );
 
 		m_VA.Init();
 		m_VA.Setup( m_VB, m_VBL );
