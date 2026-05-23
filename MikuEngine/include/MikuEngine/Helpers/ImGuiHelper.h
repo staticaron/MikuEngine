@@ -20,6 +20,8 @@ namespace MikuEngine
 		static void EndPropertyTable();
 
 		static void RenderLabel( const char* label );
+		static void RenderLabel( const char* label, std::function<void()> itemFunc );
+
 		static void RenderTableItem( const char* label );
 		static void RenderTableItem( const char* label, std::function<void()> itemFunc );
 	};

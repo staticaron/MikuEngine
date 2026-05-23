@@ -21,9 +21,9 @@ namespace MikuEngine
 
 		ImGui::PushID( identifier.c_str() );
 
-		ImGui::Text( "Texture ( %s )", identifier.c_str() );
+		std::string name = std::format( "Texture ( {} )", identifier.c_str() );
 
-		ImGuiHelper::RenderTableItem( "Texture ()", [ & ]() {
+		ImGuiHelper::RenderTableItem( name.c_str(), [ & ]() {
 			DISABLED_IMGUI( ImGui::Button( textureName.c_str() ) );
 			ImGui::SameLine();
 
@@ -113,50 +113,35 @@ namespace MikuEngine
 
 		ImGui::PushID( identifier.c_str() );
 
-		ImGui::Text( "Shader" );
-		ImGui::SameLine();
+		ImGuiHelper::RenderTableItem( "Shader", [ & ]() {
+			DISABLED_IMGUI( ImGui::Button( shaderName.c_str() ) );
+			ImGui::SameLine();
 
-		DISABLED_IMGUI( ImGui::Button( shaderName.c_str() ) );
-		ImGui::SameLine();
+			if ( ImGui::Button( "EDIT..." ) ) shaderEditBtnCallback();
 
-		if ( ImGui::Button( "EDIT..." ) ) shaderEditBtnCallback();
-
-		if ( ImGui::BeginDragDropTarget() )
-		{
-			auto payload = ImGui::AcceptDragDropPayload( "SHADER_DRAG_DROP_PAYLOAD" );
-
-			if ( payload != nullptr )
+			if ( ImGui::BeginDragDropTarget() )
 			{
-				auto shaderPath = static_cast<const char*>( payload->Data );
-				auto shader = shaderManager.GetShaderByFilePath( shaderPath );
-				if ( shader.has_value() )
-				{
-					wasChanged = true;
-					shaderUUID = shader.value()->index.uuid;
-				}
-			}
+				auto payload = ImGui::AcceptDragDropPayload( "SHADER_DRAG_DROP_PAYLOAD" );
 
-			ImGui::EndDragDropTarget();
-		}
+				if ( payload != nullptr )
+				{
+					auto shaderPath = static_cast<const char*>( payload->Data );
+					auto shader = shaderManager.GetShaderByFilePath( shaderPath );
+					if ( shader.has_value() )
+					{
+						wasChanged = true;
+						shaderUUID = shader.value()->index.uuid;
+					}
+				}
+
+				ImGui::EndDragDropTarget();
+			}
+		} );
 
 		ImGui::PopID();
 
 		return wasChanged;
 	};
-
-	void ImGuiHelper::StartPropertyTable()
-	{
-		ImGui::SetCursorPosX( ImGui::GetCursorPosX() + 8.0f );
-		ImGui::BeginTable( "##Transform", 2 );
-
-		ImGui::TableSetupColumn( "Property Name", ImGuiTableColumnFlags_WidthStretch, 0.3 );
-		ImGui::TableSetupColumn( "Property Value", ImGuiTableColumnFlags_WidthStretch, 0.7 );
-	}
-
-	void ImGuiHelper::EndPropertyTable()
-	{
-		ImGui::EndTable();
-	}
 
 	bool ImGuiHelper::RenderDragableMaterialInput( const std::string& identifier, std::optional<UUID>& materialUUID, std::function<void()> materialEditBtnCallback )
 	{
@@ -204,7 +189,28 @@ namespace MikuEngine
 		return wasChanged;
 	};
 
+	void ImGuiHelper::StartPropertyTable()
+	{
+		ImGui::SetCursorPosX( ImGui::GetCursorPosX() + 8.0f );
+		ImGui::BeginTable( "##Transform", 2 );
+
+		ImGui::TableSetupColumn( "Property Name", ImGuiTableColumnFlags_WidthStretch, 0.3 );
+		ImGui::TableSetupColumn( "Property Value", ImGuiTableColumnFlags_WidthStretch, 0.7 );
+	}
+
+	void ImGuiHelper::EndPropertyTable()
+	{
+		ImGui::EndTable();
+	}
+
 	void ImGuiHelper::RenderLabel( const char* label )
+	{
+		ImGui::AlignTextToFramePadding();
+		ImGui::TextUnformatted( label );
+		ImGui::SameLine();
+	}
+
+	void ImGuiHelper::RenderLabel( const char* label, std::function<void()> itemFunc )
 	{
 		ImGui::AlignTextToFramePadding();
 		ImGui::TextUnformatted( label );
