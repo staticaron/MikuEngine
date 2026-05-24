@@ -94,6 +94,14 @@ namespace MikuEngine
 	}
 
 	template <>
+	inline void Shader::SetUniform<glm::vec2>( const std::string& uniformName, glm::vec2 value )
+	{
+		Bind();
+		auto uniformLocation = GetUniformLocation( uniformName );
+		glUniform2f( uniformLocation, value.x, value.y );
+	}
+
+	template <>
 	inline void Shader::SetUniform<glm::mat4>( const std::string& uniformName, glm::mat4 value )
 	{
 		Bind();
