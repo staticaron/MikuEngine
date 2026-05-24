@@ -57,14 +57,14 @@ namespace MikuEngine
 	{
 		bool wasChanged = false;
 
-		const auto& modelManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetModelManager();
+		auto& modelManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetModelManager();
 
 		std::string modelName = "<NONE>";
 
 		if ( modelUUID.has_value() )
 		{
 			auto model = modelManager.GetModel( modelUUID.value() );
-			modelName = model.index.Name;
+			if ( model.has_value() ) modelName = model.value()->index.GetName();
 		}
 
 		ImGui::PushID( identifier.c_str() );
@@ -82,7 +82,8 @@ namespace MikuEngine
 				if ( payload != nullptr )
 				{
 					auto modelPath = static_cast<const char*>( payload->Data );
-					modelUUID = modelManager.GetModelByFilePath( modelPath ).index.uuid;
+					auto modelContainer = modelManager.GetModelByFilePath( modelPath );
+					modelUUID = modelManager.GetModelByFilePath( modelPath ).value()->index.uuid;
 					wasChanged = true;
 				}
 
