@@ -3,6 +3,8 @@
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
 #include "assimp/scene.h"
+
+#include "Application.h"
 #include "Logger.h"
 
 namespace MikuEngine
@@ -74,4 +76,28 @@ namespace MikuEngine
 
 		return newMesh;
 	}
+
+	void Model::DeleteAsset()
+	{
+		MIKU_CORE_WARN( "Deleting Model!!" );
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().AddToDeleteQueue( m_UUID );
+	}
+
+	const std::filesystem::path& Model::GetPath() const
+	{
+		auto model = Application::GetAppLevelStuff().GetAssetPoolManager().GetModelManager().GetModel( m_UUID );
+		MIKU_ASSERT( model.has_value(), "This Shader with UUID doesn't exists!" );
+		return model.value()->index.path;
+	}
+
+	std::string Model::GetName() const
+	{
+		return GetPath().stem().string();
+	}
+
+	void Model::SetName( const std::string& newName )
+	{
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetModelManager().RenameAsset( m_UUID, newName );
+	}
+
 }
