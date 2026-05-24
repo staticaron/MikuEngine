@@ -2,3 +2,4 @@ uuid: 13619666807036518070
 properties:
   path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/skybox/cubemap1.jpg
   type: image
+  wrap: clamp

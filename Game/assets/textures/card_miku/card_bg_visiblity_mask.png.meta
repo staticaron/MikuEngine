@@ -2,3 +2,4 @@ uuid: 4427581552966695176
 properties:
   path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/card_miku/card_bg_visiblity_mask.png
   type: image
+  wrap: clamp

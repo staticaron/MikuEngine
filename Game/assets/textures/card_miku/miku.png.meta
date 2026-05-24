@@ -2,3 +2,4 @@ uuid: 15032282260613731364
 properties:
   path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/card_miku/miku.png
   type: image
+  wrap: clamp

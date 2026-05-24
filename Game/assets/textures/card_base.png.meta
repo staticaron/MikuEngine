@@ -2,3 +2,4 @@ uuid: 8904736964776437654
 properties:
   path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/card_base.png
   type: image
+  wrap: clamp

@@ -2,3 +2,4 @@ uuid: 12047856255820212010
 properties:
   path: /home/dev/EXTRAS/Projects/opengl/mikuengine/Game/assets/textures/lillie_fullart.png
   type: image
+  wrap: clamp

@@ -1,5 +1,0 @@
-shader: 6820925573296539459
-properties:
-  blend_mode: Opaque
-  render_order: 1
-  u_MainTex: !tex 15005922946686537122

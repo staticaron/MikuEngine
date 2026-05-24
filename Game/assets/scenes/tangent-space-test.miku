@@ -1,5 +1,18 @@
 scene: Untitled
 entities:
+  - id: 12700177170612305293
+    name: shine
+    parent: 7019615416172745999
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 8300491686496128949
+          material: <NONE>
   - id: 11405729650402989131
     name: card_stencil
     parent: 7019615416172745999
@@ -11,7 +24,7 @@ entities:
           scale: [1, 1, 1]
       - type: MeshRendererComponent
         values:
-          model: 8280085428981464432
+          model: 8300491686496128949
           material: 14325327348685277738
       - type: StencilWriterComponent
         values:
@@ -27,7 +40,7 @@ entities:
           scale: [1.1, 1.1, 1]
       - type: MeshRendererComponent
         values:
-          model: 8280085428981464432
+          model: 8300491686496128949
           material: 6629561886337955272
   - id: 5341610921650398972
     name: bg
@@ -40,7 +53,7 @@ entities:
           scale: [5, 5, 1]
       - type: MeshRendererComponent
         values:
-          model: 8280085428981464432
+          model: 8300491686496128949
           material: 3973412335096806480
       - type: StencilReaderComponent
         values:
@@ -125,7 +138,7 @@ entities:
           scale: [8.0000005e-05, 9.44e-05, 8.0000005e-05]
       - type: SkyboxComponent
         values:
-          model: 12781274577320664053
+          model: 14659183241214482176
           material: 12810041214926128130
   - id: 7836320548132550385
     name: card_frame
@@ -138,8 +151,8 @@ entities:
           scale: [1.1, 1.1, 1]
       - type: MeshRendererComponent
         values:
-          model: 8280085428981464432
-          material: 5143508532037467590
+          model: 8300491686496128949
+          material: 4635741506801261492
       - type: StencilWriterComponent
         values:
           write-value: 2
@@ -154,7 +167,7 @@ entities:
           scale: [1, 1, 1]
       - type: MeshRendererComponent
         values:
-          model: 8280085428981464432
+          model: 8300491686496128949
           material: 4675506282765626259
       - type: StencilReaderComponent
         values:
