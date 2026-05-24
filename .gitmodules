@@ -31,3 +31,6 @@
 	path = MikuEngine/vendor/ImGuizmo
 	url = https://github.com/CedricGuillemet/ImGuizmo.git
 	ignore = dirty
+[submodule "MikuEngine/vendor/gli"]
+	path = MikuEngine/vendor/gli
+	url = https://github.com/g-truc/gli.git
