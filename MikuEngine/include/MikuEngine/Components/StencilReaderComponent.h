@@ -11,6 +11,7 @@ namespace MikuEngine
 	{
 	public:
 		uint8_t ReadValue;
+		bool RespectDepthBuffer = false;
 
 	private:
 	};
