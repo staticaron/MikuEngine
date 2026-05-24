@@ -25,10 +25,10 @@ namespace MikuEngine
 
 			if ( modelUUID.has_value() == false ) continue;
 
-			const auto& model = modelManager.GetModel( skyboxC.ModelIdentifier.value() );
+			auto model = modelManager.GetModel( skyboxC.ModelIdentifier.value() );
+			if ( model.has_value() == false ) return;
 
 			Material* material = nullptr;
-
 			if ( skyboxC.MaterialIdentifier.has_value() == false ) continue;
 
 			auto materialContainer = materialManager.GetMaterial( skyboxC.MaterialIdentifier.value() );
@@ -49,7 +49,7 @@ namespace MikuEngine
 			glCullFace( GL_FRONT );
 			glDepthFunc( GL_LEQUAL );
 
-			for ( const auto& mesh : model.model.GetMeshes() )
+			for ( const auto& mesh : model.value()->model.GetMeshes() )
 			{
 				renderer.Draw( mesh.GetVA(), mesh.GetIB(), shader.value()->shader );
 			}
