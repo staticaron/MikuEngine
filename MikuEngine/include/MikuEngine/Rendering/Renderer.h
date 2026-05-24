@@ -2,7 +2,6 @@
 
 #include "Managers/UniformBufferManager.h"
 #include "Rendering/IndexBuffer.h"
-#include "Rendering/Primitives/Cube.h"
 #include "Rendering/Primitives/Quad.h"
 #include "Rendering/Shader.h"
 #include "Rendering/VertexArray.h"
@@ -21,13 +20,12 @@ namespace MikuEngine
 		static void DisableWriteToDepthBuffer();
 		static void EnableWriteToDepthBuffer();
 
-		const Quad& GetQuad() const { return m_QuadPrimitive; }
-		const Cube& GetCube() const { return m_CubePrimitive; }
+		const Quad& GetQuad() const { return m_Quad; }
+
 		UniformBufferManager& GetUniformBufferManager() { return m_UniformBufferManager; }
 
 	private:
-		Quad m_QuadPrimitive;
-		Cube m_CubePrimitive;
+		Quad m_Quad;
 
 		UniformBufferManager m_UniformBufferManager;
 	};
