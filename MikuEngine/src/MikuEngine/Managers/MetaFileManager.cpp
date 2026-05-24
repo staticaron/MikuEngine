@@ -3,8 +3,7 @@
 #include <filesystem>
 #include <fstream>
 
-#include "yaml-cpp/yaml.h"
-
+#include "Data/AssetType.h"
 #include "Logger.h"
 #include "UUID.h"
 
@@ -21,31 +20,47 @@ namespace MikuEngine
 
 			if ( MetaFileExists( file.path().string() ) ) continue;
 
-			GenerateMetaFile( file.path().string() );
+			GenerateMetaFile( file.path().string(), AssetType::NONE, {} );
 		}
 
 		MIKU_CORE_INFO( "Meta Files Refreshed!" );
 	}
 
-	void MetaFileManager::GenerateMetaFile( const std::string& filepath )
+	void MetaFileManager::GenerateMetaFile( const std::string& filepath, AssetType assetType, const YAML::Node& properties )
 	{
-		YAML::Emitter metaFileEmitter;
+		YAML::Node root;
 
-		metaFileEmitter << YAML::BeginMap;
+		root[ "uuid" ] = UUID().ToString();
 
-		metaFileEmitter << YAML::Key << "uuid" << YAML::Value << UUID();
+		root[ "properties" ][ "path" ] = filepath;
 
-		metaFileEmitter << YAML::Key << "properties" << YAML::Value << YAML::BeginMap;
+		switch ( assetType )
+		{
+		case AssetType::TEXTURE:
+			root[ "properties" ][ "type" ] = "texture";
+			break;
+		case AssetType::MATERIAL:
+			root[ "properties" ][ "type" ] = "material";
+			break;
+		case AssetType::SHADER:
+			root[ "properties" ][ "type" ] = "shader";
+			break;
+		case AssetType::MODEL:
+			root[ "properties" ][ "type" ] = "model";
+			break;
+		default:
+			root[ "properties" ][ "type" ] = "none";
+			break;
+		}
 
-		metaFileEmitter << YAML::Key << "path" << YAML::Value << filepath;
-		metaFileEmitter << YAML::Key << "type" << YAML::Value << "image";
-
-		metaFileEmitter << YAML::EndMap;
-
-		metaFileEmitter << YAML::EndMap;
+		for ( auto it = properties.begin(); it != properties.end(); it++ )
+		{
+			root[ "properties" ][ it->first ] = it->second;
+		}
 
 		std::ofstream metaFileStream( filepath + ".meta" );
-		metaFileStream << metaFileEmitter.c_str();
+		metaFileStream << root;
+		metaFileStream.close();
 	}
 
 	bool MetaFileManager::MetaFileExists( const std::string& filepath )
@@ -56,9 +71,18 @@ namespace MikuEngine
 	UUID MetaFileManager::GetUUIDFromMetaFile( const std::string& filepath )
 	{
 		auto metapath = filepath + ".meta";
-
 		YAML::Node metaNode = YAML::LoadFile( metapath );
-
 		return UUID( metaNode[ "uuid" ].as<std::string>() );
+	}
+
+	std::optional<YAML::Node> MetaFileManager::GetMetaFileNode( const std::filesystem::path& filepath )
+	{
+		if ( MetaFileManager::MetaFileExists( filepath ) )
+		{
+			auto metapath = filepath.string() + ".meta";
+			return YAML::LoadFile( metapath );
+		}
+
+		return std::nullopt;
 	}
 }

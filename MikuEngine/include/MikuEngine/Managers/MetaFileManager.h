@@ -6,11 +6,11 @@
 #include "yaml-cpp/yaml.h"
 
 #include "Core.h"
-#include "UUID.h"
 
 namespace MikuEngine
 {
 	class UUID;
+	enum class AssetType;
 }
 
 namespace MikuEngine
@@ -19,7 +19,7 @@ namespace MikuEngine
 	{
 	public:
 		static void RefreshMetaFiles();
-		static void GenerateMetaFile( const std::string& filepath );
+		static void GenerateMetaFile( const std::string& filepath, AssetType assetType, const YAML::Node& content );
 		static bool MetaFileExists( const std::string& filepath );
 
 		static UUID GetUUIDFromMetaFile( const std::string& filepath );
