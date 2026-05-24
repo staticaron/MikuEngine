@@ -117,10 +117,29 @@ namespace MikuEditor
 			for ( auto& [ uniformName, value ] : floats )
 			{
 				float newValue = value;
-				if ( ImGui::DragFloat( uniformName.c_str(), &newValue ) )
-				{
-					materialContainer.material.SetFloat( uniformName, newValue );
-				}
+				MikuEngine::ImGuiHelper::RenderTableItem( uniformName.c_str(), [ & ]() {
+					if ( ImGui::DragFloat( ( "##" + uniformName ).c_str(), &newValue ) )
+					{
+						materialContainer.material.SetFloat( uniformName, newValue );
+					}
+				} );
+			}
+
+			// Render Vec2s
+			//
+			//
+			auto& vec2s = materialContainer.material.GetVec2s();
+
+			for ( auto& [ uniformName, value ] : vec2s )
+			{
+				auto newValue = value;
+
+				MikuEngine::ImGuiHelper::RenderTableItem( uniformName.c_str(), [ & ]() {
+					if ( ImGui::DragFloat2( uniformName.c_str(), &newValue.x ) )
+					{
+						materialContainer.material.SetVec2( uniformName, newValue );
+					}
+				} );
 			}
 		}
 
