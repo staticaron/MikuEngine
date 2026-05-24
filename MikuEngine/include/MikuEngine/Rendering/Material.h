@@ -59,25 +59,18 @@ namespace MikuEngine
 		const std::unordered_map<std::string, UUID>& GetTextures() const { return m_Textures; }
 		const std::unordered_map<std::string, UUID>& GetCubemaps() const { return m_Cubemaps; }
 		const std::unordered_map<std::string, float>& GetFloats() const { return m_Floats; }
+		const std::unordered_map<std::string, glm::vec2>& GetVec2s() const { return m_Vec2s; }
 
 		RenderOrder& GetRenderOrder() { return m_RenderOrder; }
 		const RenderOrder& GetRenderOrder() const { return m_RenderOrder; }
-		std::string GetBlendModeString() const
-		{
-			switch ( m_RenderOrder.mode )
-			{
-			case MaterialBlendMode::TRANSPARENT:
-				return "TRANSPARENT";
-			default:
-				return "OPAQUE";
-			}
-		}
+		std::string GetBlendModeString() const;
 
 		void SetRenderOrderMode( MaterialBlendMode mode ) { m_RenderOrder.mode = mode; }
 
-		void SetTexture( std::string identifier, UUID uuid ) { m_Textures[ identifier ] = uuid; }
-		void SetCubemap( std::string identifier, UUID uuid ) { m_Cubemaps[ identifier ] = uuid; }
-		void SetFloat( std::string identifier, float value ) { m_Floats[ identifier ] = value; }
+		void SetTexture( const std::string& identifier, UUID uuid ) { m_Textures[ identifier ] = uuid; }
+		void SetCubemap( const std::string& identifier, UUID uuid ) { m_Cubemaps[ identifier ] = uuid; }
+		void SetFloat( const std::string& identifier, float value ) { m_Floats[ identifier ] = value; }
+		void SetVec2( const std::string& identifier, glm::vec2 value ) { m_Vec2s[ identifier ] = value; }
 
 	private:
 		void RefreshUniforms();
@@ -95,6 +88,7 @@ namespace MikuEngine
 		std::unordered_map<std::string, UUID> m_Textures;
 		std::unordered_map<std::string, UUID> m_Cubemaps;
 		std::unordered_map<std::string, float> m_Floats;
+		std::unordered_map<std::string, glm::vec2> m_Vec2s;
 		std::unordered_map<std::string, glm::vec4> m_Vec4s;
 		std::unordered_map<std::string, glm::mat4> m_Mat4s;
 	};

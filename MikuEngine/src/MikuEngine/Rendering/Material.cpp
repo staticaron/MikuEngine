@@ -5,6 +5,7 @@
 #include "yaml-cpp/yaml.h"
 
 #include "Application.h"
+#include "Helpers/SerializationHelper.h"
 #include "Logger.h"
 
 namespace MikuEngine
@@ -23,6 +24,7 @@ namespace MikuEngine
 	{
 		m_Textures.clear();
 		m_Floats.clear();
+		m_Vec2s.clear();
 		m_Vec4s.clear();
 		m_Mat4s.clear();
 		m_Cubemaps.clear();
@@ -43,6 +45,10 @@ namespace MikuEngine
 			}
 			case GL_FLOAT: {
 				m_Floats[ y.Name ] = 0.0f;
+				break;
+			}
+			case GL_FLOAT_VEC2: {
+				m_Vec2s[ y.Name ] = glm::vec2{};
 				break;
 			}
 			case GL_FLOAT_VEC4: {
@@ -116,6 +122,12 @@ namespace MikuEngine
 				UUID uuid( uuidStr );
 				m_Cubemaps[ name ] = uuid;
 			}
+			else if ( tag == "!vec2" )
+			{
+				glm::vec2 value;
+				DecodeVec2( it->second, value );
+				m_Vec2s[ name ] = value;
+			}
 			else if ( tag == "!float" )
 			{
 				float value = it->second.as<float>();
@@ -145,6 +157,9 @@ namespace MikuEngine
 		for ( const auto& [ name, value ] : m_Cubemaps )
 			emitter << YAML::Key << name << YAML::LocalTag( "cube" ) << YAML::Value << value.ToString();
 
+		for ( const auto& [ name, value ] : m_Vec2s )
+			emitter << YAML::Key << name << YAML::LocalTag( "vec2" ) << YAML::Flow << YAML::BeginSeq << value.x << value.y << YAML::EndSeq;
+
 		for ( const auto& [ name, value ] : m_Floats )
 			emitter << YAML::Key << name << YAML::LocalTag( "float" ) << YAML::Value << value;
 
@@ -171,6 +186,10 @@ namespace MikuEngine
 		// Handle Floats
 		for ( const auto& [ name, value ] : m_Floats )
 			shader.value()->shader.SetUniform<float>( name, value );
+
+		// Handle Vec2s
+		for ( const auto& [ name, value ] : m_Vec2s )
+			shader.value()->shader.SetUniform<glm::vec2>( name, value );
 
 		// Handle Textures
 		unsigned int textureID = 1;
@@ -251,6 +270,17 @@ namespace MikuEngine
 	{
 		m_Shader = uuid;
 		RefreshUniforms();
+	}
+
+	std::string Material::GetBlendModeString() const
+	{
+		switch ( m_RenderOrder.mode )
+		{
+		case MaterialBlendMode::TRANSPARENT:
+			return "TRANSPARENT";
+		default:
+			return "OPAQUE";
+		}
 	}
 
 	void Material::DeleteAsset()
