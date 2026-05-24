@@ -57,6 +57,8 @@ namespace MikuEngine
 		bool ShaderExists( const UUID& uuid ) const;
 		void RenameAssetCleanup( const UUID& uuid, const std::string& newName ) override;
 
+		static YAML::Node GetShaderProperties( Shader* shader );
+
 	private:
 		void PrepareShaderIndex();
 		void LoadDefaultShaders();

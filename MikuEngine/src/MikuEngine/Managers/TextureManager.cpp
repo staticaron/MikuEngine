@@ -45,7 +45,7 @@ namespace MikuEngine
 		Cubemap cubemap;
 		cubemap.LoadFromFile( PROJECT_DIR "/textures/skybox/cubemap.jpg" );
 
-		UUID uuid( "383580535966673394" );
+		UUID uuid( "3583395674924388584" );
 		m_Cubemaps[ uuid ] = CubemapContainer{ uuid, cubemap };
 
 		MIKU_CORE_INFO( "Loaded Cubemap @ {}", m_Cubemaps[ uuid ].uuid.ToString() );
@@ -92,7 +92,7 @@ namespace MikuEngine
 		for ( auto& file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/textures/" ) )
 		{
 			if ( file.path().extension() == ".meta" ) continue;
-			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
+			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::TEXTURE, TextureManager::GetTextureProperties( {} ) );
 
 			if ( file.is_directory() ) continue;
 
@@ -104,7 +104,7 @@ namespace MikuEngine
 		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/textures/" ) )
 		{
 			if ( file.path().extension() == ".meta" ) continue;
-			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
+			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::TEXTURE, TextureManager::GetTextureProperties( {} ) );
 
 			if ( file.is_directory() ) continue;
 
@@ -245,5 +245,32 @@ namespace MikuEngine
 		if ( existing != m_Textures.end() ) return true;
 
 		return false;
+	}
+
+	YAML::Node TextureManager::GetTextureProperties( std::optional<Texture*> texture )
+	{
+		YAML::Node properties;
+
+		// return the default texture meta file properties
+		if ( !texture.has_value() )
+		{
+			properties[ "wrap" ] = "clamp";
+			return properties;
+		}
+
+		// return the properties of the texture provided
+		switch ( texture.value()->GetWrapMode() )
+		{
+		case TextureWrapMode::REPEAT:
+			properties[ "wrap" ] = "repeat";
+			break;
+		case TextureWrapMode::CLAMP:
+			properties[ "wrap" ] = "clamp";
+			break;
+		default:
+			properties[ "wrap" ] = "clamp";
+		}
+
+		return properties;
 	}
 }

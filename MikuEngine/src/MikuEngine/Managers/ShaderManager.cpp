@@ -122,7 +122,7 @@ namespace MikuEngine
 		for ( auto& file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/shaders/" ) )
 		{
 			if ( file.path().extension() != ".shader" ) continue;
-			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
+			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::SHADER, GetShaderProperties( nullptr ) );
 
 			if ( file.is_directory() ) continue;
 
@@ -134,7 +134,7 @@ namespace MikuEngine
 		{
 			if ( file.path().extension() != ".shader" ) continue;
 
-			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
+			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::SHADER, GetShaderProperties( nullptr ) );
 
 			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
 			m_ShaderIndex[ uuid ] = { uuid, file.path().string() };
@@ -210,5 +210,10 @@ namespace MikuEngine
 	const std::string& ShaderManager::GetShaderIncludeCode( const std::string& identifier ) const
 	{
 		return m_ShaderIncludes.at( identifier );
+	}
+
+	YAML::Node ShaderManager::GetShaderProperties( Shader* shader )
+	{
+		return {};
 	}
 }

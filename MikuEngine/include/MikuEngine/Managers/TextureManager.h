@@ -70,6 +70,8 @@ namespace MikuEngine
 		void RenameAssetCleanup( const UUID& uuid, const std::string& newName );
 		void DeleteAssetCleanup( const UUID& uuid );
 
+		static YAML::Node GetTextureProperties( std::optional<Texture*> texture );
+
 	private:
 		const std::unordered_map<UUID, TextureIndexEntry>& GetTextureIndex() const;
 

@@ -24,7 +24,6 @@ namespace MikuEngine
 		Material material;
 
 		std::string GetName() const { return index.path.stem().string(); }
-
 		void SetName( const std::string& newName )
 		{
 			std::filesystem::path newFilePath = index.path.parent_path() / ( newName + index.path.extension().string() );
@@ -45,16 +44,18 @@ namespace MikuEngine
 		void RefreshMaterialIndex();
 		void RefreshMaterials();
 
-		const std::unordered_map<UUID, MaterialContainer> GetAllLoadedMaterials() const;
-
 		std::optional<MaterialContainer*> GetMaterial( const UUID& uuid );
-		bool MaterialExists( const UUID& uuid ) const;
-
+		const std::unordered_map<UUID, MaterialContainer> GetAllLoadedMaterials() const;
 		std::optional<Material*> GetMaterialByFilePath( const std::string& filepath );
-
 		const std::filesystem::path& GetFilePathFromUUID( const UUID& uuid ) override;
 
+		bool MaterialExists( const UUID& uuid ) const;
+
 		void RenameAssetCleanup( const UUID& uuid, const std::string& newName ) override;
+
+		static YAML::Node GetMaterialProperties( Material* material );
+
+	private:
 		void DeleteAssetCleanup( const UUID& uuid ) override;
 
 	private:

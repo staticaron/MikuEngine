@@ -55,7 +55,7 @@ namespace MikuEngine
 		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/materials/" ) )
 		{
 			if ( file.path().extension() == ".meta" ) continue;
-			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
+			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::MATERIAL, GetMaterialProperties( nullptr ) );
 
 			if ( file.is_directory() ) continue;
 
@@ -80,7 +80,7 @@ namespace MikuEngine
 		{
 			if ( file.is_directory() ) continue;
 			if ( file.path().extension() == ".meta" ) continue;
-			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string() );
+			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::MATERIAL, GetMaterialProperties( nullptr ) );
 
 			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
 
@@ -174,5 +174,10 @@ namespace MikuEngine
 		}
 
 		if ( count > 0 ) MIKU_CORE_DEBUG( "Material Cleanup Successful! {} Materials Deleted!", count );
+	}
+
+	YAML::Node MaterialManager::GetMaterialProperties( Material* material )
+	{
+		return {};
 	}
 }
