@@ -1,5 +1,5 @@
-uuid: 9702185733994053337
+uuid: 8761010698127980598
 properties:
-  path: /home/dev/EXTRAS/Projects/opengl/mikuengine/Game/assets/textures/copycat_fullart.png
-  type: image
+  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/copycat_fullart.png
+  type: texture
   wrap: clamp

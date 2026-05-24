@@ -1,4 +1,4 @@
-uuid: 2670866218237688430
+uuid: 601914970805003253
 properties:
-  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/shaders/gigaNewShader.shader
-  type: image
+  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/shaders/card-lit.shader
+  type: shader

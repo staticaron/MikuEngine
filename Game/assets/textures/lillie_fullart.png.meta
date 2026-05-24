@@ -1,5 +1,5 @@
-uuid: 12047856255820212010
+uuid: 8657658104147275915
 properties:
-  path: /home/dev/EXTRAS/Projects/opengl/mikuengine/Game/assets/textures/lillie_fullart.png
-  type: image
+  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/lillie_fullart.png
+  type: texture
   wrap: clamp

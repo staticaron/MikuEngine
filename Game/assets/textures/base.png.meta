@@ -1,5 +1,5 @@
-uuid: 3280946449159469236
+uuid: 16606666745178235795
 properties:
-  path: /home/dev/EXTRAS/Projects/RhythmGame/SampleProject/assets/textures/base.png
-  type: image
+  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/base.png
+  type: texture
   wrap: clamp

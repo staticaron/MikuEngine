@@ -1,5 +1,5 @@
-shader: 44793727515533470
+shader: 13724333462688571296
 properties:
   blend_mode: TRANSPARENT
   render_order: 2
-  u_Tex: !tex 12355015104142022568
+  u_Tex: !tex 6843777520578490063

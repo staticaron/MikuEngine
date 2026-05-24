@@ -1,5 +1,5 @@
-uuid: 11115838000722960990
+uuid: 9686471529887804088
 properties:
-  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/card_miku/card_mask.png
-  type: image
+  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/card_mask.png
+  type: texture
   wrap: clamp

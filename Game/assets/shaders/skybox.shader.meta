@@ -1,4 +1,4 @@
-uuid: 1555037700461531915
+uuid: 17377382577074963826
 properties:
-  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/shaders/gigaNewShader.shader
-  type: image
+  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/shaders/skybox.shader
+  type: shader

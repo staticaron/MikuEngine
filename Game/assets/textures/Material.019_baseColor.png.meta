@@ -1,5 +1,5 @@
-uuid: 7690236634686537010
+uuid: 2174362289562777851
 properties:
   path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/Material.019_baseColor.png
-  type: image
+  type: texture
   wrap: clamp

@@ -1,4 +1,5 @@
-uuid: 6213883911684919606
+uuid: 6556351564698993710
 properties:
   path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/skybox
-  type: image
+  type: texture
+  wrap: clamp

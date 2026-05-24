@@ -1,4 +1,4 @@
-uuid: 4635741506801261492
+uuid: 5389898690872153894
 properties:
-  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/materials/gigaNewMat.mat
-  type: image
+  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/materials/tangent-space-test.mat
+  type: material

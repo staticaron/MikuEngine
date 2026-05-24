@@ -1,4 +1,4 @@
-uuid: 12810041214926128130
+uuid: 13971799613920123514
 properties:
-  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/materials/gigaNewMat.mat
-  type: image
+  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/materials/skybox.mat
+  type: material

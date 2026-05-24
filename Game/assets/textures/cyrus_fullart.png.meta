@@ -1,5 +1,5 @@
-uuid: 7083495179026679318
+uuid: 2356877092977057876
 properties:
-  path: /home/dev/EXTRAS/Projects/opengl/mikuengine/Game/assets/textures/cyrus_fullart.png
-  type: image
+  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/cyrus_fullart.png
+  type: texture
   wrap: clamp

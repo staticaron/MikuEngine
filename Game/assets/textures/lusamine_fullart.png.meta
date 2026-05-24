@@ -1,5 +1,5 @@
-uuid: 14934649494355436187
+uuid: 4897005993170477892
 properties:
-  path: /home/dev/EXTRAS/Projects/opengl/mikuengine/Game/assets/textures/lusamine_fullart.png
-  type: image
+  path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/lusamine_fullart.png
+  type: texture
   wrap: clamp

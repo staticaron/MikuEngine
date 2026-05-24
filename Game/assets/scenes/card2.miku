@@ -11,8 +11,8 @@ entities:
           scale: [1, 1, 1]
       - type: MeshRendererComponent
         values:
-          model: 8300491686496128949
-          material: 14325327348685277738
+          model: 1915813061935218518
+          material: 1754209554282018387
       - type: StencilWriterComponent
         values:
           write-value: 1
@@ -27,8 +27,8 @@ entities:
           scale: [1.1, 1.1, 1]
       - type: MeshRendererComponent
         values:
-          model: 8300491686496128949
-          material: 6629561886337955272
+          model: 1915813061935218518
+          material: 2394650382028341128
   - id: 5341610921650398972
     name: bg
     parent: 7019615416172745999
@@ -40,8 +40,8 @@ entities:
           scale: [5, 5, 1]
       - type: MeshRendererComponent
         values:
-          model: 8300491686496128949
-          material: 3973412335096806480
+          model: 1915813061935218518
+          material: 6915131660042391314
       - type: StencilReaderComponent
         values:
           read-value: 1
@@ -113,7 +113,7 @@ entities:
           color: [1, 1, 1]
           intensity: 0.5
           ambient_intensity: 0.5
-          specular_strength: 61
+          specular_strength: 30
   - id: 3060057868339434160
     name: Skybox
     parent: 14945765670410513562
@@ -125,8 +125,8 @@ entities:
           scale: [8.0000005e-05, 9.44e-05, 8.0000005e-05]
       - type: SkyboxComponent
         values:
-          model: 14659183241214482176
-          material: 12810041214926128130
+          model: 13586518337506870339
+          material: 13971799613920123514
   - id: 7836320548132550385
     name: card_frame
     parent: 7019615416172745999
@@ -138,8 +138,8 @@ entities:
           scale: [1.1, 1.1, 1]
       - type: MeshRendererComponent
         values:
-          model: 8300491686496128949
-          material: 5143508532037467590
+          model: 1915813061935218518
+          material: 15183970828633572275
       - type: StencilWriterComponent
         values:
           write-value: 2
@@ -154,8 +154,8 @@ entities:
           scale: [1, 1, 1]
       - type: MeshRendererComponent
         values:
-          model: 8300491686496128949
-          material: 4675506282765626259
+          model: 1915813061935218518
+          material: 5377454607730399584
       - type: StencilReaderComponent
         values:
           read-value: 2

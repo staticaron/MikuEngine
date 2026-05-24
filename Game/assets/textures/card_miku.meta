@@ -1,5 +1,5 @@
-uuid: 15153462993493012186
+uuid: 6644452826361705633
 properties:
   path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/card_miku
-  type: image
+  type: texture
   wrap: clamp
