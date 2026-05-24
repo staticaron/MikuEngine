@@ -1,7 +1,6 @@
 #include "Panels/AssetBrowserPanel.h"
 
 #include <filesystem>
-#include <iostream>
 
 #include "imgui.h"
 
@@ -127,9 +126,20 @@ namespace MikuEditor
 		auto relativePath = std::filesystem::relative( filePath, m_RootAssetLocation );
 		auto assetType = appLevelStuff.GetAssetPoolManager().GetAssetTypeFromFileExtension( relativePath.extension() );
 
-		auto iconTexture = m_IconTextures.at( assetType );
+		const MikuEngine::Texture* iconTexture = nullptr;
 
-		if ( ImGui::ImageButton( filePath.c_str(), iconTexture.GetRendererID(), { static_cast<float>( m_IconSize ), static_cast<float>( m_IconSize ) }, { 0, 1 }, { 1, 0 } ) )
+		if ( assetType == MikuEngine::AssetType::TEXTURE )
+		{
+			auto textureFetch = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath );
+			if ( textureFetch.has_value() )
+				iconTexture = &textureFetch.value()->texture;
+			else
+				iconTexture = &m_IconTextures.at( assetType );
+		}
+		else
+			iconTexture = &m_IconTextures.at( assetType );
+
+		if ( ImGui::ImageButton( filePath.c_str(), iconTexture->GetRendererID(), { static_cast<float>( m_IconSize ), static_cast<float>( m_IconSize ) }, { 0, 1 }, { 1, 0 } ) )
 		{
 			std::optional<MikuEngine::UUID> assetUUID = std::nullopt;
 
@@ -144,7 +154,7 @@ namespace MikuEditor
 				break;
 			}
 			case MikuEngine::AssetType::MODEL: {
-				assetUUID = appLevelStuff.GetAssetPoolManager().GetModelManager().GetModelByFilePath( filePath.string() ).index.uuid;
+				assetUUID = appLevelStuff.GetAssetPoolManager().GetModelManager().GetModelByFilePath( filePath.string() ).value()->index.uuid;
 				break;
 			}
 			case MikuEngine::AssetType::SCENE:
