@@ -1,4 +1,4 @@
-uuid: 6820925573296539459
+uuid: 6332288396833984049
 properties:
   path: /home/dev/EXTRAS/Projects/mikuengine/MikuEngine/assets/shaders/default-2d.shader
-  type: image
+  type: shader

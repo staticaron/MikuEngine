@@ -1,4 +1,4 @@
-uuid: 4905721909621046676
+uuid: 9865735929510716675
 properties:
   path: /home/dev/EXTRAS/Projects/mikuengine/MikuEngine/assets/shaders/default-3d-lit.shader
-  type: image
+  type: shader

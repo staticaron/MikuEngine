@@ -1,4 +1,5 @@
-uuid: 5134847735894954144
+uuid: 9364553309836617376
 properties:
   path: /home/dev/EXTRAS/Projects/mikuengine/MikuEngine/assets/textures/default_tex.png
-  type: image
+  type: texture
+  wrap: clamp

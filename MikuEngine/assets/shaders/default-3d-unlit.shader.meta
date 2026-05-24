@@ -1,4 +1,4 @@
-uuid: 44793727515533470
+uuid: 13724333462688571296
 properties:
   path: /home/dev/EXTRAS/Projects/mikuengine/MikuEngine/assets/shaders/default-3d-unlit.shader
-  type: image
+  type: shader
