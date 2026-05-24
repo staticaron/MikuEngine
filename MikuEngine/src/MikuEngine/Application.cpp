@@ -3,17 +3,10 @@
 #include <chrono>
 
 #include "GLFW/glfw3.h"
-#include "glm/ext/matrix_clip_space.hpp"
-#include "glm/ext/matrix_transform.hpp"
-#include "imgui.h"
 
 #include "Error.h"
 #include "Layer.h"
 #include "Logger.h"
-#include "Rendering/Primitives/Vertex.h"
-#include "Rendering/Shader.h"
-#include "Rendering/VertexBuffer.h"
-#include "Rendering/VertexBufferLayout.h"
 
 namespace MikuEngine
 {
@@ -39,86 +32,6 @@ namespace MikuEngine
 	AppLevelStuff& Application::GetAppLevelStuff()
 	{
 		return s_Application->m_AppLevelStuff;
-	}
-
-	void Application::RenderTemp()
-	{
-		std::array<Vertex, 4> Verts = Quad::GetVerts();
-		std::array<unsigned int, 6> Indices = { 0, 1, 2, 2, 3, 0 };
-
-		VertexBuffer vb;
-		vb.Init( sizeof( Vertex ) * 4, nullptr );
-
-		IndexBuffer ib;
-		ib.Init( 6, nullptr );
-
-		VertexBufferLayout vbl;
-
-		VertexArray va;
-		va.Init();
-
-		vbl.Add<float>( 3 );
-		vbl.Add<float>( 2 );
-
-		va.Setup( vb, vbl );
-
-		Shader shader;
-		shader.LoadFromFile( RESOURCE_DIR "/shaders/base.shader" );
-
-		vb.PutData( Verts.data(), Verts.size() * sizeof( Vertex ) );
-		ib.PutData( Indices.data(), Indices.size() );
-
-		glm::vec3 position{};
-		glm::vec3 rotation{};
-		glm::vec3 scale{ 300.0f };
-
-		while ( !glfwWindowShouldClose( m_Window ) )
-		{
-			m_SceneFBO.Bind();
-
-			glClearColor( 0, 1, 1, 1 );
-			glClear( GL_COLOR_BUFFER_BIT );
-
-			glm::mat4 proj = glm::ortho( 0.0f, GetDataContainer().GetViewportSize().x, GetDataContainer().GetViewportSize().y, 0.0f, -1000.0f, 1000.0f );
-			glm::mat4 view = glm::mat4( 1.0f );
-
-			glm::mat4 transformMat = glm::translate( glm::mat4( 1.0f ), position );
-			glm::mat4 rotationMat = glm::rotate( glm::mat4( 1.0f ), 0.0f, glm::vec3( 1.0f ) );
-			glm::mat4 scaleMat = glm::scale( glm::mat4( 1.0f ), scale );
-			glm::mat4 model = transformMat * rotationMat * scaleMat;
-
-			glm::mat4 mvp = proj * view * model;
-
-			shader.SetUniform<glm::mat4>( "u_MVP", mvp );
-
-			auto texture = m_AppLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByName( "miku" );
-			texture.value()->texture.Bind( 0 );
-
-			shader.SetUniform<unsigned int>( "u_Tex", 0 );
-
-			m_AppLevelStuff.GetRenderer().Draw( va, ib, shader );
-
-			m_SceneFBO.UnBind();
-
-			glClearColor( 0.0f, 0.5f, 0.5f, 1 );
-			glClear( GL_COLOR_BUFFER_BIT );
-
-			m_AppLevelStuff.GetImGuiManager().PrepareFrame();
-
-			ImGui::Begin( "Settings" );
-
-			ImGui::DragFloat3( "Position", &position[ 0 ] );
-			ImGui::DragFloat3( "Rotation", &rotation[ 0 ] );
-			ImGui::DragFloat3( "Scale", &scale[ 0 ] );
-
-			ImGui::End();
-
-			m_AppLevelStuff.GetImGuiManager().RenderFrameBuffer( m_SceneFBO );
-			m_AppLevelStuff.GetImGuiManager().RenderFrame();
-
-			glfwPollEvents();
-			glfwSwapBuffers( m_Window );
-		}
 	}
 
 	void Application::Init()

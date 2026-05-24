@@ -49,7 +49,6 @@ namespace MikuEngine
 		GameFBO& GetGameFBO() { return m_GameFBO; }
 
 	private:
-		void RenderTemp();
 		void CalculateDT();
 		void Update();
 		void Render();
