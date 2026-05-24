@@ -4,6 +4,8 @@
 #include <string>
 #include <unordered_map>
 
+#include "yaml-cpp/yaml.h"
+
 #include "AssetManagerBase.h"
 #include "Core.h"
 #include "Rendering/Shader.h"

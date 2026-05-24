@@ -51,11 +51,6 @@ namespace MikuEngine
 		auto& materialManager = appLevelStuff.GetAssetPoolManager().GetMaterialManager();
 		auto& modelManager = appLevelStuff.GetAssetPoolManager().GetModelManager();
 
-		if ( blendMode == MaterialBlendMode::TRANSPARENT )
-			MIKU_CORE_INFO( "Rendering TRANSPARENT=======================" );
-		else if ( blendMode == MaterialBlendMode::OPAQUE )
-			MIKU_CORE_INFO( "Rendering OPAQUE=======================" );
-
 		// DISABLE WRITING TO DEPTH BUFFER WHEN RENDERING TRANSPARENT MESHES
 		if ( blendMode == MaterialBlendMode::TRANSPARENT ) renderer.DisableWriteToDepthBuffer();
 
@@ -63,7 +58,8 @@ namespace MikuEngine
 		{
 			const auto& modelUUID = distancedEntity.meshRendererC->ModelIdentifier;
 			if ( modelUUID.has_value() == false ) continue;
-			const auto& model = modelManager.GetModel( distancedEntity.meshRendererC->ModelIdentifier.value() );
+			auto model = modelManager.GetModel( distancedEntity.meshRendererC->ModelIdentifier.value() );
+			if ( model.has_value() == false ) continue;
 
 			Material material = distancedEntity.materialContainer->material;
 
@@ -71,7 +67,7 @@ namespace MikuEngine
 
 			auto shader = material.GetShader();
 
-			if ( shader.has_value() == false ) return;
+			if ( shader.has_value() == false ) continue;
 
 			shader.value()->shader.SetUniform<glm::mat4>( "u_Model", distancedEntity.transformMatrix );
 
@@ -106,7 +102,7 @@ namespace MikuEngine
 			}
 
 			// Render all the meshes in the model
-			for ( const auto& mesh : model.model.GetMeshes() )
+			for ( const auto& mesh : model.value()->model.GetMeshes() )
 			{
 				renderer.Draw( mesh.GetVA(), mesh.GetIB(), shader.value()->shader );
 			}
@@ -117,9 +113,6 @@ namespace MikuEngine
 				glDisable( GL_STENCIL_TEST );
 				glEnable( GL_DEPTH_TEST );
 			};
-
-			auto& dataC = scene.GetRegistry().get<DataComponent>( distancedEntity.entt );
-			MIKU_CORE_INFO( "Rendering {} {} {}", dataC.EntityName, material.GetRenderOrder().order, distancedEntity.distanceFromCamera );
 		}
 
 		if ( blendMode == MaterialBlendMode::TRANSPARENT ) renderer.EnableWriteToDepthBuffer();

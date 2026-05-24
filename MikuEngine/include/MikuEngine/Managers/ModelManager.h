@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <optional>
 
+#include "yaml-cpp/yaml.h"
+
 #include "Core.h"
 #include "Data/DefaultModelType.h"
 #include "Managers/AssetManagerBase.h"
