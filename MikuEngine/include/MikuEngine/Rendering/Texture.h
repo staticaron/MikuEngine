@@ -8,6 +8,12 @@
 
 namespace MikuEngine
 {
+	enum class TextureWrapMode
+	{
+		CLAMP,
+		REPEAT
+	};
+
 	class MIKU_API Texture : Asset
 	{
 	public:
@@ -23,6 +29,7 @@ namespace MikuEngine
 
 		UUID GetUUID() const { return m_UUID; }
 		unsigned int GetRendererID() const { return m_RendererID; }
+		TextureWrapMode GetWrapMode() const { return m_WrapMode; }
 
 		const std::filesystem::path& GetPath() const override;
 		std::string GetName() const override;
@@ -36,5 +43,7 @@ namespace MikuEngine
 		unsigned int m_RendererID = 0;
 		int m_Width = -1, m_Height = -1;
 		int m_Channels = -1;
+
+		TextureWrapMode m_WrapMode = TextureWrapMode::CLAMP;
 	};
 }
