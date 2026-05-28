@@ -21,7 +21,7 @@ namespace MikuEditor
 
 		auto children = parentChildren[ currentUUID ];
 
-		if ( children.size() == 0 ) treeNodeFlags |= ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_DrawLinesFull | ImGuiTreeNodeFlags_Leaf;
+		if ( children.size() == 0 ) treeNodeFlags |= ImGuiTreeNodeFlags_DrawLinesFull | ImGuiTreeNodeFlags_Leaf;
 
 		bool nodeOpen = ImGui::TreeNodeEx( entity.value().GetNamedIdentifier().c_str(), treeNodeFlags );
 
