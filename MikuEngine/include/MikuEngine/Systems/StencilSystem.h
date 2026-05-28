@@ -16,10 +16,14 @@ namespace MikuEngine
 	class MIKU_API StencilSystem
 	{
 	public:
+		static void StartStencilReading( const StencilReaderComponent& stencilReaderC );
+		static void StopStencilReading( const StencilReaderComponent& stencilReaderC );
 		static void StencilReaderRenderImGui( Entity entity, StencilReaderComponent& spriteRendererC );
 		static void SerializeStencilReader( const Entity& entity, YAML::Emitter& emitter );
 		static void DeSerializeStencilReader( StencilReaderComponent& spriteRendererC, const YAML::Node& node );
 
+		static void StartStencilWriting( const StencilWriterComponent& stencilwriterc );
+		static void StopStencilWriting( const StencilWriterComponent& stencilReaderC );
 		static void StencilWriterRenderImGui( Entity entity, StencilWriterComponent& spriteRendererC );
 		static void SerializeStencilWriter( const Entity& entity, YAML::Emitter& emitter );
 		static void DeSerializeStencilWriter( StencilWriterComponent& spriteRendererC, const YAML::Node& node );

@@ -2,6 +2,8 @@
 
 #include "imgui.h"
 
+#include "glad/glad.h"
+
 #include "Components/StencilReaderComponent.h"
 #include "Components/StencilWriterComponent.h"
 #include "Entity.h"
@@ -9,6 +11,24 @@
 
 namespace MikuEngine
 {
+	void StencilSystem::StartStencilReading( const StencilReaderComponent& stencilReaderC )
+	{
+		glEnable( GL_STENCIL_TEST );
+		glStencilFunc( GL_EQUAL, stencilReaderC.ReadValue, 0xFF );
+		glStencilOp( GL_KEEP, GL_KEEP, GL_KEEP );
+		glStencilMask( 0x00 );
+
+		if ( stencilReaderC.RespectDepthBuffer == false ) glDisable( GL_DEPTH_TEST );
+	}
+
+	void StencilSystem::StopStencilReading( const StencilReaderComponent& stencilReaderC )
+	{
+		glDisable( GL_STENCIL_TEST );
+		glStencilMask( 0xFF );
+
+		if ( stencilReaderC.RespectDepthBuffer == false ) glEnable( GL_DEPTH_TEST );
+	}
+
 	void StencilSystem::StencilSystem::StencilReaderRenderImGui( Entity entity, StencilReaderComponent& stencilReaderC )
 	{
 		bool keep = true;
@@ -44,6 +64,20 @@ namespace MikuEngine
 	{
 		uint8_t stencilReadValue = node[ "read-value" ].as<uint8_t>();
 		stencilReaderC.ReadValue = stencilReadValue;
+	}
+
+	void StencilSystem::StartStencilWriting( const StencilWriterComponent& stencilWriterC )
+	{
+		glEnable( GL_STENCIL_TEST );
+		glStencilFunc( GL_ALWAYS, stencilWriterC.WriteValue, 0xFF );
+		glStencilOp( GL_KEEP, GL_KEEP, GL_REPLACE );
+		glStencilMask( 0xFF );
+	}
+
+	void StencilSystem::StopStencilWriting( const StencilWriterComponent& stencilWriterC )
+	{
+		glDisable( GL_STENCIL_TEST );
+		glStencilMask( 0xFF );
 	}
 
 	void StencilSystem::StencilWriterRenderImGui( Entity entity, StencilWriterComponent& stencilWriterC )
