@@ -24,6 +24,11 @@ namespace MikuEditor
 
 		if ( mainCamera.has_value() )
 		{
+			// UPDATE THE UNIFORM BUFFERS
+			//
+			//
+			//
+			//
 			auto mainCameraEntity = mainCamera->first;
 			auto mainCameraTransform = mainCameraEntity.GetComponent<MikuEngine::TransformComponent>();
 			auto mainCameraComponent = mainCamera->second;

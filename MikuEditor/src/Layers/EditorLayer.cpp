@@ -3,7 +3,6 @@
 #include "Application.h"
 #include "Components.h"
 #include "Data/CameraData.h"
-#include "Logger.h"
 #include "MikuEngine/Entity.h"
 #include "Panels/Panels.h"
 #include "Windows/WindowResponse.h"
@@ -36,13 +35,25 @@ namespace MikuEditor
 		if ( m_EditorLevelStuff.m_CurrentPlayModeState == PlayModeState::PLAYING ) return;
 
 		// MOVE EDITOR CAMERA
+		//
+		//
+		//
+		//
 		if ( m_IsViewportPanelFocused ) m_EditorCamera.Update( dt );
 
 		// TODO: IMPROVE THIS
 		// Update the Projection Matrix every frame to account for the changes in the viewport panel size
+		//
+		//
+		//
+		//
 		m_EditorCamera.UpdateProjectionMatrix();
 
 		// UNIFORM BUFFERS ARE UPDATED!
+		//
+		//
+		//
+		//
 		MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateEditorCameraData( {
 		    m_EditorCamera.GetProjMatrix(), m_EditorCamera.GetViewMatrix(), {	      m_EditorCamera.GetPosition(), 0.0f},
 			    {m_EditorCamera.GetForwardDirection(), 0.0f}
@@ -50,10 +61,7 @@ namespace MikuEditor
 
 		const auto& mainLight = activeScene.GetMainLight();
 		if ( mainLight.has_value() == false )
-		{
 			MikuEngine::Application::GetAppLevelStuff().GetRenderer().GetUniformBufferManager().UpdateLightingData( {} );
-			MIKU_CLIENT_WARN( "No Active Light" );
-		}
 		else
 		{
 			const auto& mainLightTransform = mainLight.value().first.GetReadOnlyComponent<MikuEngine::TransformComponent>();
@@ -67,6 +75,10 @@ namespace MikuEditor
 		}
 
 		// PANELS ARE UPDATED
+		//
+		//
+		//
+		//
 		m_ViewportPanel.Update();
 	}
 
