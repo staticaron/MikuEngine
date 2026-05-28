@@ -54,7 +54,7 @@ namespace MikuEngine
 		{
 			ImGuiHelper::StartPropertyTable();
 
-			ImGuiHelper::RenderTableItem( "Respect Depth", [ & ]() { ImGui::DragScalar( "Write Value", ImGuiDataType_U8, &stencilWriterC.WriteValue, 1 ); } );
+			ImGuiHelper::RenderTableItem( "Write Value", [ & ]() { ImGui::DragScalar( "##Write Value", ImGuiDataType_U8, &stencilWriterC.WriteValue, 1 ); } );
 
 			ImGuiHelper::EndPropertyTable();
 		};
