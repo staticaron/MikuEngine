@@ -5,6 +5,7 @@
 #include "Helpers/ImGuiHelper.h"
 #include "Logger.h"
 #include "Scene/Scene.h"
+#include "Systems/StencilSystem.h"
 #include "Systems/TransformSystems.h"
 
 namespace MikuEngine
@@ -74,45 +75,15 @@ namespace MikuEngine
 			auto* stencilReaderC = scene.GetRegistry().try_get<StencilReaderComponent>( distancedEntity.entt );
 			auto* stencilWriterC = scene.GetRegistry().try_get<StencilWriterComponent>( distancedEntity.entt );
 
-			if ( stencilReaderC )
-			{
-				glEnable( GL_STENCIL_TEST );
-				glDisable( GL_DEPTH_TEST );
-
-				// read from stencil and pass the test to render
-				glStencilFunc( GL_EQUAL, stencilReaderC->ReadValue, 0xFF );
-
-				glStencilOp( GL_KEEP, GL_KEEP, GL_KEEP );
-
-				glEnable( GL_DEPTH_TEST );
-			}
-
-			if ( stencilWriterC )
-			{
-				glEnable( GL_STENCIL_TEST );
-
-				// write to the values
-				glStencilMask( 0xFF );
-
-				// Always pass the stencil test, all pixels for the upcoming renders will lead to write values
-				glStencilFunc( GL_ALWAYS, stencilWriterC->WriteValue, 0xFF );
-
-				// If the pixel is hidden behind some other object we dont write to stencil buffer
-				glStencilOp( GL_KEEP, GL_KEEP, GL_REPLACE );
-			}
+			if ( stencilReaderC ) StencilSystem::StartStencilReading( *stencilReaderC );
+			if ( stencilWriterC ) StencilSystem::StartStencilWriting( *stencilWriterC );
 
 			// Render all the meshes in the model
 			for ( const auto& mesh : model.value()->model.GetMeshes() )
-			{
 				renderer.Draw( mesh.GetVA(), mesh.GetIB(), shader.value()->shader );
-			}
 
-			// Disable the stencil testing if it was opened by stencil reader / writers before
-			if ( stencilWriterC || stencilReaderC )
-			{
-				glDisable( GL_STENCIL_TEST );
-				glEnable( GL_DEPTH_TEST );
-			};
+			if ( stencilReaderC ) StencilSystem::StopStencilReading( *stencilReaderC );
+			if ( stencilWriterC ) StencilSystem::StopStencilWriting( *stencilWriterC );
 		}
 
 		if ( blendMode == MaterialBlendMode::TRANSPARENT ) renderer.EnableWriteToDepthBuffer();
