@@ -12,7 +12,7 @@ namespace MikuEngine
 
 		glCreateBuffers( 1, &m_RendererID );
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_RendererID );
-		glBufferData( GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof( unsigned int ), data, GL_DYNAMIC_DRAW );
+		glBufferData( GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof( unsigned int ), data, GL_STATIC_DRAW );
 	}
 
 	void IndexBuffer::Destroy()
