@@ -60,6 +60,22 @@ namespace MikuEditor
 			ImGui::SameLine();
 		}
 
+		std::vector<std::string> folders;
+		std::vector<std::string> files;
+
+		for ( auto directory_item : std::filesystem::directory_iterator( m_ContentBrowserLocation ) )
+		{
+			auto relativePath = std::filesystem::relative( directory_item.path(), m_RootAssetLocation );
+
+			if ( directory_item.is_directory() )
+				folders.push_back( directory_item.path() );
+			else
+			{
+				if ( relativePath.extension() == ".meta" ) continue;
+				files.push_back( directory_item.path() );
+			}
+		}
+
 		// Render the icon size adjust slider
 		ImGui::SliderInt( "Icon Size", &m_IconSize, 16, 200 );
 
@@ -67,29 +83,30 @@ namespace MikuEditor
 		ImGui::PushStyleColor( ImGuiCol_ButtonActive, { 0.f, 0.f, 0.f, 0.f } );
 		ImGui::PushStyleColor( ImGuiCol_ButtonHovered, { 0.5f, 0.5f, 0.5f, 0.25f } );
 
+		// START THE COLUMNS
 		ImGui::Columns( columns, NULL, false );
 
-		for ( auto item : std::filesystem::directory_iterator( m_ContentBrowserLocation ) )
+		// RENDER FOLDERS
+		for ( const auto& folder : folders )
 		{
-			auto relativePath = std::filesystem::relative( item.path(), m_RootAssetLocation );
+			RenderFolderIcon( folder );
+			ImGui::NextColumn();
+		}
 
-			if ( item.is_directory() )
-				RenderFolderIcon( item.path() );
-			else
-			{
-				if ( relativePath.extension() == ".meta" ) continue;
+		// RENDER FILES
+		for ( const auto& file : files )
+		{
+			std::function<void( MikuEngine::UUID assetUUID, MikuEngine::AssetType )> onClickFunc = [ &scene, &file, &appLevelStuff ]( MikuEngine::UUID assetUUID, MikuEngine::AssetType assetType ) {
+				// comment
+				scene.SetSelectedItem( assetUUID, MikuEngine::SelectableType::ASSET, assetType );
+			};
 
-				std::function<void( MikuEngine::UUID assetUUID, MikuEngine::AssetType )> onClickFunc = [ &scene, &item, &appLevelStuff ]( MikuEngine::UUID assetUUID, MikuEngine::AssetType assetType ) {
-					// comment
-					scene.SetSelectedItem( assetUUID, MikuEngine::SelectableType::ASSET, assetType );
-				};
-
-				RenderFileIcon( item.path(), onClickFunc );
-			}
+			RenderFileIcon( file, onClickFunc );
 
 			ImGui::NextColumn();
 		}
 
+		// RESET THE COLUMNS
 		ImGui::Columns( 1 );
 
 		ImGui::PopStyleColor( 3 );
@@ -117,7 +134,7 @@ namespace MikuEditor
 
 		// TODO: SELECT FOLDERS WITH ONE CLICK AND OPEN WITH DOUBLE CLICK
 
-		ImGui::Text( "%s", relativePath.c_str() );
+		ImGui::Text( "%s", relativePath.stem().c_str() );
 	}
 
 	void AssetBrowserPanel::RenderFileIcon( const std::filesystem::path& filePath, std::function<void( MikuEngine::UUID, MikuEngine::AssetType )> onClickFunc )
