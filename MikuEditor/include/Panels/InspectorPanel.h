@@ -1,12 +1,14 @@
 #pragma once
 
+#include <filesystem>
+
 #include "MikuEngine/Core.h"
 
 namespace MikuEngine
 {
 	class Scene;
 	class AppLevelStuff;
-	class SelectableItem;
+	class UUID;
 }
 
 namespace MikuEditor
@@ -22,7 +24,8 @@ namespace MikuEditor
 		static void RenderInspectorPanel( EditorLayer& editorLayer, const MikuEngine::AppLevelStuff& appLevelStuff, MikuEngine::Scene& scene );
 
 	private:
-		static void RenderEntityInInspector( const MikuEngine::SelectableItem& item, EditorLayer& editorLayer, MikuEngine::Scene& scene );
-		static void RenderAssetInInspector( const MikuEngine::SelectableItem& item, EditorLayer& editorLayer, MikuEngine::Scene& scene );
+		static void RenderFolderImGui( const std::filesystem::path& folderPath );
+		static void RenderEntityInInspector( const MikuEngine::UUID& item, EditorLayer& editorLayer, MikuEngine::Scene& scene );
+		static void RenderAssetInInspector( const MikuEngine::UUID& item, EditorLayer& editorLayer, MikuEngine::Scene& scene );
 	};
 }

@@ -105,9 +105,9 @@ namespace MikuEditor
 		else
 		{
 			MikuEditor::MenuBar::RenderMenuBar( *this, appLevelStuff, m_EditorLevelStuff, activeScene );
-			MikuEditor::HierarchyPanel::RenderHierarchy( activeScene );
+			MikuEditor::HierarchyPanel::RenderHierarchy( *this, activeScene );
 			MikuEditor::InspectorPanel::RenderInspectorPanel( *this, appLevelStuff, activeScene );
-			m_AssetBrowserPanel.RenderAssetBrowserPanel( activeScene );
+			m_AssetBrowserPanel.RenderAssetBrowserPanel( *this, activeScene );
 			MikuEditor::EditorOverlayPanel::RenderEditorOverlayPanel( *this, appLevelStuff, m_EditorLevelStuff, activeScene );
 			m_IsViewportPanelFocused = m_ViewportPanel.RenderViewportPanel( *this, activeScene );
 
@@ -120,6 +120,22 @@ namespace MikuEditor
 
 			if ( m_EditorLevelStuff.IsEditorCameraEditorWindowOpen ) m_EditorCamera.RenderImGui( m_EditorLevelStuff );
 		}
+	}
+
+	void EditorLayer::SetSeletedEntity( MikuEngine::UUID& entityUUID )
+	{
+		auto& activeScene = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().GetScene();
+		activeScene.SetSelectedEntity( entityUUID );
+
+		m_SelectedAsset = std::nullopt;
+	}
+
+	void EditorLayer::SetSeletedAsset( MikuEngine::AssetType assetType, MikuEngine::UUID assetUUID, const std::filesystem::path& assetPath )
+	{
+		auto& activeScene = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().GetScene();
+		activeScene.RemoveSelectedItem();
+
+		m_SelectedAsset = { assetType, assetUUID, assetPath };
 	}
 
 	void EditorLayer::ManageTextureSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff )

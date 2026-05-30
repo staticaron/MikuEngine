@@ -11,6 +11,7 @@ namespace MikuEngine
 		SHADER,
 		SCENE,
 		TEXTURE,
-		MODEL
+		MODEL,
+		FOLDER
 	};
 }

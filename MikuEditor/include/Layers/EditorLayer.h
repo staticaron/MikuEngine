@@ -23,6 +23,13 @@ namespace MikuEditor
 
 namespace MikuEditor
 {
+	struct SelectableAsset
+	{
+		MikuEngine::AssetType assetType = MikuEngine::AssetType::NONE;
+		MikuEngine::UUID uuid{ 0 };
+		std::string assetPath = "";
+	};
+
 	class EditorLayer : public MikuEngine::Layer
 	{
 	public:
@@ -36,6 +43,10 @@ namespace MikuEditor
 		const EditorLevelStuff& GetEditorLayerInfo() const { return m_EditorLevelStuff; }
 
 		EditorCamera& GetEditorCamera() { return m_EditorCamera; }
+
+		void SetSeletedEntity( MikuEngine::UUID& entityUUID );
+		void SetSeletedAsset( MikuEngine::AssetType assetType, MikuEngine::UUID assetUUID, const std::filesystem::path& assetPath );
+		std::optional<SelectableAsset> GetSeletedAsset() { return m_SelectedAsset; }
 
 	private:
 		void ManageTextureSelectionWindows( const MikuEngine::AppLevelStuff& appLevelStuff );
@@ -57,6 +68,8 @@ namespace MikuEditor
 		// Panels
 		AssetBrowserPanel m_AssetBrowserPanel;
 		ViewportPanel m_ViewportPanel;
+
+		std::optional<SelectableAsset> m_SelectedAsset = std::nullopt;
 
 		friend class InspectorPanel;
 		friend class MaterialComponent;

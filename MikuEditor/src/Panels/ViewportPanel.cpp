@@ -70,10 +70,10 @@ namespace MikuEditor
 			ImGuiIO& io = ImGui::GetIO();
 			ImGuizmo::SetRect( ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight );
 
-			auto selectedEntityUUID = scene.GetSelectedItem();
-			if ( selectedEntityUUID.has_value() == true && selectedEntityUUID->type == MikuEngine::SelectableType::ENTITY )
+			auto selectedEntityUUID = scene.GetSelectedEntity();
+			if ( selectedEntityUUID.has_value() == true )
 			{
-				auto selectedEntity = scene.GetEntityByID( selectedEntityUUID->uuid );
+				auto selectedEntity = scene.GetEntityByID( selectedEntityUUID.value() );
 				if ( selectedEntity.has_value() )
 				{
 					auto& transform = selectedEntity->GetComponent<MikuEngine::TransformComponent>();

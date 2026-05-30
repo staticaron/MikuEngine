@@ -13,14 +13,19 @@ namespace MikuEngine
 
 namespace MikuEditor
 {
+	class EditorLayer;
+}
+
+namespace MikuEditor
+{
 	class MIKU_API AssetBrowserPanel
 	{
 	public:
 		void Init();
-		void RenderAssetBrowserPanel( MikuEngine::Scene& scene );
+		void RenderAssetBrowserPanel( EditorLayer& editorLayer, MikuEngine::Scene& scene );
 
-		void RenderFolderIcon( const std::filesystem::path& folderPath );
-		void RenderFileIcon( const std::filesystem::path& folderPath, std::function<void( MikuEngine::UUID, MikuEngine::AssetType )> onClickFunc );
+		void RenderFolderIcon( const std::filesystem::path& folderPath, std::function<void()> onClickFunc );
+		void RenderFileIcon( const std::filesystem::path& folderPath, std::function<void( MikuEngine::UUID, MikuEngine::AssetType, const std::filesystem::path& )> onClickFunc );
 
 	private:
 		std::filesystem::path m_ContentBrowserLocation = PROJECT_DIR;

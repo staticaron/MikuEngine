@@ -3,12 +3,15 @@
 #include <filesystem>
 
 #include "imgui.h"
+#include "imgui_internal.h"
 
 #include "Application.h"
 #include "Logger.h"
 #include "MikuEngine/Data/AssetType.h"
 #include "Scene/Scene.h"
 #include "UUID.h"
+
+#include "Layers/EditorLayer.h"
 
 namespace MikuEditor
 {
@@ -41,7 +44,7 @@ namespace MikuEditor
 		m_IconTextures[ MikuEngine::AssetType::MATERIAL ] = texture;
 	}
 
-	void AssetBrowserPanel::RenderAssetBrowserPanel( MikuEngine::Scene& scene )
+	void AssetBrowserPanel::RenderAssetBrowserPanel( EditorLayer& editorLayer, MikuEngine::Scene& scene )
 	{
 		const auto& appLevelStuff = MikuEngine::Application::GetAppLevelStuff();
 
@@ -56,12 +59,16 @@ namespace MikuEditor
 		// Render the back button
 		if ( m_ContentBrowserLocation.string() != PROJECT_DIR )
 		{
-			if ( ImGui::Button( "../" ) ) m_ContentBrowserLocation = m_ContentBrowserLocation.parent_path();
+			if ( ImGui::Button( "<BACK>" ) ) m_ContentBrowserLocation = m_ContentBrowserLocation.parent_path();
 			ImGui::SameLine();
 		}
 
-		std::vector<std::string> folders;
-		std::vector<std::string> files;
+		// Render the icon size adjust slider
+		ImGui::SliderInt( "Icon Size", &m_IconSize, 16, 200 );
+
+		// SEGREGATE THE FILES AND FOLDERS FOR SEPARATE RENDERING
+		std::vector<std::filesystem::path> folders;
+		std::vector<std::filesystem::path> files;
 
 		for ( auto directory_item : std::filesystem::directory_iterator( m_ContentBrowserLocation ) )
 		{
@@ -76,9 +83,6 @@ namespace MikuEditor
 			}
 		}
 
-		// Render the icon size adjust slider
-		ImGui::SliderInt( "Icon Size", &m_IconSize, 16, 200 );
-
 		ImGui::PushStyleColor( ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f } );
 		ImGui::PushStyleColor( ImGuiCol_ButtonActive, { 0.f, 0.f, 0.f, 0.f } );
 		ImGui::PushStyleColor( ImGuiCol_ButtonHovered, { 0.5f, 0.5f, 0.5f, 0.25f } );
@@ -89,16 +93,21 @@ namespace MikuEditor
 		// RENDER FOLDERS
 		for ( const auto& folder : folders )
 		{
-			RenderFolderIcon( folder );
+			std::function<void()> onClickFunc = [ &editorLayer, &folder ]() {
+				// comment
+				editorLayer.SetSeletedAsset( MikuEngine::AssetType::FOLDER, MikuEngine::UUID( 0 ), folder );
+			};
+
+			RenderFolderIcon( folder, onClickFunc );
 			ImGui::NextColumn();
 		}
 
 		// RENDER FILES
 		for ( const auto& file : files )
 		{
-			std::function<void( MikuEngine::UUID assetUUID, MikuEngine::AssetType )> onClickFunc = [ &scene, &file, &appLevelStuff ]( MikuEngine::UUID assetUUID, MikuEngine::AssetType assetType ) {
+			std::function<void( MikuEngine::UUID, MikuEngine::AssetType, const std::filesystem::path& assetPath )> onClickFunc = [ &editorLayer, &file, &appLevelStuff ]( MikuEngine::UUID assetUUID, MikuEngine::AssetType assetType, const std::filesystem::path& assetPath ) {
 				// comment
-				scene.SetSelectedItem( assetUUID, MikuEngine::SelectableType::ASSET, assetType );
+				editorLayer.SetSeletedAsset( assetType, assetUUID, assetPath );
 			};
 
 			RenderFileIcon( file, onClickFunc );
@@ -108,7 +117,6 @@ namespace MikuEditor
 
 		// RESET THE COLUMNS
 		ImGui::Columns( 1 );
-
 		ImGui::PopStyleColor( 3 );
 
 		if ( ImGui::BeginPopupContextWindow() )
@@ -124,20 +132,31 @@ namespace MikuEditor
 		ImGui::End();
 	}
 
-	void AssetBrowserPanel::RenderFolderIcon( const std::filesystem::path& folderPath )
+	void AssetBrowserPanel::RenderFolderIcon( const std::filesystem::path& folderPath, std::function<void()> onClickFunc )
 	{
 		auto relativePath = std::filesystem::relative( folderPath, m_RootAssetLocation );
-		if ( ImGui::ImageButton( folderPath.c_str(), m_IconTextures.at( MikuEngine::AssetType::NONE ).GetRendererID(), { static_cast<float>( m_IconSize ), static_cast<float>( m_IconSize ) }, { 0, 1 }, { 1, 0 } ) )
-		{
-			m_ContentBrowserLocation = folderPath;
-		}
 
-		// TODO: SELECT FOLDERS WITH ONE CLICK AND OPEN WITH DOUBLE CLICK
+		ImGuiButtonFlags folderBtnFlags = ImGuiButtonFlags_PressedOnDoubleClick;
+
+		ImGui::ImageButton( folderPath.c_str(), m_IconTextures.at( MikuEngine::AssetType::NONE ).GetRendererID(), { static_cast<float>( m_IconSize ), static_cast<float>( m_IconSize ) }, { 0, 1 }, { 1, 0 } );
+
+		if ( ImGui::IsItemHovered() )
+		{
+			if ( ImGui::IsMouseClicked( 0 ) )
+			{
+				onClickFunc();
+			}
+
+			if ( ImGui::IsMouseDoubleClicked( 0 ) )
+			{
+				m_ContentBrowserLocation = folderPath;
+			}
+		}
 
 		ImGui::Text( "%s", relativePath.stem().c_str() );
 	}
 
-	void AssetBrowserPanel::RenderFileIcon( const std::filesystem::path& filePath, std::function<void( MikuEngine::UUID, MikuEngine::AssetType )> onClickFunc )
+	void AssetBrowserPanel::RenderFileIcon( const std::filesystem::path& filePath, std::function<void( MikuEngine::UUID, MikuEngine::AssetType, const std::filesystem::path& )> onClickFunc )
 	{
 		auto& appLevelStuff = MikuEngine::Application::GetAppLevelStuff();
 		auto relativePath = std::filesystem::relative( filePath, m_RootAssetLocation );
@@ -190,7 +209,7 @@ namespace MikuEditor
 				return;
 			};
 
-			onClickFunc( assetUUID.value(), assetType );
+			onClickFunc( assetUUID.value(), assetType, filePath );
 		}
 
 		if ( ImGui::BeginDragDropSource() )

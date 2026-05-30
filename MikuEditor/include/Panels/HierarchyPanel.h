@@ -12,12 +12,17 @@ namespace MikuEngine
 
 namespace MikuEditor
 {
+	class EditorLayer;
+}
+
+namespace MikuEditor
+{
 	class MIKU_API HierarchyPanel
 	{
 	public:
-		static void RenderHierarchy( MikuEngine::Scene& scene );
+		static void RenderHierarchy( EditorLayer& editorLayer, MikuEngine::Scene& scene );
 
 	private:
-		static void RenderNode( MikuEngine::Scene& scene, std::unordered_map<MikuEngine::UUID, std::vector<MikuEngine::UUID>> parentChildren, MikuEngine::UUID currentUUID );
+		static void RenderNode( EditorLayer& editorLayer, MikuEngine::Scene& scene, std::unordered_map<MikuEngine::UUID, std::vector<MikuEngine::UUID>> parentChildren, MikuEngine::UUID currentUUID );
 	};
 }

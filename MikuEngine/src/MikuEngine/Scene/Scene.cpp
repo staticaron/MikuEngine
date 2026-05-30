@@ -75,18 +75,9 @@ namespace MikuEngine
 	{
 		auto entity = m_Registry.create();
 
-		if ( m_SelectedItem.has_value() )
-		{
-			Entity entt( ( UUID() ), entity, parentScene, name, m_SelectedItem.value().uuid );
-			m_Registry.emplace<TransformComponent>( entity );
-			return entt;
-		}
-		else
-		{
-			Entity entt( ( UUID() ), entity, parentScene, name );
-			m_Registry.emplace<TransformComponent>( entity );
-			return entt;
-		}
+		Entity entt( ( UUID() ), entity, parentScene, name, GetSelectedEntity() );
+		m_Registry.emplace<TransformComponent>( entity );
+		return entt;
 	}
 
 	Entity Scene::LoadEntity( const std::string& name, UUID uuid, Scene* parentScene, std::optional<UUID> parentUUID )
@@ -198,7 +189,7 @@ namespace MikuEngine
 			auto entity = GetEntityByID( entityForDeletion );
 			MIKU_CORE_INFO( "Entity Deleted with Name : {}", entity->GetNamedIdentifier() );
 
-			if ( m_SelectedItem.has_value() && m_SelectedItem.value().uuid == entityForDeletion ) m_SelectedItem = std::nullopt;
+			if ( GetSelectedEntity().has_value() && GetSelectedEntity().value() == entityForDeletion ) GetSelectedEntity() = std::nullopt;
 
 			m_Registry.destroy( entity.value().GetEntt() );
 		}
@@ -210,22 +201,6 @@ namespace MikuEngine
 			DeleteEntity( entity );
 
 		m_DeleteQueue.clear();
-	}
-
-	std::optional<SelectableItem> Scene::GetSelectedItem()
-	{
-		return m_SelectedItem;
-	}
-
-	void Scene::SetSelectedItem( UUID uuid, SelectableType type, AssetType assetType )
-	{
-		if ( type == SelectableType::ENTITY && !GetEntityByID( uuid ).has_value() )
-		{
-			MIKU_CORE_ERROR( "This Entity is not present in scene! Can't set as active entity!" );
-			return;
-		}
-
-		m_SelectedItem = { uuid, type, assetType };
 	}
 
 	std::vector<Entity> Scene::GetAllEntities()

@@ -6,7 +6,6 @@
 #include "entt/entt.hpp"
 
 #include "Core.h"
-#include "Data/SelectableItem.h"
 #include "Helpers/SceneSerializer.h"
 #include "UUID.h"
 
@@ -40,9 +39,9 @@ namespace MikuEngine
 
 		void PerformDeletions();
 
-		std::optional<SelectableItem> GetSelectedItem();
-		void SetSelectedItem( UUID uuid, SelectableType type, AssetType assetType = AssetType::NONE );
-		void RemoveSelectedItem() { m_SelectedItem = std::nullopt; }
+		std::optional<UUID> GetSelectedEntity() { return m_SelectedEntity; }
+		void SetSelectedEntity( UUID uuid ) { m_SelectedEntity = uuid; }
+		void RemoveSelectedItem() { m_SelectedEntity = std::nullopt; }
 
 		std::vector<Entity> GetAllEntities();
 		std::optional<Entity> GetEntityByID( UUID id );
@@ -68,12 +67,13 @@ namespace MikuEngine
 		entt::registry m_Registry;
 		SceneSerializer m_Serializer;
 
-		std::optional<SelectableItem> m_SelectedItem;
+		std::optional<UUID> m_SelectedEntity;
 
 		std::vector<UUID> m_DeleteQueue;
 
 	protected:
 		friend class SceneSerializer;
 		friend class Entity;
+		friend class EditorLayer;
 	};
 }

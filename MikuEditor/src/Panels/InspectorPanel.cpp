@@ -7,7 +7,6 @@
 
 #include "MikuEngine/AppLevelStuff.h"
 #include "MikuEngine/Components.h"
-#include "MikuEngine/Data/SelectableItem.h"
 #include "MikuEngine/Entity.h"
 #include "MikuEngine/Helpers/ImGuiHelper.h"
 #include "MikuEngine/Scene/Scene.h"
@@ -22,32 +21,38 @@ namespace MikuEditor
 	{
 		ImGui::Begin( "Inspector" );
 
-		auto selectedItem = scene.GetSelectedItem();
+		auto selectedEntity = scene.GetSelectedEntity();
+		auto selectedAsset = editorLayer.GetSeletedAsset();
 
-		if ( selectedItem.has_value() == false )
-		{
-			ImGui::End();
-			return;
-		}
-
-		switch ( selectedItem.value().type )
-		{
-		case MikuEngine::SelectableType::ENTITY:
-			InspectorPanel::RenderEntityInInspector( selectedItem.value(), editorLayer, scene );
-			break;
-		case MikuEngine::SelectableType::ASSET:
-			InspectorPanel::RenderAssetInInspector( selectedItem.value(), editorLayer, scene );
-			break;
-		default:
-			break;
-		}
+		if ( selectedEntity.has_value() ) InspectorPanel::RenderEntityInInspector( selectedEntity.value(), editorLayer, scene );
+		if ( selectedAsset.has_value() ) InspectorPanel::RenderAssetInInspector( selectedAsset.value().uuid, editorLayer, scene );
 
 		ImGui::End();
 	}
 
-	void InspectorPanel::RenderEntityInInspector( const MikuEngine::SelectableItem& item, EditorLayer& editorLayer, MikuEngine::Scene& scene )
+	void InspectorPanel::RenderFolderImGui( const std::filesystem::path& folderPath )
 	{
-		auto selectedEntityUUID = item.uuid;
+		char folderName[ 255 ];
+		const std::string folderNameFromPath = folderPath.stem();
+		std::copy( folderNameFromPath.begin(), folderNameFromPath.begin() + folderNameFromPath.length(), folderName );
+		folderName[ folderNameFromPath.length() ] = '\0';
+
+		// render the entity name
+		MikuEngine::ImGuiHelper::RenderLabel( "Folder" );
+		ImGui::InputText( "##FolderName", folderName, 255 );
+
+		if ( ImGui::IsItemDeactivatedAfterEdit() )
+		{
+			if ( std::strcmp( folderName, folderNameFromPath.c_str() ) != 0 )
+			{
+				const std::filesystem::path newFolderPath = folderPath.parent_path() / folderName;
+				std::filesystem::rename( folderPath, newFolderPath );
+			}
+		}
+	}
+
+	void InspectorPanel::RenderEntityInInspector( const MikuEngine::UUID& selectedEntityUUID, EditorLayer& editorLayer, MikuEngine::Scene& scene )
+	{
 		auto selectedEntity = scene.GetEntityByID( selectedEntityUUID );
 
 		if ( selectedEntity.has_value() )
@@ -156,7 +161,7 @@ namespace MikuEditor
 			}
 		}
 
-		if ( scene.GetSelectedItem().has_value() )
+		if ( scene.GetSelectedEntity().has_value() )
 		{
 			if ( MikuEngine::ImguiManager::FullWidthButton( "Add Component" ) ) ImGui::OpenPopup( "add-component-popup" );
 
@@ -188,29 +193,32 @@ namespace MikuEditor
 		}
 	}
 
-	void InspectorPanel::RenderAssetInInspector( const MikuEngine::SelectableItem& item, EditorLayer& editorLayer, MikuEngine::Scene& scene )
+	void InspectorPanel::RenderAssetInInspector( const MikuEngine::UUID& selectedEntityUUID, EditorLayer& editorLayer, MikuEngine::Scene& scene )
 	{
-		auto selectedItem = scene.GetSelectedItem();
+		auto selectedAsset = editorLayer.GetSeletedAsset();
 
-		if ( selectedItem.has_value() == false ) return;
-
-		if ( selectedItem.value().type != MikuEngine::SelectableType::ASSET ) return;
+		if ( selectedAsset.has_value() == false ) return;
 
 		auto& assetPoolManager = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager();
 
-		switch ( item.assetType )
+		switch ( selectedAsset.value().assetType )
 		{
 		case MikuEngine::AssetType::NONE:
 			break;
+
+		case MikuEngine::AssetType::FOLDER:
+			InspectorPanel::RenderFolderImGui( selectedAsset->assetPath );
+			break;
+
 		case MikuEngine::AssetType::MATERIAL: {
-			auto materialContainer = assetPoolManager.GetMaterialManager().GetMaterial( item.uuid );
+			auto materialContainer = assetPoolManager.GetMaterialManager().GetMaterial( selectedAsset.value().uuid );
 			if ( materialContainer.has_value() == false ) return;
 
 			MaterialComponent::RenderMaterialComponent( editorLayer, *materialContainer.value() );
 			break;
 		}
 		case MikuEngine::AssetType::SHADER: {
-			auto shaderContainer = assetPoolManager.GetShaderManager().GetShader( item.uuid );
+			auto shaderContainer = assetPoolManager.GetShaderManager().GetShader( selectedAsset.value().uuid );
 			if ( shaderContainer.has_value() == false ) return;
 
 			ShaderComponent::RenderShaderComponent( *shaderContainer.value() );

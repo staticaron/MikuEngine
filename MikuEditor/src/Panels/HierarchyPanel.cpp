@@ -4,20 +4,19 @@
 #include "MikuEngine/Managers/ImguiManager.h"
 #include "UUID.h"
 
+#include "Layers/EditorLayer.h"
+
 namespace MikuEditor
 {
-	void HierarchyPanel::RenderNode( MikuEngine::Scene& scene, std::unordered_map<MikuEngine::UUID, std::vector<MikuEngine::UUID>> parentChildren, MikuEngine::UUID currentUUID )
+	void HierarchyPanel::RenderNode( EditorLayer& editorLayer, MikuEngine::Scene& scene, std::unordered_map<MikuEngine::UUID, std::vector<MikuEngine::UUID>> parentChildren, MikuEngine::UUID currentUUID )
 	{
 		ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanFullWidth;
 
 		auto entityUUID = currentUUID;
 		auto entity = scene.GetEntityByID( currentUUID );
-		auto selectedItem = scene.GetSelectedItem();
+		auto selectedEntity = scene.GetSelectedEntity();
 
-		if ( selectedItem.has_value() && selectedItem.value().type == MikuEngine::SelectableType::ENTITY && selectedItem.value().uuid == entityUUID )
-		{
-			treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
-		}
+		if ( selectedEntity.has_value() && selectedEntity.value() == entityUUID ) treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
 
 		auto children = parentChildren[ currentUUID ];
 
@@ -25,10 +24,8 @@ namespace MikuEditor
 
 		bool nodeOpen = ImGui::TreeNodeEx( entity.value().GetNamedIdentifier().c_str(), treeNodeFlags );
 
-		if ( ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen() )
-		{
-			scene.SetSelectedItem( entityUUID, MikuEngine::SelectableType::ENTITY );
-		}
+		// Set the Selected Entity
+		if ( ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen() ) editorLayer.SetSeletedEntity( currentUUID );
 
 		if ( ImGui::BeginDragDropSource() )
 		{
@@ -56,15 +53,13 @@ namespace MikuEditor
 		if ( nodeOpen )
 		{
 			for ( auto child : children )
-			{
-				RenderNode( scene, parentChildren, child );
-			}
+				RenderNode( editorLayer, scene, parentChildren, child );
 
 			ImGui::TreePop();
 		}
 	}
 
-	void HierarchyPanel::RenderHierarchy( MikuEngine::Scene& scene )
+	void HierarchyPanel::RenderHierarchy( EditorLayer& editorLayer, MikuEngine::Scene& scene )
 	{
 		ImGui::Begin( "Hierarchy" );
 
@@ -96,9 +91,7 @@ namespace MikuEditor
 			}
 
 			for ( auto rootNode : rootNodes )
-			{
-				RenderNode( scene, entityList, rootNode );
-			}
+				RenderNode( editorLayer, scene, entityList, rootNode );
 
 			ImGui::EndChild();
 		}
