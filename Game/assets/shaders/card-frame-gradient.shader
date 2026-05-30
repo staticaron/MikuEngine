@@ -43,16 +43,29 @@ in vec3 v_WorldPos;
 in vec2 v_UV;
 in mat3 v_TBN;
 
+uniform sampler2D u_Tex;
+uniform sampler2D u_Pattern;
 uniform sampler2D u_Gradient;
 
 uniform vec2 u_GradientUVMultiplier;
+uniform float u_PatternReveal;
 
 void main()
 {
-    // Gradient Calculation
+    vec3 v_Normal = v_TBN[2];
+
     vec3 viewDirectionTangentSpace = transpose(v_TBN) * normalize(cameraPos.xyz - v_WorldPos);
     vec2 uvMovedByViewDirection = vec2(v_UV.x * u_GradientUVMultiplier.x + viewDirectionTangentSpace.x, v_UV.y * u_GradientUVMultiplier.y + viewDirectionTangentSpace.y);
     vec4 gradientColor = texture(u_Gradient, uvMovedByViewDirection);
 
-    color = gradientColor;
+    vec4 tex = texture(u_Tex, v_UV);
+
+    vec4 pattern = texture(u_Pattern, v_UV);
+    float pattern_mask = mix(0.0, 1.0, pattern.r > u_PatternReveal);
+
+    vec4 lightRGB = GetLightColor(v_WorldPos, v_Normal);
+
+    vec4 rgb = mix(tex, gradientColor, pattern_mask);
+
+    color = vec4(rgb.x * lightRGB.x, rgb.y * lightRGB.y, rgb.z * lightRGB.z, tex.w);
 }

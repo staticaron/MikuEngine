@@ -2,4 +2,4 @@ uuid: 1524044877611556961
 properties:
   path: /home/dev/EXTRAS/Projects/mikuengine/Game/assets/textures/card_miku/gradient.png
   type: texture
-  wrap: clamp
+  wrap: repeat

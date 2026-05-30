@@ -1,0 +1,6 @@
+shader: 14549286013162594051
+properties:
+  blend_mode: TRANSPARENT
+  render_order: 1
+  u_Tex: !tex 9686471529887804088
+  u_DiscardOpacity: !float 1

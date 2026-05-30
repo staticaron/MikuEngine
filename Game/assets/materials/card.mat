@@ -1,6 +1,0 @@
-shader: 601914970805003253
-properties:
-  blend_mode: TRANSPARENT
-  render_order: 1
-  u_CardBg: !tex 10694189184910425013
-  u_CardMask: !tex 9686471529887804088

@@ -1,0 +1,67 @@
+scene: Untitled
+entities:
+  - id: 14657557635516094932
+    name: sun
+    parent: 11315957467816257882
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0]
+          rotation: [0, 0.42044947, 0]
+          scale: [1, 1, 1]
+      - type: DirectionalLightComponent
+        values:
+          color: [1, 1, 1]
+          intensity: 0.5
+          ambient_intensity: 0.5
+          specular_strength: 64
+  - id: 11315957467816257882
+    name: world
+    parent: 0
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+  - id: 4261726002563349407
+    name: skybox
+    parent: 11315957467816257882
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+      - type: SkyboxComponent
+        values:
+          model: 13586518337506870339
+          material: 13971799613920123514
+  - id: 13965019912309483464
+    name: camera
+    parent: 0
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 10]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+      - type: CameraComponent
+        values:
+          perspective: true
+          zoom: 1
+          maincamera: true
+          width: 30
+  - id: 18082952528894198162
+    name: Box
+    parent: 0
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, -2.4099998]
+          rotation: [0, 0, 0]
+          scale: [0.96999997, 1, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 13586518337506870339
+          material: 14983093753014124832
