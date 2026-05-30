@@ -4,6 +4,7 @@
 #include "Systems/CameraSystem.h"
 #include "Systems/LightingSystem.h"
 #include "Systems/MeshRendererSystem.h"
+#include "Systems/ParticleSystem.h"
 #include "Systems/RenderImGuiSystem.h"
 #include "Systems/ScriptExecutionSystem.h"
 #include "Systems/SkyboxRendererSystem.h"

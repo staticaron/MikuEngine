@@ -9,6 +9,7 @@
 #include "Components/IDComponent.h"
 #include "Components/MeshRendererComponent.h"
 #include "Components/NativeScriptComponent.h"
+#include "Components/ParticleSystemComponent.h"
 #include "Components/SkyboxComponent.h"
 #include "Components/SpriteRendererComponent.h"
 #include "Components/StencilReaderComponent.h"

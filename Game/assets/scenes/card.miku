@@ -151,3 +151,19 @@ entities:
       - type: StencilReaderComponent
         values:
           read-value: 1
+  - id: 6838210636351787895
+    name: Particle System
+    parent: 0
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+      - type: ParticleSystemComponent
+        values:
+          max_particle: 2000
+          particle_size:
+            - 0.1
+            - 0.1
+          spawn_radius: 1

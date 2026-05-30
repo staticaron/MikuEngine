@@ -159,6 +159,13 @@ namespace MikuEditor
 				auto& stencilWriterC = selectedEntity.value().GetComponent<MikuEngine::StencilWriterComponent>();
 				MikuEngine::StencilSystem::StencilWriterRenderImGui( selectedEntity.value(), stencilWriterC );
 			}
+
+			// PARTICLE SYSTEM
+			if ( selectedEntity.value().HasComponent<MikuEngine::ParticleSystemComponent>() )
+			{
+				auto& particleSystemC = selectedEntity.value().GetComponent<MikuEngine::ParticleSystemComponent>();
+				MikuEngine::ParticleSystem::ParticleSystemComponentRenderImGui( selectedEntity.value(), particleSystemC );
+			}
 		}
 
 		if ( scene.GetSelectedEntity().has_value() )
@@ -175,6 +182,7 @@ namespace MikuEditor
 				if ( ImGui::Selectable( "SkyboxComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::SkyboxComponent>();
 				if ( ImGui::Selectable( "StencilReaderComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::StencilReaderComponent>();
 				if ( ImGui::Selectable( "StencilWriterComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::StencilWriterComponent>();
+				if ( ImGui::Selectable( "ParticleSystemComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::ParticleSystemComponent>();
 
 				ImGui::EndPopup();
 			}
