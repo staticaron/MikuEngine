@@ -44,11 +44,10 @@ in vec2 v_UV;
 in mat3 v_TBN;
 
 uniform sampler2D u_Tex;
-uniform sampler2D u_Pattern;
 uniform sampler2D u_Gradient;
 
 uniform vec2 u_GradientUVMultiplier;
-uniform float u_PatternReveal;
+uniform float u_GradientOpacity;
 
 void main()
 {
@@ -60,12 +59,9 @@ void main()
 
     vec4 tex = texture(u_Tex, v_UV);
 
-    vec4 pattern = texture(u_Pattern, v_UV);
-    float pattern_mask = mix(0.0, 1.0, pattern.r < u_PatternReveal);
+    vec4 blender = tex * gradientColor;
 
-    vec4 lightRGB = GetLightColor(v_WorldPos, v_Normal);
+    vec4 rgb = mix(tex, blender, u_GradientOpacity);
 
-    vec4 rgb = mix(tex, gradientColor, pattern_mask);
-
-    color = vec4(rgb.x * lightRGB.x, rgb.y * lightRGB.y, rgb.z * lightRGB.z, tex.w);
+    color = vec4(rgb.x, rgb.y, rgb.z, tex.w);
 }

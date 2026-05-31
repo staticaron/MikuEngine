@@ -143,11 +143,11 @@ entities:
         values:
           position: [0, 0, -2]
           rotation: [0, 0, 0]
-          scale: [5, 5, 1]
+          scale: [3, 3, 1]
       - type: MeshRendererComponent
         values:
           model: 1915813061935218518
-          material: 12919198992790270694
+          material: 5941780058803207780
       - type: StencilReaderComponent
         values:
           read-value: 1
@@ -160,10 +160,3 @@ entities:
           position: [0, 0, 0]
           rotation: [0, 0, 0]
           scale: [1, 1, 1]
-      - type: ParticleSystemComponent
-        values:
-          max_particle: 2000
-          particle_size:
-            - 0.1
-            - 0.1
-          spawn_radius: 1
