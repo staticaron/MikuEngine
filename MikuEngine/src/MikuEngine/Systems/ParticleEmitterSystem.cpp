@@ -1,22 +1,22 @@
-#include "Systems/ParticleSystem.h"
+#include "Systems/ParticleEmitterSystem.h"
 
 #include "imgui.h"
 #include "yaml-cpp/yaml.h"
 
-#include "Components/ParticleSystemComponent.h"
+#include "Components/ParticleEmitterComponent.h"
 #include "Entity.h"
 #include "Helpers/ImGuiHelper.h"
 #include "Helpers/SerializationHelper.h"
 
 namespace MikuEngine
 {
-	void ParticleSystem::RenderParticles() {}
+	void ParticleEmitterSystem::RenderParticles() {}
 
-	void ParticleSystem::ParticleSystemComponentRenderImGui( Entity entity, ParticleSystemComponent& particleSystemC )
+	void ParticleEmitterSystem::ParticleEmitterComponentRenderImGui( Entity entity, ParticleEmitterComponent& particleSystemC )
 	{
 		bool keep = true;
 
-		if ( ImGui::CollapsingHeader( "ParitcleSystemComponent", &keep ) )
+		if ( ImGui::CollapsingHeader( "ParitcleEmitterComponent", &keep ) )
 		{
 			ImGuiHelper::StartPropertyTable();
 
@@ -27,16 +27,16 @@ namespace MikuEngine
 			ImGuiHelper::EndPropertyTable();
 		};
 
-		if ( !keep ) entity.RemoveComponent<ParticleSystemComponent>();
+		if ( !keep ) entity.RemoveComponent<ParticleEmitterComponent>();
 	}
 
-	void ParticleSystem::SerializeParticleSystem( const Entity& entity, YAML::Emitter& emitter )
+	void ParticleEmitterSystem::SerializeParticleEmitter( const Entity& entity, YAML::Emitter& emitter )
 	{
-		auto particleSystem = entity.GetReadOnlyComponent<ParticleSystemComponent>();
+		auto particleSystem = entity.GetReadOnlyComponent<ParticleEmitterComponent>();
 
 		YAML::Node node;
 
-		node[ "type" ] = "ParticleSystemComponent";
+		node[ "type" ] = "ParticleEmitterComponent";
 
 		YAML::Node properties;
 		properties[ "max_particle" ] = particleSystem.MaxParticleCount;
@@ -50,7 +50,7 @@ namespace MikuEngine
 		emitter << node;
 	}
 
-	void ParticleSystem::DeSerializeParticleSystem( ParticleSystemComponent& particleSystemC, const YAML::Node& node )
+	void ParticleEmitterSystem::DeSerializeParticleEmitter( ParticleEmitterComponent& particleSystemC, const YAML::Node& node )
 	{
 		unsigned int maxParticleCount = node[ "max_particle" ].as<unsigned int>();
 		float spawnRadius = node[ "spawn_radius" ].as<float>();

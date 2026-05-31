@@ -7,7 +7,7 @@
 
 namespace MikuEngine
 {
-	class MIKU_API ParticleSystemComponent : public BaseComponent
+	class MIKU_API ParticleEmitterComponent : public BaseComponent
 	{
 	public:
 		unsigned int MaxParticleCount = 1000;

@@ -315,6 +315,6 @@ namespace MikuEngine
 		srcRegistry.view<SkyboxComponent>().each( [ & ]( auto entity, const SkyboxComponent& tranformC ) { m_Registry.emplace_or_replace<SkyboxComponent>( entity, tranformC ); } );
 		srcRegistry.view<StencilReaderComponent>().each( [ & ]( auto entity, const StencilReaderComponent& tranformC ) { m_Registry.emplace_or_replace<StencilReaderComponent>( entity, tranformC ); } );
 		srcRegistry.view<StencilWriterComponent>().each( [ & ]( auto entity, const StencilWriterComponent& tranformC ) { m_Registry.emplace_or_replace<StencilWriterComponent>( entity, tranformC ); } );
-		srcRegistry.view<ParticleSystemComponent>().each( [ & ]( auto entity, const ParticleSystemComponent& particleSystemC ) { m_Registry.emplace_or_replace<ParticleSystemComponent>( entity, particleSystemC ); } );
+		srcRegistry.view<ParticleEmitterComponent>().each( [ & ]( auto entity, const ParticleEmitterComponent& particleSystemC ) { m_Registry.emplace_or_replace<ParticleEmitterComponent>( entity, particleSystemC ); } );
 	}
 }

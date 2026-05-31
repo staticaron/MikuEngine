@@ -45,7 +45,7 @@ namespace MikuEngine
 		if ( entity.HasComponent<SkyboxComponent>() ) SkyboxRendererSystem::SerializeSkyboxComponent( entity, emitter );
 		if ( entity.HasComponent<StencilReaderComponent>() ) StencilSystem::SerializeStencilReader( entity, emitter );
 		if ( entity.HasComponent<StencilWriterComponent>() ) StencilSystem::SerializeStencilWriter( entity, emitter );
-		if ( entity.HasComponent<ParticleSystemComponent>() ) ParticleSystem::SerializeParticleSystem( entity, emitter );
+		if ( entity.HasComponent<ParticleEmitterComponent>() ) ParticleEmitterSystem::SerializeParticleEmitter( entity, emitter );
 
 		emitter << YAML::EndSeq;
 
@@ -201,10 +201,10 @@ namespace MikuEngine
 
 				if ( type == "ParticleSystemComponent" )
 				{
-					entt.AddComponent<ParticleSystemComponent>();
-					auto& particleSystemC = entt.GetComponent<ParticleSystemComponent>();
+					entt.AddComponent<ParticleEmitterComponent>();
+					auto& particleSystemC = entt.GetComponent<ParticleEmitterComponent>();
 
-					ParticleSystem::DeSerializeParticleSystem( particleSystemC, values );
+					ParticleEmitterSystem::DeSerializeParticleEmitter( particleSystemC, values );
 				}
 			}
 		}
