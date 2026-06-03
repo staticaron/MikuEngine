@@ -4,9 +4,6 @@ properties:
   render_order: 2
   u_Gradient: !tex 8293921340505436785
   u_Tex: !tex 14470325378173586337
-<<<<<<< HEAD
   u_GradientUVMultiplier: !vec2 [1, 1]
   u_GradientOpacity: !float 1
-=======
   u_GradientUVMultiplier: !vec2 [1, 1]
->>>>>>> 19e3093 (ADD: Better Card Materials and Shaders for Gradient)
