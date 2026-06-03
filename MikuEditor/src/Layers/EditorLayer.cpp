@@ -1,5 +1,7 @@
 #include "Layers/EditorLayer.h"
 
+#include <filesystem>
+
 #include "Application.h"
 #include "Components.h"
 #include "Data/CameraData.h"
@@ -17,7 +19,8 @@ namespace MikuEditor
 		m_AssetBrowserPanel.Init();
 
 		auto& activeScene = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetSceneManager().GetScene();
-		activeScene.Load( PROJECT_DIR "/scenes/card.miku" );
+		auto sceenAssetPath = MikuEngine::Application::GetDataContainer().GetProjectAssetPath( "/scenes/card.miku" );
+		activeScene.Load( sceenAssetPath );
 	}
 
 	EditorLayer* EditorLayer::GetEditorLayer()

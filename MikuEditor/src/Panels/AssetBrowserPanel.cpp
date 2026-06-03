@@ -17,6 +17,10 @@ namespace MikuEditor
 {
 	void AssetBrowserPanel::Init()
 	{
+		const auto& dataContainer = MikuEngine::Application::GetDataContainer();
+		m_RootAssetLocation = dataContainer.GetProjectDir();
+		m_ContentBrowserLocation = dataContainer.GetProjectDir();
+
 		MikuEngine::Texture texture;
 
 		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_folder.png" );
@@ -47,6 +51,7 @@ namespace MikuEditor
 	void AssetBrowserPanel::RenderAssetBrowserPanel( EditorLayer& editorLayer, MikuEngine::Scene& scene )
 	{
 		const auto& appLevelStuff = MikuEngine::Application::GetAppLevelStuff();
+		const auto& dataContainer = MikuEngine::Application::GetDataContainer();
 
 		ImGui::ShowDemoWindow();
 
@@ -57,7 +62,7 @@ namespace MikuEditor
 		if ( columns < 1 ) columns = 1;
 
 		// Render the back button
-		if ( m_ContentBrowserLocation.string() != PROJECT_DIR )
+		if ( m_ContentBrowserLocation.string() != dataContainer.GetProjectDir() )
 		{
 			if ( ImGui::Button( "<BACK>" ) ) m_ContentBrowserLocation = m_ContentBrowserLocation.parent_path();
 			ImGui::SameLine();

@@ -37,7 +37,6 @@ namespace MikuEngine
 	class MIKU_API TextureManager : public AssetManagerBase
 	{
 	public:
-		TextureManager();
 		~TextureManager();
 
 		void LoadTexture( const std::string& name, const std::filesystem::path& filepath );

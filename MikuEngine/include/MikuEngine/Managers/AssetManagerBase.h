@@ -10,6 +10,8 @@ namespace MikuEngine
 	class MIKU_API AssetManagerBase
 	{
 	public:
+		virtual ~AssetManagerBase() = default;
+
 		virtual void InitFrame();
 
 		void DeleteAsset( const UUID& uuid );

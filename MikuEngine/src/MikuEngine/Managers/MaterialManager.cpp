@@ -48,11 +48,13 @@ namespace MikuEngine
 
 	void MaterialManager::PrepareMaterialIndex()
 	{
-		if ( !std::filesystem::exists( PROJECT_DIR "/materials/" ) ) return;
+		const auto& dataContainer = Application::GetDataContainer();
+
+		if ( !std::filesystem::exists( dataContainer.GetProjectAssetPath( "/materials/" ) ) ) return;
 
 		m_MaterialIndex.clear();
 
-		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/materials/" ) )
+		for ( auto& file : std::filesystem::recursive_directory_iterator( dataContainer.GetProjectAssetPath( "/materials/" ) ) )
 		{
 			if ( file.path().extension() == ".meta" ) continue;
 			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::MATERIAL, GetMaterialProperties( nullptr ) );
@@ -72,11 +74,13 @@ namespace MikuEngine
 
 	void MaterialManager::RefreshMaterialIndex()
 	{
-		if ( !std::filesystem::exists( PROJECT_DIR "/materials/" ) ) return;
+		const auto& dataContainer = Application::GetDataContainer();
+
+		if ( !std::filesystem::exists( dataContainer.GetProjectAssetPath( "/materials/" ) ) ) return;
 
 		unsigned int refreshCount = 0;
 
-		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/materials/" ) )
+		for ( auto& file : std::filesystem::recursive_directory_iterator( dataContainer.GetProjectAssetPath( "/materials/" ) ) )
 		{
 			if ( file.is_directory() ) continue;
 			if ( file.path().extension() == ".meta" ) continue;

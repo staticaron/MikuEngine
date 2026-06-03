@@ -4,6 +4,7 @@
 
 #include "GLFW/glfw3.h"
 
+#include "EngineConfigLoader.h"
 #include "Error.h"
 #include "Layer.h"
 #include "Logger.h"
@@ -36,6 +37,9 @@ namespace MikuEngine
 
 	void Application::Init()
 	{
+		auto engineConfig = EngineConfigLoader::LoadConfig();
+		m_DataContainer.SetEngineConfig( engineConfig );
+
 		if ( !glfwInit() ) return;
 
 		glfwSetErrorCallback( Error::LogGLFWErorr );
@@ -103,8 +107,6 @@ namespace MikuEngine
 		m_AppLevelStuff.GetAssetPoolManager().Init();
 		m_AppLevelStuff.GetRenderer().Init();
 		m_AppLevelStuff.GetImGuiManager().Init( m_Window );
-
-		// RenderTemp();
 	}
 
 	void Application::Run()

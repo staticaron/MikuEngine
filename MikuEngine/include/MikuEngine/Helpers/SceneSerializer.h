@@ -1,6 +1,7 @@
 #pragma once
 
-#include <string>
+#include <filesystem>
+#include <optional>
 
 #include "Core.h"
 
@@ -17,7 +18,7 @@ namespace MikuEngine
 		SceneSerializer() = default;
 
 		void Serialize( Scene& scene );
-		bool DeSerialize( Scene& scene, const char* sceneFilePath = nullptr );
+		bool DeSerialize( Scene& scene, std::optional<std::filesystem::path> sceneFilePath );
 
 	private:
 	};

@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <fstream>
 
+#include "Application.h"
 #include "Data/AssetType.h"
 #include "Logger.h"
 #include "UUID.h"
@@ -11,7 +12,9 @@ namespace MikuEngine
 {
 	void MetaFileManager::RefreshMetaFiles()
 	{
-		for ( auto file : std::filesystem::recursive_directory_iterator( PROJECT_DIR ) )
+		const auto& dataContainer = Application::GetDataContainer();
+
+		for ( auto file : std::filesystem::recursive_directory_iterator( dataContainer.GetProjectDir() ) )
 		{
 			std::filesystem::file_type type;
 			file.status().type( type );

@@ -3,17 +3,12 @@
 #include <filesystem>
 #include <fstream>
 
+#include "Application.h"
 #include "Logger.h"
 #include "Managers/MetaFileManager.h"
 
 namespace MikuEngine
 {
-	ShaderManager::ShaderManager()
-	{
-		PrepareShaderIndex();
-		LoadShaderIncludes();
-	}
-
 	void ShaderManager::LoadShader( const std::string& name, const std::string& filepath )
 	{
 		UUID newUUID;
@@ -57,6 +52,8 @@ namespace MikuEngine
 
 	void ShaderManager::LoadAllShaders()
 	{
+		PrepareShaderIndex();
+		LoadShaderIncludes();
 		LoadDefaultShaders();
 
 		for ( auto [ uuid, shaderIndex ] : m_ShaderIndex )
@@ -130,7 +127,8 @@ namespace MikuEngine
 			m_DefaultShaderIndex[ uuid ] = { uuid, file.path().string() };
 		}
 
-		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/shaders/" ) )
+		const auto& dataContainer = Application::GetDataContainer();
+		for ( auto& file : std::filesystem::recursive_directory_iterator( dataContainer.GetProjectAssetPath( "/shaders/" ) ) )
 		{
 			if ( file.path().extension() != ".shader" ) continue;
 

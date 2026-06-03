@@ -55,7 +55,7 @@ namespace MikuEngine
 		const entt::registry& GetRegistry() const { return m_Registry; }
 
 		void Save();
-		bool Load( const char* sceneFilePath = nullptr );
+		bool Load( std::optional<std::filesystem::path> sceneFilePath = std::nullopt );
 		void Clean();
 
 		void CopyFrom( const Scene& scene );

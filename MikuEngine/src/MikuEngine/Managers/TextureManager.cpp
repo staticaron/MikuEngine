@@ -3,17 +3,13 @@
 #include <filesystem>
 #include <unordered_map>
 
+#include "Application.h"
 #include "Logger.h"
 #include "Managers/MetaFileManager.h"
 #include "Rendering/Texture.h"
 
 namespace MikuEngine
 {
-	TextureManager::TextureManager()
-	{
-		PrepareTextureIndex();
-	}
-
 	TextureManager::~TextureManager()
 	{
 		for ( auto [ identifier, texture ] : m_Textures )
@@ -22,6 +18,8 @@ namespace MikuEngine
 
 	void TextureManager::LoadAllTextures()
 	{
+		PrepareTextureIndex();
+
 		LoadAllDefaultTextures();
 
 		// LOAD TEXTURES
@@ -40,10 +38,11 @@ namespace MikuEngine
 			  } );
 		}
 
-		// LOAD CUBE MAPS
+		const auto& dataContainer = Application::GetDataContainer();
 
+		// LOAD CUBE MAPS
 		Cubemap cubemap;
-		cubemap.LoadFromFile( PROJECT_DIR "/textures/skybox/cubemap.jpg" );
+		cubemap.LoadFromFile( dataContainer.GetProjectAssetPath( "/textures/skybox/cubemap.jpg" ) );
 
 		UUID uuid( "3583395674924388584" );
 		m_Cubemaps[ uuid ] = CubemapContainer{ uuid, cubemap };
@@ -100,8 +99,10 @@ namespace MikuEngine
 			m_DefaultTextureIndex[ uuid ] = { uuid, file.path().string() };
 		}
 
+		const auto& dataContainer = Application::GetDataContainer();
+
 		// LOAD PROJECT TEXTURES
-		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/textures/" ) )
+		for ( auto& file : std::filesystem::recursive_directory_iterator( dataContainer.GetProjectAssetPath( "/textures/" ) ) )
 		{
 			if ( file.path().extension() == ".meta" ) continue;
 			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::TEXTURE, TextureManager::GetTextureProperties( {} ) );

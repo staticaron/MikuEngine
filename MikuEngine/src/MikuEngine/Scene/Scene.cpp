@@ -8,11 +8,7 @@
 #include "Components.h"
 #include "Data/CameraData.h"
 #include "Entity.h"
-#include "Systems/CameraSystem.h"
-#include "Systems/MeshRendererSystem.h"
-#include "Systems/ScriptExecutionSystem.h"
-#include "Systems/SkyboxRendererSystem.h"
-#include "Systems/SpriteRendererSystem.h"
+#include "Systems.h"
 
 namespace MikuEngine
 {
@@ -284,10 +280,10 @@ namespace MikuEngine
 		m_Serializer.Serialize( *this );
 	}
 
-	bool Scene::Load( const char* sceneFilePath )
+	bool Scene::Load( std::optional<std::filesystem::path> sceneFilePath )
 	{
 		Clean();
-		return m_Serializer.DeSerialize( *this, sceneFilePath );
+		return m_Serializer.DeSerialize( *this, sceneFilePath.value() );
 	}
 
 	void Scene::Clean()

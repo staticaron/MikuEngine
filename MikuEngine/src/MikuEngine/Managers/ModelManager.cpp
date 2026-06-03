@@ -1,5 +1,6 @@
 #include "Managers/ModelManager.h"
 
+#include "Application.h"
 #include "Logger.h"
 #include "Managers/MetaFileManager.h"
 
@@ -37,9 +38,11 @@ namespace MikuEngine
 			MIKU_CORE_WARN( "Default Model Directory not found! Skipping" );
 
 		// Index Project Models
-		if ( std::filesystem::exists( std::filesystem::path( PROJECT_DIR ) / "models" ) )
+		const auto& dataContainer = Application::GetDataContainer();
+
+		if ( !std::filesystem::exists( dataContainer.GetProjectAssetPath( "/models" ) ) )
 		{
-			for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/models/" ) )
+			for ( auto& file : std::filesystem::recursive_directory_iterator( dataContainer.GetProjectAssetPath( "/models/" ) ) )
 			{
 				if ( file.path().extension() == ".meta" ) continue;
 

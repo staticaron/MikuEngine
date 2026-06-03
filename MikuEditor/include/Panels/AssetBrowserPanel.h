@@ -28,8 +28,8 @@ namespace MikuEditor
 		void RenderFileIcon( const std::filesystem::path& folderPath, std::function<void( MikuEngine::UUID, MikuEngine::AssetType, const std::filesystem::path& )> onClickFunc );
 
 	private:
-		std::filesystem::path m_ContentBrowserLocation = PROJECT_DIR;
-		std::filesystem::path m_RootAssetLocation = PROJECT_DIR;
+		std::filesystem::path m_ContentBrowserLocation;
+		std::filesystem::path m_RootAssetLocation;
 
 		std::unordered_map<MikuEngine::AssetType, MikuEngine::Texture> m_IconTextures;
 

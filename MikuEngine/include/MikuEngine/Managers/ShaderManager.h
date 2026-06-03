@@ -36,8 +36,6 @@ namespace MikuEngine
 	class MIKU_API ShaderManager : public AssetManagerBase
 	{
 	public:
-		ShaderManager();
-
 		void LoadShader( const std::string& name, const std::string& filepath );
 		void LoadAllShaders();
 

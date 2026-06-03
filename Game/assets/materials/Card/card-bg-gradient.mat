@@ -1,0 +1,8 @@
+shader: 13476102740373382677
+properties:
+  blend_mode: TRANSPARENT
+  render_order: 2
+  u_Gradient: !tex 8293921340505436785
+  u_Tex: !tex 14470325378173586337
+  u_GradientUVMultiplier: !vec2 [1, 1]
+  u_GradientOpacity: !float 1

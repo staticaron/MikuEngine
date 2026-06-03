@@ -81,11 +81,11 @@ namespace MikuEngine
 		fout << emitter.c_str();
 	}
 
-	bool SceneSerializer::DeSerialize( Scene& scene, const char* sceneFilePath )
+	bool SceneSerializer::DeSerialize( Scene& scene, std::optional<std::filesystem::path> sceneFilePath )
 	{
-		nfdchar_t* loadPath = ( nfdchar_t* )sceneFilePath;
+		nfdchar_t* loadPath = ( nfdchar_t* )sceneFilePath.value().c_str();
 
-		if ( sceneFilePath == nullptr )
+		if ( sceneFilePath.has_value() == false )
 		{
 			nfdresult_t result = NFD_OpenDialog( "miku", nullptr, &loadPath );
 
