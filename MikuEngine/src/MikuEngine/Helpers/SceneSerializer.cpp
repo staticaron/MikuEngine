@@ -199,10 +199,11 @@ namespace MikuEngine
 					StencilSystem::DeSerializeStencilWriter( stencilWriterC, values );
 				}
 
-				if ( type == "ParticleSystemComponent" )
+				if ( type == "ParticleEmitterComponent" )
 				{
-					entt.AddComponent<ParticleEmitterComponent>();
-					auto& particleSystemC = entt.GetComponent<ParticleEmitterComponent>();
+					auto& particleSystemC = entt.AddComponent<ParticleEmitterComponent>();
+
+					Application::GetAppLevelStuff().GetAssetPoolManager().GetParticleEmitterManager().LoadParticleEmitter( entt.GetUUID(), { particleSystemC.MaxParticleCount, particleSystemC.ParticleSize, particleSystemC.SpawnRadius } );
 
 					ParticleEmitterSystem::DeSerializeParticleEmitter( particleSystemC, values );
 				}

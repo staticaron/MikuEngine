@@ -6,6 +6,7 @@
 #include "Rendering/Primitives/Vertex.h"
 #include "Rendering/VertexArray.h"
 #include "Rendering/VertexBuffer.h"
+#include "UUID.h"
 
 namespace MikuEngine
 {
