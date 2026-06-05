@@ -6,4 +6,3 @@ properties:
   u_Tex: !tex 14470325378173586337
   u_GradientUVMultiplier: !vec2 [1, 1]
   u_GradientOpacity: !float 1
-  u_GradientUVMultiplier: !vec2 [1, 1]
