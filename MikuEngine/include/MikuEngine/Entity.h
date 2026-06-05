@@ -4,9 +4,12 @@
 
 #include "Core.h"
 
+#include "Application.h"
 #include "Components/BaseComponent.h"
 #include "Components/DataComponent.h"
 #include "Components/IDComponent.h"
+#include "Components/ParticleEmitterComponent.h"
+#include "Data/ParticleEmitterProperties.h"
 #include "Scene/Scene.h"
 
 namespace MikuEngine
@@ -35,9 +38,10 @@ namespace MikuEngine
 
 		template <typename T>
 			requires( std::is_base_of_v<BaseComponent, T> )
-		void AddComponent()
+		T& AddComponent()
 		{
-			m_ParentScene->m_Registry.emplace<T>( m_Entity );
+			auto& component = m_ParentScene->m_Registry.emplace<T>( m_Entity );
+			return component;
 		}
 
 		template <typename T>
