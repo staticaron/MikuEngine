@@ -40,7 +40,7 @@ namespace MikuEngine
 		// Index Project Models
 		const auto& dataContainer = Application::GetDataContainer();
 
-		if ( !std::filesystem::exists( dataContainer.GetProjectAssetPath( "/models" ) ) )
+		if ( std::filesystem::exists( dataContainer.GetProjectAssetPath( "/models" ) ) )
 		{
 			for ( auto& file : std::filesystem::recursive_directory_iterator( dataContainer.GetProjectAssetPath( "/models/" ) ) )
 			{
