@@ -1,16 +1,18 @@
 #include "ParticleEmitter.h"
 
+#include "Logger.h"
 #include "Rendering/Primitives/Vertex.h"
 
 namespace MikuEngine
 {
 	void ParticleEmitter::Init( const ParticleEmitterProperties& properties )
 	{
-		m_VB.Init( properties.MaxParticleCount * sizeof( Vertex ), nullptr );
-		m_IB.Init( properties.MaxParticleCount * ( 6 / 4 ), nullptr );
+		m_VB.Init( properties.MaxParticleCount * 4 * sizeof( Vertex ), nullptr );
+		m_IB.Init( properties.MaxParticleCount * 6, nullptr );
 
 		m_ParticleVertices.reserve( properties.MaxParticleCount * 4 );
-		m_ParticleIndices.reserve( properties.MaxParticleCount * ( 6 / 4 ) );
+		m_ParticleIndices.reserve( properties.MaxParticleCount * 6 );
+
 		m_Particles.reserve( properties.MaxParticleCount );
 
 		for ( size_t x = 0; x < properties.MaxParticleCount; x++ )
@@ -35,6 +37,9 @@ namespace MikuEngine
 			m_Particles.push_back( {} );
 		}
 
+		size_t bufferSize = sizeof( m_ParticleVertices[ 0 ] ) * m_ParticleVertices.size();
+		size_t bufferSizeRaw = sizeof( Vertex ) * m_ParticleVertices.size();
+
 		m_VB.PutData( m_ParticleVertices.data(), sizeof( m_ParticleVertices[ 0 ] ) * m_ParticleVertices.size() );
 		m_IB.PutData( m_ParticleIndices.data(), m_ParticleVertices.size() );
 
@@ -43,5 +48,7 @@ namespace MikuEngine
 
 		m_VA.Init();
 		m_VA.Setup( m_VB, m_VBL );
+
+		MIKU_CORE_INFO( "Particle Emitter Created with Particle Count : {}", properties.MaxParticleCount );
 	}
 }
