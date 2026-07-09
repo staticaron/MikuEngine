@@ -13,4 +13,4 @@ set(BIN_DIR "${CMAKE_BINARY_DIR}/bin")
 
 add_subdirectory(MikuEngine)
 add_subdirectory(MikuEditor)
-add_subdirectory(Game)
+add_subdirectory(SampleGame)

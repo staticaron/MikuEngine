@@ -4,10 +4,6 @@
 [submodule "MikuEngine/vendor/spdlog"]
 	path = MikuEngine/vendor/spdlog
 	url = https://github.com/gabime/spdlog.git
-[submodule "MikuEngine/vendor/imgui"]
-	path = MikuEngine/vendor/imgui
-	url = https://github.com/ocornut/imgui.git
-	ignore = dirty
 [submodule "MikuEngine/vendor/glm"]
 	path = MikuEngine/vendor/glm
 	url = https://github.com/g-truc/glm.git
@@ -27,10 +23,15 @@
 [submodule "MikuEngine/vendor/assimp"]
 	path = MikuEngine/vendor/assimp
 	url = https://github.com/assimp/assimp.git
-[submodule "ImGuizmo"]
-	path = MikuEngine/vendor/ImGuizmo
-	url = https://github.com/CedricGuillemet/ImGuizmo.git
-	ignore = dirty
 [submodule "MikuEngine/vendor/gli"]
 	path = MikuEngine/vendor/gli
 	url = https://github.com/g-truc/gli.git
+[submodule "Imgui-Cmake"]
+	path = MikuEngine/vendor/imgui
+	url = git@github.com:staticaron/imgui-cmake.git
+[submodule "MikuEngine/vendor/ImGuizmo"]
+	path = MikuEngine/vendor/ImGuizmo
+	url = git@github.com:staticaron/ImGuizmo-Cmake.git
+[submodule "MikuEngine/vendor/glad"]
+	path = MikuEngine/vendor/glad
+	url = ssh://git@codeberg.org/staticaron/glad-cmake.git
