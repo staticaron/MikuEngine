@@ -15,7 +15,7 @@
 	url = https://github.com/jbeder/yaml-cpp.git
 [submodule "MikuEngine/vendor/nativefiledialog"]
 	path = MikuEngine/vendor/nativefiledialog
-	url = https://github.com/mlabbe/nativefiledialog.git
+	url =  git@github.com:staticaron/nativefiledialog-cmake.git
 	ignore = dirty
 [submodule "MikuEngine/vendor/dylib"]
 	path = MikuEngine/vendor/dylib
