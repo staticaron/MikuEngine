@@ -12,6 +12,7 @@ project("MikuEngine" LANGUAGES CXX)
 
 set(ASSIMP_BUILD_ZLIB ON CACHE BOOL "" FORCE)
 set(ASSIMP_BUILD_NO_EXPORT ON CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE )
 
 add_subdirectory(vendor/glad)
 add_subdirectory(vendor/glfw)
