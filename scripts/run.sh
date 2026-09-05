@@ -2,4 +2,4 @@
 
 #./build/bin/MikuEditor
 
-gdb build/bin/MikuEditor
+cgdb build/bin/MikuEditor
