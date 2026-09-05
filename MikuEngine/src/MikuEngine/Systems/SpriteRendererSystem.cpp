@@ -58,7 +58,7 @@ namespace MikuEngine
 			{
 				auto mainTex = textureManager.GetTextureOrDefault( spriteRenderer.TextureIdentifier.value() );
 
-				mainTex->texture.Bind( 0 );
+				mainTex->Bind( 0 );
 				shader.value()->shader.SetUniform<unsigned int>( "u_MainTex", 0 );
 			}
 

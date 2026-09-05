@@ -40,7 +40,7 @@ namespace MikuEngine
 					if ( texture.has_value() )
 					{
 						wasChanged = true;
-						textureUUID = texture.value()->index.uuid;
+						textureUUID = texture.value()->GetUUID();
 					}
 				}
 

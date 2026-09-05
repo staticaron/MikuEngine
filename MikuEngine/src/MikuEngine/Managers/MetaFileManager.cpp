@@ -29,11 +29,13 @@ namespace MikuEngine
 		MIKU_CORE_INFO( "Meta Files Refreshed!" );
 	}
 
-	void MetaFileManager::GenerateMetaFile( const std::string& filepath, AssetType assetType, const YAML::Node& properties )
+	UUID MetaFileManager::GenerateMetaFile( const std::string& filepath, AssetType assetType, const YAML::Node& properties )
 	{
 		YAML::Node root;
 
-		root[ "uuid" ] = UUID().ToString();
+		UUID uuid;
+
+		root[ "uuid" ] = uuid.ToString();
 
 		root[ "properties" ][ "path" ] = filepath;
 
@@ -64,6 +66,14 @@ namespace MikuEngine
 		std::ofstream metaFileStream( filepath + ".meta" );
 		metaFileStream << root;
 		metaFileStream.close();
+
+		return uuid;
+	}
+
+	UUID MetaFileManager::GenerateMetaFileIfNotPresent( const std::string& filepath, AssetType assetType, const YAML::Node& properties )
+	{
+		if ( MetaFileExists( filepath ) ) return GetUUIDFromMetaFile( filepath );
+		return GenerateMetaFile( filepath, assetType, properties );
 	}
 
 	bool MetaFileManager::MetaFileExists( const std::string& filepath )

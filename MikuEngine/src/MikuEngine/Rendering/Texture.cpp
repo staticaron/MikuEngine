@@ -11,8 +11,9 @@
 
 namespace MikuEngine
 {
-	void Texture::LoadFromFile( const std::filesystem::path& filepath )
+	void Texture::Load( const std::filesystem::path& filepath )
 	{
+		m_FilePath = filepath;
 
 		stbi_set_flip_vertically_on_load( true );
 
@@ -64,13 +65,6 @@ namespace MikuEngine
 		glDeleteTextures( 1, &m_RendererID );
 	}
 
-	const std::filesystem::path& Texture::GetPath() const
-	{
-		auto texture = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTexture( m_UUID );
-		MIKU_ASSERT( texture.has_value(), "This Texture doesn't not exists!" );
-		return texture.value()->index.path;
-	}
-
 	std::string Texture::GetName() const
 	{
 		return GetPath().stem().string();
@@ -78,6 +72,11 @@ namespace MikuEngine
 
 	void Texture::SetName( const std::string& newName )
 	{
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().RenameAsset( m_UUID, newName );
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().AddToRenameQueue( m_UUID, newName );
+	}
+
+	void Texture::DeleteAsset()
+	{
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().AddToDeleteQueue( m_UUID );
 	}
 }

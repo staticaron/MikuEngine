@@ -198,9 +198,9 @@ namespace MikuEngine
 		{
 			// Ignore the textures uniforms with no Bound Values
 			if ( uuid == 0 ) continue;
-			const auto& textureContainer = textureManager.GetTextureOrDefault( uuid );
+			auto texture = textureManager.GetTextureOrDefault( uuid );
 
-			textureContainer->texture.Bind( textureID );
+			texture->Bind( textureID );
 			shader.value()->shader.SetUniform<unsigned int>( name, textureID );
 
 			textureID++;
@@ -211,9 +211,9 @@ namespace MikuEngine
 			// Ignore the textures uniforms with no Bound Values
 			if ( uuid == 0 ) continue;
 
-			const auto& cubemapContainer = textureManager.GetCubemap( uuid );
+			auto cubemap = textureManager.GetCubemap( uuid );
 
-			cubemapContainer.value()->cubemap.Bind( textureID );
+			cubemap.value()->Bind( textureID );
 			shader.value()->shader.SetUniform<unsigned int>( name, textureID );
 
 			textureID++;

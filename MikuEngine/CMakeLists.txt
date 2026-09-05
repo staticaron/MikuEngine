@@ -66,7 +66,7 @@ target_link_libraries("MikuEngine" PRIVATE
 
 target_compile_definitions("MikuEngine" PUBLIC
 	RESOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/assets"
-	PROJECT_DIR="${CMAKE_SOURCE_DIR}/Game/assets"
+	PROJECT_DIR="${CMAKE_SOURCE_DIR}/SampleGame/assets"
 )
 
 target_compile_definitions("MikuEngine" PUBLIC

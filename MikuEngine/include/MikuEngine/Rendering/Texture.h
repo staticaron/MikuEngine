@@ -20,25 +20,26 @@ namespace MikuEngine
 		Texture() : Asset( AssetType::TEXTURE ) {};
 		Texture( UUID uuid ) : m_UUID( uuid ), Asset( AssetType::TEXTURE ) {}
 
-		void LoadFromFile( const std::filesystem::path& filepath );
+		void Load( const std::filesystem::path& filepath );
+		void Destroy();
 
 		void Bind( unsigned int position ) const;
 		void UnBind() const;
 
-		void Destroy();
+		unsigned int GetRendererID() const { return m_RendererID; }
 
 		UUID GetUUID() const { return m_UUID; }
-		unsigned int GetRendererID() const { return m_RendererID; }
+		const std::filesystem::path& GetPath() const override { return m_FilePath; }
 		TextureWrapMode GetWrapMode() const { return m_WrapMode; }
 
-		const std::filesystem::path& GetPath() const override;
 		std::string GetName() const override;
 		void SetName( const std::string& newName ) override;
 
-		void DeleteAsset() override {}
+		void DeleteAsset() override;
 
 	private:
 		UUID m_UUID;
+		std::filesystem::path m_FilePath{};
 
 		unsigned int m_RendererID = 0;
 		int m_Width = -1, m_Height = -1;

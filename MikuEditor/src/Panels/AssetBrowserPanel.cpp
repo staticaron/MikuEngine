@@ -23,28 +23,28 @@ namespace MikuEditor
 
 		MikuEngine::Texture texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_folder.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_folder.png" );
 		m_IconTextures[ MikuEngine::AssetType::NONE ] = texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_file.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_file.png" );
 		m_IconTextures[ MikuEngine::AssetType::FILE ] = texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_model.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_model.png" );
 		m_IconTextures[ MikuEngine::AssetType::MODEL ] = texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_shader.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_shader.png" );
 		m_IconTextures[ MikuEngine::AssetType::SHADER ] = texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_script.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_script.png" );
 		m_IconTextures[ MikuEngine::AssetType::SCRIPT ] = texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_texture.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_texture.png" );
 		m_IconTextures[ MikuEngine::AssetType::TEXTURE ] = texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_scene.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_scene.png" );
 		m_IconTextures[ MikuEngine::AssetType::SCENE ] = texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_material.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_material.png" );
 		m_IconTextures[ MikuEngine::AssetType::MATERIAL ] = texture;
 	}
 
@@ -173,7 +173,7 @@ namespace MikuEditor
 		{
 			auto textureFetch = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath );
 			if ( textureFetch.has_value() )
-				iconTexture = &textureFetch.value()->texture;
+				iconTexture = textureFetch.value();
 			else
 				iconTexture = &m_IconTextures.at( assetType );
 		}
@@ -187,7 +187,7 @@ namespace MikuEditor
 			switch ( assetType )
 			{
 			case MikuEngine::AssetType::TEXTURE: {
-				assetUUID = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath.string() ).value()->texture.GetUUID();
+				assetUUID = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath.string() ).value()->GetUUID();
 				break;
 			}
 			case MikuEngine::AssetType::MATERIAL: {

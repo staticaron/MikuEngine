@@ -14,6 +14,7 @@ namespace MikuEngine
 		Asset( AssetType assetType ) : m_AssetType( assetType ) {}
 		const AssetType& GetAssetType() const { return m_AssetType; }
 
+		// TODO: Move this responsibility to the AssetManager
 		virtual void DeleteAsset() = 0;
 
 		virtual std::string GetName() const = 0;

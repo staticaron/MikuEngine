@@ -6,8 +6,8 @@
 
 #include "yaml-cpp/yaml.h"
 
-#include "AssetManagerBase.h"
 #include "Core.h"
+#include "IAssetManagerBase.h"
 #include "Rendering/Cubemap.h"
 #include "Rendering/Texture.h"
 
@@ -34,58 +34,64 @@ namespace MikuEngine
 		Cubemap cubemap;
 	};
 
-	class MIKU_API TextureManager : public AssetManagerBase
+	class MIKU_API TextureManager : public IAssetManagerBase
 	{
 	public:
-		~TextureManager();
+		void Init();
 
-		void LoadTexture( const std::string& name, const std::filesystem::path& filepath );
+		void InitFrame() override;
+
+		void LoadTexture( const std::filesystem::path& filepath );
+		void LoadTexture( const std::filesystem::path& filepath, const UUID& uuid );
 
 		void LoadAllTextures();
 		void LoadAllDefaultTextures();
 
-		void PrepareTextureIndex();
-		const std::unordered_map<UUID, TextureContainer>& GetAllLoadedTextures() const;
-		const std::unordered_map<UUID, TextureContainer>& GetAllDefaultTextures() const;
+		Texture* GetTextureOrDefault( UUID textureUUID );
+		const Texture* GetTextureOrDefault( UUID textureUUID ) const;
 
-		TextureContainer* GetTextureOrDefault( UUID textureUUID );
-		const TextureContainer* GetTextureOrDefault( UUID textureUUID ) const;
+		Texture* GetDefaultTextureByName( const std::string& name );
+		const Texture* GetDefaultTextureByName( const std::string& name ) const;
 
-		std::optional<TextureContainer*> GetTexture( UUID textureUUID );
-		std::optional<const TextureContainer*> GetTexture( UUID textureUUID ) const;
+		std::optional<const Texture*> GetTextureByName( const std::string& name ) const;
 
-		std::optional<CubemapContainer*> GetCubemap( UUID cubemapUUID );
-		std::optional<const CubemapContainer*> GetCubemap( UUID cubemapUUID ) const;
+		std::optional<Texture*> GetTexture( UUID textureUUID );
+		std::optional<const Texture*> GetTexture( UUID textureUUID ) const;
 
-		std::optional<const TextureContainer*> GetTextureByName( const std::string& name ) const;
+		std::optional<Cubemap*> GetCubemap( UUID cubemapUUID );
+		std::optional<const Cubemap*> GetCubemap( UUID cubemapUUID ) const;
 
-		const TextureContainer* GetDefaultTextureByName( const std::string& name ) const;
-		TextureContainer* GetDefaultTextureByName( const std::string& name );
+		std::optional<const Texture*> GetTextureByFilePath( const std::string& path ) const;
 
-		std::optional<const TextureContainer*> GetTextureByFilePath( const std::string& path ) const;
+		void AddToDeleteQueue( const UUID& uuid ) override;
+		void AddToDeleteQueue( const std::filesystem::path& filepath ) override;
+
+		void AddToRenameQueue( const UUID& uuid, const std::string& newName ) override;
+		void AddToRenameQueue( const std::filesystem::path& filepath, const std::string& newName ) override;
+
+		const std::unordered_map<UUID, Texture>& GetAllLoadedTextures() const;
+		const std::unordered_map<UUID, Texture>& GetAllDefaultTextures() const;
 
 		bool TextureExists( const UUID& uuid ) const;
 
-		const std::filesystem::path& GetFilePathFromUUID( const UUID& uuid );
-
-		void RenameAssetCleanup( const UUID& uuid, const std::string& newName );
-		void DeleteAssetCleanup( const UUID& uuid );
+		void Destroy();
 
 		static YAML::Node GetTextureProperties( std::optional<Texture*> texture );
 
-	private:
-		const std::unordered_map<UUID, TextureIndexEntry>& GetTextureIndex() const;
+	protected:
+		void PerformDeletions() override;
+
+		void DeleteAsset( const UUID& uuid ) override;
+		void RenameAsset( const UUID& uuid, const std::string& newName ) override;
+
+		const std::filesystem::path& GetFilePathByUUID( const UUID& uuid ) override;
 
 	private:
-		bool TextureAlreadyPresent( UUID textureID ) const;
+		std::vector<UUID> m_DeleteQueue{};
+		std::vector<std::pair<UUID, std::string>> m_RenameQueue{};
 
-	private:
-		std::unordered_map<UUID, TextureIndexEntry> m_TextureIndex;
-		std::unordered_map<UUID, TextureIndexEntry> m_DefaultTextureIndex;
-
-		std::unordered_map<UUID, TextureContainer> m_DefaultTextures;
-		std::unordered_map<UUID, TextureContainer> m_Textures;
-
-		std::unordered_map<UUID, CubemapContainer> m_Cubemaps;
+		std::unordered_map<UUID, Texture> m_Textures{};
+		std::unordered_map<UUID, Texture> m_DefaultTextures{};
+		std::unordered_map<UUID, Cubemap> m_Cubemaps{};
 	};
 }
