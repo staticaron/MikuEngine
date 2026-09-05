@@ -12,6 +12,7 @@ namespace MikuEngine
 	void TextureManager::Init()
 	{
 		LoadAllTextures();
+		LoadAllDefaultTextures();
 	}
 
 	/// @brief Perform things to prepare the manager for the frame
@@ -127,16 +128,22 @@ namespace MikuEngine
 	/// @param uuid provide a UUID to use for this texture
 	void TextureManager::LoadTexture( const std::filesystem::path& filepath, const UUID& uuid )
 	{
-		Texture newTexture( uuid );
-		newTexture.Load( filepath );
-
+		Texture newTexture( uuid, filepath );
 		m_Textures.insert( { uuid, newTexture } );
+	}
+
+	/// @brief Load a default texture located at path
+	/// @param filepath path of the texture file
+	/// @param uuid provide a UUID to use for this texture
+	void TextureManager::LoadDefaultTexture( const std::filesystem::path& filepath, const UUID& uuid )
+	{
+		Texture newTexture( uuid, filepath );
+		m_DefaultTextures.insert( { uuid, newTexture } );
 	}
 
 	/// @brief Go through the files in RESOURCE_DIR/textures/ and for every texture found, get the UUID from meta file and then load the texture
 	void TextureManager::LoadAllTextures()
 	{
-		// Load the PROJECT Textures
 		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/textures/" ) )
 		{
 			if ( file.path().extension() == ".meta" ) continue;
@@ -148,18 +155,7 @@ namespace MikuEngine
 
 		MIKU_CORE_DEBUG( "All Project Textures loaded!" );
 
-		// Load the Default Textures
-		for ( auto& file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/textures/" ) )
-		{
-			if ( file.path().extension() == ".meta" ) continue;
-			if ( file.is_directory() ) continue;
-
-			UUID uuid = MetaFileManager::GenerateMetaFileIfNotPresent( file.path().c_str(), AssetType::TEXTURE, TextureManager::GetTextureProperties( {} ) );
-			LoadTexture( file.path(), uuid );
-		}
-
-		MIKU_CORE_DEBUG( "All Default Textures loaded!" );
-
+		// TODO: Proper loading of cubemaps
 		// Load all the cubemaps
 		const auto& dataContainer = Application::GetDataContainer();
 
@@ -170,6 +166,20 @@ namespace MikuEngine
 		m_Cubemaps[ uuid ] = cubemap;
 
 		MIKU_CORE_DEBUG( "All Cubemaps Loaded!" );
+	}
+
+	void TextureManager::LoadAllDefaultTextures()
+	{
+		for ( auto& file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/textures/" ) )
+		{
+			if ( file.path().extension() == ".meta" ) continue;
+			if ( file.is_directory() ) continue;
+
+			UUID uuid = MetaFileManager::GenerateMetaFileIfNotPresent( file.path().c_str(), AssetType::TEXTURE, TextureManager::GetTextureProperties( {} ) );
+			LoadDefaultTexture( file.path(), uuid );
+		}
+
+		MIKU_CORE_DEBUG( "All Default Textures loaded!" );
 	}
 
 	/// @brief Fetch a texture already loaded in the texture manager

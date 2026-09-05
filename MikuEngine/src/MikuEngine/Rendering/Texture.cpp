@@ -11,6 +11,11 @@
 
 namespace MikuEngine
 {
+	Texture::Texture( UUID uuid, const std::filesystem::path& filepath ) : Asset( AssetType::TEXTURE ), m_UUID( uuid )
+	{
+		Load( filepath );
+	}
+
 	void Texture::Load( const std::filesystem::path& filepath )
 	{
 		m_FilePath = filepath;

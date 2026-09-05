@@ -41,8 +41,8 @@ namespace MikuEngine
 
 		void InitFrame() override;
 
-		void LoadTexture( const std::filesystem::path& filepath );
-		void LoadTexture( const std::filesystem::path& filepath, const UUID& uuid );
+		void LoadTexture( const std::filesystem::path& filepath, const UUID& uuid = {} );
+		void LoadDefaultTexture( const std::filesystem::path& filepath, const UUID& uuid = {} );
 
 		void LoadAllTextures();
 		void LoadAllDefaultTextures();

@@ -19,6 +19,7 @@ namespace MikuEngine
 	public:
 		Texture() : Asset( AssetType::TEXTURE ) {};
 		Texture( UUID uuid ) : m_UUID( uuid ), Asset( AssetType::TEXTURE ) {}
+		Texture( UUID uuid, const std::filesystem::path& filepath );
 
 		void Load( const std::filesystem::path& filepath );
 		void Destroy();
