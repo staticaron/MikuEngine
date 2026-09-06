@@ -41,7 +41,7 @@ SpacesInParensOptions:
   InEmptyParentheses: false
   Other: true
 AllowShortFunctionsOnASingleLine: Inline 
-AllowShortIfStatementsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: false
 AccessModifierOffset: -8
 FixNamespaceComments: false
 AlwaysBreakTemplateDeclarations: Yes
