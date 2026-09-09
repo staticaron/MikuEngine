@@ -1,4 +1,6 @@
 #!/bin/bash
 
-./scripts/build.sh
-./scripts/run.sh
+script_dir = $(cd "$(dirname "$0")" && pwd)"
+
+bash "${script_dir}/build.sh"
+bash "${script_dir}/run.sh"

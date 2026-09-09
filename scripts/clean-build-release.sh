@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 rm -rf build
 
-cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_TESTING=OFF
+BUILD_TYPE="Release"
 
-cmake --build build
+script_dir = $(cd "$(dirname "$0")" && pwd)"
 
-cp build/compile_commands.json .
+bash "${script_dir}/build.sh"
