@@ -13,6 +13,8 @@
 
 namespace MikuEngine
 {
+	constexpr std::string_view DEFAULT_2D_SHADER_LOCATION = RESOURCE_DIR "/shaders/default-2d.shader";
+
 	struct ShaderIndexEntry
 	{
 		UUID uuid;
@@ -58,6 +60,7 @@ namespace MikuEngine
 		void RenameAssetCleanup( const UUID& uuid, const std::string& newName ) override;
 
 		static YAML::Node GetShaderProperties( Shader* shader );
+		static void CreateAssetAtPath( const std::string& name, const std::filesystem::path& folderPath );
 
 	private:
 		void PrepareShaderIndex();

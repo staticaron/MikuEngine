@@ -70,7 +70,8 @@ namespace MikuEngine
 
 	unsigned int Shader::CompileShader( const std::string& source, unsigned int type )
 	{
-		if ( source.empty() ) return 0;
+		if ( source.empty() )
+			return 0;
 
 		unsigned int shaderID = glCreateShader( type );
 		const char* shaderSource = source.c_str();
@@ -104,37 +105,24 @@ namespace MikuEngine
 		unsigned int fsID = 0;
 
 		vsID = CompileShader( vs, GL_VERTEX_SHADER );
-		if ( !gs.empty() ) gsID = CompileShader( gs, GL_GEOMETRY_SHADER );
+		if ( !gs.empty() )
+			gsID = CompileShader( gs, GL_GEOMETRY_SHADER );
 		fsID = CompileShader( fs, GL_FRAGMENT_SHADER );
 
 		glAttachShader( program, vsID );
-		if ( !gs.empty() ) glAttachShader( program, gsID );
+		if ( !gs.empty() )
+			glAttachShader( program, gsID );
 		glAttachShader( program, fsID );
 
 		glLinkProgram( program );
 		glValidateProgram( program );
 
 		glDeleteShader( vsID );
-		if ( !gs.empty() ) glDeleteShader( gsID );
+		if ( !gs.empty() )
+			glDeleteShader( gsID );
 		glDeleteShader( fsID );
 
 		return program;
-	}
-
-	void Shader::CreateAssetAtPath( const std::string& name, const std::filesystem::path& folderPath )
-	{
-		unsigned int count = 0;
-		std::filesystem::path pathToSave = folderPath / ( name + ".shader" );
-
-		while ( std::filesystem::exists( pathToSave ) )
-		{
-			count++;
-			pathToSave = folderPath / ( name + "_" + std::to_string( count ) + ".shader" );
-		}
-
-		std::filesystem::copy( DEFAULT_SHADER_LOCATION, pathToSave );
-
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().Refresh();
 	}
 
 	void Shader::LoadFromFile( const std::filesystem::path& filepath )
@@ -167,7 +155,8 @@ namespace MikuEngine
 			glGetActiveUniformsiv( m_RendererID, 1, &x, GL_UNIFORM_BLOCK_INDEX, &blockIndex );
 
 			// IGNORE THE UNIFORMS PART OF UNIFOR BUFFER OBJECT ( THEY HAVE A UNIFORM BUFFER INDEX)
-			if ( blockIndex != -1 ) continue;
+			if ( blockIndex != -1 )
+				continue;
 
 			unsigned int index = GetUniformLocation( name );
 			m_Uniforms[ name ] = { name, index, type };

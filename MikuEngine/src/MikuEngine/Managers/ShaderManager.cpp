@@ -33,7 +33,8 @@ namespace MikuEngine
 	{
 		for ( auto file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/shaders/includes/" ) )
 		{
-			if ( file.path().extension() != ".inc" ) continue;
+			if ( file.path().extension() != ".inc" )
+				continue;
 
 			std::ifstream contentFile( file.path().string() );
 
@@ -79,7 +80,8 @@ namespace MikuEngine
 		{
 			const auto& existing = m_Shaders.find( uuid );
 
-			if ( existing != m_Shaders.end() ) continue;
+			if ( existing != m_Shaders.end() )
+				continue;
 
 			Shader shader( uuid, index.path );
 			m_Shaders[ uuid ] = { index, shader };
@@ -118,10 +120,13 @@ namespace MikuEngine
 	{
 		for ( auto& file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/shaders/" ) )
 		{
-			if ( file.path().extension() != ".shader" ) continue;
-			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::SHADER, GetShaderProperties( nullptr ) );
+			if ( file.path().extension() != ".shader" )
+				continue;
+			if ( !MetaFileManager::MetaFileExists( file.path().string() ) )
+				MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::SHADER, GetShaderProperties( nullptr ) );
 
-			if ( file.is_directory() ) continue;
+			if ( file.is_directory() )
+				continue;
 
 			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
 			m_DefaultShaderIndex[ uuid ] = { uuid, file.path().string() };
@@ -130,9 +135,11 @@ namespace MikuEngine
 		const auto& dataContainer = Application::GetDataContainer();
 		for ( auto& file : std::filesystem::recursive_directory_iterator( dataContainer.GetProjectAssetPath( "/shaders/" ) ) )
 		{
-			if ( file.path().extension() != ".shader" ) continue;
+			if ( file.path().extension() != ".shader" )
+				continue;
 
-			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::SHADER, GetShaderProperties( nullptr ) );
+			if ( !MetaFileManager::MetaFileExists( file.path().string() ) )
+				MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::SHADER, GetShaderProperties( nullptr ) );
 
 			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
 			m_ShaderIndex[ uuid ] = { uuid, file.path().string() };
@@ -152,18 +159,22 @@ namespace MikuEngine
 			return &existing->second;
 		else
 		{
-			if ( auto existing = m_DefaultShaders.find( shaderUUID ); existing != m_Shaders.end() ) return &existing->second;
+			if ( auto existing = m_DefaultShaders.find( shaderUUID ); existing != m_Shaders.end() )
+				return &existing->second;
 			return std::nullopt;
 		}
 	}
 
 	const ShaderContainer& ShaderManager::GetShader( UUID shaderUUID ) const
 	{
-		if ( shaderUUID == UUID( 0 ) ) return GetDefaultShader();
+		if ( shaderUUID == UUID( 0 ) )
+			return GetDefaultShader();
 
 		// Return the loaded shader otherwise the deafult shader
-		if ( auto existing = m_Shaders.find( shaderUUID ); existing != m_Shaders.end() ) return existing->second;
-		if ( auto existing = m_DefaultShaders.find( shaderUUID ); existing != m_Shaders.end() ) return existing->second;
+		if ( auto existing = m_Shaders.find( shaderUUID ); existing != m_Shaders.end() )
+			return existing->second;
+		if ( auto existing = m_DefaultShaders.find( shaderUUID ); existing != m_Shaders.end() )
+			return existing->second;
 
 		return GetDefaultShader();
 	}
@@ -172,7 +183,8 @@ namespace MikuEngine
 	{
 		for ( auto& [ uuid, shaderContainer ] : m_Shaders )
 		{
-			if ( shaderContainer.GetName() == name ) return shaderContainer;
+			if ( shaderContainer.GetName() == name )
+				return shaderContainer;
 		}
 
 		MIKU_ASSERT( false, "Requested Shader is not loaded!" );
@@ -182,7 +194,8 @@ namespace MikuEngine
 	{
 		for ( const auto& [ uuid, shaderContainer ] : m_Shaders )
 		{
-			if ( shaderContainer.index.path == path ) return &m_Shaders.at( uuid );
+			if ( shaderContainer.index.path == path )
+				return &m_Shaders.at( uuid );
 		}
 
 		return {};
@@ -213,5 +226,21 @@ namespace MikuEngine
 	YAML::Node ShaderManager::GetShaderProperties( Shader* shader )
 	{
 		return {};
+	}
+
+	void ShaderManager::CreateAssetAtPath( const std::string& name, const std::filesystem::path& folderPath )
+	{
+		unsigned int count = 0;
+		std::filesystem::path pathToSave = folderPath / ( name + ".shader" );
+
+		while ( std::filesystem::exists( pathToSave ) )
+		{
+			count++;
+			pathToSave = folderPath / ( name + "_" + std::to_string( count ) + ".shader" );
+		}
+
+		std::filesystem::copy( DEFAULT_2D_SHADER_LOCATION, pathToSave );
+
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().Refresh();
 	}
 }

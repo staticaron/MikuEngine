@@ -59,12 +59,14 @@ namespace MikuEditor
 
 		auto canvasSize = ImGui::GetContentRegionAvail();
 		auto columns = static_cast<unsigned int>( canvasSize.x / ( m_IconSize + ImGui::GetStyle().ItemSpacing.x * 2 ) );
-		if ( columns < 1 ) columns = 1;
+		if ( columns < 1 )
+			columns = 1;
 
 		// Render the back button
 		if ( m_ContentBrowserLocation.string() != dataContainer.GetProjectDir() )
 		{
-			if ( ImGui::Button( "<BACK>" ) ) m_ContentBrowserLocation = m_ContentBrowserLocation.parent_path();
+			if ( ImGui::Button( "<BACK>" ) )
+				m_ContentBrowserLocation = m_ContentBrowserLocation.parent_path();
 			ImGui::SameLine();
 		}
 
@@ -83,7 +85,8 @@ namespace MikuEditor
 				folders.push_back( directory_item.path() );
 			else
 			{
-				if ( relativePath.extension() == ".meta" ) continue;
+				if ( relativePath.extension() == ".meta" )
+					continue;
 				files.push_back( directory_item.path() );
 			}
 		}
@@ -126,10 +129,16 @@ namespace MikuEditor
 
 		if ( ImGui::BeginPopupContextWindow() )
 		{
-			if ( ImGui::MenuItem( "Create Folder" ) ) std::filesystem::create_directory( m_ContentBrowserLocation / std::filesystem::path( "NewFolder" ) );
+			if ( ImGui::MenuItem( "Create Folder" ) )
+				std::filesystem::create_directory( m_ContentBrowserLocation / std::filesystem::path( "NewFolder" ) );
+
 			ImGui::Separator();
-			if ( ImGui::MenuItem( "Create Material" ) ) MikuEngine::MaterialManager::CreateAssetAtPath( "gigaNewMat", m_ContentBrowserLocation );
-			if ( ImGui::MenuItem( "Create Shader" ) ) MikuEngine::Shader::CreateAssetAtPath( "gigaNewShader", m_ContentBrowserLocation );
+
+			if ( ImGui::MenuItem( "Create Material" ) )
+				MikuEngine::MaterialManager::CreateAssetAtPath( "gigaNewMat", m_ContentBrowserLocation );
+
+			if ( ImGui::MenuItem( "Create Shader" ) )
+				MikuEngine::ShaderManager::CreateAssetAtPath( "gigaNewShader", m_ContentBrowserLocation );
 
 			ImGui::EndPopup();
 		}
