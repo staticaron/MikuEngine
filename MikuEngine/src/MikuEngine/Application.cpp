@@ -40,7 +40,8 @@ namespace MikuEngine
 		auto engineConfig = EngineConfigLoader::LoadConfig();
 		m_DataContainer.SetEngineConfig( engineConfig );
 
-		if ( !glfwInit() ) return;
+		if ( !glfwInit() )
+			return;
 
 		glfwSetErrorCallback( Error::LogGLFWErorr );
 		glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 );
@@ -149,9 +150,7 @@ namespace MikuEngine
 	void Application::Update()
 	{
 		m_AppLevelStuff.GetCentralInput().Update( m_DeltaTime );
-
-		m_AppLevelStuff.GetAssetPoolManager().GetShaderManager().InitFrame();
-		m_AppLevelStuff.GetAssetPoolManager().GetMaterialManager().InitFrame();
+		m_AppLevelStuff.GetAssetPoolManager().InitFrame();
 
 		for ( int x = 0; x < m_Layers.size(); x++ )
 			m_Layers[ x ]->Update( m_DeltaTime );

@@ -4,18 +4,28 @@ namespace MikuEngine
 {
 	void AssetPoolManager::Init()
 	{
-		m_TextureManager.LoadAllTextures();
-		m_ShaderManager.LoadAllShaders();
+		m_TextureManager.Init();
+		m_ShaderManager.Init();
 		m_MaterialManager.LoadAllMaterials();
 		m_ModelManager.LoadAllModels();
 	}
 
+	void AssetPoolManager::InitFrame()
+	{
+		GetShaderManager().InitFrame();
+		GetMaterialManager().InitFrame();
+	}
+
 	AssetType AssetPoolManager::GetAssetTypeFromPool( const UUID& uuid ) const
 	{
-		if ( m_TextureManager.TextureExists( uuid ) ) return AssetType::TEXTURE;
-		if ( m_ShaderManager.ShaderExists( uuid ) ) return AssetType::SHADER;
-		if ( m_MaterialManager.MaterialExists( uuid ) ) return AssetType::MATERIAL;
-		if ( m_ModelManager.ModelExists( uuid ) ) return AssetType::MODEL;
+		if ( m_TextureManager.TextureExists( uuid ) )
+			return AssetType::TEXTURE;
+		if ( m_ShaderManager.ShaderExists( uuid ) )
+			return AssetType::SHADER;
+		if ( m_MaterialManager.MaterialExists( uuid ) )
+			return AssetType::MATERIAL;
+		if ( m_ModelManager.ModelExists( uuid ) )
+			return AssetType::MODEL;
 
 		return AssetType::NONE;
 	}

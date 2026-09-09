@@ -9,8 +9,8 @@
 #include "glm/ext/matrix_float4x4.hpp"
 #include "glm/ext/vector_float2.hpp"
 
-#include "Asset.h"
 #include "Core.h"
+#include "IAsset.h"
 #include "UUID.h"
 
 #include "Rendering/VertexBufferLayout.h"
@@ -24,13 +24,15 @@ namespace MikuEngine
 		unsigned int Type;
 	};
 
-	class MIKU_API Shader : public Asset
+	class MIKU_API Shader : public IAsset
 	{
 	public:
-		Shader() : Asset( AssetType::SHADER ) {};
+		Shader() : IAsset( AssetType::SHADER ) {};
 		Shader( UUID uuid, const std::filesystem::path& path );
 
-		void LoadFromFile( const std::filesystem::path& filepath );
+		void Load( const std::filesystem::path& filepath );
+		void Destroy();
+
 		void PrepareUniforms();
 
 		void Bind() const;
@@ -39,7 +41,6 @@ namespace MikuEngine
 		const UUID& GetUUID() const { return m_ShaderUUID; }
 
 		std::string GetName() const override;
-		void SetName( const std::string& newName ) override;
 		const std::filesystem::path& GetPath() const override;
 
 		unsigned int GetUniformLocation( const std::string& uniformName )
@@ -60,8 +61,6 @@ namespace MikuEngine
 		{
 			static_assert( sizeof( T ) == 0, "No specialization of this type!" );
 		}
-
-		void DeleteAsset() override;
 
 	private:
 		void ParseShader( std::string_view filepath, std::string& vs, std::string& gs, std::string& fs );

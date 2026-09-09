@@ -6,8 +6,8 @@
 
 #include "yaml-cpp/yaml.h"
 
-#include "AssetManagerBase.h"
 #include "Core.h"
+#include "IAssetManagerBase.h"
 #include "Rendering/Shader.h"
 #include "UUID.h"
 
@@ -35,9 +35,12 @@ namespace MikuEngine
 		}
 	};
 
-	class MIKU_API ShaderManager : public AssetManagerBase
+	class MIKU_API ShaderManager : public IAssetManagerBase
 	{
 	public:
+		void Init();
+		void InitFrame() override;
+
 		void LoadShader( const std::string& name, const std::string& filepath );
 		void LoadAllShaders();
 
@@ -56,11 +59,25 @@ namespace MikuEngine
 		std::optional<const ShaderContainer*> GetShaderByFilePath( const std::filesystem::path& path );
 		std::string GetShaderName( UUID shaderUUID ) const;
 
+		void AddToDeleteQueue( const UUID& uuid ) override;
+		void AddToDeleteQueue( const std::filesystem::path& filepath ) override;
+
+		void AddToRenameQueue( const UUID& uuid, const std::string& newName ) override;
+		void AddToRenameQueue( const std::filesystem::path& filepath, const std::string& newName ) override;
+
 		bool ShaderExists( const UUID& uuid ) const;
-		void RenameAssetCleanup( const UUID& uuid, const std::string& newName ) override;
 
 		static YAML::Node GetShaderProperties( Shader* shader );
 		static void CreateAssetAtPath( const std::string& name, const std::filesystem::path& folderPath );
+
+	protected:
+		void PerformDeletions() override;
+		void PerformRenames();
+
+		void DeleteAsset( const UUID& uuid ) override;
+		void RenameAsset( const UUID& uuid, const std::string& newName ) override;
+
+		const std::filesystem::path& GetFilePathByUUID( const UUID& uuid ) override;
 
 	private:
 		void PrepareShaderIndex();
@@ -72,9 +89,6 @@ namespace MikuEngine
 
 		const std::unordered_map<UUID, ShaderIndexEntry>& GetShaderIndex() const;
 
-		const std::filesystem::path& GetFilePathFromUUID( const UUID& uuid ) override;
-		void DeleteAssetCleanup( const UUID& uuid ) override;
-
 	private:
 		std::unordered_map<UUID, ShaderIndexEntry> m_ShaderIndex;
 		std::unordered_map<UUID, ShaderIndexEntry> m_DefaultShaderIndex;
@@ -83,5 +97,9 @@ namespace MikuEngine
 		std::unordered_map<UUID, ShaderContainer> m_DefaultShaders;
 
 		std::unordered_map<std::string, std::string> m_ShaderIncludes;
+
+		//===================
+		std::vector<UUID> m_DeleteQueue{};
+		std::vector<std::pair<UUID, std::string>> m_RenameQueue{};
 	};
 }

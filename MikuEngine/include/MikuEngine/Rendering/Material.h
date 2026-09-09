@@ -6,6 +6,7 @@
 
 #include <glm/glm.hpp>
 
+#include "Asset.h"
 #include "Core.h"
 #include "Managers/ShaderManager.h"
 #include "Shader.h"

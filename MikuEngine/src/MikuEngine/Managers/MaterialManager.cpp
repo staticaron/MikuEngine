@@ -50,16 +50,20 @@ namespace MikuEngine
 	{
 		const auto& dataContainer = Application::GetDataContainer();
 
-		if ( !std::filesystem::exists( dataContainer.GetProjectAssetPath( "/materials/" ) ) ) return;
+		if ( !std::filesystem::exists( dataContainer.GetProjectAssetPath( "/materials/" ) ) )
+			return;
 
 		m_MaterialIndex.clear();
 
 		for ( auto& file : std::filesystem::recursive_directory_iterator( dataContainer.GetProjectAssetPath( "/materials/" ) ) )
 		{
-			if ( file.path().extension() == ".meta" ) continue;
-			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::MATERIAL, GetMaterialProperties( nullptr ) );
+			if ( file.path().extension() == ".meta" )
+				continue;
+			if ( !MetaFileManager::MetaFileExists( file.path().string() ) )
+				MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::MATERIAL, GetMaterialProperties( nullptr ) );
 
-			if ( file.is_directory() ) continue;
+			if ( file.is_directory() )
+				continue;
 
 			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
 			m_MaterialIndex[ uuid ] = { uuid, file.path().string() };
@@ -76,21 +80,26 @@ namespace MikuEngine
 	{
 		const auto& dataContainer = Application::GetDataContainer();
 
-		if ( !std::filesystem::exists( dataContainer.GetProjectAssetPath( "/materials/" ) ) ) return;
+		if ( !std::filesystem::exists( dataContainer.GetProjectAssetPath( "/materials/" ) ) )
+			return;
 
 		unsigned int refreshCount = 0;
 
 		for ( auto& file : std::filesystem::recursive_directory_iterator( dataContainer.GetProjectAssetPath( "/materials/" ) ) )
 		{
-			if ( file.is_directory() ) continue;
-			if ( file.path().extension() == ".meta" ) continue;
-			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::MATERIAL, GetMaterialProperties( nullptr ) );
+			if ( file.is_directory() )
+				continue;
+			if ( file.path().extension() == ".meta" )
+				continue;
+			if ( !MetaFileManager::MetaFileExists( file.path().string() ) )
+				MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::MATERIAL, GetMaterialProperties( nullptr ) );
 
 			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
 
 			const auto& existingIndex = m_MaterialIndex.find( uuid );
 
-			if ( existingIndex != m_MaterialIndex.end() ) continue;
+			if ( existingIndex != m_MaterialIndex.end() )
+				continue;
 
 			m_MaterialIndex[ uuid ] = { uuid, file.path().string() };
 
@@ -108,7 +117,8 @@ namespace MikuEngine
 		{
 			const auto& existing = m_Materials.find( uuid );
 
-			if ( existing != m_Materials.end() ) continue;
+			if ( existing != m_Materials.end() )
+				continue;
 
 			Material material( uuid, index.path );
 			m_Materials[ uuid ] = { index, material };
@@ -177,7 +187,8 @@ namespace MikuEngine
 			count++;
 		}
 
-		if ( count > 0 ) MIKU_CORE_DEBUG( "Material Cleanup Successful! {} Materials Deleted!", count );
+		if ( count > 0 )
+			MIKU_CORE_DEBUG( "Material Cleanup Successful! {} Materials Deleted!", count );
 	}
 
 	YAML::Node MaterialManager::GetMaterialProperties( Material* material )

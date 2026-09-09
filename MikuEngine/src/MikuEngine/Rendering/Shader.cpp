@@ -17,9 +17,9 @@ namespace MikuEngine
 		FRAGMENT = 2,
 	};
 
-	Shader::Shader( UUID uuid, const std::filesystem::path& path ) : Asset( AssetType::SHADER ), m_ShaderUUID( uuid )
+	Shader::Shader( UUID uuid, const std::filesystem::path& path ) : IAsset( AssetType::SHADER ), m_ShaderUUID( uuid ), m_FilePath( path )
 	{
-		LoadFromFile( path );
+		Load( path );
 	}
 
 	void Shader::ParseShader( std::string_view filepath, std::string& vs, std::string& gs, std::string& fs )
@@ -125,8 +125,12 @@ namespace MikuEngine
 		return program;
 	}
 
-	void Shader::LoadFromFile( const std::filesystem::path& filepath )
+	/// @brief Load a shader file into this shader object
+	/// @param filepath path to the combined shader file
+	void Shader::Load( const std::filesystem::path& filepath )
 	{
+		m_FilePath = filepath;
+
 		std::string vs, gs, fs;
 		ParseShader( filepath.string(), vs, gs, fs );
 		m_RendererID = CreateShader( vs, gs, fs );
@@ -134,6 +138,12 @@ namespace MikuEngine
 		PrepareUniforms();
 	}
 
+	void Shader::Destroy()
+	{
+		glDeleteProgram( m_RendererID );
+	}
+
+	/// @brief Fetch all the uniform from the current shader objects for easy access
 	void Shader::PrepareUniforms()
 	{
 		int uniformCount;
@@ -181,20 +191,10 @@ namespace MikuEngine
 		return shaderManager.GetShader( m_ShaderUUID ).value()->GetName();
 	}
 
-	void Shader::SetName( const std::string& newName )
-	{
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().RenameAsset( m_ShaderUUID, newName );
-	}
-
 	const std::filesystem::path& Shader::GetPath() const
 	{
 		auto shader = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().GetShader( m_ShaderUUID );
 		MIKU_ASSERT( shader.has_value(), "This Shader with UUID doesn't exists!" );
 		return shader.value()->index.path;
-	}
-
-	void Shader::DeleteAsset()
-	{
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().AddToDeleteQueue( m_ShaderUUID );
 	}
 }
