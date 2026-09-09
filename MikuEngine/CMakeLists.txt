@@ -6,8 +6,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=unused-but-set-variable")
-
 project("MikuEngine" LANGUAGES CXX)
 
 set(ASSIMP_BUILD_ZLIB ON CACHE BOOL "" FORCE)
@@ -26,6 +24,10 @@ add_subdirectory(vendor/nativefiledialog)
 add_subdirectory(vendor/dylib)
 add_subdirectory(vendor/assimp)
 add_subdirectory(vendor/ImGuizmo)
+
+if(TARGET assimp)
+    target_compile_options(assimp PRIVATE -Wno-error=unused-template)
+endif()
 
 file(GLOB_RECURSE ENGINE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
