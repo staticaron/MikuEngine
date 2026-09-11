@@ -71,6 +71,14 @@ namespace MikuEngine
 		m_DeleteQueue.clear();
 	}
 
+	void TextureManager::PerformRenames()
+	{
+		for ( auto [ uuid, newName ] : m_RenameQueue )
+			RenameAsset( uuid, newName );
+
+		m_RenameQueue.clear();
+	}
+
 	/// @brief Delete a texture
 	/// @param uuid uuid of the texture to be deleted!
 	void TextureManager::DeleteAsset( const UUID& uuid )

@@ -20,6 +20,7 @@ namespace MikuEngine
 
 	protected:
 		virtual void PerformDeletions() = 0;
+		virtual void PerformRenames() = 0;
 
 		virtual void DeleteAsset( const UUID& uuid ) = 0;
 		virtual void RenameAsset( const UUID& uuid, const std::string& newName ) = 0;

@@ -13,7 +13,7 @@ namespace MikuEngine
 	{
 		LoadShaderIncludes();
 		LoadAllDefaultShaders( true );
-		LoadAllShaders( true );
+		LoadAllProjectShaders( true );
 	}
 
 	void ShaderManager::InitFrame()
@@ -93,8 +93,10 @@ namespace MikuEngine
 		}
 	}
 
-	/// @brief Load all the shaders
-	void ShaderManager::LoadAllShaders( bool loadExisting )
+	/// Load all the shaders
+	///
+	/// @param loadExisting if true, shader will be loaded and existing shader with same UUID will be replaced
+	void ShaderManager::LoadAllProjectShaders( bool loadExisting )
 	{
 		const auto& dataContainer = Application::GetDataContainer();
 
@@ -122,7 +124,7 @@ namespace MikuEngine
 	/// @brief Go through the shader directories and reload the ones not loaded yet
 	void ShaderManager::RefreshShaders()
 	{
-		LoadAllShaders( false );
+		LoadAllProjectShaders( false );
 		LoadAllDefaultShaders( false );
 	}
 
@@ -158,7 +160,8 @@ namespace MikuEngine
 		return nullptr;
 	}
 
-	/// @brief Searches for the shader and returns the project shader, default shader with UUID or just a defualt shader in order if the not found previously
+	/// Searches for the shader and returns the project shader, default shader with UUID or just a defualt shader in order if the not found previously
+	///
 	/// @param shaderUUID UUID of the shader to fetch
 	const Shader* ShaderManager::GetShaderOrDefault( UUID shaderUUID ) const
 	{
@@ -254,6 +257,10 @@ namespace MikuEngine
 		return exists != m_Shaders.end();
 	}
 
+	/// Return the first default shader
+	/// Use this as a fallback shader
+	///
+	/// @return Shader pointer to a default shader
 	const Shader* ShaderManager::GetDefaultShader() const
 	{
 		return &m_DefaultShaders.begin()->second;
@@ -274,6 +281,7 @@ namespace MikuEngine
 	/// @param folderPath path of the parent folder where the shader will be created
 	void ShaderManager::CreateAssetAtPath( const std::string& name, const std::filesystem::path& folderPath )
 	{
+		// Find a proper name for the new shader file by appending a number until a new name is found
 		unsigned int count = 0;
 		std::filesystem::path pathToSave = folderPath / ( name + ".shader" );
 
@@ -283,9 +291,11 @@ namespace MikuEngine
 			pathToSave = folderPath / ( name + "_" + std::to_string( count ) + ".shader" );
 		}
 
+		// Copy the default shader file from engine to the project
 		std::filesystem::copy( DEFAULT_2D_SHADER_LOCATION, pathToSave );
 
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().RefreshShaders();
+		// Load the shader asset into the shader DB
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().LoadShader( pathToSave, {} );
 	}
 
 	/// @brief Go through each and every UUID in delete queue and perform delete on the asset with that UUID

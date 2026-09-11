@@ -21,7 +21,7 @@ namespace MikuEditor
 		{
 			if ( ImGui::BeginTabItem( "Project" ) )
 			{
-				auto projectShaders = appLevelstuff.GetAssetPoolManager().GetShaderManager().GetAllLoadedShaders();
+				auto projectShaders = appLevelstuff.GetAssetPoolManager().GetShaderManager().GetAllShaders();
 
 				for ( const auto& [ uuid, shader ] : projectShaders )
 				{

@@ -17,29 +17,27 @@ namespace MikuEngine
 	{
 	public:
 		void Init();
+		void InitFrame() override;
 
 		void LoadShader( const std::filesystem::path& filepath, UUID uuid = {} );
 		void LoadDefaultShader( const std::filesystem::path& filepath, UUID uuid = {} );
 
-		void LoadAllShaders( bool loadExisting = false );
 		void RefreshShaders();
 
 		Shader* GetShader( UUID shaderUUID );
 		const Shader* GetShader( UUID shaderUUID ) const;
 		const Shader* GetShaderOrDefault( UUID shaderUUID ) const;
-		const Shader* GetDefaultShader() const;
 		const Shader* GetDefaultShader( UUID shaderUUID ) const;
+		const Shader* GetDefaultShader() const;
 
 		const std::string& GetShaderIncludeCode( const std::string& identifier ) const;
 
-		const std::unordered_map<UUID, Shader>& GetAllLoadedShaders() const { return m_Shaders; }
+		const std::unordered_map<UUID, Shader>& GetAllShaders() const { return m_Shaders; }
 		const std::unordered_map<UUID, Shader>& GetAllDefaultShaders() const { return m_DefaultShaders; }
 
 		Shader* GetShaderByName( const std::string& name );
 		Shader* GetShaderByFilePath( const std::filesystem::path& path );
 		std::string GetShaderName( UUID shaderUUID ) const;
-
-		void InitFrame() override;
 
 		void AddToDeleteQueue( const UUID& uuid ) override;
 		void AddToDeleteQueue( const std::filesystem::path& filepath ) override;
@@ -54,7 +52,7 @@ namespace MikuEngine
 
 	protected:
 		void PerformDeletions() override;
-		void PerformRenames();
+		void PerformRenames() override;
 
 		void DeleteAsset( const UUID& uuid ) override;
 		void RenameAsset( const UUID& uuid, const std::string& newName ) override;
@@ -62,13 +60,14 @@ namespace MikuEngine
 		const std::filesystem::path& GetFilePathByUUID( const UUID& uuid ) override;
 
 	private:
-		void LoadAllDefaultShaders( bool loadExisting );
+		void LoadAllProjectShaders( bool loadExisting = false );
+		void LoadAllDefaultShaders( bool loadExisting = false );
+
 		void LoadShaderIncludes();
 
 	private:
 		std::unordered_map<UUID, Shader> m_Shaders;
 		std::unordered_map<UUID, Shader> m_DefaultShaders;
-
 		std::unordered_map<std::string, std::string> m_ShaderIncludes;
 
 		std::vector<UUID> m_DeleteQueue{};

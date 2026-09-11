@@ -80,6 +80,7 @@ namespace MikuEngine
 
 	protected:
 		void PerformDeletions() override;
+		void PerformRenames() override;
 
 		void DeleteAsset( const UUID& uuid ) override;
 		void RenameAsset( const UUID& uuid, const std::string& newName ) override;
