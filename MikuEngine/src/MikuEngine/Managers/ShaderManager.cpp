@@ -330,25 +330,24 @@ namespace MikuEngine
 	/// @param uuid UUID of the shader to delete
 	void ShaderManager::DeleteAsset( const UUID& uuid )
 	{
-		const std::filesystem::path filePath = GetFilePathByUUID( uuid );
+		auto shaderToDelete = m_Shaders.find( uuid );
 
-		// Find the texture to delete
-		auto textureToDelete = m_Shaders.begin();
-		for ( ; textureToDelete != m_Shaders.end(); textureToDelete++ )
-			if ( textureToDelete->first == uuid )
-				break;
+		if ( shaderToDelete == m_Shaders.end() )
+			return;
+
+		auto filepath = shaderToDelete->second.GetPath();
 
 		// Free the GPU Memory
-		textureToDelete->second.Destroy();
+		shaderToDelete->second.Destroy();
 
 		// Remove from the Shader DB
-		m_Shaders.erase( textureToDelete );
+		m_Shaders.erase( shaderToDelete );
 
 		// Delete the physical files
-		if ( std::filesystem::exists( filePath ) )
-			std::filesystem::remove( filePath );
-		if ( std::filesystem::exists( filePath.string() + ".meta" ) )
-			std::filesystem::remove( filePath.string() + ".meta" );
+		if ( std::filesystem::exists( filepath ) )
+			std::filesystem::remove( filepath );
+		if ( std::filesystem::exists( filepath.string() + ".meta" ) )
+			std::filesystem::remove( filepath.string() + ".meta" );
 	}
 
 	/// @brief Rename the Shader by updating the filepath in shader object and renaming the shader asset file

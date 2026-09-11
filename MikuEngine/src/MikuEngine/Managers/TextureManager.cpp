@@ -85,11 +85,12 @@ namespace MikuEngine
 	{
 		const std::filesystem::path& filePath = GetFilePathByUUID( uuid );
 
-		// Find the texture to delete
-		auto textureToDelete = m_Textures.begin();
-		for ( ; textureToDelete != m_Textures.end(); textureToDelete++ )
-			if ( textureToDelete->first == uuid )
-				break;
+		auto textureToDelete = m_Textures.find( uuid );
+
+		if ( textureToDelete == m_Textures.end() )
+			return;
+
+		auto filepath = textureToDelete->second.GetPath();
 
 		// Free the GPU Memory
 		textureToDelete->second.Destroy();
@@ -119,9 +120,7 @@ namespace MikuEngine
 		std::filesystem::rename( filePath.string() + ".meta", newMetaFilePath );
 
 		if ( auto existing = m_Textures.find( uuid ); existing != m_Textures.end() )
-		{
 			existing->second.SetName( newName );
-		}
 	}
 
 	/// @brief Get the path of the texture
