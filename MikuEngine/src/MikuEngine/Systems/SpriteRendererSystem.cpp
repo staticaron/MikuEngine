@@ -32,14 +32,11 @@ namespace MikuEngine
 
 			if ( spriteRenderer.MaterialUUID.has_value() )
 			{
-				auto materialContainer = materialManager.GetMaterial( spriteRenderer.MaterialUUID.value() );
-				if ( materialContainer.has_value() == false )
+				if ( auto material = materialManager.GetMaterial( spriteRenderer.MaterialUUID.value() ); material == nullptr )
 				{
 					MIKU_CORE_WARN( "Material assigned to this sprite renderer is not loaded!" );
 					return;
 				}
-
-				material = &materialContainer.value()->material;
 			}
 			else
 				return;

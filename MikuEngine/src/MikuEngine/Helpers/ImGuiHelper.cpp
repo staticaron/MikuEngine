@@ -159,8 +159,8 @@ namespace MikuEngine
 		if ( materialUUID.has_value() )
 		{
 			auto material = materialManager.GetMaterial( materialUUID.value() );
-			if ( material.has_value() )
-				materialName = material.value()->GetName();
+			if ( material != nullptr )
+				materialName = material->GetName();
 		}
 
 		ImGui::PushID( identifier.c_str() );
@@ -179,11 +179,11 @@ namespace MikuEngine
 				if ( payload != nullptr )
 				{
 					auto materialPath = static_cast<const char*>( payload->Data );
-					auto material = materialManager.GetMaterialByFilePath( materialPath );
-					if ( material.has_value() )
+					auto material = materialManager.GetMaterial( materialPath );
+					if ( material != nullptr )
 					{
 						wasChanged = true;
-						materialUUID = material.value()->GetUUID();
+						materialUUID = material->GetUUID();
 					}
 				}
 

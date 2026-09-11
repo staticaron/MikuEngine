@@ -8,7 +8,7 @@
 
 namespace MikuEngine
 {
-	Material::Material( UUID uuid, const std::filesystem::path& materialPath ) : Asset( AssetType::MATERIAL ), m_UUID( uuid )
+	Material::Material( UUID uuid, const std::filesystem::path& materialPath ) : Asset( AssetType::MATERIAL ), m_UUID( uuid ), m_FilePath( materialPath )
 	{
 		LoadFromFile( materialPath );
 	}
@@ -76,6 +76,8 @@ namespace MikuEngine
 
 	void Material::LoadFromFile( const std::filesystem::path& materialPath )
 	{
+		m_FilePath = materialPath;
+
 		const ShaderManager& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
 		YAML::Node rootNode = YAML::LoadFile( materialPath );
@@ -241,9 +243,7 @@ namespace MikuEngine
 
 	const std::filesystem::path& Material::GetPath() const
 	{
-		auto material = Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().GetMaterial( m_UUID );
-		MIKU_ASSERT( material.has_value(), "This Shader with UUID doesn't exists!" );
-		return material.value()->index.path;
+		return m_FilePath;
 	}
 
 	std::string Material::GetName() const

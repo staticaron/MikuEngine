@@ -237,11 +237,11 @@ namespace MikuEditor
 			break;
 
 		case MikuEngine::AssetType::MATERIAL: {
-			auto materialContainer = assetPoolManager.GetMaterialManager().GetMaterial( selectedAsset.value().uuid );
-			if ( materialContainer.has_value() == false )
+			auto material = assetPoolManager.GetMaterialManager().GetMaterial( selectedAsset.value().uuid );
+			if ( material == nullptr )
 				return;
 
-			MaterialComponent::RenderMaterialComponent( editorLayer, *materialContainer.value() );
+			MaterialComponent::RenderMaterialComponent( editorLayer, *material );
 			break;
 		}
 		case MikuEngine::AssetType::SHADER: {

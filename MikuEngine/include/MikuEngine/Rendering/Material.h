@@ -26,8 +26,8 @@ namespace MikuEngine
 
 	struct MIKU_API RenderOrder
 	{
-		MaterialBlendMode mode;
-		unsigned int order;
+		MaterialBlendMode mode{ MaterialBlendMode::OPAQUE };
+		unsigned int order{ 0 };
 	};
 
 	class MIKU_API Material : public Asset
@@ -48,7 +48,7 @@ namespace MikuEngine
 		void Bind();
 		void UnBind();
 
-		const UUID& GetUUID() { return m_UUID; }
+		const UUID& GetUUID() const { return m_UUID; }
 
 		const std::filesystem::path& GetPath() const override;
 		std::string GetName() const override;
@@ -79,6 +79,7 @@ namespace MikuEngine
 
 	private:
 		UUID m_UUID;
+		std::filesystem::path m_FilePath{};
 
 		std::optional<UUID> m_Shader;
 

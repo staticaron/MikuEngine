@@ -25,30 +25,30 @@ namespace MikuEngine
 				continue;
 
 			auto material = appLevelStuff.GetAssetPoolManager().GetMaterialManager().GetMaterial( materialUUID.value() );
-			if ( material.has_value() == false )
+			if ( material == nullptr )
 				continue;
 
-			if ( material.value()->material.GetRenderOrder().mode != mode )
+			if ( material->GetRenderOrder().mode != mode )
 				continue;
 
 			auto transformMtx = TransformSystem::GetTransformMatrix( scene, entt );
 
 			float distanceFromCamera = glm::length( cameraPosition - glm::vec3( transformMtx[ 3 ] ) );
 
-			distancedEntities.push_back( { entt, &meshRendererC, material.value(), transformMtx, distanceFromCamera } );
+			distancedEntities.push_back( { entt, &meshRendererC, material, transformMtx, distanceFromCamera } );
 		}
 
 		std::sort( distancedEntities.begin(), distancedEntities.end(), []( const DistancedEntity& a, const DistancedEntity& b ) {
-			if ( a.materialContainer->material.GetRenderOrder().order == b.materialContainer->material.GetRenderOrder().order )
+			if ( a.material->GetRenderOrder().order == b.material->GetRenderOrder().order )
 				return a.distanceFromCamera >= b.distanceFromCamera;
 			else
-				return a.materialContainer->material.GetRenderOrder().order <= b.materialContainer->material.GetRenderOrder().order;
+				return a.material->GetRenderOrder().order <= b.material->GetRenderOrder().order;
 		} );
 
 		RenderMeshByBlendMode( scene, appLevelStuff, distancedEntities, cameraData, mode );
 	}
 
-	void MeshRendererSystem::RenderMeshByBlendMode( const Scene& scene, AppLevelStuff& appLevelStuff, const std::vector<DistancedEntity>& distancedEntities, const CameraData& cameraData, const MaterialBlendMode& blendMode )
+	void MeshRendererSystem::RenderMeshByBlendMode( const Scene& scene, AppLevelStuff& appLevelStuff, std::vector<DistancedEntity>& distancedEntities, const CameraData& cameraData, const MaterialBlendMode& blendMode )
 	{
 		const auto& renderer = appLevelStuff.GetRenderer();
 		auto& materialManager = appLevelStuff.GetAssetPoolManager().GetMaterialManager();
@@ -58,7 +58,7 @@ namespace MikuEngine
 		if ( blendMode == MaterialBlendMode::TRANSPARENT )
 			renderer.DisableWriteToDepthBuffer();
 
-		for ( const auto& distancedEntity : distancedEntities )
+		for ( auto& distancedEntity : distancedEntities )
 		{
 			const auto& modelUUID = distancedEntity.meshRendererC->ModelIdentifier;
 			if ( modelUUID.has_value() == false )
@@ -67,11 +67,11 @@ namespace MikuEngine
 			if ( model.has_value() == false )
 				continue;
 
-			Material material = distancedEntity.materialContainer->material;
+			auto material = distancedEntity.material;
 
-			material.Bind();
+			material->Bind();
 
-			auto shader = material.GetShader();
+			auto shader = material->GetShader();
 			if ( shader == nullptr )
 				continue;
 

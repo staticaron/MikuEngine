@@ -30,15 +30,10 @@ namespace MikuEngine
 			if ( model.has_value() == false )
 				return;
 
-			Material* material = nullptr;
 			if ( skyboxC.MaterialIdentifier.has_value() == false )
 				continue;
 
-			auto materialContainer = materialManager.GetMaterial( skyboxC.MaterialIdentifier.value() );
-			if ( materialContainer.has_value() == false )
-				continue;
-
-			material = &materialContainer.value()->material;
+			auto material = materialManager.GetMaterial( skyboxC.MaterialIdentifier.value() );
 
 			material->Bind();
 

@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "yaml-cpp/yaml.h"
+#include "yaml-cpp/node/node.h"
 
 #include "Core.h"
 #include "IAssetManagerBase.h"
