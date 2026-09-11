@@ -2,6 +2,8 @@
 
 #include <optional>
 
+#include "yaml-cpp/node/node.h"
+
 #include "Core.h"
 
 #include "AssetManagerBase.h"

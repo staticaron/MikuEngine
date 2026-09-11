@@ -17,6 +17,11 @@
 
 namespace MikuEngine
 {
+	class ShaderManager;
+}
+
+namespace MikuEngine
+{
 	struct MIKU_API ShaderUniform
 	{
 		std::string Name;
@@ -68,6 +73,8 @@ namespace MikuEngine
 		unsigned int CompileShader( const std::string& source, unsigned int type );
 		unsigned int CreateShader( const std::string& vs, const std::string& gs, const std::string& fs );
 
+		void SetPath( const std::filesystem::path& path ) { m_FilePath = path; }
+
 	private:
 		UUID m_ShaderUUID{};
 		std::filesystem::path m_FilePath{};
@@ -75,6 +82,8 @@ namespace MikuEngine
 		unsigned int m_RendererID = 0;
 
 		std::unordered_map<std::string, ShaderUniform> m_Uniforms = {};
+
+		friend ShaderManager;
 	};
 
 	template <>

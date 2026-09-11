@@ -1,7 +1,8 @@
 #pragma once
 
-#include "glm/glm.hpp"
-#include "yaml-cpp/yaml.h"
+#include "glm/ext/matrix_float4x4.hpp"
+#include "glm/ext/vector_float3.hpp"
+#include "yaml-cpp/emitter.h"
 
 #include "Core.h"
 

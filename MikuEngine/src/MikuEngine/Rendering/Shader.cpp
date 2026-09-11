@@ -1,4 +1,5 @@
 #include "Rendering/Shader.h"
+
 #include <fstream>
 #include <sstream>
 
@@ -187,14 +188,11 @@ namespace MikuEngine
 
 	std::string Shader::GetName() const
 	{
-		auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
-		return shaderManager.GetShader( m_ShaderUUID ).value()->GetName();
+		return m_FilePath.stem();
 	}
 
 	const std::filesystem::path& Shader::GetPath() const
 	{
-		auto shader = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().GetShader( m_ShaderUUID );
-		MIKU_ASSERT( shader.has_value(), "This Shader with UUID doesn't exists!" );
-		return shader.value()->index.path;
+		return m_FilePath;
 	}
 }

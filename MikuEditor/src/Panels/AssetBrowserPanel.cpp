@@ -210,7 +210,7 @@ namespace MikuEditor
 			case MikuEngine::AssetType::SCENE:
 				break;
 			case MikuEngine::AssetType::SHADER: {
-				assetUUID = appLevelStuff.GetAssetPoolManager().GetShaderManager().GetShaderByFilePath( filePath.string() ).value()->index.uuid;
+				assetUUID = appLevelStuff.GetAssetPoolManager().GetShaderManager().GetShaderByFilePath( filePath.string() )->GetUUID();
 				break;
 			}
 			default:

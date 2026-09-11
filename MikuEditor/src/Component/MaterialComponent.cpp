@@ -13,6 +13,7 @@ namespace MikuEditor
 
 		MikuEngine::ImGuiHelper::StartPropertyTable();
 
+#pragma region Blend Mode
 		auto currentlySelected = materialContainer.material.GetBlendModeString();
 		const char* blendModes[]{ "Transparent", "Opaque" };
 
@@ -30,17 +31,23 @@ namespace MikuEditor
 				ImGui::EndCombo();
 			}
 		} );
+#pragma endregion
 
+#pragma region Render Order
 		MikuEngine::ImGuiHelper::RenderTableItem( "Render Order", [ & ]() { ImGui::DragScalar( "##Render Order", ImGuiDataType_U32, &materialContainer.material.GetRenderOrder().order, 1 ); } );
+#pragma endregion
 
+#pragma region Shader Selection
 		auto& shaderManager = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
 
 		auto shader = materialContainer.material.GetShader();
 
 		std::optional<MikuEngine::UUID> shaderUUID;
-		if ( shader.has_value() ) shaderUUID = shader.value()->shader.GetUUID();
+		if ( shader != nullptr )
+			shaderUUID = shader->GetUUID();
 
 		MikuEngine::UUID materialUUID = materialContainer.index.uuid;
+
 		std::function<void( MikuEngine::UUID itemUUID )> onShaderSelection = [ materialUUID ]( MikuEngine::UUID selectedShaderUUID ) {
 			auto materialSearch = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().GetMaterial( materialUUID );
 			if ( materialSearch.has_value() == false )
@@ -81,7 +88,8 @@ namespace MikuEditor
 
 				bool wasChanged = MikuEngine::ImGuiHelper::RenderDragableTextureInput( uniformName, texture, textureEditBtnCallback );
 
-				if ( wasChanged ) materialContainer.material.SetTexture( uniformName, texture.value() );
+				if ( wasChanged )
+					materialContainer.material.SetTexture( uniformName, texture.value() );
 			}
 
 			// Render Cubemap
@@ -106,7 +114,8 @@ namespace MikuEditor
 
 				bool wasChanged = MikuEngine::ImGuiHelper::RenderDragableTextureInput( uniformName, cubemap, cubemapEditBtnCallback );
 
-				if ( wasChanged ) materialContainer.material.SetCubemap( uniformName, cubemap.value() );
+				if ( wasChanged )
+					materialContainer.material.SetCubemap( uniformName, cubemap.value() );
 			}
 
 			// Render Floats
@@ -142,6 +151,7 @@ namespace MikuEditor
 				} );
 			}
 		}
+#pragma endregion
 
 		MikuEngine::ImGuiHelper::EndPropertyTable();
 

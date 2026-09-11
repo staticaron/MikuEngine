@@ -4,10 +4,9 @@
 
 namespace MikuEditor
 {
-	void ShaderComponent::RenderShaderComponent( MikuEngine::ShaderContainer& shaderContainer )
+	void ShaderComponent::RenderShaderComponent( MikuEngine::Shader& shader )
 	{
-		ComponentHeader( [ shaderContainer ]() { return shaderContainer.GetName(); }, [ shaderContainer ]( std::string newName ) { MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().AddToRenameQueue( shaderContainer.index.uuid, newName ); } );
-
-		ComponentFooter( [ shaderContainer ]() { MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().AddToDeleteQueue( shaderContainer.index.uuid ); } );
+		ComponentHeader( [ shader ]() { return shader.GetName(); }, [ shader ]( std::string newName ) { MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().AddToRenameQueue( shader.GetUUID(), newName ); } );
+		ComponentFooter( [ shader ]() { MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().AddToDeleteQueue( shader.GetUUID() ); } );
 	}
 }

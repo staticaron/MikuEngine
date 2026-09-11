@@ -23,9 +23,9 @@ namespace MikuEditor
 			{
 				auto projectShaders = appLevelstuff.GetAssetPoolManager().GetShaderManager().GetAllLoadedShaders();
 
-				for ( const auto& [ uuid, shaderContainer ] : projectShaders )
+				for ( const auto& [ uuid, shader ] : projectShaders )
 				{
-					if ( ImGui::Selectable( shaderContainer.index.path.c_str() ) )
+					if ( ImGui::Selectable( shader.GetPath().c_str() ) )
 					{
 						onShaderSelection( uuid );
 						response = WindowResponse::COMPLETED;
@@ -39,9 +39,9 @@ namespace MikuEditor
 			{
 				auto defaultShaders = appLevelstuff.GetAssetPoolManager().GetShaderManager().GetAllDefaultShaders();
 
-				for ( const auto& [ uuid, shaderContainer ] : defaultShaders )
+				for ( const auto& [ uuid, shader ] : defaultShaders )
 				{
-					if ( ImGui::Selectable( shaderContainer.index.path.c_str() ) )
+					if ( ImGui::Selectable( shader.GetPath().c_str() ) )
 					{
 						onShaderSelection( uuid );
 						response = WindowResponse::COMPLETED;
@@ -56,7 +56,8 @@ namespace MikuEditor
 
 		ImGui::End();
 
-		if ( m_IsOpen == false ) response = WindowResponse::CLOSED;
+		if ( m_IsOpen == false )
+			response = WindowResponse::CLOSED;
 
 		return response;
 	}

@@ -2,8 +2,6 @@
 
 #include <fstream>
 
-#include "yaml-cpp/yaml.h"
-
 #include "Application.h"
 #include "Helpers/SerializationHelper.h"
 #include "Logger.h"
@@ -29,9 +27,12 @@ namespace MikuEngine
 		m_Mat4s.clear();
 		m_Cubemaps.clear();
 
-		const auto& shader = GetShader();
+		auto shader = GetShader();
 
-		for ( const auto& [ x, y ] : shader.value()->shader.GetUniforms() )
+		if ( shader == nullptr )
+			return;
+
+		for ( const auto& [ x, y ] : shader->GetUniforms() )
 		{
 			switch ( y.Type )
 			{
@@ -67,7 +68,8 @@ namespace MikuEngine
 
 	void Material::Refresh()
 	{
-		if ( m_Shader.value() == false ) return;
+		if ( m_Shader.value() == false )
+			return;
 
 		CreateFromShader( m_Shader.value() );
 	}
@@ -79,8 +81,9 @@ namespace MikuEngine
 		YAML::Node rootNode = YAML::LoadFile( materialPath );
 
 		auto shaderUUID = rootNode[ "shader" ].as<std::string>();
-		if ( shaderUUID == "<NONE>" ) return;
-		SetShader( shaderManager.GetShader( shaderUUID ).index.uuid );
+		if ( shaderUUID == "<NONE>" )
+			return;
+		SetShader( shaderManager.GetShaderOrDefault( shaderUUID )->GetUUID() );
 
 		YAML::Node paramterNodes = rootNode[ "properties" ];
 
@@ -99,8 +102,10 @@ namespace MikuEngine
 			if ( name == "blend_mode" )
 			{
 				auto blendMode = it->second.as<std::string>();
-				if ( blendMode == "TRANSPARENT" ) m_RenderOrder.mode = MaterialBlendMode::TRANSPARENT;
-				if ( blendMode == "OPAQUE" ) m_RenderOrder.mode = MaterialBlendMode::OPAQUE;
+				if ( blendMode == "TRANSPARENT" )
+					m_RenderOrder.mode = MaterialBlendMode::TRANSPARENT;
+				if ( blendMode == "OPAQUE" )
+					m_RenderOrder.mode = MaterialBlendMode::OPAQUE;
 				continue;
 			}
 
@@ -145,7 +150,7 @@ namespace MikuEngine
 		YAML::Emitter emitter;
 
 		emitter << YAML::BeginMap;
-		emitter << YAML::Key << "shader" << YAML::Value << ( shader.has_value() ? shader.value()->shader.GetUUID().ToString() : "<NONE>" );
+		emitter << YAML::Key << "shader" << YAML::Value << ( shader != nullptr ? shader->GetUUID().ToString() : "<NONE>" );
 		emitter << YAML::Key << "properties" << YAML::Value << YAML::BeginMap;
 
 		emitter << YAML::Key << "blend_mode" << YAML::Value << GetBlendModeString();
@@ -178,18 +183,21 @@ namespace MikuEngine
 		const auto& textureManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager();
 
 		auto shader = GetShader();
+		if ( shader == nullptr )
+		{
+			// MIKU_CORE_ERROR( "Failed to Bind Material! No Shader Attached!" );
+			return;
+		}
 
-		if ( shader.has_value() == false ) return;
-
-		shader.value()->shader.Bind();
+		shader->Bind();
 
 		// Handle Floats
 		for ( const auto& [ name, value ] : m_Floats )
-			shader.value()->shader.SetUniform<float>( name, value );
+			shader->SetUniform<float>( name, value );
 
 		// Handle Vec2s
 		for ( const auto& [ name, value ] : m_Vec2s )
-			shader.value()->shader.SetUniform<glm::vec2>( name, value );
+			shader->SetUniform<glm::vec2>( name, value );
 
 		// Handle Textures
 		unsigned int textureID = 1;
@@ -197,11 +205,12 @@ namespace MikuEngine
 		for ( const auto& [ name, uuid ] : m_Textures )
 		{
 			// Ignore the textures uniforms with no Bound Values
-			if ( uuid == 0 ) continue;
+			if ( uuid == 0 )
+				continue;
 			auto texture = textureManager.GetTextureOrDefault( uuid );
 
 			texture->Bind( textureID );
-			shader.value()->shader.SetUniform<unsigned int>( name, textureID );
+			shader->SetUniform<unsigned int>( name, textureID );
 
 			textureID++;
 		}
@@ -209,12 +218,13 @@ namespace MikuEngine
 		for ( const auto& [ name, uuid ] : m_Cubemaps )
 		{
 			// Ignore the textures uniforms with no Bound Values
-			if ( uuid == 0 ) continue;
+			if ( uuid == 0 )
+				continue;
 
 			auto cubemap = textureManager.GetCubemap( uuid );
 
 			cubemap.value()->Bind( textureID );
-			shader.value()->shader.SetUniform<unsigned int>( name, textureID );
+			shader->SetUniform<unsigned int>( name, textureID );
 
 			textureID++;
 		}
@@ -222,7 +232,11 @@ namespace MikuEngine
 
 	void Material::UnBind()
 	{
-		GetShader().value()->shader.UnBind();
+		if ( auto shader = GetShader(); shader != nullptr )
+			shader->UnBind();
+
+		else
+			MIKU_CORE_ERROR( "Failed to bind material! No Shader attached" );
 	}
 
 	const std::filesystem::path& Material::GetPath() const
@@ -242,16 +256,17 @@ namespace MikuEngine
 		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().RenameAsset( m_UUID, newName );
 	}
 
-	std::optional<ShaderContainer*> Material::GetShader()
+	Shader* Material::GetShader()
 	{
+		// Nothing in the shader UUID, return nullptr
 		if ( m_Shader.has_value() == false )
-		{
-			return std::nullopt;
-		}
+			return nullptr;
 
+		// Fetch shader corresponding to the shader UUID
 		auto value = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().GetShader( m_Shader.value() );
 
-		if ( value.has_value() == false )
+		// If the fetched shader is not found! Reset everything and return nullptr
+		if ( value == nullptr )
 		{
 			// Empty the shader UUID container and the loaded properties
 			m_Shader = std::nullopt;
@@ -260,9 +275,10 @@ namespace MikuEngine
 			m_Mat4s.clear();
 			m_Vec4s.clear();
 
-			return std::nullopt;
+			return nullptr;
 		}
 
+		// Return the shader
 		return value;
 	}
 

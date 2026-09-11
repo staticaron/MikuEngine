@@ -245,11 +245,11 @@ namespace MikuEditor
 			break;
 		}
 		case MikuEngine::AssetType::SHADER: {
-			auto shaderContainer = assetPoolManager.GetShaderManager().GetShader( selectedAsset.value().uuid );
-			if ( shaderContainer.has_value() == false )
+			auto shader = assetPoolManager.GetShaderManager().GetShader( selectedAsset.value().uuid );
+			if ( shader == nullptr )
 				return;
 
-			ShaderComponent::RenderShaderComponent( *shaderContainer.value() );
+			ShaderComponent::RenderShaderComponent( *shader );
 			break;
 		}
 		case MikuEngine::AssetType::TEXTURE:

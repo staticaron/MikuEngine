@@ -8,7 +8,6 @@
 
 #include "Asset.h"
 #include "Core.h"
-#include "Managers/ShaderManager.h"
 #include "Shader.h"
 #include "UUID.h"
 
@@ -54,7 +53,7 @@ namespace MikuEngine
 		std::string GetName() const override;
 		void SetName( const std::string& newName ) override;
 
-		std::optional<ShaderContainer*> GetShader();
+		Shader* GetShader();
 		void SetShader( const UUID& uuid );
 
 		const std::unordered_map<std::string, UUID>& GetTextures() const { return m_Textures; }

@@ -32,7 +32,8 @@ namespace MikuEngine
 	/// @param filepath path to the textur to add to the queue
 	void TextureManager::AddToDeleteQueue( const std::filesystem::path& filepath )
 	{
-		if ( auto texture = GetTextureByFilePath( filepath ); texture.has_value() ) m_DeleteQueue.push_back( texture.value()->GetUUID() );
+		if ( auto texture = GetTextureByFilePath( filepath ); texture.has_value() )
+			m_DeleteQueue.push_back( texture.value()->GetUUID() );
 	}
 
 	/// @brief Add a texture represented by UUID to the rename queue
@@ -48,7 +49,8 @@ namespace MikuEngine
 	/// @param newName new name of the texture to be added to the rename queue
 	void TextureManager::AddToRenameQueue( const std::filesystem::path& filepath, const std::string& newName )
 	{
-		if ( auto texture = GetTextureByFilePath( filepath ); texture.has_value() ) m_RenameQueue.push_back( { texture.value()->GetUUID(), newName } );
+		if ( auto texture = GetTextureByFilePath( filepath ); texture.has_value() )
+			m_RenameQueue.push_back( { texture.value()->GetUUID(), newName } );
 	}
 
 	/// @brief Destroy the Texture Manager. Unloads all the loaded textures
@@ -78,7 +80,8 @@ namespace MikuEngine
 		// Find the texture to delete
 		auto textureToDelete = m_Textures.begin();
 		for ( ; textureToDelete != m_Textures.end(); textureToDelete++ )
-			if ( textureToDelete->first == uuid ) break;
+			if ( textureToDelete->first == uuid )
+				break;
 
 		// Free the GPU Memory
 		textureToDelete->second.Destroy();
@@ -87,8 +90,10 @@ namespace MikuEngine
 		m_Textures.erase( textureToDelete );
 
 		// Delete the physical files
-		if ( std::filesystem::exists( filePath ) ) std::filesystem::remove( filePath );
-		if ( std::filesystem::exists( filePath.string() + ".meta" ) ) std::filesystem::remove( filePath.string() + ".meta" );
+		if ( std::filesystem::exists( filePath ) )
+			std::filesystem::remove( filePath );
+		if ( std::filesystem::exists( filePath.string() + ".meta" ) )
+			std::filesystem::remove( filePath.string() + ".meta" );
 	}
 
 	/// @brief Rename a texture; This includes updating the path as well
@@ -117,7 +122,8 @@ namespace MikuEngine
 	{
 		for ( auto texture : m_Textures )
 		{
-			if ( texture.first == uuid ) return texture.second.GetPath();
+			if ( texture.first == uuid )
+				return texture.second.GetPath();
 		}
 
 		MIKU_ASSERT( false, "Texture with UUID {} is not loaded!", uuid.ToString() );
@@ -146,8 +152,10 @@ namespace MikuEngine
 	{
 		for ( auto& file : std::filesystem::recursive_directory_iterator( PROJECT_DIR "/textures/" ) )
 		{
-			if ( file.path().extension() == ".meta" ) continue;
-			if ( file.is_directory() ) continue;
+			if ( file.path().extension() == ".meta" )
+				continue;
+			if ( file.is_directory() )
+				continue;
 
 			UUID uuid = MetaFileManager::GenerateMetaFileIfNotPresent( file.path().c_str(), AssetType::TEXTURE, TextureManager::GetTextureProperties( {} ) );
 			LoadTexture( file.path(), uuid );
@@ -172,8 +180,10 @@ namespace MikuEngine
 	{
 		for ( auto& file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/textures/" ) )
 		{
-			if ( file.path().extension() == ".meta" ) continue;
-			if ( file.is_directory() ) continue;
+			if ( file.path().extension() == ".meta" )
+				continue;
+			if ( file.is_directory() )
+				continue;
 
 			UUID uuid = MetaFileManager::GenerateMetaFileIfNotPresent( file.path().c_str(), AssetType::TEXTURE, TextureManager::GetTextureProperties( {} ) );
 			LoadDefaultTexture( file.path(), uuid );
@@ -195,8 +205,10 @@ namespace MikuEngine
 	/// @return an optional immutable pointer to the texture object
 	std::optional<const Texture*> TextureManager::GetTexture( UUID textureUUID ) const
 	{
-		if ( auto existing = m_Textures.find( textureUUID ); existing != m_Textures.end() ) return &existing->second;
-		if ( auto existing = m_DefaultTextures.find( textureUUID ); existing != m_DefaultTextures.end() ) return &existing->second;
+		if ( auto existing = m_Textures.find( textureUUID ); existing != m_Textures.end() )
+			return &existing->second;
+		if ( auto existing = m_DefaultTextures.find( textureUUID ); existing != m_DefaultTextures.end() )
+			return &existing->second;
 
 		return {};
 	}
@@ -214,8 +226,10 @@ namespace MikuEngine
 	/// @return an immutable pointer to the texture object
 	const Texture* TextureManager::GetTextureOrDefault( UUID textureUUID ) const
 	{
-		if ( auto existing = m_Textures.find( textureUUID ); existing != m_Textures.end() ) return &existing->second;
-		if ( auto existing = m_DefaultTextures.find( textureUUID ); existing != m_DefaultTextures.end() ) return &existing->second;
+		if ( auto existing = m_Textures.find( textureUUID ); existing != m_Textures.end() )
+			return &existing->second;
+		if ( auto existing = m_DefaultTextures.find( textureUUID ); existing != m_DefaultTextures.end() )
+			return &existing->second;
 
 		return GetDefaultTextureByName( "default_tex" );
 	}
@@ -235,7 +249,8 @@ namespace MikuEngine
 	{
 		for ( const auto& defaultTexture : m_DefaultTextures )
 		{
-			if ( defaultTexture.second.GetName() == name ) return &defaultTexture.second;
+			if ( defaultTexture.second.GetName() == name )
+				return &defaultTexture.second;
 		}
 
 		MIKU_ASSERT( false, "The requested default texture by name {} is not loaded!", name );
@@ -247,7 +262,8 @@ namespace MikuEngine
 	std::optional<const Texture*> TextureManager::GetTextureByFilePath( const std::string& path ) const
 	{
 		for ( const auto [ uuid, tex ] : m_Textures )
-			if ( tex.GetPath() == path ) return { GetTextureOrDefault( uuid ) };
+			if ( tex.GetPath() == path )
+				return { GetTextureOrDefault( uuid ) };
 
 		return std::nullopt;
 	}
@@ -265,7 +281,8 @@ namespace MikuEngine
 	/// @return an optional immutable pointer to the texture object
 	std::optional<const Cubemap*> TextureManager::GetCubemap( UUID cubemapUUID ) const
 	{
-		if ( auto existing = m_Cubemaps.find( cubemapUUID ); existing != m_Cubemaps.end() ) return &existing->second;
+		if ( auto existing = m_Cubemaps.find( cubemapUUID ); existing != m_Cubemaps.end() )
+			return &existing->second;
 		return {};
 	}
 
@@ -276,7 +293,8 @@ namespace MikuEngine
 	{
 		for ( const auto& [ uuid, textureContainer ] : m_Textures )
 		{
-			if ( textureContainer.GetName() == filename ) return &m_Textures.at( uuid );
+			if ( textureContainer.GetName() == filename )
+				return &m_Textures.at( uuid );
 		}
 
 		return {};
