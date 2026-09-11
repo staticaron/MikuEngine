@@ -6,12 +6,13 @@ namespace MikuEngine
 	{
 		m_TextureManager.Init();
 		m_ShaderManager.Init();
-		m_MaterialManager.LoadAllMaterials();
+		m_MaterialManager.Init();
 		m_ModelManager.LoadAllModels();
 	}
 
 	void AssetPoolManager::InitFrame()
 	{
+		GetTextureManager().InitFrame();
 		GetShaderManager().InitFrame();
 		GetMaterialManager().InitFrame();
 	}

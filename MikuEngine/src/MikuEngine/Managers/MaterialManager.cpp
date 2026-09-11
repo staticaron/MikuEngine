@@ -11,6 +11,11 @@
 
 namespace MikuEngine
 {
+	void MaterialManager::Init()
+	{
+		LoadAllMaterials();
+	}
+
 	void MaterialManager::LoadAllMaterials()
 	{
 		PrepareMaterialIndex();
@@ -159,7 +164,7 @@ namespace MikuEngine
 		return exists != m_Materials.end();
 	}
 
-	const std::filesystem::path& MaterialManager::GetFilePathFromUUID( const UUID& uuid )
+	const std::filesystem::path& MaterialManager::GetFilePathByUUID( const UUID& uuid )
 	{
 		if ( auto existing = m_Materials.find( uuid ); existing != m_Materials.end() )
 		{
@@ -169,30 +174,87 @@ namespace MikuEngine
 		MIKU_ASSERT( false, "This material is not loaded!" );
 	}
 
-	void MaterialManager::RenameAssetCleanup( const UUID& uuid, const std::string& newName )
-	{
-		if ( auto existing = m_Materials.find( uuid ); existing != m_Materials.end() )
-		{
-			existing->second.SetName( newName );
-		}
-	}
-
-	void MaterialManager::DeleteAssetCleanup( const UUID& uuid )
-	{
-		int count = 0;
-
-		if ( auto existing = m_Materials.find( uuid ); existing != m_Materials.end() )
-		{
-			m_Materials.erase( existing );
-			count++;
-		}
-
-		if ( count > 0 )
-			MIKU_CORE_DEBUG( "Material Cleanup Successful! {} Materials Deleted!", count );
-	}
-
 	YAML::Node MaterialManager::GetMaterialProperties( Material* material )
 	{
 		return {};
 	}
+
+	void MaterialManager::InitFrame()
+	{
+		PerformDeletions();
+		PerformRenames();
+	};
+
+	void MaterialManager::AddToDeleteQueue( const UUID& uuid )
+	{
+		m_DeleteQueue.push_back( uuid );
+	};
+
+	void MaterialManager::AddToDeleteQueue( const std::filesystem::path& filepath )
+	{
+		if ( auto material = GetMaterialByFilePath( filepath ); material.has_value() )
+			m_DeleteQueue.push_back( material.value()->GetUUID() );
+	};
+
+	void MaterialManager::AddToRenameQueue( const UUID& uuid, const std::string& newName )
+	{
+		m_RenameQueue.push_back( { uuid, newName } );
+	};
+
+	void MaterialManager::AddToRenameQueue( const std::filesystem::path& filepath, const std::string& newName )
+	{
+		if ( auto material = GetMaterialByFilePath( filepath ); material.has_value() )
+			m_RenameQueue.push_back( { material.value()->GetUUID(), newName } );
+	};
+
+	void MaterialManager::PerformDeletions()
+	{
+		for ( auto uuid : m_DeleteQueue )
+			DeleteAsset( uuid );
+
+		m_DeleteQueue.clear();
+	};
+
+	void MaterialManager::PerformRenames()
+	{
+		for ( auto [ uuid, newName ] : m_RenameQueue )
+			RenameAsset( uuid, newName );
+
+		m_RenameQueue.clear();
+	};
+
+	void MaterialManager::DeleteAsset( const UUID& uuid )
+	{
+		auto material = m_Materials.find( uuid );
+
+		if ( material == m_Materials.end() )
+			return;
+
+		auto filepath = material->second.index.path;
+
+		// Remove the material from DB
+		m_Materials.erase( material );
+
+		// Delete the physical files
+		if ( std::filesystem::exists( filepath ) )
+			std::filesystem::remove( filepath );
+		if ( std::filesystem::exists( filepath.string() + ".meta" ) )
+			std::filesystem::remove( filepath.string() + ".meta" );
+	};
+
+	void MaterialManager::RenameAsset( const UUID& uuid, const std::string& newName )
+	{
+		const std::filesystem::path& filePath = GetFilePathByUUID( uuid );
+		const std::string fileExtension = filePath.extension();
+
+		std::filesystem::path newFilePath = filePath.parent_path() / ( newName + fileExtension );
+		std::filesystem::path newMetaFilePath = filePath.parent_path() / ( newName + fileExtension + ".meta" );
+
+		std::filesystem::rename( filePath, newFilePath );
+		std::filesystem::rename( filePath.string() + ".meta", newMetaFilePath );
+
+		if ( auto existing = m_Materials.find( uuid ); existing != m_Materials.end() )
+			existing->second.SetName( newName );
+	};
+
 }

@@ -253,7 +253,7 @@ namespace MikuEngine
 
 	void Material::SetName( const std::string& newName )
 	{
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().RenameAsset( m_UUID, newName );
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().AddToRenameQueue( m_UUID, newName );
 	}
 
 	Shader* Material::GetShader()

@@ -6,7 +6,7 @@
 
 #include "Core.h"
 
-#include "AssetManagerBase.h"
+#include "IAssetManagerBase.h"
 #include "Rendering/Material.h"
 #include "UUID.h"
 
@@ -33,12 +33,12 @@ namespace MikuEngine
 		}
 	};
 
-	class MIKU_API MaterialManager : public AssetManagerBase
+	class MIKU_API MaterialManager : public IAssetManagerBase
 	{
 	public:
-		void LoadAllMaterials();
+		void Init();
 
-		static void CreateAssetAtPath( const std::string& name, const std::filesystem::path& path );
+		void LoadAllMaterials();
 
 		void PrepareMaterialIndex();
 
@@ -49,19 +49,33 @@ namespace MikuEngine
 		std::optional<MaterialContainer*> GetMaterial( const UUID& uuid );
 		const std::unordered_map<UUID, MaterialContainer> GetAllLoadedMaterials() const;
 		std::optional<Material*> GetMaterialByFilePath( const std::string& filepath );
-		const std::filesystem::path& GetFilePathFromUUID( const UUID& uuid ) override;
+		const std::filesystem::path& GetFilePathByUUID( const UUID& uuid ) override;
 
 		bool MaterialExists( const UUID& uuid ) const;
 
-		void RenameAssetCleanup( const UUID& uuid, const std::string& newName ) override;
-
 		static YAML::Node GetMaterialProperties( Material* material );
+		static void CreateAssetAtPath( const std::string& name, const std::filesystem::path& path );
 
-	private:
-		void DeleteAssetCleanup( const UUID& uuid ) override;
+		void InitFrame() override;
+
+		void AddToDeleteQueue( const UUID& uuid ) override;
+		void AddToDeleteQueue( const std::filesystem::path& filepath ) override;
+
+		void AddToRenameQueue( const UUID& uuid, const std::string& newName ) override;
+		void AddToRenameQueue( const std::filesystem::path& filepath, const std::string& newName ) override;
+
+	protected:
+		void PerformDeletions() override;
+		void PerformRenames() override;
+
+		void DeleteAsset( const UUID& uuid ) override;
+		void RenameAsset( const UUID& uuid, const std::string& newName ) override;
 
 	private:
 		std::unordered_map<UUID, MaterialIndex> m_MaterialIndex;
 		std::unordered_map<UUID, MaterialContainer> m_Materials;
+
+		std::vector<UUID> m_DeleteQueue{};
+		std::vector<std::pair<UUID, std::string>> m_RenameQueue{};
 	};
 }

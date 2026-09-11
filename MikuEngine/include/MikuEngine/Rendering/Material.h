@@ -37,6 +37,7 @@ namespace MikuEngine
 		Material( UUID uuid, const std::filesystem::path& materialPath );
 
 		void CreateFromShader( const UUID& shader );
+
 		void Refresh();
 
 		void LoadFromFile( const std::filesystem::path& materialPath );

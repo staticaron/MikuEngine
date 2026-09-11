@@ -9,7 +9,7 @@ namespace MikuEditor
 {
 	void MaterialComponent::RenderMaterialComponent( EditorLayer& editorLayer, MikuEngine::MaterialContainer& materialContainer )
 	{
-		ComponentHeader( [ materialContainer ]() { return materialContainer.GetName(); }, [ materialContainer ]( std::string newName ) { MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().RenameAsset( materialContainer.index.uuid, newName ); } );
+		ComponentHeader( [ materialContainer ]() { return materialContainer.GetName(); }, [ materialContainer ]( std::string newName ) { MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().AddToRenameQueue( materialContainer.index.uuid, newName ); } );
 
 		MikuEngine::ImGuiHelper::StartPropertyTable();
 
