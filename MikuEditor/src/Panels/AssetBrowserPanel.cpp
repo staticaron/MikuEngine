@@ -135,10 +135,10 @@ namespace MikuEditor
 			ImGui::Separator();
 
 			if ( ImGui::MenuItem( "Create Material" ) )
-				MikuEngine::MaterialManager::CreateAssetAtPath( "gigaNewMat", m_ContentBrowserLocation );
+				MikuEngine::MaterialManager::CreateAssetAtPath( "NewMaterial", m_ContentBrowserLocation );
 
 			if ( ImGui::MenuItem( "Create Shader" ) )
-				MikuEngine::ShaderManager::CreateAssetAtPath( "gigaNewShader", m_ContentBrowserLocation );
+				MikuEngine::ShaderManager::CreateAssetAtPath( "NewShader", m_ContentBrowserLocation );
 
 			ImGui::EndPopup();
 		}
