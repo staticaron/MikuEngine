@@ -30,7 +30,7 @@ namespace MikuEngine
 #if MIKU_DEBUG
 	constexpr const char* GAME_LOGIC_DLL_PATH = "./build/bin/libSampleGameLogicd.so";
 #else
-	constexpr const char* GAME_LOGIC_DLL_PATH = "./build/bin/libGameLogic.so";
+	constexpr const char* GAME_LOGIC_DLL_PATH = "./build/bin/libSampleGameLogic.so";
 #endif
 
 	class MIKU_API DLLloader

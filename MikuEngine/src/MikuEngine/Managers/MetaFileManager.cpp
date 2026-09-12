@@ -25,13 +25,13 @@ namespace MikuEngine
 			if ( MetaFileExists( file.path().string() ) )
 				continue;
 
-			GenerateMetaFile( file.path().string(), AssetType::NONE, {} );
+			CreateMetaFile( file.path().string(), AssetType::NONE, {} );
 		}
 
 		MIKU_CORE_INFO( "Meta Files Refreshed!" );
 	}
 
-	UUID MetaFileManager::GenerateMetaFile( const std::string& filepath, AssetType assetType, const YAML::Node& properties )
+	UUID MetaFileManager::CreateMetaFile( const std::string& filepath, AssetType assetType, const YAML::Node& properties )
 	{
 		YAML::Node root;
 
@@ -82,6 +82,14 @@ namespace MikuEngine
 		if ( MetaFileExists( filepath ) )
 			return GetUUIDFromMetaFile( filepath );
 		return GenerateMetaFile( filepath, assetType, properties );
+	}
+
+	void MetaFileManager::DeleteMetaFile( const std::string& filepath )
+	{
+		std::filesystem::path metaFilePath = filepath + ".meta";
+		if ( std::filesystem::exists( metaFilePath.c_str() ) == false )
+			return;
+		std::filesystem::remove( metaFilePath.c_str() );
 	}
 
 	bool MetaFileManager::MetaFileExists( const std::string& filepath )

@@ -12,6 +12,33 @@ namespace MikuEngine
 		LoadAllDefaultModels();
 	}
 
+	void ModelManager::UnloadModel( const std::filesystem::path& filepath )
+	{
+		auto model = m_Models.begin();
+
+		// Find the iterator with same filepath
+		while ( model != m_Models.end() )
+		{
+			if ( model->second.GetPath() == filepath )
+				break;
+
+			model++;
+		}
+
+		// Model not loaded! Can't unload
+		if ( model == m_Models.end() )
+		{
+			MIKU_CORE_DEBUG( "Tried to Remove Model named {} but no model of that name was found!", filepath.stem().c_str() );
+			return;
+		}
+
+		// Delete the model
+		m_Models.erase( model );
+		MetaFileManager::DeleteMetaFile( filepath );
+
+		MIKU_CORE_DEBUG( "[UNLOADED] Model Removed named {}", filepath.stem().c_str() );
+	}
+
 	void ModelManager::InitFrame()
 	{
 		PerformDeletions();

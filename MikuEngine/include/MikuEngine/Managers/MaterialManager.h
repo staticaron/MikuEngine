@@ -18,6 +18,7 @@ namespace MikuEngine
 		void InitFrame() override;
 
 		void LoadMaterial( const std::filesystem::path& path, UUID uuid = {} );
+		void UnloadMaterial( const std::filesystem::path& filePath );
 
 		void LoadAllMaterials();
 

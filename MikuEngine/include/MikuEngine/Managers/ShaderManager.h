@@ -20,6 +20,8 @@ namespace MikuEngine
 		void InitFrame() override;
 
 		void LoadShader( const std::filesystem::path& filepath, UUID uuid = {} );
+		void UnloadShader( const std::filesystem::path& filepath );
+
 		void LoadDefaultShader( const std::filesystem::path& filepath, UUID uuid = {} );
 
 		void RefreshShaders();

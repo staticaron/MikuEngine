@@ -37,6 +37,8 @@ namespace MikuEngine
 		const ParticleEmitterManager& GetParticleEmitterManager() const { return m_ParticleEmitterManager; }
 
 		AssetType GetAssetTypeFromFileExtension( const std::string& extension ) const;
+		void LoadAssetFromFile( const std::filesystem::path& filePath );
+		void RemoveAssetOfFile( const std::filesystem::path& filePath );
 
 	private:
 		TextureManager m_TextureManager;

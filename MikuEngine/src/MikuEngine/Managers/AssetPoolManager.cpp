@@ -1,5 +1,7 @@
 #include "Managers/AssetPoolManager.h"
 
+#include "Logger.h"
+
 namespace MikuEngine
 {
 	void AssetPoolManager::Init()
@@ -50,5 +52,71 @@ namespace MikuEngine
 			return AssetType::MODEL;
 
 		return AssetType::NONE;
+	}
+
+	void AssetPoolManager::LoadAssetFromFile( const std::filesystem::path& filePath )
+	{
+		AssetType type = GetAssetTypeFromFileExtension( filePath.extension() );
+
+		switch ( type )
+		{
+		case AssetType::TEXTURE:
+			m_TextureManager.LoadTexture( filePath );
+			break;
+		case AssetType::MODEL:
+			m_ModelManager.LoadModel( filePath );
+			break;
+		case AssetType::SHADER:
+			m_ShaderManager.LoadShader( filePath );
+			break;
+		case AssetType::MATERIAL:
+			m_MaterialManager.LoadMaterial( filePath );
+			break;
+		case AssetType::SCENE:
+			MIKU_CORE_WARN( "Hot Reloading of Scene is not implemented yet!" );
+			break;
+		case AssetType::SCRIPT:
+			MIKU_CORE_WARN( "Hot Reloading of Script is not implemented yet!" );
+			break;
+		case AssetType::NONE:
+			MIKU_CORE_WARN( "Hot Reloading of this filetype is not implemented yet!" );
+			break;
+		default:
+			MIKU_CORE_WARN( "Hot Reloading of this filetype is not implemented yet!" );
+			break;
+		}
+	}
+
+	void AssetPoolManager::RemoveAssetOfFile( const std::filesystem::path& filePath )
+	{
+		AssetType type = GetAssetTypeFromFileExtension( filePath.extension() );
+
+		switch ( type )
+		{
+		case AssetType::TEXTURE:
+			m_TextureManager.UnloadTexture( filePath );
+			break;
+		case AssetType::MODEL:
+			m_ModelManager.UnloadModel( filePath );
+			break;
+		case AssetType::SHADER:
+			m_ShaderManager.UnloadShader( filePath );
+			break;
+		case AssetType::MATERIAL:
+			m_MaterialManager.UnloadMaterial( filePath );
+			break;
+		case AssetType::SCENE:
+			MIKU_CORE_WARN( "Hot Reloading of Scene is not implemented yet!" );
+			break;
+		case AssetType::SCRIPT:
+			MIKU_CORE_WARN( "Hot Reloading of Script is not implemented yet!" );
+			break;
+		case AssetType::NONE:
+			MIKU_CORE_WARN( "Hot Reloading of this filetype is not implemented yet!" );
+			break;
+		default:
+			MIKU_CORE_WARN( "Hot Reloading of this filetype is not implemented yet!" );
+			break;
+		}
 	}
 }

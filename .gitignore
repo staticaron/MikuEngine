@@ -2,6 +2,8 @@ build/
 opt/
 .cache/
 
+.vscode/
+
 /compile_commands.json
 
 # Prerequisites

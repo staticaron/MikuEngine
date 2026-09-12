@@ -17,10 +17,11 @@ namespace MikuEngine
 	{
 	public:
 		void Init();
-
 		void InitFrame() override;
 
 		void LoadTexture( const std::filesystem::path& filepath, const UUID& uuid = {} );
+		void UnloadTexture( const std::filesystem::path& filePath );
+
 		void LoadDefaultTexture( const std::filesystem::path& filepath, const UUID& uuid = {} );
 
 		void LoadAllTextures();

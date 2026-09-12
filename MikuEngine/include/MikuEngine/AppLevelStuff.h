@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include "Input/CentralInput.h"
+#include "Managers/AssetLoader.h"
 #include "Managers/AssetPoolManager.h"
 #include "Managers/ImguiManager.h"
 #include "Rendering/Renderer.h"
@@ -20,6 +21,9 @@ namespace MikuEngine
 		AssetPoolManager& GetAssetPoolManager() { return m_AssetPoolManager; }
 		const AssetPoolManager& GetAssetPoolManager() const { return m_AssetPoolManager; }
 
+		AssetLoader& GetAssetLoader() { return m_AssetLoader; }
+		const AssetLoader& GetAssetLoader() const { return m_AssetLoader; }
+
 		CentralInput& GetCentralInput() { return m_CentralInput; }
 		const CentralInput& GetCentralInput() const { return m_CentralInput; }
 
@@ -30,6 +34,7 @@ namespace MikuEngine
 		Renderer m_Renderer;
 		ImguiManager m_ImGuiManager;
 		AssetPoolManager m_AssetPoolManager;
+		AssetLoader m_AssetLoader;
 		CentralInput m_CentralInput;
 
 		unsigned int FPS;

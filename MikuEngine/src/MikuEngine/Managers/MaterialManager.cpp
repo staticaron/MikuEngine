@@ -29,6 +29,32 @@ namespace MikuEngine
 
 	/// Load all materials from the material directory
 	///
+	void MaterialManager::UnloadMaterial( const std::filesystem::path& filePath )
+	{
+		auto material = m_Materials.begin();
+
+		// Find the iterator with same filepath
+		while ( material == m_Materials.end() )
+		{
+			if ( material->second.GetPath() == filePath )
+				break;
+			material++;
+		}
+
+		// Material not loaded! Can't unload
+		if ( material == m_Materials.end() )
+		{
+			MIKU_CORE_DEBUG( "Tried to Remove Material named {} but no material of that name was found!", filePath.stem().c_str() );
+			return;
+		}
+
+		// Delete the material
+		m_Materials.erase( material );
+		MetaFileManager::DeleteMetaFile( filePath );
+
+		MIKU_CORE_DEBUG( "[UNLOADED] Material Removed named {}", filePath.stem().c_str() );
+	}
+
 	void MaterialManager::LoadAllMaterials()
 	{
 		const auto& data = Application::GetDataContainer();

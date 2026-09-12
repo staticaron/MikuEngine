@@ -16,6 +16,32 @@ namespace MikuEngine
 		LoadAllProjectShaders( true );
 	}
 
+	void ShaderManager::UnloadShader( const std::filesystem::path& filepath )
+	{
+		auto shader = m_Shaders.begin();
+
+		// Find the iterator with same filepath
+		while ( shader != m_Shaders.end() )
+		{
+			if ( shader->second.GetPath() == filepath )
+				break;
+			shader++;
+		}
+
+		// Shader not loaded! Can't unload
+		if ( shader == m_Shaders.end() )
+		{
+			MIKU_CORE_DEBUG( "Tried to Remove Shader named {} but no shader of that name was found!", filepath.stem().c_str() );
+			return;
+		}
+
+		// Delete the shader
+		m_Shaders.erase( shader );
+		MetaFileManager::DeleteMetaFile( filepath );
+
+		MIKU_CORE_DEBUG( "[UNLOADED] Shader Removed named {}", filepath.stem().c_str() );
+	}
+
 	void ShaderManager::InitFrame()
 	{
 		PerformDeletions();
@@ -96,6 +122,7 @@ namespace MikuEngine
 	/// Load all the shaders
 	///
 	/// @param loadExisting if true, shader will be loaded and existing shader with same UUID will be replaced
+	///
 	void ShaderManager::LoadAllProjectShaders( bool loadExisting )
 	{
 		const auto& dataContainer = Application::GetDataContainer();

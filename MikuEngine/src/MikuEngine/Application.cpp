@@ -106,6 +106,7 @@ namespace MikuEngine
 		m_GameFBO.Init();
 
 		m_AppLevelStuff.GetAssetPoolManager().Init();
+		m_AppLevelStuff.GetAssetLoader().Init();
 		m_AppLevelStuff.GetRenderer().Init();
 		m_AppLevelStuff.GetImGuiManager().Init( m_Window );
 	}
@@ -149,6 +150,8 @@ namespace MikuEngine
 
 	void Application::Update()
 	{
+		m_AppLevelStuff.GetAssetLoader().Update();
+
 		m_AppLevelStuff.GetCentralInput().Update( m_DeltaTime );
 		m_AppLevelStuff.GetAssetPoolManager().InitFrame();
 

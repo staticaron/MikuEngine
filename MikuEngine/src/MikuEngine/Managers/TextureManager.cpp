@@ -209,7 +209,33 @@ namespace MikuEngine
 			LoadDefaultTexture( file.path(), uuid );
 		}
 
-		MIKU_CORE_DEBUG( "All Default Textures loaded!" );
+		MIKU_CORE_DEBUG( "DEFAULT {} Textures Loaded!", m_DefaultTextures.size() );
+	}
+
+	void TextureManager::UnloadTexture( const std::filesystem::path& filePath )
+	{
+		auto texture = m_Textures.begin();
+
+		// Find the iterator with same filepath
+		while ( texture != m_Textures.end() )
+		{
+			if ( texture->second.GetPath() == filePath )
+				break;
+			texture++;
+		}
+
+		// Texture not loaded! Can't unload
+		if ( texture == m_Textures.end() )
+		{
+			MIKU_CORE_DEBUG( "Tried to Remove Texture named {} but no texture of that name was found!", filePath.stem().c_str() );
+			return;
+		}
+
+		// Delete the texture and its meta file
+		m_Textures.erase( texture );
+		MetaFileManager::DeleteMetaFile( filePath );
+
+		MIKU_CORE_DEBUG( "[UNLOADED] Texture Removed named {}", filePath.stem().c_str() );
 	}
 
 	/// @brief Fetch a texture already loaded in the texture manager

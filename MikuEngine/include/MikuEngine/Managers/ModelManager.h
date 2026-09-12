@@ -19,6 +19,7 @@ namespace MikuEngine
 		void InitFrame() override;
 
 		void LoadModel( const std::filesystem::path& filepath, UUID uuid = {} );
+		void UnloadModel( const std::filesystem::path& filepath );
 
 		Model* GetModel( UUID modelUUID );
 		const Model* GetModel( UUID modelUUID ) const;
