@@ -1,6 +1,7 @@
 #include "Helpers/ImGuiHelper.h"
 
 #include "Application.h"
+#include "Logger.h"
 
 namespace MikuEngine
 {
@@ -65,8 +66,8 @@ namespace MikuEngine
 		if ( modelUUID.has_value() )
 		{
 			auto model = modelManager.GetModel( modelUUID.value() );
-			if ( model.has_value() )
-				modelName = model.value()->index.GetName();
+			if ( model != nullptr )
+				modelName = model->GetName();
 		}
 
 		ImGui::PushID( identifier.c_str() );
@@ -85,8 +86,15 @@ namespace MikuEngine
 				if ( payload != nullptr )
 				{
 					auto modelPath = static_cast<const char*>( payload->Data );
-					auto modelContainer = modelManager.GetModelByFilePath( modelPath );
-					modelUUID = modelManager.GetModelByFilePath( modelPath ).value()->index.uuid;
+					auto model = modelManager.GetModelByFilePath( modelPath );
+
+					if ( model == nullptr )
+					{
+						MIKU_CORE_WARN( "Failed to Setup Drag payload! Model is not found at the asset location" );
+						return;
+					}
+
+					modelUUID = modelManager.GetModelByFilePath( modelPath )->GetUUID();
 					wasChanged = true;
 				}
 

@@ -31,7 +31,8 @@ namespace MikuEngine
 		renderer.ClearColor();
 
 		auto mainCamera = GetMainCamera();
-		if ( GetMainCamera().has_value() == false ) return;
+		if ( GetMainCamera().has_value() == false )
+			return;
 		auto mainCameraEntity = mainCamera->first;
 		auto mainCameraComponent = mainCamera->second;
 		auto cameraData = CameraData{ CameraSystem::GetViewMatrix( mainCameraEntity ), CameraSystem::GetProjMatrix( mainCameraComponent ) };
@@ -185,7 +186,8 @@ namespace MikuEngine
 			auto entity = GetEntityByID( entityForDeletion );
 			MIKU_CORE_INFO( "Entity Deleted with Name : {}", entity->GetNamedIdentifier() );
 
-			if ( GetSelectedEntity().has_value() && GetSelectedEntity().value() == entityForDeletion ) GetSelectedEntity() = std::nullopt;
+			if ( GetSelectedEntity().has_value() && GetSelectedEntity().value() == entityForDeletion )
+				GetSelectedEntity() = std::nullopt;
 
 			m_Registry.destroy( entity.value().GetEntt() );
 		}
@@ -193,6 +195,9 @@ namespace MikuEngine
 
 	void Scene::PerformDeletions()
 	{
+		if ( m_DeleteQueue.size() <= 0 )
+			return;
+
 		for ( auto entity : m_DeleteQueue )
 			DeleteEntity( entity );
 
@@ -217,7 +222,8 @@ namespace MikuEngine
 
 		for ( const auto& [ entity, idC, dataC ] : entityView.each() )
 		{
-			if ( idC.ID == id ) return Entity{ idC.ID, entity, this, dataC.EntityName, dataC.ParentUUID };
+			if ( idC.ID == id )
+				return Entity{ idC.ID, entity, this, dataC.EntityName, dataC.ParentUUID };
 		}
 
 		return {};
@@ -229,7 +235,8 @@ namespace MikuEngine
 
 		for ( const auto& [ entity, idC, dataC ] : entityView.each() )
 		{
-			if ( idC.ID == id ) return entity;
+			if ( idC.ID == id )
+				return entity;
 		}
 
 		return {};
@@ -251,7 +258,8 @@ namespace MikuEngine
 
 		for ( auto [ entity, idComponent, dataC, cameraComponent ] : cameraComponentView.each() )
 		{
-			if ( cameraComponent.IsMainCamera() == false ) continue;
+			if ( cameraComponent.IsMainCamera() == false )
+				continue;
 
 			return {
 			    { { idComponent.ID, entity, const_cast<Scene*>( this ), dataC.EntityName, dataC.ParentUUID }, cameraComponent }

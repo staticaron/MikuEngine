@@ -25,6 +25,7 @@ namespace MikuEngine
 
 		Material* GetMaterial( const UUID& uuid );
 		Material* GetMaterial( const std::string& filepath );
+		// TODO: GetMaterialOrDefault( const UUID& uuid);
 		const Material* GetMaterial( const UUID& uuid ) const;
 
 		const std::unordered_map<UUID, Material> GetAllMaterials() const;

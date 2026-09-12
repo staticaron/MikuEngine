@@ -5,13 +5,11 @@
 #include "glad/glad.h"
 #include "stb_image/stb_image.h"
 
-#include "Application.h"
-#include "Logger.h"
 #include "Managers/MetaFileManager.h"
 
 namespace MikuEngine
 {
-	Texture::Texture( UUID uuid, const std::filesystem::path& filepath ) : Asset( AssetType::TEXTURE ), m_UUID( uuid )
+	Texture::Texture( UUID uuid, const std::filesystem::path& filepath ) : IAsset( AssetType::TEXTURE ), m_UUID( uuid )
 	{
 		Load( filepath );
 	}
@@ -68,20 +66,5 @@ namespace MikuEngine
 	void Texture::Destroy()
 	{
 		glDeleteTextures( 1, &m_RendererID );
-	}
-
-	std::string Texture::GetName() const
-	{
-		return GetPath().stem().string();
-	}
-
-	void Texture::SetName( const std::string& newName )
-	{
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().AddToRenameQueue( m_UUID, newName );
-	}
-
-	void Texture::DeleteAsset()
-	{
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().AddToDeleteQueue( m_UUID );
 	}
 }

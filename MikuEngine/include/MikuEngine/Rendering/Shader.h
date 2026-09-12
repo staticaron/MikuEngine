@@ -43,10 +43,10 @@ namespace MikuEngine
 		void Bind() const;
 		void UnBind() const;
 
-		const UUID& GetUUID() const { return m_ShaderUUID; }
-
-		std::string GetName() const override;
-		const std::filesystem::path& GetPath() const override;
+		const UUID& GetUUID() const override { return m_ShaderUUID; }
+		std::string GetName() const override { return m_FilePath.stem().string(); }
+		const std::filesystem::path& GetPath() const override { return m_FilePath; }
+		void SetPath( const std::filesystem::path& path ) override { m_FilePath = path; }
 
 		unsigned int GetUniformLocation( const std::string& uniformName )
 		{
@@ -72,8 +72,6 @@ namespace MikuEngine
 
 		unsigned int CompileShader( const std::string& source, unsigned int type );
 		unsigned int CreateShader( const std::string& vs, const std::string& gs, const std::string& fs );
-
-		void SetPath( const std::filesystem::path& path ) { m_FilePath = path; }
 
 	private:
 		UUID m_ShaderUUID{};

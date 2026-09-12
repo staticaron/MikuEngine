@@ -12,7 +12,7 @@ entities:
       - type: MeshRendererComponent
         values:
           model: 6848244555316473112
-          material: 14983093753014124832
+          material: 7950950840432656574
       - type: NativeScriptComponent
         values:
           scriptName: Rotator
@@ -154,3 +154,16 @@ entities:
       - type: StencilWriterComponent
         values:
           write-value: 1
+  - id: 9504906298269301770
+    name: skybox
+    parent: 11315957467816257882
+    components:
+      - type: TransformComponent
+        values:
+          position: [0, 0, 0]
+          rotation: [0, 0, 0]
+          scale: [1, 1, 1]
+      - type: SkyboxComponent
+        values:
+          model: 13586518337506870339
+          material: 13971799613920123514

@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "Asset.h"
 #include "Core.h"
+#include "IAsset.h"
 #include "UUID.h"
 
 namespace MikuEngine
@@ -14,11 +14,11 @@ namespace MikuEngine
 		REPEAT
 	};
 
-	class MIKU_API Texture : Asset
+	class MIKU_API Texture : IAsset
 	{
 	public:
-		Texture() : Asset( AssetType::TEXTURE ) {};
-		Texture( UUID uuid ) : m_UUID( uuid ), Asset( AssetType::TEXTURE ) {}
+		Texture() : IAsset( AssetType::TEXTURE ) {};
+		Texture( UUID uuid ) : m_UUID( uuid ), IAsset( AssetType::TEXTURE ) {}
 		Texture( UUID uuid, const std::filesystem::path& filepath );
 
 		void Load( const std::filesystem::path& filepath );
@@ -29,14 +29,12 @@ namespace MikuEngine
 
 		unsigned int GetRendererID() const { return m_RendererID; }
 
-		UUID GetUUID() const { return m_UUID; }
+		const UUID& GetUUID() const override { return m_UUID; }
+		std::string GetName() const override { return m_FilePath.stem().string(); }
 		const std::filesystem::path& GetPath() const override { return m_FilePath; }
+		void SetPath( const std::filesystem::path& path ) override { m_FilePath = path; }
+
 		TextureWrapMode GetWrapMode() const { return m_WrapMode; }
-
-		std::string GetName() const override;
-		void SetName( const std::string& newName ) override;
-
-		void DeleteAsset() override;
 
 	private:
 		UUID m_UUID;

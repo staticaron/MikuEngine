@@ -64,7 +64,7 @@ namespace MikuEngine
 			if ( modelUUID.has_value() == false )
 				continue;
 			auto model = modelManager.GetModel( distancedEntity.meshRendererC->ModelIdentifier.value() );
-			if ( model.has_value() == false )
+			if ( model == nullptr )
 				continue;
 
 			auto material = distancedEntity.material;
@@ -86,7 +86,7 @@ namespace MikuEngine
 				StencilSystem::StartStencilWriting( *stencilWriterC );
 
 			// Render all the meshes in the model
-			for ( const auto& mesh : model.value()->model.GetMeshes() )
+			for ( const auto& mesh : model->GetMeshes() )
 				renderer.Draw( mesh.GetVA(), mesh.GetIB(), *shader );
 
 			if ( stencilReaderC )

@@ -242,21 +242,6 @@ namespace MikuEngine
 			MIKU_CORE_ERROR( "Failed to bind material! No Shader attached" );
 	}
 
-	const std::filesystem::path& Material::GetPath() const
-	{
-		return m_FilePath;
-	}
-
-	std::string Material::GetName() const
-	{
-		return GetPath().stem().string();
-	}
-
-	void Material::SetName( const std::string& newName )
-	{
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().AddToRenameQueue( m_UUID, newName );
-	}
-
 	Shader* Material::GetShader()
 	{
 		// Nothing in the shader UUID, return nullptr

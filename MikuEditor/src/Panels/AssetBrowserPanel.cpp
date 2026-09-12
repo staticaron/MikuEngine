@@ -204,7 +204,7 @@ namespace MikuEditor
 				break;
 			}
 			case MikuEngine::AssetType::MODEL: {
-				assetUUID = appLevelStuff.GetAssetPoolManager().GetModelManager().GetModelByFilePath( filePath.string() ).value()->index.uuid;
+				assetUUID = appLevelStuff.GetAssetPoolManager().GetModelManager().GetModelByFilePath( filePath.string() )->GetUUID();
 				break;
 			}
 			case MikuEngine::AssetType::SCENE:

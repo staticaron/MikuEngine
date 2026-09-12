@@ -185,14 +185,4 @@ namespace MikuEngine
 	{
 		glUseProgram( 0 );
 	}
-
-	std::string Shader::GetName() const
-	{
-		return m_FilePath.stem();
-	}
-
-	const std::filesystem::path& Shader::GetPath() const
-	{
-		return m_FilePath;
-	}
 }

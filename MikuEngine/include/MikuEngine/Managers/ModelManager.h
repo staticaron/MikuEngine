@@ -1,7 +1,6 @@
 #pragma once
 
 #include <filesystem>
-#include <optional>
 
 #include "yaml-cpp/yaml.h" // IWYU pragma: keep
 
@@ -13,51 +12,28 @@
 
 namespace MikuEngine
 {
-	struct MIKU_API ModelIndexEntry
-	{
-		UUID uuid;
-		std::filesystem::path path;
-
-		std::string GetName() const { return path.stem().string(); }
-	};
-
-	struct MIKU_API ModelContainer
-	{
-		ModelIndexEntry index;
-		Model model;
-
-		std::string GetName() const { return index.path.stem().string(); }
-		void SetName( const std::string& newName )
-		{
-			std::filesystem::path newFilePath = index.path.parent_path() / ( newName + index.path.extension().string() );
-			index.path = newFilePath;
-		}
-	};
-
 	class MIKU_API ModelManager : public IAssetManagerBase
 	{
 	public:
 		void Init();
+		void InitFrame() override;
 
-		void LoadModel( const std::filesystem::path& filepath );
+		void LoadModel( const std::filesystem::path& filepath, UUID uuid = {} );
 
-		void PrepareModelIndex();
-		std::unordered_map<UUID, ModelIndexEntry> GetModelIndex() const { return m_ModelIndex; }
+		Model* GetModel( UUID modelUUID );
+		const Model* GetModel( UUID modelUUID ) const;
+		Model* GetModelByName( const std::string& name );
+		Model* GetModelByFilePath( const std::filesystem::path& path );
 
-		std::optional<ModelContainer*> GetModel( UUID modelUUID );
-		std::optional<ModelContainer*> GetDefaultModel( DefaultModelType type );
-		std::optional<ModelContainer*> GetModelByName( const std::string& name );
-		std::optional<ModelContainer*> GetModelByFilePath( const std::filesystem::path& path );
+		Model* GetDefaultModel( DefaultModelType type );
 
-		const std::unordered_map<UUID, ModelContainer> GetAllLoadedModels() const { return m_Models; }
-		const std::unordered_map<UUID, ModelContainer> GetAllDefaultModels() const { return m_DefaultModels; }
+		const std::unordered_map<UUID, Model> GetAllModels() const { return m_Models; }
+		const std::unordered_map<UUID, Model> GetAllDefaultModels() const { return m_DefaultModels; }
+
 		const std::filesystem::path& GetFilePathByUUID( const UUID& uuid ) override;
-
 		bool ModelExists( const UUID& uuid ) const;
 
 		static YAML::Node GetModelProperties( Model* model );
-
-		void InitFrame() override;
 
 		void AddToDeleteQueue( const UUID& uuid ) override;
 		void AddToDeleteQueue( const std::filesystem::path& filepath ) override;
@@ -80,11 +56,8 @@ namespace MikuEngine
 		void DeleteAssetCleanup( const UUID& uuid );
 
 	private:
-		std::unordered_map<UUID, ModelIndexEntry> m_ModelIndex;
-		std::unordered_map<UUID, ModelIndexEntry> m_DefaultModelIndex;
-
-		std::unordered_map<UUID, ModelContainer> m_Models;
-		std::unordered_map<UUID, ModelContainer> m_DefaultModels;
+		std::unordered_map<UUID, Model> m_Models;
+		std::unordered_map<UUID, Model> m_DefaultModels;
 
 		std::vector<UUID> m_DeleteQueue{};
 		std::vector<std::pair<UUID, std::string>> m_RenameQueue{};

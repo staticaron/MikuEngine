@@ -190,16 +190,26 @@ namespace MikuEngine
 
 	void MaterialManager::PerformDeletions()
 	{
+		if ( m_DeleteQueue.size() <= 0 )
+			return;
+
 		for ( auto uuid : m_DeleteQueue )
 			DeleteAsset( uuid );
+
+		MIKU_CORE_INFO( "{} Materils Deleted", m_DeleteQueue.size() );
 
 		m_DeleteQueue.clear();
 	};
 
 	void MaterialManager::PerformRenames()
 	{
+		if ( m_RenameQueue.size() <= 0 )
+			return;
+
 		for ( auto [ uuid, newName ] : m_RenameQueue )
 			RenameAsset( uuid, newName );
+
+		MIKU_CORE_INFO( "{} Materils Renamed", m_RenameQueue.size() );
 
 		m_RenameQueue.clear();
 	};
@@ -225,6 +235,11 @@ namespace MikuEngine
 
 	void MaterialManager::RenameAsset( const UUID& uuid, const std::string& newName )
 	{
+		auto materialToRename = m_Materials.find( uuid );
+
+		if ( materialToRename == m_Materials.end() )
+			return;
+
 		const std::filesystem::path& filePath = GetFilePathByUUID( uuid );
 		const std::string fileExtension = filePath.extension();
 
@@ -234,8 +249,7 @@ namespace MikuEngine
 		std::filesystem::rename( filePath, newFilePath );
 		std::filesystem::rename( filePath.string() + ".meta", newMetaFilePath );
 
-		if ( auto existing = m_Materials.find( uuid ); existing != m_Materials.end() )
-			existing->second.SetName( newName );
+		materialToRename->second.SetPath( newFilePath );
 	};
 
 }

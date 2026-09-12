@@ -360,16 +360,22 @@ namespace MikuEngine
 	/// @param newName new name of the shader asset
 	void ShaderManager::RenameAsset( const UUID& uuid, const std::string& newName )
 	{
+		auto shaderToRename = m_Shaders.find( uuid );
+
+		if ( shaderToRename == m_Shaders.end() )
+			return;
+
 		const std::filesystem::path filePath = GetFilePathByUUID( uuid );
 		const std::string fileExtension = filePath.extension();
 
+		// Rename the asset files
 		std::filesystem::path newFilePath = filePath.parent_path() / ( newName + fileExtension );
 		std::filesystem::path newMetaFilePath = filePath.parent_path() / ( newName + fileExtension + ".meta" );
 
 		std::filesystem::rename( filePath, newFilePath );
 		std::filesystem::rename( filePath.string() + ".meta", newMetaFilePath );
 
-		if ( auto existing = m_Shaders.find( uuid ); existing != m_Shaders.end() )
-			existing->second.SetPath( newFilePath );
+		// Update the filepath in the shader object
+		shaderToRename->second.SetPath( newFilePath );
 	}
 }

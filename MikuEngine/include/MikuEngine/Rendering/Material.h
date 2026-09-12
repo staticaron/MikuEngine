@@ -48,11 +48,10 @@ namespace MikuEngine
 		void Bind();
 		void UnBind();
 
-		const UUID& GetUUID() const { return m_UUID; }
-		std::string GetName() const override;
-		const std::filesystem::path& GetPath() const override;
-
-		void SetName( const std::string& newName );
+		const UUID& GetUUID() const override { return m_UUID; }
+		std::string GetName() const override { return m_FilePath.stem().string(); }
+		const std::filesystem::path& GetPath() const override { return m_FilePath; }
+		void SetPath( const std::filesystem::path& path ) override { m_FilePath = path; }
 
 		const std::unordered_map<std::string, UUID>& GetTextures() const { return m_Textures; }
 		const std::unordered_map<std::string, UUID>& GetCubemaps() const { return m_Cubemaps; }

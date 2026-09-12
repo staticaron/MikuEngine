@@ -21,11 +21,11 @@ namespace MikuEditor
 		{
 			if ( ImGui::BeginTabItem( "Project" ) )
 			{
-				auto models = appLevelstuff.GetAssetPoolManager().GetModelManager().GetAllLoadedModels();
+				auto models = appLevelstuff.GetAssetPoolManager().GetModelManager().GetAllModels();
 
-				for ( const auto& [ uuid, modelContainer ] : models )
+				for ( const auto& [ uuid, model ] : models )
 				{
-					if ( ImGui::Selectable( modelContainer.index.path.c_str() ) )
+					if ( ImGui::Selectable( model.GetPath().c_str() ) )
 					{
 						m_OnModelSelection( uuid );
 						response = WindowResponse::COMPLETED;
@@ -41,7 +41,7 @@ namespace MikuEditor
 
 				for ( const auto& [ uuid, modelContainer ] : defaultModels )
 				{
-					if ( ImGui::Selectable( modelContainer.index.path.c_str() ) )
+					if ( ImGui::Selectable( modelContainer.GetPath().c_str() ) )
 					{
 						m_OnModelSelection( uuid );
 						response = WindowResponse::COMPLETED;
@@ -56,7 +56,8 @@ namespace MikuEditor
 
 		ImGui::End();
 
-		if ( m_IsOpen == false ) response = WindowResponse::CLOSED;
+		if ( m_IsOpen == false )
+			response = WindowResponse::CLOSED;
 
 		return response;
 	}

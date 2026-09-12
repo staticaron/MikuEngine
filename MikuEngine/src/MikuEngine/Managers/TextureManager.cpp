@@ -65,16 +65,26 @@ namespace MikuEngine
 	/// @brief Perform Deletion on all the textures added to the Delete Queue
 	void TextureManager::PerformDeletions()
 	{
+		if ( m_DeleteQueue.size() <= 0 )
+			return;
+
 		for ( auto item : m_DeleteQueue )
 			DeleteAsset( item );
+
+		MIKU_CORE_INFO( "{} Textures Renamed!", m_RenameQueue.size() );
 
 		m_DeleteQueue.clear();
 	}
 
 	void TextureManager::PerformRenames()
 	{
+		if ( m_RenameQueue.size() <= 0 )
+			return;
+
 		for ( auto [ uuid, newName ] : m_RenameQueue )
 			RenameAsset( uuid, newName );
+
+		MIKU_CORE_INFO( "{} Textures Renamed!", m_RenameQueue.size() );
 
 		m_RenameQueue.clear();
 	}
@@ -83,8 +93,6 @@ namespace MikuEngine
 	/// @param uuid uuid of the texture to be deleted!
 	void TextureManager::DeleteAsset( const UUID& uuid )
 	{
-		const std::filesystem::path& filePath = GetFilePathByUUID( uuid );
-
 		auto textureToDelete = m_Textures.find( uuid );
 
 		if ( textureToDelete == m_Textures.end() )
@@ -99,10 +107,10 @@ namespace MikuEngine
 		m_Textures.erase( textureToDelete );
 
 		// Delete the physical files
-		if ( std::filesystem::exists( filePath ) )
-			std::filesystem::remove( filePath );
-		if ( std::filesystem::exists( filePath.string() + ".meta" ) )
-			std::filesystem::remove( filePath.string() + ".meta" );
+		if ( std::filesystem::exists( filepath ) )
+			std::filesystem::remove( filepath );
+		if ( std::filesystem::exists( filepath.string() + ".meta" ) )
+			std::filesystem::remove( filepath.string() + ".meta" );
 	}
 
 	/// @brief Rename a texture; This includes updating the path as well
@@ -110,17 +118,22 @@ namespace MikuEngine
 	/// @param newName new name of the texture to be renamed
 	void TextureManager::RenameAsset( const UUID& uuid, const std::string& newName )
 	{
-		const std::filesystem::path& filePath = GetFilePathByUUID( uuid );
+		auto textureToRename = m_Textures.find( uuid );
+
+		if ( textureToRename == m_Textures.end() )
+			return;
+
+		const std::filesystem::path& filePath = textureToRename->second.GetPath();
 		const std::string fileExtension = filePath.extension();
 
+		// Rename the asset files
 		std::filesystem::path newFilePath = filePath.parent_path() / ( newName + fileExtension );
 		std::filesystem::path newMetaFilePath = filePath.parent_path() / ( newName + fileExtension + ".meta" );
 
 		std::filesystem::rename( filePath, newFilePath );
 		std::filesystem::rename( filePath.string() + ".meta", newMetaFilePath );
 
-		if ( auto existing = m_Textures.find( uuid ); existing != m_Textures.end() )
-			existing->second.SetName( newName );
+		textureToRename->second.SetPath( newFilePath );
 	}
 
 	/// @brief Get the path of the texture

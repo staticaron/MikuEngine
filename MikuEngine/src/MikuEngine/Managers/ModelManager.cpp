@@ -12,92 +12,74 @@ namespace MikuEngine
 		LoadAllDefaultModels();
 	}
 
-	void ModelManager::LoadModel( const std::filesystem::path& filepath )
+	void ModelManager::InitFrame()
 	{
-		UUID uuid;
+		PerformDeletions();
+		PerformRenames();
+	};
+
+	void ModelManager::LoadModel( const std::filesystem::path& filepath, UUID uuid )
+	{
 		Model newModel( filepath, uuid );
-		newModel.LoadFromFile( filepath );
-
-		m_Models.insert( {
-		    uuid, { { uuid, filepath }, newModel }
-		   } );
+		m_Models.insert( { uuid, newModel } );
 	}
 
-	void ModelManager::PrepareModelIndex()
-	{
-		// Index Default Models
-		if ( std::filesystem::exists( std::filesystem::path( RESOURCE_DIR ) / "models" ) )
-		{
-			for ( auto& file : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/models/" ) )
-			{
-				if ( file.path().extension() == ".meta" )
-					continue;
-				if ( !MetaFileManager::MetaFileExists( file.path().string() ) )
-					MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::MODEL, ModelManager::GetModelProperties( nullptr ) );
-
-				if ( file.is_directory() )
-					continue;
-
-				UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
-
-				m_DefaultModelIndex[ uuid ] = { uuid, file.path().string() };
-			}
-		}
-		else
-			MIKU_CORE_WARN( "Default Model Directory not found! Skipping" );
-
-		// Index Project Models
-		const auto& dataContainer = Application::GetDataContainer();
-
-		if ( std::filesystem::exists( dataContainer.GetProjectAssetPath( "/models" ) ) )
-		{
-			for ( auto& file : std::filesystem::recursive_directory_iterator( dataContainer.GetProjectAssetPath( "/models/" ) ) )
-			{
-				if ( file.path().extension() == ".meta" )
-					continue;
-
-				if ( !MetaFileManager::MetaFileExists( file.path().string() ) )
-					MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::MODEL, ModelManager::GetModelProperties( nullptr ) );
-
-				UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
-				m_ModelIndex[ uuid ] = { uuid, file.path().string() };
-			}
-		}
-		else
-			MIKU_CORE_WARN( "Project Model Directory not found! Skipping" );
-	}
-
+	/// Load all the models by going through the model assets in the model directory
 	void ModelManager::LoadAllModels()
 	{
-		PrepareModelIndex();
+		const auto& data = Application::GetDataContainer();
 
-		for ( const auto& [ uuid, index ] : m_ModelIndex )
+		auto modelDirectory = data.GetProjectAssetPath( "/models" );
+
+		if ( std::filesystem::exists( modelDirectory ) == false )
 		{
-			Model newModel( index.path, uuid );
-			newModel.LoadFromFile( index.path );
-
-			m_Models.insert( {
-			    uuid, { index, newModel }
-			      } );
+			MIKU_CORE_WARN( "Project Model Directory not found! Skipping" );
+			return;
 		}
 
-		MIKU_CORE_INFO( "Loading all models! {} models loaded", m_ModelIndex.size() );
+		for ( auto& item : std::filesystem::recursive_directory_iterator( modelDirectory ) )
+		{
+			if ( item.path().extension() == ".meta" || item.is_directory() )
+				continue;
+
+			auto uuid = MetaFileManager::GenerateMetaFileIfNotPresent( item.path().string(), AssetType::MODEL, ModelManager::GetModelProperties( nullptr ) );
+
+			LoadModel( item.path(), uuid );
+		}
+
+		MIKU_CORE_INFO( "Loading all models! {} models loaded", m_Models.size() );
 	}
 
+	/// Load all the default models by going through the default model asset directory
 	void ModelManager::LoadAllDefaultModels()
 	{
-		for ( const auto& [ uuid, index ] : m_DefaultModelIndex )
-		{
-			Model newModel( index.path, uuid );
-			newModel.LoadFromFile( index.path );
+		auto defaultModelDirectory = std::filesystem::path( RESOURCE_DIR ) / "models";
 
-			m_DefaultModels[ uuid ] = { index, newModel };
+		if ( std::filesystem::exists( defaultModelDirectory ) == false )
+		{
+			MIKU_CORE_WARN( "Default Model Directory not found! Skipping" );
+			return;
 		}
 
-		MIKU_CORE_INFO( "Loading all default models! {} default models loaded", m_DefaultModelIndex.size() );
+		for ( auto& item : std::filesystem::recursive_directory_iterator( RESOURCE_DIR "/models/" ) )
+		{
+			if ( item.path().extension() == ".meta" || item.is_directory() )
+				continue;
+
+			auto uuid = MetaFileManager::GenerateMetaFileIfNotPresent( item.path().string(), AssetType::MODEL, ModelManager::GetModelProperties( nullptr ) );
+
+			LoadModel( item.path(), uuid );
+		}
+
+		MIKU_CORE_INFO( "Loading all default models! {} default models loaded", m_DefaultModels.size() );
 	}
 
-	std::optional<ModelContainer*> ModelManager::GetModel( UUID modelUUID )
+	/// Fetch a model by looking for it in project as well as default model list
+	///
+	/// @param modelUUID UUID of the model to fetch
+	/// @return a pointer to the model object, nullptr if the model doesn't exists
+	///
+	Model* ModelManager::GetModel( UUID modelUUID )
 	{
 		if ( modelUUID == UUID( 0 ) )
 			return GetDefaultModel( DefaultModelType::CUBE );
@@ -110,47 +92,46 @@ namespace MikuEngine
 		if ( exisitngDefault != m_DefaultModels.end() )
 			return &exisitngDefault->second;
 
-		return {};
+		return nullptr;
 	}
 
-	std::optional<ModelContainer*> ModelManager::GetModelByName( const std::string& name )
+	Model* ModelManager::GetModelByName( const std::string& name )
 	{
-		for ( auto& [ uuid, container ] : m_Models )
+		for ( auto& [ uuid, model ] : m_Models )
 		{
-			if ( container.index.GetName() == name )
-				return &container;
+			if ( model.GetName() == name )
+				return &model;
 		}
 
 		MIKU_CORE_ERROR( "Requested Model is not loaded!" );
-		return std::nullopt;
+
+		return nullptr;
 	}
 
-	std::optional<ModelContainer*> ModelManager::GetModelByFilePath( const std::filesystem::path& path )
+	Model* ModelManager::GetModelByFilePath( const std::filesystem::path& path )
 	{
-		for ( auto& [ uuid, container ] : m_Models )
+		for ( auto& [ uuid, model ] : m_Models )
 		{
-			if ( container.index.path == path )
-				return &container;
+			if ( model.GetPath() == path )
+				return &model;
 		}
 
 		MIKU_CORE_ERROR( "Requested Model is not loaded!" );
-		return std::nullopt;
+
+		return nullptr;
 	}
 
-	std::optional<ModelContainer*> ModelManager::GetDefaultModel( DefaultModelType type )
+	Model* ModelManager::GetDefaultModel( DefaultModelType type )
 	{
 		return &m_DefaultModels.begin()->second;
 	}
 
 	const std::filesystem::path& ModelManager::GetFilePathByUUID( const UUID& uuid )
 	{
-		for ( auto& model : m_Models )
-		{
-			if ( model.first == uuid )
-				return model.second.index.path;
-		}
+		if ( auto model = m_Models.find( uuid ); model != m_Models.end() )
+			return model->second.GetPath();
 
-		MIKU_ASSERT( false, "This Model is not loaded!" );
+		MIKU_ASSERT( false, "This Model is not loaded! Can't return filepath" );
 	}
 
 	bool ModelManager::ModelExists( const UUID& uuid ) const
@@ -159,38 +140,10 @@ namespace MikuEngine
 		return existingModel != m_Models.end();
 	}
 
-	void ModelManager::RenameAssetCleanup( const UUID& uuid, const std::string& newName )
-	{
-		if ( auto existing = m_Models.find( uuid ); existing != m_Models.end() )
-		{
-			existing->second.SetName( newName );
-		}
-	}
-
 	YAML::Node ModelManager::GetModelProperties( Model* model )
 	{
 		return {};
 	}
-
-	void ModelManager::DeleteAssetCleanup( const UUID& uuid )
-	{
-		int count = 0;
-
-		if ( auto existing = m_Models.find( uuid ); existing != m_Models.end() )
-		{
-			m_Models.erase( existing );
-			count++;
-		}
-
-		if ( count > 0 )
-			MIKU_CORE_DEBUG( "Model Cleanup Successful! {} Models Deleted!", count );
-	}
-
-	void ModelManager::InitFrame()
-	{
-		PerformDeletions();
-		PerformRenames();
-	};
 
 	/// Add model to the delete queue
 	///
@@ -207,8 +160,8 @@ namespace MikuEngine
 	///
 	void ModelManager::AddToDeleteQueue( const std::filesystem::path& filepath )
 	{
-		if ( auto model = GetModelByFilePath( filepath ); model.has_value() )
-			m_DeleteQueue.push_back( model.value()->index.uuid );
+		if ( auto model = GetModelByFilePath( filepath ); model != nullptr )
+			m_DeleteQueue.push_back( model->GetUUID() );
 	};
 
 	/// Add model to the rename queue
@@ -228,15 +181,20 @@ namespace MikuEngine
 	///
 	void ModelManager::AddToRenameQueue( const std::filesystem::path& filepath, const std::string& newName )
 	{
-		if ( auto model = GetModelByFilePath( filepath ); model.has_value() )
-			m_RenameQueue.push_back( { model.value()->index.uuid, newName } );
+		if ( auto model = GetModelByFilePath( filepath ); model != nullptr )
+			m_RenameQueue.push_back( { model->GetUUID(), newName } );
 	};
 
 	/// Go through all the UUIDs in Delete queue and perform Delete on them
 	void ModelManager::PerformDeletions()
 	{
+		if ( m_DeleteQueue.size() <= 0 )
+			return;
+
 		for ( auto modelUUID : m_DeleteQueue )
 			DeleteAsset( modelUUID );
+
+		MIKU_CORE_INFO( "{} Models Deleted", m_DeleteQueue.size() );
 
 		m_DeleteQueue.clear();
 	};
@@ -244,8 +202,13 @@ namespace MikuEngine
 	/// Go through all the UUIDs in rename queue and perform Rename on them
 	void ModelManager::PerformRenames()
 	{
+		if ( m_RenameQueue.size() <= 0 )
+			return;
+
 		for ( auto [ modelUUID, newName ] : m_RenameQueue )
 			RenameAsset( modelUUID, newName );
+
+		MIKU_CORE_INFO( "{} Models Renamed", m_RenameQueue.size() );
 
 		m_RenameQueue.clear();
 	};
@@ -261,7 +224,7 @@ namespace MikuEngine
 		if ( modelToDelete == m_Models.end() )
 			return;
 
-		auto filepath = modelToDelete->second.index.path;
+		auto filepath = modelToDelete->second.GetPath();
 
 		// Remove from model db
 		m_Models.erase( modelToDelete );
@@ -286,7 +249,7 @@ namespace MikuEngine
 		if ( modelToRename == m_Models.end() )
 			return;
 
-		const std::filesystem::path& filePath = modelToRename->second.index.path;
+		const std::filesystem::path& filePath = modelToRename->second.GetPath();
 		const std::string fileExtension = filePath.extension();
 
 		// Rename the asset files
@@ -297,6 +260,6 @@ namespace MikuEngine
 		std::filesystem::rename( filePath.string() + ".meta", newMetaFilePath );
 
 		// apply the new name to the model object as well
-		modelToRename->second.SetName( newName );
+		modelToRename->second.SetPath( newFilePath );
 	};
 }

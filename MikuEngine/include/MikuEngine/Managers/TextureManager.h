@@ -13,27 +13,6 @@
 
 namespace MikuEngine
 {
-	struct TextureIndexEntry
-	{
-		UUID uuid;
-		std::filesystem::path path;
-	};
-
-	struct TextureContainer
-	{
-		TextureIndexEntry index;
-		Texture texture;
-
-		std::string GetName() const { return index.path.stem().string(); }
-		void SetName( const std::string& newName ) {}
-	};
-
-	struct CubemapContainer
-	{
-		UUID uuid;
-		Cubemap cubemap;
-	};
-
 	class MIKU_API TextureManager : public IAssetManagerBase
 	{
 	public:

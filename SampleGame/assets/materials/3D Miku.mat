@@ -1,5 +1,5 @@
 shader: 9865735929510716675
 properties:
   blend_mode: OPAQUE
-  render_order: 1
+  render_order: 0
   u_Tex: !tex 2174362289562777851

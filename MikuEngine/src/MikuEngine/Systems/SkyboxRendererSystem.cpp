@@ -27,7 +27,7 @@ namespace MikuEngine
 				continue;
 
 			auto model = modelManager.GetModel( skyboxC.ModelIdentifier.value() );
-			if ( model.has_value() == false )
+			if ( model == nullptr )
 				return;
 
 			if ( skyboxC.MaterialIdentifier.has_value() == false )
@@ -48,7 +48,7 @@ namespace MikuEngine
 			glCullFace( GL_FRONT );
 			glDepthFunc( GL_LEQUAL );
 
-			for ( const auto& mesh : model.value()->model.GetMeshes() )
+			for ( const auto& mesh : model->GetMeshes() )
 			{
 				renderer.Draw( mesh.GetVA(), mesh.GetIB(), *shader );
 			}
