@@ -6,8 +6,8 @@
 
 #include <glm/glm.hpp>
 
-#include "Asset.h"
 #include "Core.h"
+#include "IAsset.h"
 #include "Shader.h"
 #include "UUID.h"
 
@@ -30,32 +30,29 @@ namespace MikuEngine
 		unsigned int order{ 0 };
 	};
 
-	class MIKU_API Material : public Asset
+	class MIKU_API Material : public IAsset
 	{
 	public:
-		Material() : Asset( AssetType::MATERIAL ) {}
+		Material() : IAsset( AssetType::MATERIAL ) {}
 		Material( UUID uuid, const std::filesystem::path& materialPath );
 
 		void CreateFromShader( const UUID& shader );
-
-		void Refresh();
-
-		void LoadFromFile( const std::filesystem::path& materialPath );
+		void Load( const std::filesystem::path& materialPath );
 		void SaveToFile( const std::filesystem::path& filePath );
 
-		void DeleteAsset() override;
+		Shader* GetShader();
+		void SetShader( const UUID& uuid );
+
+		void Refresh();
 
 		void Bind();
 		void UnBind();
 
 		const UUID& GetUUID() const { return m_UUID; }
-
-		const std::filesystem::path& GetPath() const override;
 		std::string GetName() const override;
-		void SetName( const std::string& newName ) override;
+		const std::filesystem::path& GetPath() const override;
 
-		Shader* GetShader();
-		void SetShader( const UUID& uuid );
+		void SetName( const std::string& newName );
 
 		const std::unordered_map<std::string, UUID>& GetTextures() const { return m_Textures; }
 		const std::unordered_map<std::string, UUID>& GetCubemaps() const { return m_Cubemaps; }

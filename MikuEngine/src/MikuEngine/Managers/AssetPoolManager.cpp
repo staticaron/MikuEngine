@@ -7,7 +7,7 @@ namespace MikuEngine
 		m_TextureManager.Init();
 		m_ShaderManager.Init();
 		m_MaterialManager.Init();
-		m_ModelManager.LoadAllModels();
+		m_ModelManager.Init();
 	}
 
 	void AssetPoolManager::InitFrame()
@@ -15,6 +15,7 @@ namespace MikuEngine
 		GetTextureManager().InitFrame();
 		GetShaderManager().InitFrame();
 		GetMaterialManager().InitFrame();
+		GetModelManager().InitFrame();
 	}
 
 	AssetType AssetPoolManager::GetAssetTypeFromPool( const UUID& uuid ) const

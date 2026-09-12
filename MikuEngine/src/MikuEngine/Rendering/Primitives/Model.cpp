@@ -94,10 +94,4 @@ namespace MikuEngine
 	{
 		return GetPath().stem().string();
 	}
-
-	void Model::SetName( const std::string& newName )
-	{
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetModelManager().RenameAsset( m_UUID, newName );
-	}
-
 }

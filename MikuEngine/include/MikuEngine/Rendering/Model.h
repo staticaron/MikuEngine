@@ -5,18 +5,18 @@
 
 #include "assimp/scene.h"
 
-#include "Asset.h"
 #include "Core.h"
+#include "IAsset.h"
 #include "Rendering/Primitives/Mesh.h"
 #include "UUID.h"
 
 namespace MikuEngine
 {
-	class MIKU_API Model : public Asset
+	class MIKU_API Model : public IAsset
 	{
 	public:
-		Model() : Asset( AssetType::MODEL ) {}
-		Model( UUID uuid ) : m_UUID( uuid ), Asset( AssetType::MODEL ) {}
+		Model() : IAsset( AssetType::MODEL ) {}
+		Model( const std::filesystem::path& filepath, UUID uuid = {} ) : IAsset( AssetType::MODEL ), m_UUID( uuid ), m_FilePath( filepath ) {}
 
 		void LoadFromFile( const std::filesystem::path& filepath );
 
@@ -25,16 +25,17 @@ namespace MikuEngine
 
 		std::vector<Mesh> GetMeshes() const { return m_Meshes; }
 
-		void DeleteAsset() override;
+		void DeleteAsset();
 
 		std::string GetName() const override;
-		void SetName( const std::string& newName ) override;
+		void SetPath( const std::string& newPath ) { m_FilePath = newPath; }
 
 		const std::filesystem::path& GetPath() const override;
 
 	public:
 	private:
 		UUID m_UUID;
+		std::filesystem::path m_FilePath;
 
 		std::vector<Mesh> m_Meshes;
 	};

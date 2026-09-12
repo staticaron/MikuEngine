@@ -6,10 +6,16 @@
 
 namespace MikuEngine
 {
-	void ModelManager::LoadModel( const std::string& name, const std::filesystem::path& filepath )
+	void ModelManager::Init()
+	{
+		LoadAllModels();
+		LoadAllDefaultModels();
+	}
+
+	void ModelManager::LoadModel( const std::filesystem::path& filepath )
 	{
 		UUID uuid;
-		Model newModel( uuid );
+		Model newModel( filepath, uuid );
 		newModel.LoadFromFile( filepath );
 
 		m_Models.insert( {
@@ -43,7 +49,7 @@ namespace MikuEngine
 		// Index Project Models
 		const auto& dataContainer = Application::GetDataContainer();
 
-		if ( !std::filesystem::exists( dataContainer.GetProjectAssetPath( "/models" ) ) )
+		if ( std::filesystem::exists( dataContainer.GetProjectAssetPath( "/models" ) ) )
 		{
 			for ( auto& file : std::filesystem::recursive_directory_iterator( dataContainer.GetProjectAssetPath( "/models/" ) ) )
 			{
@@ -65,28 +71,30 @@ namespace MikuEngine
 	{
 		PrepareModelIndex();
 
-		LoadDefaultModels();
-
 		for ( const auto& [ uuid, index ] : m_ModelIndex )
 		{
-			Model newModel( uuid );
+			Model newModel( index.path, uuid );
 			newModel.LoadFromFile( index.path );
 
 			m_Models.insert( {
 			    uuid, { index, newModel }
 			      } );
 		}
+
+		MIKU_CORE_INFO( "Loading all models! {} models loaded", m_ModelIndex.size() );
 	}
 
-	void ModelManager::LoadDefaultModels()
+	void ModelManager::LoadAllDefaultModels()
 	{
 		for ( const auto& [ uuid, index ] : m_DefaultModelIndex )
 		{
-			Model newModel( uuid );
+			Model newModel( index.path, uuid );
 			newModel.LoadFromFile( index.path );
 
 			m_DefaultModels[ uuid ] = { index, newModel };
 		}
+
+		MIKU_CORE_INFO( "Loading all default models! {} default models loaded", m_DefaultModelIndex.size() );
 	}
 
 	std::optional<ModelContainer*> ModelManager::GetModel( UUID modelUUID )
@@ -134,7 +142,7 @@ namespace MikuEngine
 		return &m_DefaultModels.begin()->second;
 	}
 
-	const std::filesystem::path& ModelManager::GetFilePathFromUUID( const UUID& uuid )
+	const std::filesystem::path& ModelManager::GetFilePathByUUID( const UUID& uuid )
 	{
 		for ( auto& model : m_Models )
 		{
@@ -177,4 +185,118 @@ namespace MikuEngine
 		if ( count > 0 )
 			MIKU_CORE_DEBUG( "Model Cleanup Successful! {} Models Deleted!", count );
 	}
+
+	void ModelManager::InitFrame()
+	{
+		PerformDeletions();
+		PerformRenames();
+	};
+
+	/// Add model to the delete queue
+	///
+	/// @param uuid UUID of the model object
+	///
+	void ModelManager::AddToDeleteQueue( const UUID& uuid )
+	{
+		m_DeleteQueue.push_back( uuid );
+	};
+
+	/// Add model to the delete queue
+	///
+	/// @param filepath path of the model asset file
+	///
+	void ModelManager::AddToDeleteQueue( const std::filesystem::path& filepath )
+	{
+		if ( auto model = GetModelByFilePath( filepath ); model.has_value() )
+			m_DeleteQueue.push_back( model.value()->index.uuid );
+	};
+
+	/// Add model to the rename queue
+	///
+	/// @param uuid UUID of the model object
+	/// @param newName new name of the model
+	///
+	void ModelManager::AddToRenameQueue( const UUID& uuid, const std::string& newName )
+	{
+		m_RenameQueue.push_back( { uuid, newName } );
+	};
+
+	/// Add model to the rename queue
+	///
+	/// @param filepath path of the model asset file
+	/// @param newName new name of the model asset file
+	///
+	void ModelManager::AddToRenameQueue( const std::filesystem::path& filepath, const std::string& newName )
+	{
+		if ( auto model = GetModelByFilePath( filepath ); model.has_value() )
+			m_RenameQueue.push_back( { model.value()->index.uuid, newName } );
+	};
+
+	/// Go through all the UUIDs in Delete queue and perform Delete on them
+	void ModelManager::PerformDeletions()
+	{
+		for ( auto modelUUID : m_DeleteQueue )
+			DeleteAsset( modelUUID );
+
+		m_DeleteQueue.clear();
+	};
+
+	/// Go through all the UUIDs in rename queue and perform Rename on them
+	void ModelManager::PerformRenames()
+	{
+		for ( auto [ modelUUID, newName ] : m_RenameQueue )
+			RenameAsset( modelUUID, newName );
+
+		m_RenameQueue.clear();
+	};
+
+	/// Delete a model object
+	///
+	/// @param uuid UUID of the model object to delete
+	///
+	void ModelManager::DeleteAsset( const UUID& uuid )
+	{
+		auto modelToDelete = m_Models.find( uuid );
+
+		if ( modelToDelete == m_Models.end() )
+			return;
+
+		auto filepath = modelToDelete->second.index.path;
+
+		// Remove from model db
+		m_Models.erase( modelToDelete );
+
+		// Delete the Asset Files
+		if ( std::filesystem::exists( filepath ) )
+			std::filesystem::remove( filepath );
+
+		if ( std::filesystem::exists( filepath.string() + ".meta" ) )
+			std::filesystem::remove( filepath.string() + ".meta" );
+	};
+
+	/// Rename a model object
+	///
+	/// @param uuid UUID of the model object to udpate
+	/// @param newName new name of the model object
+	///
+	void ModelManager::RenameAsset( const UUID& uuid, const std::string& newName )
+	{
+		auto modelToRename = m_Models.find( uuid );
+
+		if ( modelToRename == m_Models.end() )
+			return;
+
+		const std::filesystem::path& filePath = modelToRename->second.index.path;
+		const std::string fileExtension = filePath.extension();
+
+		// Rename the asset files
+		std::filesystem::path newFilePath = filePath.parent_path() / ( newName + fileExtension );
+		std::filesystem::path newMetaFilePath = filePath.parent_path() / ( newName + fileExtension + ".meta" );
+
+		std::filesystem::rename( filePath, newFilePath );
+		std::filesystem::rename( filePath.string() + ".meta", newMetaFilePath );
+
+		// apply the new name to the model object as well
+		modelToRename->second.SetName( newName );
+	};
 }

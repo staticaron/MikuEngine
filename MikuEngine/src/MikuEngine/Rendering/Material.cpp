@@ -8,9 +8,9 @@
 
 namespace MikuEngine
 {
-	Material::Material( UUID uuid, const std::filesystem::path& materialPath ) : Asset( AssetType::MATERIAL ), m_UUID( uuid ), m_FilePath( materialPath )
+	Material::Material( UUID uuid, const std::filesystem::path& materialPath ) : IAsset( AssetType::MATERIAL ), m_UUID( uuid ), m_FilePath( materialPath )
 	{
-		LoadFromFile( materialPath );
+		Load( materialPath );
 	}
 
 	void Material::CreateFromShader( const UUID& uuid )
@@ -66,6 +66,7 @@ namespace MikuEngine
 		}
 	}
 
+	/// Reload from the attached shader
 	void Material::Refresh()
 	{
 		if ( m_Shader.value() == false )
@@ -74,7 +75,7 @@ namespace MikuEngine
 		CreateFromShader( m_Shader.value() );
 	}
 
-	void Material::LoadFromFile( const std::filesystem::path& materialPath )
+	void Material::Load( const std::filesystem::path& materialPath )
 	{
 		m_FilePath = materialPath;
 
@@ -297,12 +298,6 @@ namespace MikuEngine
 		default:
 			return "OPAQUE";
 		}
-	}
-
-	void Material::DeleteAsset()
-	{
-		MIKU_CORE_WARN( "Deleting Material!!" );
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().AddToDeleteQueue( m_UUID );
 	}
 
 	void Material::RegisterUniform( std::string, ShaderUniform shaderUniform )
