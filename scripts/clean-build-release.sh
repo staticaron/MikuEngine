@@ -2,8 +2,12 @@
 
 rm -rf build
 
-BUILD_TYPE="Release"
+export BUILD_TYPE="Release"
 
-script_dir = $(cd "$(dirname "$0")" && pwd)"
+ccache -C
+
+export CCACHE_DISABLED=1
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
 
 bash "${script_dir}/build.sh"

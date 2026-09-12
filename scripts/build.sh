@@ -1,6 +1,6 @@
-#/usr/bin/bash
+#!/usr/bin/bash
 
-test -z "$BUILD_TYPE" && BUILD_TYPE="Debug"
+BUILD_TYPE="${BUILD_TYPE:-Debug}"
 
 echo "Building in ${BUILD_TYPE} mode."
 
