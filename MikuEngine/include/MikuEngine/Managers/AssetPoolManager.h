@@ -14,6 +14,7 @@ namespace MikuEngine
 	{
 	public:
 		void Init();
+		void InitFrame();
 
 		AssetType GetAssetTypeFromPool( const UUID& uuid ) const;
 

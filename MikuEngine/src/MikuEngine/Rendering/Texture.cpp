@@ -5,14 +5,18 @@
 #include "glad/glad.h"
 #include "stb_image/stb_image.h"
 
-#include "Application.h"
-#include "Logger.h"
 #include "Managers/MetaFileManager.h"
 
 namespace MikuEngine
 {
-	void Texture::LoadFromFile( const std::filesystem::path& filepath )
+	Texture::Texture( UUID uuid, const std::filesystem::path& filepath ) : IAsset( AssetType::TEXTURE ), m_UUID( uuid )
 	{
+		Load( filepath );
+	}
+
+	void Texture::Load( const std::filesystem::path& filepath )
+	{
+		m_FilePath = filepath;
 
 		stbi_set_flip_vertically_on_load( true );
 
@@ -62,22 +66,5 @@ namespace MikuEngine
 	void Texture::Destroy()
 	{
 		glDeleteTextures( 1, &m_RendererID );
-	}
-
-	const std::filesystem::path& Texture::GetPath() const
-	{
-		auto texture = Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().GetTexture( m_UUID );
-		MIKU_ASSERT( texture.has_value(), "This Texture doesn't not exists!" );
-		return texture.value()->index.path;
-	}
-
-	std::string Texture::GetName() const
-	{
-		return GetPath().stem().string();
-	}
-
-	void Texture::SetName( const std::string& newName )
-	{
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetTextureManager().RenameAsset( m_UUID, newName );
 	}
 }

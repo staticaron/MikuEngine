@@ -1,5 +1,6 @@
 #include "Component/BaseComponentInspector.h"
 
+#include "Logger.h"
 #include "Managers/ImguiManager.h"
 
 namespace MikuEditor
@@ -19,9 +20,14 @@ namespace MikuEditor
 
 		ImGui::InputText( "##AssetBase", assetNameContainer, 255 );
 
-		if ( ImGui::IsItemDeactivatedAfterEdit() ) newName = std::string( assetNameContainer );
+		if ( ImGui::IsItemDeactivatedAfterEdit() && assetNameContainer[ 0 ] != '\0' )
+			newName = std::string( assetNameContainer );
 
-		if ( oldName != newName ) setNameCallback( newName );
+		if ( ImGui::IsItemDeactivatedAfterEdit() && assetNameContainer[ 0 ] == '\0' )
+			MIKU_CORE_WARN( "Failed to rename the asset! AssetName is empty!" );
+
+		if ( oldName != newName )
+			setNameCallback( newName );
 
 		ImGui::Separator();
 	}
@@ -30,6 +36,7 @@ namespace MikuEditor
 	{
 		ImGui::Separator();
 
-		if ( MikuEngine::ImguiManager::FullWidthButton( "<DEL>" ) ) deleteAssetCallback();
+		if ( MikuEngine::ImguiManager::FullWidthButton( "<DEL>" ) )
+			deleteAssetCallback();
 	}
 }

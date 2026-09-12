@@ -3,7 +3,6 @@
 #include "Components.h"
 #include "Data/CameraData.h"
 #include "Helpers/ImGuiHelper.h"
-#include "Logger.h"
 #include "Scene/Scene.h"
 #include "Systems/StencilSystem.h"
 #include "Systems/TransformSystems.h"
@@ -22,71 +21,82 @@ namespace MikuEngine
 		for ( const auto& [ entt, meshRendererC ] : entities.each() )
 		{
 			auto& materialUUID = meshRendererC.MaterialIdentifier;
-			if ( materialUUID.has_value() == false ) continue;
+			if ( materialUUID.has_value() == false )
+				continue;
 
 			auto material = appLevelStuff.GetAssetPoolManager().GetMaterialManager().GetMaterial( materialUUID.value() );
-			if ( material.has_value() == false ) continue;
+			if ( material == nullptr )
+				continue;
 
-			if ( material.value()->material.GetRenderOrder().mode != mode ) continue;
+			if ( material->GetRenderOrder().mode != mode )
+				continue;
 
 			auto transformMtx = TransformSystem::GetTransformMatrix( scene, entt );
 
 			float distanceFromCamera = glm::length( cameraPosition - glm::vec3( transformMtx[ 3 ] ) );
 
-			distancedEntities.push_back( { entt, &meshRendererC, material.value(), transformMtx, distanceFromCamera } );
+			distancedEntities.push_back( { entt, &meshRendererC, material, transformMtx, distanceFromCamera } );
 		}
 
 		std::sort( distancedEntities.begin(), distancedEntities.end(), []( const DistancedEntity& a, const DistancedEntity& b ) {
-			if ( a.materialContainer->material.GetRenderOrder().order == b.materialContainer->material.GetRenderOrder().order )
+			if ( a.material->GetRenderOrder().order == b.material->GetRenderOrder().order )
 				return a.distanceFromCamera >= b.distanceFromCamera;
 			else
-				return a.materialContainer->material.GetRenderOrder().order <= b.materialContainer->material.GetRenderOrder().order;
+				return a.material->GetRenderOrder().order <= b.material->GetRenderOrder().order;
 		} );
 
 		RenderMeshByBlendMode( scene, appLevelStuff, distancedEntities, cameraData, mode );
 	}
 
-	void MeshRendererSystem::RenderMeshByBlendMode( const Scene& scene, AppLevelStuff& appLevelStuff, const std::vector<DistancedEntity>& distancedEntities, const CameraData& cameraData, const MaterialBlendMode& blendMode )
+	void MeshRendererSystem::RenderMeshByBlendMode( const Scene& scene, AppLevelStuff& appLevelStuff, std::vector<DistancedEntity>& distancedEntities, const CameraData& cameraData, const MaterialBlendMode& blendMode )
 	{
 		const auto& renderer = appLevelStuff.GetRenderer();
 		auto& materialManager = appLevelStuff.GetAssetPoolManager().GetMaterialManager();
 		auto& modelManager = appLevelStuff.GetAssetPoolManager().GetModelManager();
 
 		// DISABLE WRITING TO DEPTH BUFFER WHEN RENDERING TRANSPARENT MESHES
-		if ( blendMode == MaterialBlendMode::TRANSPARENT ) renderer.DisableWriteToDepthBuffer();
+		if ( blendMode == MaterialBlendMode::TRANSPARENT )
+			renderer.DisableWriteToDepthBuffer();
 
-		for ( const auto& distancedEntity : distancedEntities )
+		for ( auto& distancedEntity : distancedEntities )
 		{
 			const auto& modelUUID = distancedEntity.meshRendererC->ModelIdentifier;
-			if ( modelUUID.has_value() == false ) continue;
+			if ( modelUUID.has_value() == false )
+				continue;
 			auto model = modelManager.GetModel( distancedEntity.meshRendererC->ModelIdentifier.value() );
-			if ( model.has_value() == false ) continue;
+			if ( model == nullptr )
+				continue;
 
-			Material material = distancedEntity.materialContainer->material;
+			auto material = distancedEntity.material;
 
-			material.Bind();
+			material->Bind();
 
-			auto shader = material.GetShader();
+			auto shader = material->GetShader();
+			if ( shader == nullptr )
+				continue;
 
-			if ( shader.has_value() == false ) continue;
-
-			shader.value()->shader.SetUniform<glm::mat4>( "u_Model", distancedEntity.transformMatrix );
+			shader->SetUniform<glm::mat4>( "u_Model", distancedEntity.transformMatrix );
 
 			auto* stencilReaderC = scene.GetRegistry().try_get<StencilReaderComponent>( distancedEntity.entt );
 			auto* stencilWriterC = scene.GetRegistry().try_get<StencilWriterComponent>( distancedEntity.entt );
 
-			if ( stencilReaderC ) StencilSystem::StartStencilReading( *stencilReaderC );
-			if ( stencilWriterC ) StencilSystem::StartStencilWriting( *stencilWriterC );
+			if ( stencilReaderC )
+				StencilSystem::StartStencilReading( *stencilReaderC );
+			if ( stencilWriterC )
+				StencilSystem::StartStencilWriting( *stencilWriterC );
 
 			// Render all the meshes in the model
-			for ( const auto& mesh : model.value()->model.GetMeshes() )
-				renderer.Draw( mesh.GetVA(), mesh.GetIB(), shader.value()->shader );
+			for ( const auto& mesh : model->GetMeshes() )
+				renderer.Draw( mesh.GetVA(), mesh.GetIB(), *shader );
 
-			if ( stencilReaderC ) StencilSystem::StopStencilReading( *stencilReaderC );
-			if ( stencilWriterC ) StencilSystem::StopStencilWriting( *stencilWriterC );
+			if ( stencilReaderC )
+				StencilSystem::StopStencilReading( *stencilReaderC );
+			if ( stencilWriterC )
+				StencilSystem::StopStencilWriting( *stencilWriterC );
 		}
 
-		if ( blendMode == MaterialBlendMode::TRANSPARENT ) renderer.EnableWriteToDepthBuffer();
+		if ( blendMode == MaterialBlendMode::TRANSPARENT )
+			renderer.EnableWriteToDepthBuffer();
 	}
 
 	void MeshRendererSystem::MeshRendererComponentRenderImGui( Entity entity, MeshRendererComponent& meshRendererC, std::function<void()> modelEditBtnCallback, std::function<void()> materialEditBtnCallback )
@@ -103,7 +113,8 @@ namespace MikuEngine
 			ImGuiHelper::EndPropertyTable();
 		}
 
-		if ( !keep ) entity.RemoveComponent<MeshRendererComponent>();
+		if ( !keep )
+			entity.RemoveComponent<MeshRendererComponent>();
 	}
 
 	void MeshRendererSystem::SerializeMeshRendererComponent( const Entity& entity, YAML::Emitter& emitter )

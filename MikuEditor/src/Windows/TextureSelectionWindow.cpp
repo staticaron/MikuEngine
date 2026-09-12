@@ -28,12 +28,12 @@ namespace MikuEditor
 
 					auto allTextures = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetAllLoadedTextures();
 
-					for ( auto [ uuid, textureContainer ] : allTextures )
+					for ( auto [ uuid, texture ] : allTextures )
 					{
 						ImGui::TableNextColumn();
-						ImGui::PushID( textureContainer.texture.GetUUID() );
+						ImGui::PushID( texture.GetUUID() );
 
-						if ( ImGui::ImageButton( "##TextureBtn", ( void* )( intptr_t )textureContainer.texture.GetRendererID(), ImVec2( 100, 100 ), ImVec2( 1, 1 ), ImVec2( 0, 0 ) ) )
+						if ( ImGui::ImageButton( "##TextureBtn", ( void* )( intptr_t )texture.GetRendererID(), ImVec2( 100, 100 ), ImVec2( 1, 1 ), ImVec2( 0, 0 ) ) )
 						{
 							m_OnTextureSelection( uuid );
 							response = WindowResponse::COMPLETED;
@@ -58,11 +58,11 @@ namespace MikuEditor
 
 				auto allTextures = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetAllDefaultTextures();
 
-				for ( auto [ uuid, textureContainer ] : allTextures )
+				for ( auto [ uuid, texture ] : allTextures )
 				{
 					ImGui::TableNextColumn();
-					ImGui::PushID( textureContainer.texture.GetUUID() );
-					if ( ImGui::ImageButton( "##TextureBtn", ( void* )( intptr_t )textureContainer.texture.GetRendererID(), ImVec2( 100, 100 ), ImVec2( 1, 1 ), ImVec2( 0, 0 ) ) )
+					ImGui::PushID( texture.GetUUID() );
+					if ( ImGui::ImageButton( "##TextureBtn", ( void* )( intptr_t )texture.GetRendererID(), ImVec2( 100, 100 ), ImVec2( 1, 1 ), ImVec2( 0, 0 ) ) )
 					{
 						m_OnTextureSelection( uuid );
 						response = WindowResponse::COMPLETED;

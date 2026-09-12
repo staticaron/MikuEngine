@@ -1,7 +1,7 @@
 #include "Helpers/ImGuiHelper.h"
 
 #include "Application.h"
-#include "imgui_internal.h"
+#include "Logger.h"
 
 namespace MikuEngine
 {
@@ -16,7 +16,8 @@ namespace MikuEngine
 		if ( textureUUID.has_value() )
 		{
 			auto texture = textureManager.GetTexture( textureUUID.value() );
-			if ( texture.has_value() ) textureName = texture.value()->GetName();
+			if ( texture.has_value() )
+				textureName = texture.value()->GetName();
 		}
 
 		ImGui::PushID( identifier.c_str() );
@@ -27,7 +28,8 @@ namespace MikuEngine
 			DISABLED_IMGUI( ImGui::Button( textureName.c_str() ) );
 			ImGui::SameLine();
 
-			if ( ImGui::Button( "EDIT..." ) ) textureEditBtnCallback();
+			if ( ImGui::Button( "EDIT..." ) )
+				textureEditBtnCallback();
 
 			if ( ImGui::BeginDragDropTarget() )
 			{
@@ -40,7 +42,7 @@ namespace MikuEngine
 					if ( texture.has_value() )
 					{
 						wasChanged = true;
-						textureUUID = texture.value()->index.uuid;
+						textureUUID = texture.value()->GetUUID();
 					}
 				}
 
@@ -64,7 +66,8 @@ namespace MikuEngine
 		if ( modelUUID.has_value() )
 		{
 			auto model = modelManager.GetModel( modelUUID.value() );
-			if ( model.has_value() ) modelName = model.value()->index.GetName();
+			if ( model != nullptr )
+				modelName = model->GetName();
 		}
 
 		ImGui::PushID( identifier.c_str() );
@@ -73,7 +76,8 @@ namespace MikuEngine
 			DISABLED_IMGUI( ImGui::Button( modelName.c_str() ) );
 			ImGui::SameLine();
 
-			if ( ImGui::Button( "EDIT..." ) ) modelEditBtnCallback();
+			if ( ImGui::Button( "EDIT..." ) )
+				modelEditBtnCallback();
 
 			if ( ImGui::BeginDragDropTarget() )
 			{
@@ -82,8 +86,15 @@ namespace MikuEngine
 				if ( payload != nullptr )
 				{
 					auto modelPath = static_cast<const char*>( payload->Data );
-					auto modelContainer = modelManager.GetModelByFilePath( modelPath );
-					modelUUID = modelManager.GetModelByFilePath( modelPath ).value()->index.uuid;
+					auto model = modelManager.GetModelByFilePath( modelPath );
+
+					if ( model == nullptr )
+					{
+						MIKU_CORE_WARN( "Failed to Setup Drag payload! Model is not found at the asset location" );
+						return;
+					}
+
+					modelUUID = modelManager.GetModelByFilePath( modelPath )->GetUUID();
 					wasChanged = true;
 				}
 
@@ -109,7 +120,8 @@ namespace MikuEngine
 		if ( shaderUUID.has_value() )
 		{
 			auto shader = shaderManager.GetShader( shaderUUID.value() );
-			if ( shader.has_value() ) shaderName = shader.value()->GetName();
+			if ( shader != nullptr )
+				shaderName = shader->GetName();
 		}
 
 		ImGui::PushID( identifier.c_str() );
@@ -118,7 +130,8 @@ namespace MikuEngine
 			DISABLED_IMGUI( ImGui::Button( shaderName.c_str() ) );
 			ImGui::SameLine();
 
-			if ( ImGui::Button( "EDIT..." ) ) shaderEditBtnCallback();
+			if ( ImGui::Button( "EDIT..." ) )
+				shaderEditBtnCallback();
 
 			if ( ImGui::BeginDragDropTarget() )
 			{
@@ -127,11 +140,10 @@ namespace MikuEngine
 				if ( payload != nullptr )
 				{
 					auto shaderPath = static_cast<const char*>( payload->Data );
-					auto shader = shaderManager.GetShaderByFilePath( shaderPath );
-					if ( shader.has_value() )
+					if ( auto shader = shaderManager.GetShaderByFilePath( shaderPath ); shader != nullptr )
 					{
 						wasChanged = true;
-						shaderUUID = shader.value()->index.uuid;
+						shaderUUID = shader->GetUUID();
 					}
 				}
 
@@ -155,7 +167,8 @@ namespace MikuEngine
 		if ( materialUUID.has_value() )
 		{
 			auto material = materialManager.GetMaterial( materialUUID.value() );
-			if ( material.has_value() ) materialName = material.value()->GetName();
+			if ( material != nullptr )
+				materialName = material->GetName();
 		}
 
 		ImGui::PushID( identifier.c_str() );
@@ -164,7 +177,8 @@ namespace MikuEngine
 			DISABLED_IMGUI( ImGui::Button( materialName.c_str() ) );
 			ImGui::SameLine();
 
-			if ( ImGui::Button( "EDIT..." ) ) materialEditBtnCallback();
+			if ( ImGui::Button( "EDIT..." ) )
+				materialEditBtnCallback();
 
 			if ( ImGui::BeginDragDropTarget() )
 			{
@@ -173,11 +187,11 @@ namespace MikuEngine
 				if ( payload != nullptr )
 				{
 					auto materialPath = static_cast<const char*>( payload->Data );
-					auto material = materialManager.GetMaterialByFilePath( materialPath );
-					if ( material.has_value() )
+					auto material = materialManager.GetMaterial( materialPath );
+					if ( material != nullptr )
 					{
 						wasChanged = true;
-						materialUUID = material.value()->GetUUID();
+						materialUUID = material->GetUUID();
 					}
 				}
 

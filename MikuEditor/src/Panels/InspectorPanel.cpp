@@ -24,12 +24,16 @@ namespace MikuEditor
 		auto selectedEntity = scene.GetSelectedEntity();
 		auto selectedAsset = editorLayer.GetSeletedAsset();
 
-		if ( selectedEntity.has_value() ) InspectorPanel::RenderEntityInInspector( selectedEntity.value(), editorLayer, scene );
-		if ( selectedAsset.has_value() ) InspectorPanel::RenderAssetInInspector( selectedAsset.value().uuid, editorLayer, scene );
+		if ( selectedEntity.has_value() )
+			InspectorPanel::RenderEntityInInspector( selectedEntity.value(), editorLayer, scene );
+		if ( selectedAsset.has_value() )
+			InspectorPanel::RenderAssetInInspector( selectedAsset.value().uuid, editorLayer, scene );
 
 		ImGui::End();
 	}
 
+	/// @brief Render the Inspector Panel for the selected Folder!
+	/// @param folderPath path of the folder to render the inspector for
 	void InspectorPanel::RenderFolderImGui( const std::filesystem::path& folderPath )
 	{
 		char folderName[ 255 ];
@@ -37,11 +41,11 @@ namespace MikuEditor
 		std::copy( folderNameFromPath.begin(), folderNameFromPath.begin() + folderNameFromPath.length(), folderName );
 		folderName[ folderNameFromPath.length() ] = '\0';
 
-		// render the entity name
+		// Render the entity name
 		MikuEngine::ImGuiHelper::RenderLabel( "Folder" );
 		ImGui::InputText( "##FolderName", folderName, 255 );
 
-		if ( ImGui::IsItemDeactivatedAfterEdit() )
+		if ( ImGui::IsItemDeactivatedAfterEdit() && folderName[ 0 ] != '\0' )
 		{
 			if ( std::strcmp( folderName, folderNameFromPath.c_str() ) != 0 )
 			{
@@ -49,8 +53,15 @@ namespace MikuEditor
 				std::filesystem::rename( folderPath, newFolderPath );
 			}
 		}
+
+		if ( ImGui::IsItemDeactivatedAfterEdit() && folderName[ 0 ] == '\0' )
+			MIKU_CORE_WARN( "Failed to rename folder! Folder name is empty" );
 	}
 
+	/// @brief Render the Inspector Panel for the selected Entity!
+	/// @param selectedEntityUUID the UUID for the selected entity
+	/// @param editorLayer a reference to the editorlayer ( will be used to create windows like sprite selection windows etc)
+	/// @param scene a reference to the active scene ( will be used to fetch the components )
 	void InspectorPanel::RenderEntityInInspector( const MikuEngine::UUID& selectedEntityUUID, EditorLayer& editorLayer, MikuEngine::Scene& scene )
 	{
 		auto selectedEntity = scene.GetEntityByID( selectedEntityUUID );
@@ -70,10 +81,15 @@ namespace MikuEditor
 				MikuEngine::ImGuiHelper::RenderLabel( "Entity" );
 				ImGui::InputText( "##DataComponent", entityName, 255 );
 
-				if ( ImGui::IsItemDeactivatedAfterEdit() ) dataC.EntityName = std::string( entityName );
+				if ( ImGui::IsItemDeactivatedAfterEdit() && entityName[ 0 ] != '\0' )
+					dataC.EntityName = std::string( entityName );
+
+				if ( ImGui::IsItemDeactivatedAfterEdit() && entityName[ 0 ] == '\0' )
+					MIKU_CORE_WARN( "Failed to rename entity! Entity name is empty" );
 
 				ImGui::SameLine();
-				if ( ImGui::Button( "< DEL >" ) ) scene.AddEntityToDeleteQueue( selectedEntityUUID );
+				if ( ImGui::Button( "< DEL >" ) )
+					scene.AddEntityToDeleteQueue( selectedEntityUUID );
 			}
 
 			// TRANSFORM
@@ -163,18 +179,27 @@ namespace MikuEditor
 
 		if ( scene.GetSelectedEntity().has_value() )
 		{
-			if ( MikuEngine::ImguiManager::FullWidthButton( "Add Component" ) ) ImGui::OpenPopup( "add-component-popup" );
+			if ( MikuEngine::ImguiManager::FullWidthButton( "Add Component" ) )
+				ImGui::OpenPopup( "add-component-popup" );
 
 			if ( ImGui::BeginPopup( "add-component-popup" ) )
 			{
-				if ( ImGui::Selectable( "CameraComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::CameraComponent>();
-				if ( ImGui::Selectable( "SpriteRendererComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::SpriteRendererComponent>();
-				if ( ImGui::Selectable( "MeshRendererComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::MeshRendererComponent>();
-				if ( ImGui::Selectable( "NativeScriptComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::NativeScriptComponent>();
-				if ( ImGui::Selectable( "DirectionalLightComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::DirectionalLightComponent>();
-				if ( ImGui::Selectable( "SkyboxComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::SkyboxComponent>();
-				if ( ImGui::Selectable( "StencilReaderComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::StencilReaderComponent>();
-				if ( ImGui::Selectable( "StencilWriterComponent" ) ) selectedEntity.value().AddComponent<MikuEngine::StencilWriterComponent>();
+				if ( ImGui::Selectable( "CameraComponent" ) )
+					selectedEntity.value().AddComponent<MikuEngine::CameraComponent>();
+				if ( ImGui::Selectable( "SpriteRendererComponent" ) )
+					selectedEntity.value().AddComponent<MikuEngine::SpriteRendererComponent>();
+				if ( ImGui::Selectable( "MeshRendererComponent" ) )
+					selectedEntity.value().AddComponent<MikuEngine::MeshRendererComponent>();
+				if ( ImGui::Selectable( "NativeScriptComponent" ) )
+					selectedEntity.value().AddComponent<MikuEngine::NativeScriptComponent>();
+				if ( ImGui::Selectable( "DirectionalLightComponent" ) )
+					selectedEntity.value().AddComponent<MikuEngine::DirectionalLightComponent>();
+				if ( ImGui::Selectable( "SkyboxComponent" ) )
+					selectedEntity.value().AddComponent<MikuEngine::SkyboxComponent>();
+				if ( ImGui::Selectable( "StencilReaderComponent" ) )
+					selectedEntity.value().AddComponent<MikuEngine::StencilReaderComponent>();
+				if ( ImGui::Selectable( "StencilWriterComponent" ) )
+					selectedEntity.value().AddComponent<MikuEngine::StencilWriterComponent>();
 
 				ImGui::EndPopup();
 			}
@@ -197,7 +222,8 @@ namespace MikuEditor
 	{
 		auto selectedAsset = editorLayer.GetSeletedAsset();
 
-		if ( selectedAsset.has_value() == false ) return;
+		if ( selectedAsset.has_value() == false )
+			return;
 
 		auto& assetPoolManager = MikuEngine::Application::GetAppLevelStuff().GetAssetPoolManager();
 
@@ -211,17 +237,19 @@ namespace MikuEditor
 			break;
 
 		case MikuEngine::AssetType::MATERIAL: {
-			auto materialContainer = assetPoolManager.GetMaterialManager().GetMaterial( selectedAsset.value().uuid );
-			if ( materialContainer.has_value() == false ) return;
+			auto material = assetPoolManager.GetMaterialManager().GetMaterial( selectedAsset.value().uuid );
+			if ( material == nullptr )
+				return;
 
-			MaterialComponent::RenderMaterialComponent( editorLayer, *materialContainer.value() );
+			MaterialComponent::RenderMaterialComponent( editorLayer, *material );
 			break;
 		}
 		case MikuEngine::AssetType::SHADER: {
-			auto shaderContainer = assetPoolManager.GetShaderManager().GetShader( selectedAsset.value().uuid );
-			if ( shaderContainer.has_value() == false ) return;
+			auto shader = assetPoolManager.GetShaderManager().GetShader( selectedAsset.value().uuid );
+			if ( shader == nullptr )
+				return;
 
-			ShaderComponent::RenderShaderComponent( *shaderContainer.value() );
+			ShaderComponent::RenderShaderComponent( *shader );
 			break;
 		}
 		case MikuEngine::AssetType::TEXTURE:

@@ -17,11 +17,11 @@ namespace MikuEditor
 
 		ImGui::Begin( ( "Select Material" + identifier ).c_str(), &m_IsOpen );
 
-		auto materials = appLevelstuff.GetAssetPoolManager().GetMaterialManager().GetAllLoadedMaterials();
+		auto materials = appLevelstuff.GetAssetPoolManager().GetMaterialManager().GetAllMaterials();
 
-		for ( const auto& [ uuid, materialContainer ] : materials )
+		for ( const auto& [ uuid, material ] : materials )
 		{
-			if ( ImGui::Selectable( materialContainer.index.path.c_str() ) )
+			if ( ImGui::Selectable( material.GetPath().c_str() ) )
 			{
 				onItemSelected( uuid );
 				response = WindowResponse::COMPLETED;
@@ -30,7 +30,8 @@ namespace MikuEditor
 
 		ImGui::End();
 
-		if ( m_IsOpen == false ) response = WindowResponse::CLOSED;
+		if ( m_IsOpen == false )
+			response = WindowResponse::CLOSED;
 
 		return response;
 	}

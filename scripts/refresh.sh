@@ -1,9 +1,6 @@
-#!/bin/bash
+#!/usr/bin/bash
 
-cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Debug
+script_dir = $(cd "$(dirname "$0")" && pwd)"
 
-cmake --build build
-
-cp build/compile_commands.json .
-
-./scripts/run.sh
+bash "${script_dir}/build.sh"
+bash "${script_dir}/run.sh"

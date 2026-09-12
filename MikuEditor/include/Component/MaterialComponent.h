@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Component/BaseComponentInspector.h"
-#include "MikuEngine/Managers/MaterialManager.h"
+#include "MikuEngine/Rendering/Material.h"
 
 namespace MikuEditor
 {
@@ -13,6 +13,6 @@ namespace MikuEditor
 	class MaterialComponent : public BaseComponentInspector
 	{
 	public:
-		static void RenderMaterialComponent( EditorLayer& editorLayer, MikuEngine::MaterialContainer& material );
+		static void RenderMaterialComponent( EditorLayer& editorLayer, MikuEngine::Material& material );
 	};
 }

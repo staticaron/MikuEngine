@@ -7,5 +7,6 @@ set non-stop off
 set listsize 30
 set prompt => 
 break Error.h:17
+break Logger.h:43
 run
 y

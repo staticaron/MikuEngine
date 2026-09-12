@@ -1,5 +1,21 @@
 scene: Untitled
 entities:
+  - id: 7721907191502791368
+    name: New 3D Object
+    parent: 0
+    components:
+      - type: TransformComponent
+        values:
+          position: [8.060105, -0.017073337, 0.022260314]
+          rotation: [1.4400717, -1.0877979e-09, 1.5613626]
+          scale: [0.9999965, 0.99996483, 1]
+      - type: MeshRendererComponent
+        values:
+          model: 6848244555316473112
+          material: 7950950840432656574
+      - type: NativeScriptComponent
+        values:
+          scriptName: Rotator
   - id: 16611863155593225054
     name: miku
     parent: 2337500457267386676
@@ -70,26 +86,29 @@ entities:
           zoom: 1
           maincamera: true
           width: 30
-  - id: 4261726002563349407
-    name: skybox
-    parent: 11315957467816257882
+  - id: 10216030046108427589
+    name: card_bg
+    parent: 2337500457267386676
     components:
       - type: TransformComponent
         values:
-          position: [0, 0, 0]
+          position: [0, 0, -2]
           rotation: [0, 0, 0]
-          scale: [1, 1, 1]
-      - type: SkyboxComponent
+          scale: [5, 5, 1]
+      - type: MeshRendererComponent
         values:
-          model: 13586518337506870339
-          material: 13971799613920123514
+          model: 1915813061935218518
+          material: 12919198992790270694
+      - type: StencilReaderComponent
+        values:
+          read-value: 1
   - id: 14657557635516094932
     name: sun
     parent: 11315957467816257882
     components:
       - type: TransformComponent
         values:
-          position: [0, 0, 0]
+          position: [1.5469674, 0, 3.459912]
           rotation: [0, 0.42044947, 0]
           scale: [1, 1, 1]
       - type: DirectionalLightComponent
@@ -135,19 +154,16 @@ entities:
       - type: StencilWriterComponent
         values:
           write-value: 1
-  - id: 10216030046108427589
-    name: card_bg
-    parent: 2337500457267386676
+  - id: 9504906298269301770
+    name: skybox
+    parent: 11315957467816257882
     components:
       - type: TransformComponent
         values:
-          position: [0, 0, -2]
+          position: [0, 0, 0]
           rotation: [0, 0, 0]
-          scale: [5, 5, 1]
-      - type: MeshRendererComponent
+          scale: [1, 1, 1]
+      - type: SkyboxComponent
         values:
-          model: 1915813061935218518
-          material: 12919198992790270694
-      - type: StencilReaderComponent
-        values:
-          read-value: 1
+          model: 13586518337506870339
+          material: 13971799613920123514

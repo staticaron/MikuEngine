@@ -32,14 +32,11 @@ namespace MikuEngine
 
 			if ( spriteRenderer.MaterialUUID.has_value() )
 			{
-				auto materialContainer = materialManager.GetMaterial( spriteRenderer.MaterialUUID.value() );
-				if ( materialContainer.has_value() == false )
+				if ( auto material = materialManager.GetMaterial( spriteRenderer.MaterialUUID.value() ); material == nullptr )
 				{
 					MIKU_CORE_WARN( "Material assigned to this sprite renderer is not loaded!" );
 					return;
 				}
-
-				material = &materialContainer.value()->material;
 			}
 			else
 				return;
@@ -47,24 +44,24 @@ namespace MikuEngine
 			material->Bind();
 
 			auto shader = material->GetShader();
-
-			if ( shader.has_value() == false ) return;
+			if ( shader == nullptr )
+				return;
 
 			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
 			glm::mat4 modelMatrix = transform.GetModelMatrix();
-			shader.value()->shader.SetUniform<glm::mat4>( "u_Model", modelMatrix );
+			shader->SetUniform<glm::mat4>( "u_Model", modelMatrix );
 
 			if ( spriteRenderer.TextureIdentifier.has_value() )
 			{
 				auto mainTex = textureManager.GetTextureOrDefault( spriteRenderer.TextureIdentifier.value() );
 
-				mainTex->texture.Bind( 0 );
-				shader.value()->shader.SetUniform<unsigned int>( "u_MainTex", 0 );
+				mainTex->Bind( 0 );
+				shader->SetUniform<unsigned int>( "u_MainTex", 0 );
 			}
 
 			// Disable Depth Test for Sprites to enable transparency
 			renderer.DisableWriteToDepthBuffer();
-			renderer.Draw( quad.GetVA(), quad.GetIB(), shader.value()->shader );
+			renderer.Draw( quad.GetVA(), quad.GetIB(), *shader );
 			renderer.EnableWriteToDepthBuffer();
 		}
 	};
@@ -84,7 +81,8 @@ namespace MikuEngine
 			ImGuiHelper::EndPropertyTable();
 		};
 
-		if ( !keep ) entity.RemoveComponent<SpriteRendererComponent>();
+		if ( !keep )
+			entity.RemoveComponent<SpriteRendererComponent>();
 	}
 
 	void SpriteRendererSystem::SerializeSpriteRendererComponent( const Entity& entity, YAML::Emitter& emitter )

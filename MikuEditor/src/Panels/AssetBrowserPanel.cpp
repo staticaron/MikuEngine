@@ -23,28 +23,28 @@ namespace MikuEditor
 
 		MikuEngine::Texture texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_folder.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_folder.png" );
 		m_IconTextures[ MikuEngine::AssetType::NONE ] = texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_file.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_file.png" );
 		m_IconTextures[ MikuEngine::AssetType::FILE ] = texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_model.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_model.png" );
 		m_IconTextures[ MikuEngine::AssetType::MODEL ] = texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_shader.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_shader.png" );
 		m_IconTextures[ MikuEngine::AssetType::SHADER ] = texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_script.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_script.png" );
 		m_IconTextures[ MikuEngine::AssetType::SCRIPT ] = texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_texture.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_texture.png" );
 		m_IconTextures[ MikuEngine::AssetType::TEXTURE ] = texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_scene.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_scene.png" );
 		m_IconTextures[ MikuEngine::AssetType::SCENE ] = texture;
 
-		texture.LoadFromFile( RESOURCE_DIR "/icons/asset_material.png" );
+		texture.Load( RESOURCE_DIR "/icons/asset_material.png" );
 		m_IconTextures[ MikuEngine::AssetType::MATERIAL ] = texture;
 	}
 
@@ -59,12 +59,14 @@ namespace MikuEditor
 
 		auto canvasSize = ImGui::GetContentRegionAvail();
 		auto columns = static_cast<unsigned int>( canvasSize.x / ( m_IconSize + ImGui::GetStyle().ItemSpacing.x * 2 ) );
-		if ( columns < 1 ) columns = 1;
+		if ( columns < 1 )
+			columns = 1;
 
 		// Render the back button
 		if ( m_ContentBrowserLocation.string() != dataContainer.GetProjectDir() )
 		{
-			if ( ImGui::Button( "<BACK>" ) ) m_ContentBrowserLocation = m_ContentBrowserLocation.parent_path();
+			if ( ImGui::Button( "<BACK>" ) )
+				m_ContentBrowserLocation = m_ContentBrowserLocation.parent_path();
 			ImGui::SameLine();
 		}
 
@@ -83,7 +85,8 @@ namespace MikuEditor
 				folders.push_back( directory_item.path() );
 			else
 			{
-				if ( relativePath.extension() == ".meta" ) continue;
+				if ( relativePath.extension() == ".meta" )
+					continue;
 				files.push_back( directory_item.path() );
 			}
 		}
@@ -126,10 +129,16 @@ namespace MikuEditor
 
 		if ( ImGui::BeginPopupContextWindow() )
 		{
-			if ( ImGui::MenuItem( "Create Folder" ) ) std::filesystem::create_directory( m_ContentBrowserLocation / std::filesystem::path( "NewFolder" ) );
+			if ( ImGui::MenuItem( "Create Folder" ) )
+				std::filesystem::create_directory( m_ContentBrowserLocation / std::filesystem::path( "NewFolder" ) );
+
 			ImGui::Separator();
-			if ( ImGui::MenuItem( "Create Material" ) ) MikuEngine::MaterialManager::CreateAssetAtPath( "gigaNewMat", m_ContentBrowserLocation );
-			if ( ImGui::MenuItem( "Create Shader" ) ) MikuEngine::Shader::CreateAssetAtPath( "gigaNewShader", m_ContentBrowserLocation );
+
+			if ( ImGui::MenuItem( "Create Material" ) )
+				MikuEngine::MaterialManager::CreateAssetAtPath( "NewMaterial", m_ContentBrowserLocation );
+
+			if ( ImGui::MenuItem( "Create Shader" ) )
+				MikuEngine::ShaderManager::CreateAssetAtPath( "NewShader", m_ContentBrowserLocation );
 
 			ImGui::EndPopup();
 		}
@@ -173,7 +182,7 @@ namespace MikuEditor
 		{
 			auto textureFetch = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath );
 			if ( textureFetch.has_value() )
-				iconTexture = &textureFetch.value()->texture;
+				iconTexture = textureFetch.value();
 			else
 				iconTexture = &m_IconTextures.at( assetType );
 		}
@@ -187,21 +196,21 @@ namespace MikuEditor
 			switch ( assetType )
 			{
 			case MikuEngine::AssetType::TEXTURE: {
-				assetUUID = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath.string() ).value()->texture.GetUUID();
+				assetUUID = appLevelStuff.GetAssetPoolManager().GetTextureManager().GetTextureByFilePath( filePath.string() ).value()->GetUUID();
 				break;
 			}
 			case MikuEngine::AssetType::MATERIAL: {
-				assetUUID = appLevelStuff.GetAssetPoolManager().GetMaterialManager().GetMaterialByFilePath( filePath.string() ).value()->GetUUID();
+				assetUUID = appLevelStuff.GetAssetPoolManager().GetMaterialManager().GetMaterial( filePath.string() )->GetUUID();
 				break;
 			}
 			case MikuEngine::AssetType::MODEL: {
-				assetUUID = appLevelStuff.GetAssetPoolManager().GetModelManager().GetModelByFilePath( filePath.string() ).value()->index.uuid;
+				assetUUID = appLevelStuff.GetAssetPoolManager().GetModelManager().GetModelByFilePath( filePath.string() )->GetUUID();
 				break;
 			}
 			case MikuEngine::AssetType::SCENE:
 				break;
 			case MikuEngine::AssetType::SHADER: {
-				assetUUID = appLevelStuff.GetAssetPoolManager().GetShaderManager().GetShaderByFilePath( filePath.string() ).value()->index.uuid;
+				assetUUID = appLevelStuff.GetAssetPoolManager().GetShaderManager().GetShaderByFilePath( filePath.string() )->GetUUID();
 				break;
 			}
 			default:

@@ -1,4 +1,5 @@
 #include "Rendering/Shader.h"
+
 #include <fstream>
 #include <sstream>
 
@@ -17,9 +18,9 @@ namespace MikuEngine
 		FRAGMENT = 2,
 	};
 
-	Shader::Shader( UUID uuid, const std::filesystem::path& path ) : Asset( AssetType::SHADER ), m_ShaderUUID( uuid )
+	Shader::Shader( UUID uuid, const std::filesystem::path& path ) : IAsset( AssetType::SHADER ), m_ShaderUUID( uuid ), m_FilePath( path )
 	{
-		LoadFromFile( path );
+		Load( path );
 	}
 
 	void Shader::ParseShader( std::string_view filepath, std::string& vs, std::string& gs, std::string& fs )
@@ -70,7 +71,8 @@ namespace MikuEngine
 
 	unsigned int Shader::CompileShader( const std::string& source, unsigned int type )
 	{
-		if ( source.empty() ) return 0;
+		if ( source.empty() )
+			return 0;
 
 		unsigned int shaderID = glCreateShader( type );
 		const char* shaderSource = source.c_str();
@@ -104,41 +106,32 @@ namespace MikuEngine
 		unsigned int fsID = 0;
 
 		vsID = CompileShader( vs, GL_VERTEX_SHADER );
-		if ( !gs.empty() ) gsID = CompileShader( gs, GL_GEOMETRY_SHADER );
+		if ( !gs.empty() )
+			gsID = CompileShader( gs, GL_GEOMETRY_SHADER );
 		fsID = CompileShader( fs, GL_FRAGMENT_SHADER );
 
 		glAttachShader( program, vsID );
-		if ( !gs.empty() ) glAttachShader( program, gsID );
+		if ( !gs.empty() )
+			glAttachShader( program, gsID );
 		glAttachShader( program, fsID );
 
 		glLinkProgram( program );
 		glValidateProgram( program );
 
 		glDeleteShader( vsID );
-		if ( !gs.empty() ) glDeleteShader( gsID );
+		if ( !gs.empty() )
+			glDeleteShader( gsID );
 		glDeleteShader( fsID );
 
 		return program;
 	}
 
-	void Shader::CreateAssetAtPath( const std::string& name, const std::filesystem::path& folderPath )
+	/// @brief Load a shader file into this shader object
+	/// @param filepath path to the combined shader file
+	void Shader::Load( const std::filesystem::path& filepath )
 	{
-		unsigned int count = 0;
-		std::filesystem::path pathToSave = folderPath / ( name + ".shader" );
+		m_FilePath = filepath;
 
-		while ( std::filesystem::exists( pathToSave ) )
-		{
-			count++;
-			pathToSave = folderPath / ( name + "_" + std::to_string( count ) + ".shader" );
-		}
-
-		std::filesystem::copy( DEFAULT_SHADER_LOCATION, pathToSave );
-
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().Refresh();
-	}
-
-	void Shader::LoadFromFile( const std::filesystem::path& filepath )
-	{
 		std::string vs, gs, fs;
 		ParseShader( filepath.string(), vs, gs, fs );
 		m_RendererID = CreateShader( vs, gs, fs );
@@ -146,6 +139,12 @@ namespace MikuEngine
 		PrepareUniforms();
 	}
 
+	void Shader::Destroy()
+	{
+		glDeleteProgram( m_RendererID );
+	}
+
+	/// @brief Fetch all the uniform from the current shader objects for easy access
 	void Shader::PrepareUniforms()
 	{
 		int uniformCount;
@@ -167,7 +166,8 @@ namespace MikuEngine
 			glGetActiveUniformsiv( m_RendererID, 1, &x, GL_UNIFORM_BLOCK_INDEX, &blockIndex );
 
 			// IGNORE THE UNIFORMS PART OF UNIFOR BUFFER OBJECT ( THEY HAVE A UNIFORM BUFFER INDEX)
-			if ( blockIndex != -1 ) continue;
+			if ( blockIndex != -1 )
+				continue;
 
 			unsigned int index = GetUniformLocation( name );
 			m_Uniforms[ name ] = { name, index, type };
@@ -184,28 +184,5 @@ namespace MikuEngine
 	void Shader::UnBind() const
 	{
 		glUseProgram( 0 );
-	}
-
-	std::string Shader::GetName() const
-	{
-		auto& shaderManager = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager();
-		return shaderManager.GetShader( m_ShaderUUID ).value()->GetName();
-	}
-
-	void Shader::SetName( const std::string& newName )
-	{
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().RenameAsset( m_ShaderUUID, newName );
-	}
-
-	const std::filesystem::path& Shader::GetPath() const
-	{
-		auto shader = Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().GetShader( m_ShaderUUID );
-		MIKU_ASSERT( shader.has_value(), "This Shader with UUID doesn't exists!" );
-		return shader.value()->index.path;
-	}
-
-	void Shader::DeleteAsset()
-	{
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().AddToDeleteQueue( m_ShaderUUID );
 	}
 }

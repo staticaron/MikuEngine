@@ -11,17 +11,47 @@
 
 namespace MikuEngine
 {
+	void MaterialManager::Init()
+	{
+		LoadAllMaterials();
+	}
+
+	void MaterialManager::InitFrame()
+	{
+		PerformDeletions();
+		PerformRenames();
+	};
+
+	void MaterialManager::LoadMaterial( const std::filesystem::path& path, UUID uuid )
+	{
+		m_Materials[ uuid ] = { uuid, path };
+	}
+
+	/// Load all materials from the material directory
+	///
 	void MaterialManager::LoadAllMaterials()
 	{
-		PrepareMaterialIndex();
+		const auto& data = Application::GetDataContainer();
 
-		for ( const auto& [ uuid, index ] : m_MaterialIndex )
+		if ( !std::filesystem::exists( data.GetProjectAssetPath( "/materials/" ) ) )
+			return;
+
+		for ( auto& item : std::filesystem::recursive_directory_iterator( data.GetProjectAssetPath( "/materials/" ) ) )
 		{
-			Material material( uuid, index.path );
-			m_Materials[ uuid ] = { index, material };
+			if ( item.path().extension() == ".meta" || item.is_directory() )
+				continue;
+
+			auto uuid = MetaFileManager::GenerateMetaFileIfNotPresent( item.path().string(), AssetType::MATERIAL, GetMaterialProperties( nullptr ) );
+
+			LoadMaterial( item.path(), uuid );
 		}
 	}
 
+	/// Create an empty material asset at the provided path
+	///
+	/// @param name name of the material asset
+	/// @param path path of the parent folder
+	///
 	void MaterialManager::CreateAssetAtPath( const std::string& name, const std::filesystem::path& path )
 	{
 		YAML::Emitter emitter;
@@ -43,56 +73,38 @@ namespace MikuEngine
 		fout << emitter.c_str();
 		fout.close();
 
-		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().Refresh();
+		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().LoadMaterial( pathToSave );
+
+		MetaFileManager::GenerateMetaFileIfNotPresent( pathToSave, AssetType::MATERIAL, MaterialManager::GetMaterialProperties() );
 	}
 
-	void MaterialManager::PrepareMaterialIndex()
+	/// Load the materials that are not already loaded!
+	///
+	void MaterialManager::RefreshMaterials( bool loadIntoExisting )
 	{
-		const auto& dataContainer = Application::GetDataContainer();
+		const auto& data = Application::GetDataContainer();
 
-		if ( !std::filesystem::exists( dataContainer.GetProjectAssetPath( "/materials/" ) ) ) return;
-
-		m_MaterialIndex.clear();
-
-		for ( auto& file : std::filesystem::recursive_directory_iterator( dataContainer.GetProjectAssetPath( "/materials/" ) ) )
-		{
-			if ( file.path().extension() == ".meta" ) continue;
-			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::MATERIAL, GetMaterialProperties( nullptr ) );
-
-			if ( file.is_directory() ) continue;
-
-			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
-			m_MaterialIndex[ uuid ] = { uuid, file.path().string() };
-		}
-	}
-
-	void MaterialManager::Refresh()
-	{
-		RefreshMaterialIndex();
-		RefreshMaterials();
-	}
-
-	void MaterialManager::RefreshMaterialIndex()
-	{
-		const auto& dataContainer = Application::GetDataContainer();
-
-		if ( !std::filesystem::exists( dataContainer.GetProjectAssetPath( "/materials/" ) ) ) return;
+		if ( !std::filesystem::exists( data.GetProjectAssetPath( "/materials/" ) ) )
+			return;
 
 		unsigned int refreshCount = 0;
 
-		for ( auto& file : std::filesystem::recursive_directory_iterator( dataContainer.GetProjectAssetPath( "/materials/" ) ) )
+		for ( auto& item : std::filesystem::recursive_directory_iterator( data.GetProjectAssetPath( "/materials/" ) ) )
 		{
-			if ( file.is_directory() ) continue;
-			if ( file.path().extension() == ".meta" ) continue;
-			if ( !MetaFileManager::MetaFileExists( file.path().string() ) ) MetaFileManager::GenerateMetaFile( file.path().string(), AssetType::MATERIAL, GetMaterialProperties( nullptr ) );
+			if ( item.path().extension() == ".meta" || item.is_directory() )
+				continue;
 
-			UUID uuid = MetaFileManager::GetUUIDFromMetaFile( file.path() );
+			auto uuid = MetaFileManager::GenerateMetaFileIfNotPresent( item.path().string(), AssetType::MATERIAL, GetMaterialProperties( nullptr ) );
 
-			const auto& existingIndex = m_MaterialIndex.find( uuid );
+			if ( loadIntoExisting )
+				LoadMaterial( item.path(), uuid );
+			else
+			{
+				if ( const auto& existing = m_Materials.find( uuid ); existing != m_Materials.end() )
+					continue;
 
-			if ( existingIndex != m_MaterialIndex.end() ) continue;
-
-			m_MaterialIndex[ uuid ] = { uuid, file.path().string() };
+				LoadMaterial( item.path(), uuid );
+			}
 
 			refreshCount++;
 		}
@@ -100,47 +112,36 @@ namespace MikuEngine
 		MIKU_CORE_INFO( "Material Index Refresh Completed with count : {}", refreshCount );
 	}
 
-	void MaterialManager::RefreshMaterials()
-	{
-		unsigned int refreshCount = 0;
-
-		for ( const auto& [ uuid, index ] : m_MaterialIndex )
-		{
-			const auto& existing = m_Materials.find( uuid );
-
-			if ( existing != m_Materials.end() ) continue;
-
-			Material material( uuid, index.path );
-			m_Materials[ uuid ] = { index, material };
-
-			refreshCount++;
-		}
-	}
-
-	const std::unordered_map<UUID, MaterialContainer> MaterialManager::GetAllLoadedMaterials() const
+	const std::unordered_map<UUID, Material> MaterialManager::GetAllMaterials() const
 	{
 		return m_Materials;
 	}
 
-	std::optional<MaterialContainer*> MaterialManager::GetMaterial( const UUID& uuid )
+	/// Return a material with the provided UUID
+	///
+	/// @param uuid uuid to the material
+	///
+	Material* MaterialManager::GetMaterial( const UUID& uuid )
 	{
 		if ( auto existingMaterial = m_Materials.find( uuid ); existingMaterial != m_Materials.end() )
 			return &existingMaterial->second;
-		else
-			return std::nullopt;
+
+		return nullptr;
 	}
 
-	std::optional<Material*> MaterialManager::GetMaterialByFilePath( const std::string& filepath )
+	/// Return a material with the provided filepath
+	///
+	/// @param filepath path to the material
+	///
+	Material* MaterialManager::GetMaterial( const std::string& filepath )
 	{
-		for ( auto [ uuid, materialContainer ] : m_Materials )
+		for ( auto& [ uuid, material ] : m_Materials )
 		{
-			if ( materialContainer.index.path == filepath )
-			{
-				return &materialContainer.material;
-			}
+			if ( material.GetPath() == filepath )
+				return &material;
 		}
 
-		return {};
+		return nullptr;
 	}
 
 	bool MaterialManager::MaterialExists( const UUID& uuid ) const
@@ -149,39 +150,106 @@ namespace MikuEngine
 		return exists != m_Materials.end();
 	}
 
-	const std::filesystem::path& MaterialManager::GetFilePathFromUUID( const UUID& uuid )
+	const std::filesystem::path& MaterialManager::GetFilePathByUUID( const UUID& uuid )
 	{
 		if ( auto existing = m_Materials.find( uuid ); existing != m_Materials.end() )
-		{
-			return existing->second.index.path;
-		}
+			return existing->second.GetPath();
 
 		MIKU_ASSERT( false, "This material is not loaded!" );
 	}
 
-	void MaterialManager::RenameAssetCleanup( const UUID& uuid, const std::string& newName )
-	{
-		if ( auto existing = m_Materials.find( uuid ); existing != m_Materials.end() )
-		{
-			existing->second.SetName( newName );
-		}
-	}
-
-	void MaterialManager::DeleteAssetCleanup( const UUID& uuid )
-	{
-		int count = 0;
-
-		if ( auto existing = m_Materials.find( uuid ); existing != m_Materials.end() )
-		{
-			m_Materials.erase( existing );
-			count++;
-		}
-
-		if ( count > 0 ) MIKU_CORE_DEBUG( "Material Cleanup Successful! {} Materials Deleted!", count );
-	}
-
+	/// Get Meta File data for a Material
+	///
+	/// @param material a pointer to the material object! Pass nullptr to get generic data
 	YAML::Node MaterialManager::GetMaterialProperties( Material* material )
 	{
 		return {};
 	}
+
+	void MaterialManager::AddToDeleteQueue( const UUID& uuid )
+	{
+		m_DeleteQueue.push_back( uuid );
+	};
+
+	void MaterialManager::AddToDeleteQueue( const std::filesystem::path& filepath )
+	{
+		if ( auto material = GetMaterial( filepath ); material != nullptr )
+			m_DeleteQueue.push_back( material->GetUUID() );
+	};
+
+	void MaterialManager::AddToRenameQueue( const UUID& uuid, const std::string& newName )
+	{
+		m_RenameQueue.push_back( { uuid, newName } );
+	};
+
+	void MaterialManager::AddToRenameQueue( const std::filesystem::path& filepath, const std::string& newName )
+	{
+		if ( auto material = GetMaterial( filepath ); material != nullptr )
+			m_RenameQueue.push_back( { material->GetUUID(), newName } );
+	};
+
+	void MaterialManager::PerformDeletions()
+	{
+		if ( m_DeleteQueue.size() <= 0 )
+			return;
+
+		for ( auto uuid : m_DeleteQueue )
+			DeleteAsset( uuid );
+
+		MIKU_CORE_INFO( "{} Materils Deleted", m_DeleteQueue.size() );
+
+		m_DeleteQueue.clear();
+	};
+
+	void MaterialManager::PerformRenames()
+	{
+		if ( m_RenameQueue.size() <= 0 )
+			return;
+
+		for ( auto [ uuid, newName ] : m_RenameQueue )
+			RenameAsset( uuid, newName );
+
+		MIKU_CORE_INFO( "{} Materils Renamed", m_RenameQueue.size() );
+
+		m_RenameQueue.clear();
+	};
+
+	void MaterialManager::DeleteAsset( const UUID& uuid )
+	{
+		auto material = m_Materials.find( uuid );
+
+		if ( material == m_Materials.end() )
+			return;
+
+		auto filepath = material->second.GetPath();
+
+		// Remove the material from DB
+		m_Materials.erase( material );
+
+		// Delete the physical files
+		if ( std::filesystem::exists( filepath ) )
+			std::filesystem::remove( filepath );
+		if ( std::filesystem::exists( filepath.string() + ".meta" ) )
+			std::filesystem::remove( filepath.string() + ".meta" );
+	};
+
+	void MaterialManager::RenameAsset( const UUID& uuid, const std::string& newName )
+	{
+		auto materialToRename = m_Materials.find( uuid );
+
+		if ( materialToRename == m_Materials.end() )
+			return;
+
+		const std::filesystem::path& filePath = GetFilePathByUUID( uuid );
+		const std::string fileExtension = filePath.extension();
+
+		std::filesystem::path newFilePath = filePath.parent_path() / ( newName + fileExtension );
+		std::filesystem::path newMetaFilePath = filePath.parent_path() / ( newName + fileExtension + ".meta" );
+
+		std::filesystem::rename( filePath, newFilePath );
+		std::filesystem::rename( filePath.string() + ".meta", newMetaFilePath );
+
+		materialToRename->second.SetPath( newFilePath );
+	};
+
 }

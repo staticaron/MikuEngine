@@ -23,35 +23,34 @@ namespace MikuEngine
 		{
 			const auto& modelUUID = skyboxC.ModelIdentifier;
 
-			if ( modelUUID.has_value() == false ) continue;
+			if ( modelUUID.has_value() == false )
+				continue;
 
 			auto model = modelManager.GetModel( skyboxC.ModelIdentifier.value() );
-			if ( model.has_value() == false ) return;
+			if ( model == nullptr )
+				return;
 
-			Material* material = nullptr;
-			if ( skyboxC.MaterialIdentifier.has_value() == false ) continue;
+			if ( skyboxC.MaterialIdentifier.has_value() == false )
+				continue;
 
-			auto materialContainer = materialManager.GetMaterial( skyboxC.MaterialIdentifier.value() );
-			if ( materialContainer.has_value() == false ) continue;
-
-			material = &materialContainer.value()->material;
+			auto material = materialManager.GetMaterial( skyboxC.MaterialIdentifier.value() );
 
 			material->Bind();
 
 			auto shader = material->GetShader();
-
-			if ( shader.has_value() == false ) return;
+			if ( shader == nullptr )
+				return;
 
 			const auto& transform = scene.GetRegistry().get<TransformComponent>( entity );
 			glm::mat4 modelMatrix = transform.GetModelMatrix();
-			shader.value()->shader.SetUniform<glm::mat4>( "u_Model", modelMatrix );
+			shader->SetUniform<glm::mat4>( "u_Model", modelMatrix );
 
 			glCullFace( GL_FRONT );
 			glDepthFunc( GL_LEQUAL );
 
-			for ( const auto& mesh : model.value()->model.GetMeshes() )
+			for ( const auto& mesh : model->GetMeshes() )
 			{
-				renderer.Draw( mesh.GetVA(), mesh.GetIB(), shader.value()->shader );
+				renderer.Draw( mesh.GetVA(), mesh.GetIB(), *shader );
 			}
 
 			glDepthFunc( GL_LESS );
@@ -73,7 +72,8 @@ namespace MikuEngine
 			ImGuiHelper::EndPropertyTable();
 		};
 
-		if ( !keep ) entity.RemoveComponent<SkyboxComponent>();
+		if ( !keep )
+			entity.RemoveComponent<SkyboxComponent>();
 	}
 
 	void SkyboxRendererSystem::SerializeSkyboxComponent( const Entity& entity, YAML::Emitter& emitter )

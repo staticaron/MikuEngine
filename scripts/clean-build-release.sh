@@ -1,9 +1,13 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 rm -rf build
 
-cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Release
+export BUILD_TYPE="Release"
 
-cmake --build build
+ccache -C
 
-cp build/compile_commands.json .
+export CCACHE_DISABLED=1
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+
+bash "${script_dir}/build.sh"

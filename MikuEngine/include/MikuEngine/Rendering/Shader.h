@@ -6,18 +6,22 @@
 #include <string_view>
 #include <unordered_map>
 
-#include "glm/glm.hpp"
+#include "glm/ext/matrix_float4x4.hpp"
+#include "glm/ext/vector_float2.hpp"
 
-#include "Asset.h"
 #include "Core.h"
+#include "IAsset.h"
 #include "UUID.h"
 
 #include "Rendering/VertexBufferLayout.h"
 
 namespace MikuEngine
 {
-	constexpr std::string_view DEFAULT_SHADER_LOCATION = RESOURCE_DIR "/shaders/default-2d.shader";
+	class ShaderManager;
+}
 
+namespace MikuEngine
+{
 	struct MIKU_API ShaderUniform
 	{
 		std::string Name;
@@ -25,35 +29,30 @@ namespace MikuEngine
 		unsigned int Type;
 	};
 
-	class MIKU_API Shader : public Asset
+	class MIKU_API Shader : public IAsset
 	{
 	public:
-		Shader() : Asset( AssetType::SHADER ) {};
+		Shader() : IAsset( AssetType::SHADER ) {};
 		Shader( UUID uuid, const std::filesystem::path& path );
 
-		void ParseShader( std::string_view filepath, std::string& vs, std::string& gs, std::string& fs );
+		void Load( const std::filesystem::path& filepath );
+		void Destroy();
 
-		unsigned int CompileShader( const std::string& source, unsigned int type );
-		unsigned int CreateShader( const std::string& vs, const std::string& gs, const std::string& fs );
-
-		static void CreateAssetAtPath( const std::string& name, const std::filesystem::path& path );
-
-		void LoadFromFile( const std::filesystem::path& filepath );
 		void PrepareUniforms();
 
 		void Bind() const;
 		void UnBind() const;
 
-		const UUID& GetUUID() const { return m_ShaderUUID; }
-
-		std::string GetName() const override;
-		void SetName( const std::string& newName ) override;
-		const std::filesystem::path& GetPath() const override;
+		const UUID& GetUUID() const override { return m_ShaderUUID; }
+		std::string GetName() const override { return m_FilePath.stem().string(); }
+		const std::filesystem::path& GetPath() const override { return m_FilePath; }
+		void SetPath( const std::filesystem::path& path ) override { m_FilePath = path; }
 
 		unsigned int GetUniformLocation( const std::string& uniformName )
 		{
 			auto existing = m_Uniforms.find( uniformName );
-			if ( existing != m_Uniforms.end() ) return existing->second.Index;
+			if ( existing != m_Uniforms.end() )
+				return existing->second.Index;
 
 			Bind();
 			int uniformLocation = glGetUniformLocation( m_RendererID, uniformName.c_str() );
@@ -68,13 +67,21 @@ namespace MikuEngine
 			static_assert( sizeof( T ) == 0, "No specialization of this type!" );
 		}
 
-		void DeleteAsset() override;
+	private:
+		void ParseShader( std::string_view filepath, std::string& vs, std::string& gs, std::string& fs );
+
+		unsigned int CompileShader( const std::string& source, unsigned int type );
+		unsigned int CreateShader( const std::string& vs, const std::string& gs, const std::string& fs );
 
 	private:
+		UUID m_ShaderUUID{};
+		std::filesystem::path m_FilePath{};
+
 		unsigned int m_RendererID = 0;
-		UUID m_ShaderUUID;
 
 		std::unordered_map<std::string, ShaderUniform> m_Uniforms = {};
+
+		friend ShaderManager;
 	};
 
 	template <>

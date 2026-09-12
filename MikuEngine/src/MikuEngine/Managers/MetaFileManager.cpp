@@ -19,9 +19,11 @@ namespace MikuEngine
 			std::filesystem::file_type type;
 			file.status().type( type );
 
-			if ( file.path().extension() == ".meta" ) continue;
+			if ( file.path().extension() == ".meta" )
+				continue;
 
-			if ( MetaFileExists( file.path().string() ) ) continue;
+			if ( MetaFileExists( file.path().string() ) )
+				continue;
 
 			GenerateMetaFile( file.path().string(), AssetType::NONE, {} );
 		}
@@ -29,11 +31,13 @@ namespace MikuEngine
 		MIKU_CORE_INFO( "Meta Files Refreshed!" );
 	}
 
-	void MetaFileManager::GenerateMetaFile( const std::string& filepath, AssetType assetType, const YAML::Node& properties )
+	UUID MetaFileManager::GenerateMetaFile( const std::string& filepath, AssetType assetType, const YAML::Node& properties )
 	{
 		YAML::Node root;
 
-		root[ "uuid" ] = UUID().ToString();
+		UUID uuid;
+
+		root[ "uuid" ] = uuid.ToString();
 
 		root[ "properties" ][ "path" ] = filepath;
 
@@ -64,6 +68,20 @@ namespace MikuEngine
 		std::ofstream metaFileStream( filepath + ".meta" );
 		metaFileStream << root;
 		metaFileStream.close();
+
+		return uuid;
+	}
+
+	/// Generate a meta file if it doesn't exists for a file
+	///
+	/// @param filepath path of the file to check the meta file for
+	/// @param assetType type of the asset
+	/// @param properties properties of the asset
+	UUID MetaFileManager::GenerateMetaFileIfNotPresent( const std::string& filepath, AssetType assetType, const YAML::Node& properties )
+	{
+		if ( MetaFileExists( filepath ) )
+			return GetUUIDFromMetaFile( filepath );
+		return GenerateMetaFile( filepath, assetType, properties );
 	}
 
 	bool MetaFileManager::MetaFileExists( const std::string& filepath )

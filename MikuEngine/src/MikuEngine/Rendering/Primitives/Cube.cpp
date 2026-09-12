@@ -4,7 +4,7 @@ namespace MikuEngine
 {
 	void Cube::Init()
 	{
-		m_Model.LoadFromFile( RESOURCE_DIR "/models/Cube.fbx" );
+		m_Model.Load( RESOURCE_DIR "/models/Cube.fbx" );
 	}
 
 	void Cube::SetupVertsAndIndices() {}
