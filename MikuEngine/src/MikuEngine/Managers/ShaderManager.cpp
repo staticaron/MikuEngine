@@ -271,6 +271,9 @@ namespace MikuEngine
 		return m_ShaderIncludes.at( identifier );
 	}
 
+	/// Get Meta File data for a Shader
+	///
+	/// @param shader a pointer to the shader object! Pass nullptr to get generic data
 	YAML::Node ShaderManager::GetShaderProperties( Shader* shader )
 	{
 		return {};
@@ -296,6 +299,8 @@ namespace MikuEngine
 
 		// Load the shader asset into the shader DB
 		Application::GetAppLevelStuff().GetAssetPoolManager().GetShaderManager().LoadShader( pathToSave, {} );
+
+		MetaFileManager::GenerateMetaFileIfNotPresent( pathToSave, AssetType::SHADER, ShaderManager::GetShaderProperties() );
 	}
 
 	/// @brief Go through each and every UUID in delete queue and perform delete on the asset with that UUID

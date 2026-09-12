@@ -330,19 +330,21 @@ namespace MikuEngine
 	}
 
 	/// @brief Return default .meta file template
-	YAML::Node TextureManager::GetTextureProperties( std::optional<Texture*> texture )
+	///
+	/// @param texture a pointer to the texture object! Pass nullptr to get generic data
+	YAML::Node TextureManager::GetTextureProperties( Texture* texture )
 	{
 		YAML::Node properties;
 
 		// return the default texture meta file properties
-		if ( !texture.has_value() )
+		if ( texture == nullptr )
 		{
 			properties[ "wrap" ] = "clamp";
 			return properties;
 		}
 
 		// return the properties of the texture provided
-		switch ( texture.value()->GetWrapMode() )
+		switch ( texture->GetWrapMode() )
 		{
 		case TextureWrapMode::REPEAT:
 			properties[ "wrap" ] = "repeat";

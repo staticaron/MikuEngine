@@ -74,6 +74,8 @@ namespace MikuEngine
 		fout.close();
 
 		Application::GetAppLevelStuff().GetAssetPoolManager().GetMaterialManager().LoadMaterial( pathToSave );
+
+		MetaFileManager::GenerateMetaFileIfNotPresent( pathToSave, AssetType::MATERIAL, MaterialManager::GetMaterialProperties() );
 	}
 
 	/// Load the materials that are not already loaded!
@@ -156,6 +158,9 @@ namespace MikuEngine
 		MIKU_ASSERT( false, "This material is not loaded!" );
 	}
 
+	/// Get Meta File data for a Material
+	///
+	/// @param material a pointer to the material object! Pass nullptr to get generic data
 	YAML::Node MaterialManager::GetMaterialProperties( Material* material )
 	{
 		return {};

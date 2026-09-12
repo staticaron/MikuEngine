@@ -47,7 +47,7 @@ namespace MikuEngine
 
 		bool ShaderExists( const UUID& uuid ) const;
 
-		static YAML::Node GetShaderProperties( Shader* shader );
+		static YAML::Node GetShaderProperties( Shader* shader = nullptr );
 		static void CreateAssetAtPath( const std::string& name, const std::filesystem::path& folderPath );
 
 	protected:

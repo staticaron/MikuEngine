@@ -33,7 +33,7 @@ namespace MikuEngine
 
 		bool MaterialExists( const UUID& uuid ) const;
 
-		static YAML::Node GetMaterialProperties( Material* material );
+		static YAML::Node GetMaterialProperties( Material* material = nullptr );
 		static void CreateAssetAtPath( const std::string& name, const std::filesystem::path& path );
 
 		void AddToDeleteQueue( const UUID& uuid ) override;

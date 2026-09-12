@@ -76,7 +76,7 @@ namespace MikuEngine
 
 		void Destroy();
 
-		static YAML::Node GetTextureProperties( std::optional<Texture*> texture );
+		static YAML::Node GetTextureProperties( Texture* texture = nullptr );
 
 	protected:
 		void PerformDeletions() override;
