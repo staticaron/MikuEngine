@@ -15,7 +15,8 @@ namespace MikuEngine
 		void Update();
 		void Destroy();
 
-		void AddWatchDirectories( const std::string& directoryPath );
+		void WatchDirectory( const std::string& directoryPath );
+		void UnWatchDirectory( const std::string& directoryPath, int wd );
 
 	private:
 		int m_Fd{};

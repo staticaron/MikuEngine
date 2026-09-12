@@ -81,7 +81,7 @@ namespace MikuEngine
 	{
 		if ( MetaFileExists( filepath ) )
 			return GetUUIDFromMetaFile( filepath );
-		return GenerateMetaFile( filepath, assetType, properties );
+		return CreateMetaFile( filepath, assetType, properties );
 	}
 
 	void MetaFileManager::DeleteMetaFile( const std::string& filepath )

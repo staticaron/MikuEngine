@@ -19,7 +19,6 @@ namespace MikuEngine
 	{
 	public:
 		static void RefreshMetaFiles();
-		static UUID GenerateMetaFile( const std::string& filepath, AssetType assetType, const YAML::Node& content );
 		static UUID GenerateMetaFileIfNotPresent( const std::string& filepath, AssetType assetType, const YAML::Node& properties );
 
 		static UUID CreateMetaFile( const std::string& filepath, AssetType assetType, const YAML::Node& content );
